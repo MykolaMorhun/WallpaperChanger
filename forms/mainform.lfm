@@ -1,0 +1,24 @@
+object BannerForm: TBannerForm
+  Left = 421
+  Height = 240
+  Top = 134
+  Width = 320
+  ActiveControl = Button1
+  Caption = 'BannerForm'
+  ClientHeight = 240
+  ClientWidth = 320
+  LCLVersion = '1.6.4.0'
+  object Button1: TButton
+    Left = 128
+    Height = 25
+    Top = 96
+    Width = 75
+    Caption = 'Test'
+    OnClick = Button1Click
+    TabOrder = 0
+  end
+  object OpenDialog1: TOpenDialog
+    left = 152
+    top = 136
+  end
+end

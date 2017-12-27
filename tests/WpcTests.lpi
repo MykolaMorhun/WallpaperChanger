@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="10"/>
+    <General>
+      <SessionStorage Value="InProjectDir"/>
+      <MainUnit Value="0"/>
+      <Title Value="WpcTests"/>
+      <ResourceType Value="res"/>
+      <UseXPManifest Value="True"/>
+      <Icon Value="0"/>
+    </General>
+    <i18n>
+      <EnableI18N LFM="False"/>
+    </i18n>
+    <VersionInfo>
+      <StringTable ProductVersion=""/>
+    </VersionInfo>
+    <BuildModes Count="1">
+      <Item1 Name="Default" Default="True"/>
+    </BuildModes>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+    <RunParams>
+      <local>
+        <FormatVersion Value="1"/>
+      </local>
+    </RunParams>
+    <RequiredPackages Count="2">
+      <Item1>
+        <PackageName Value="fpcunittestrunner"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="FCL"/>
+      </Item2>
+    </RequiredPackages>
+    <Units Count="36">
+      <Unit0>
+        <Filename Value="WpcTests.lpr"/>
+        <IsPartOfProject Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="Parser/parserbasetestcase.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ParserBaseTestCase"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="Parser/waitstatementparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WaitStatementParsingTest"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="../script/wpcscript.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcScript"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="../script/wpcscriptcommons.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcScriptCommons"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="../script/wpcscriptexecutor.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcScriptExecutor"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcScriptParser"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="../script/wpcstatementproperties.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcStatementProperties"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="../script/wpcstatements.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcStatements"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="../common/wpccommontypes.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcCommonTypes"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="../common/wpcexceptions.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcExceptions"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="../common/wpcwallpaperstyles.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcWallpaperStyles"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="../os/osutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="OSUtils"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="Parser/stopstatementparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="StopStatementParsingTest"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="Parser/setwallpaperstatementparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SetWallpaperStatementParsingTest"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="Parser/switchbranchstatementparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SwitchBranchStatementParsingTest"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="Parser/usebranchstatementparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UseBranchStatementParsingTest"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="Parser/chooserstatementbasetestcase.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ChooserStatementBaseTestCase"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="Parser/wallpaperchooserstatementparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WallpaperChooserStatementParsingTest"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="Parser/switchbranchchooserstatementparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SwitchBranchChooserStatementParsingTest"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="Parser/usebranchchooserstatementparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UseBranchChooserStatementParsingTest"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="Parser/branchesparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="BranchesParsingTest"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="Parser/Values/delayvaluesparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DelayValuesParsingTest"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="Parser/Values/probabilityvalueparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ProbabilityValueParsingTest"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="Parser/Values/timesvalueparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TimesValueParsingTest"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="Parser/Values/valuesparsingbasetest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ValuesParsingBaseTest"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="Parser/Values/wallpaperstylevalueparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WallpaperStyleValueParsingTest"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="Parser/Values/selectorvaluesbasetest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SelectorValuesBaseTest"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="Parser/Values/seasonvalueparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SeasonValueParsingTest"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="Parser/Values/weightvalueparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WeightValueParsingTest"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="Parser/Values/weekdayvalueparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WeekdayValueParsingTest"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="Parser/Values/monthvalueparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MonthValueParsingTest"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="Parser/Values/datevaluesparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DateValuesParsingTest"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="Parser/Values/timevaluesparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TimeValuesParsingTest"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="Util/datetimetestutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DateTimeTestUtils"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="Parser/Values/datetimevaluesparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DateTimeValuesParsingTest"/>
+      </Unit35>
+    </Units>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="11"/>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="Parser;../script;../common;../os;Parser/Values;Util"/>
+    </SearchPaths>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions Count="7">
+      <Item1>
+        <Name Value="EAbort"/>
+      </Item1>
+      <Item2>
+        <Name Value="ECodetoolError"/>
+      </Item2>
+      <Item3>
+        <Name Value="EFOpenError"/>
+      </Item3>
+      <Item4>
+        <Name Value="TWpcScriptParseException"/>
+      </Item4>
+      <Item5>
+        <Name Value="EListError"/>
+      </Item5>
+      <Item6>
+        <Name Value="EAssertionFailedError"/>
+      </Item6>
+      <Item7>
+        <Name Value="TWpcIllegalArgumentException"/>
+      </Item7>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

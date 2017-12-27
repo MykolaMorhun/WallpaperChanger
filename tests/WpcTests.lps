@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <Version Value="10"/>
+    <BuildModes Active="Default"/>
+    <Units Count="53">
+      <Unit0>
+        <Filename Value="WpcTests.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <TopLine Value="11"/>
+        <CursorPos X="31" Y="18"/>
+        <UsageCount Value="128"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="Parser/parserbasetestcase.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ParserBaseTestCase"/>
+        <EditorIndex Value="3"/>
+        <CursorPos Y="4"/>
+        <UsageCount Value="128"/>
+        <Loaded Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="Parser/waitstatementparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WaitStatementParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="181"/>
+        <CursorPos X="71" Y="221"/>
+        <UsageCount Value="128"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="../script/wpcscript.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcScript"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="60" Y="4"/>
+        <UsageCount Value="128"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="../script/wpcscriptcommons.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcScriptCommons"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="22"/>
+        <UsageCount Value="128"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="../script/wpcscriptexecutor.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcScriptExecutor"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="128"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcScriptParser"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="415"/>
+        <CursorPos X="3" Y="380"/>
+        <UsageCount Value="128"/>
+        <Loaded Value="True"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="../script/wpcstatementproperties.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcStatementProperties"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="88"/>
+        <CursorPos X="20" Y="102"/>
+        <UsageCount Value="128"/>
+        <Loaded Value="True"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="../script/wpcstatements.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcStatements"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="135"/>
+        <CursorPos X="27" Y="146"/>
+        <UsageCount Value="128"/>
+        <Loaded Value="True"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="../common/wpccommontypes.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcCommonTypes"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="77" Y="12"/>
+        <UsageCount Value="128"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="../common/wpcexceptions.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcExceptions"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="10"/>
+        <CursorPos X="3" Y="11"/>
+        <UsageCount Value="128"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="../common/wpcwallpaperstyles.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcWallpaperStyles"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="4"/>
+        <CursorPos X="44" Y="19"/>
+        <UsageCount Value="128"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="../os/osutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="OSUtils"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3"/>
+        <CursorPos X="17" Y="15"/>
+        <UsageCount Value="128"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="Parser/stopstatementparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="StopStatementParsingTest"/>
+        <EditorIndex Value="4"/>
+        <CursorPos X="63" Y="77"/>
+        <UsageCount Value="126"/>
+        <Loaded Value="True"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="Parser/setwallpaperstatementparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SetWallpaperStatementParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2"/>
+        <CursorPos X="9" Y="15"/>
+        <UsageCount Value="118"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="Parser/switchbranchstatementparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SwitchBranchStatementParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="73"/>
+        <CursorPos X="71" Y="91"/>
+        <UsageCount Value="115"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="Parser/usebranchstatementparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UseBranchStatementParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="125"/>
+        <CursorPos X="44" Y="134"/>
+        <UsageCount Value="115"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="Parser/chooserstatementbasetestcase.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ChooserStatementBaseTestCase"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="472"/>
+        <CursorPos Y="485"/>
+        <UsageCount Value="114"/>
+        <Loaded Value="True"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="Parser/wallpaperchooserstatementparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WallpaperChooserStatementParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="43"/>
+        <UsageCount Value="108"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="Parser/switchbranchchooserstatementparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SwitchBranchChooserStatementParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <UsageCount Value="102"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="Parser/usebranchchooserstatementparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UseBranchChooserStatementParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="100"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="Parser/branchesparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="BranchesParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="99"/>
+        <CursorPos X="3" Y="106"/>
+        <UsageCount Value="93"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="Parser/Values/delayvaluesparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DelayValuesParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="26"/>
+        <CursorPos X="90" Y="38"/>
+        <UsageCount Value="89"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="Parser/Values/probabilityvalueparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ProbabilityValueParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="91"/>
+        <CursorPos X="91" Y="101"/>
+        <UsageCount Value="81"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="Parser/Values/timesvalueparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TimesValueParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="68"/>
+        <CursorPos X="33" Y="91"/>
+        <UsageCount Value="79"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="Parser/Values/valuesparsingbasetest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ValuesParsingBaseTest"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="18"/>
+        <UsageCount Value="79"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="Parser/Values/wallpaperstylevalueparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WallpaperStyleValueParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="81" Y="119"/>
+        <UsageCount Value="77"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="Parser/Values/selectorvaluesbasetest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SelectorValuesBaseTest"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="120"/>
+        <CursorPos X="3" Y="124"/>
+        <UsageCount Value="72"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="Parser/Values/seasonvalueparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SeasonValueParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="37"/>
+        <CursorPos X="22" Y="63"/>
+        <UsageCount Value="66"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="Parser/Values/weightvalueparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WeightValueParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="28"/>
+        <UsageCount Value="58"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="Parser/Values/weekdayvalueparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WeekdayValueParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="38"/>
+        <CursorPos X="34" Y="77"/>
+        <UsageCount Value="58"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="Parser/Values/monthvalueparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="MonthValueParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="96" Y="54"/>
+        <UsageCount Value="57"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="Parser/Values/datevaluesparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DateValuesParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="50" Y="79"/>
+        <UsageCount Value="56"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="Parser/Values/timevaluesparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TimeValuesParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="74"/>
+        <CursorPos X="18" Y="98"/>
+        <UsageCount Value="53"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="Util/datetimetestutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DateTimeTestUtils"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="16"/>
+        <CursorPos Y="31"/>
+        <UsageCount Value="44"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="Parser/Values/datetimevaluesparsingtest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DateTimeValuesParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="93"/>
+        <CursorPos X="58" Y="97"/>
+        <UsageCount Value="44"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="Parser/Values/basevaluesparsingtest.pas"/>
+        <UnitName Value="BaseValuesParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="41" Y="14"/>
+        <UsageCount Value="24"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="/usr/share/fpcsrc/3.0.2/packages/fcl-fpcunit/src/fpcunit.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="196"/>
+        <CursorPos X="17" Y="215"/>
+        <UsageCount Value="7"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="/usr/share/fpcsrc/3.0.2/packages/fcl-fpcunit/src/DUnitCompatibleInterface.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="162"/>
+        <CursorPos X="3" Y="170"/>
+        <UsageCount Value="6"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/inc/objpas.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="502"/>
+        <CursorPos Y="516"/>
+        <UsageCount Value="6"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="/usr/share/fpcsrc/3.0.2/packages/fcl-fpcunit/src/testutils.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="37"/>
+        <UsageCount Value="6"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/objpas/classes/classesh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="756"/>
+        <CursorPos X="15" Y="775"/>
+        <UsageCount Value="7"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/objpas/classes/stringl.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1358"/>
+        <CursorPos X="3" Y="1361"/>
+        <UsageCount Value="7"/>
+      </Unit42>
+      <Unit43>
+        <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/objpas/sysutils/sysutilh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="105"/>
+        <CursorPos X="23" Y="125"/>
+        <UsageCount Value="9"/>
+      </Unit43>
+      <Unit44>
+        <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/objpas/sysutils/sysutils.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="245"/>
+        <CursorPos X="7" Y="247"/>
+        <UsageCount Value="7"/>
+      </Unit44>
+      <Unit45>
+        <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/objpas/fgl.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="120"/>
+        <CursorPos X="14" Y="132"/>
+        <UsageCount Value="7"/>
+      </Unit45>
+      <Unit46>
+        <Filename Value="Parser/valuesparsingtest.pas"/>
+        <UnitName Value="ValuesParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="16"/>
+        <CursorPos X="31" Y="33"/>
+        <UsageCount Value="35"/>
+      </Unit46>
+      <Unit47>
+        <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/objpas/sysutils/sysstrh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <CursorPos X="4" Y="27"/>
+        <UsageCount Value="8"/>
+      </Unit47>
+      <Unit48>
+        <Filename Value="Parser/Values/selectorvalueparsingtest.pas"/>
+        <UnitName Value="SelectorValueParsingTest"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="5" Y="18"/>
+        <UsageCount Value="17"/>
+      </Unit48>
+      <Unit49>
+        <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/objpas/sysutils/datih.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="140"/>
+        <CursorPos X="132" Y="160"/>
+        <UsageCount Value="8"/>
+      </Unit49>
+      <Unit50>
+        <Filename Value="/usr/share/fpcsrc/3.0.2/packages/rtl-objpas/src/inc/strutils.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="161"/>
+        <CursorPos X="10" Y="172"/>
+        <UsageCount Value="10"/>
+      </Unit50>
+      <Unit51>
+        <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/objpas/sysutils/syshelph.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="45"/>
+        <CursorPos X="20" Y="60"/>
+        <UsageCount Value="10"/>
+      </Unit51>
+      <Unit52>
+        <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/objpas/sysutils/syshelp.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="282"/>
+        <CursorPos X="3" Y="290"/>
+        <UsageCount Value="10"/>
+      </Unit52>
+    </Units>
+    <JumpHistory Count="28" HistoryIndex="27">
+      <Position1>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="2182" TopLine="2173"/>
+      </Position1>
+      <Position2>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="2190" TopLine="2173"/>
+      </Position2>
+      <Position3>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="2181" TopLine="2173"/>
+      </Position3>
+      <Position4>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="2183" Column="26" TopLine="2173"/>
+      </Position4>
+      <Position5>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="2190" TopLine="2173"/>
+      </Position5>
+      <Position6>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="1598" TopLine="1588"/>
+      </Position6>
+      <Position7>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="1574" TopLine="1564"/>
+      </Position7>
+      <Position8>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="2181" TopLine="2169"/>
+      </Position8>
+      <Position9>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="1574" TopLine="1564"/>
+      </Position9>
+      <Position10>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="1584" TopLine="1572"/>
+      </Position10>
+      <Position11>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="1588" TopLine="1575"/>
+      </Position11>
+      <Position12>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="1589" TopLine="1575"/>
+      </Position12>
+      <Position13>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="1590" TopLine="1575"/>
+      </Position13>
+      <Position14>
+        <Filename Value="Parser/chooserstatementbasetestcase.pas"/>
+        <Caret Line="565" Column="20" TopLine="548"/>
+      </Position14>
+      <Position15>
+        <Filename Value="Parser/chooserstatementbasetestcase.pas"/>
+        <Caret Line="566" Column="16" TopLine="548"/>
+      </Position15>
+      <Position16>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="1574" TopLine="1563"/>
+      </Position16>
+      <Position17>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="1575" TopLine="1563"/>
+      </Position17>
+      <Position18>
+        <Filename Value="Parser/chooserstatementbasetestcase.pas"/>
+        <Caret Line="564" Column="35" TopLine="551"/>
+      </Position18>
+      <Position19>
+        <Filename Value="Parser/chooserstatementbasetestcase.pas"/>
+        <Caret Line="566" TopLine="551"/>
+      </Position19>
+      <Position20>
+        <Filename Value="Parser/chooserstatementbasetestcase.pas"/>
+        <Caret Line="484" TopLine="468"/>
+      </Position20>
+      <Position21>
+        <Filename Value="Parser/chooserstatementbasetestcase.pas"/>
+        <Caret Line="486" TopLine="475"/>
+      </Position21>
+      <Position22>
+        <Filename Value="Parser/chooserstatementbasetestcase.pas"/>
+        <Caret Line="485" TopLine="472"/>
+      </Position22>
+      <Position23>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="29" Column="22" TopLine="16"/>
+      </Position23>
+      <Position24>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="1408" Column="37" TopLine="1388"/>
+      </Position24>
+      <Position25>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="587" Column="25"/>
+      </Position25>
+      <Position26>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="1714" Column="101" TopLine="1714"/>
+      </Position26>
+      <Position27>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="588" Column="16" TopLine="578"/>
+      </Position27>
+      <Position28>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="446" Column="42" TopLine="436"/>
+      </Position28>
+    </JumpHistory>
+  </ProjectSession>
+  <Debugging>
+    <Watches Count="3">
+      <Item1>
+        <Expression Value="ScriptLines"/>
+        <DisplayStyle Value="wdfPointer"/>
+      </Item1>
+      <Item2>
+        <Expression Value="FcurrentLine"/>
+      </Item2>
+      <Item3>
+        <Expression Value="Selector"/>
+      </Item3>
+    </Watches>
+  </Debugging>
+</CONFIG>

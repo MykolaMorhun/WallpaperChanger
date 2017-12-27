@@ -1,0 +1,9 @@
+*.bak
+/lib/
+
+/WallpaperChanger*
+/tests/WpcTests*
+
+*.o
+*.or
+*.ppu
