@@ -18,9 +18,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainForm"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="42"/>
-        <CursorPos X="28" Y="54"/>
+        <TopLine Value="90"/>
+        <CursorPos X="22" Y="108"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -29,15 +30,17 @@
         <Filename Value="common/wpcexceptions.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcExceptions"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="16" Y="11"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="10"/>
+        <CursorPos X="3" Y="21"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="script/wpcstatements.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcStatements"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="4"/>
         <TopLine Value="120"/>
         <CursorPos X="23" Y="137"/>
         <UsageCount Value="200"/>
@@ -59,17 +62,16 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="25"/>
         <CursorPos X="27" Y="31"/>
-        <UsageCount Value="198"/>
+        <UsageCount Value="200"/>
       </Unit5>
       <Unit6>
         <Filename Value="script/wpcscriptparser.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScriptParser"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="1903"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="1901"/>
         <CursorPos X="7" Y="1901"/>
-        <UsageCount Value="190"/>
+        <UsageCount Value="192"/>
         <Loaded Value="True"/>
       </Unit6>
       <Unit7>
@@ -79,16 +81,15 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="48"/>
         <CursorPos X="53" Y="59"/>
-        <UsageCount Value="148"/>
+        <UsageCount Value="150"/>
       </Unit7>
       <Unit8>
         <Filename Value="script/wpcscriptexecutor.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScriptExecutor"/>
-        <EditorIndex Value="5"/>
-        <TopLine Value="113"/>
+        <EditorIndex Value="6"/>
         <CursorPos X="27" Y="132"/>
-        <UsageCount Value="147"/>
+        <UsageCount Value="149"/>
         <Loaded Value="True"/>
       </Unit8>
       <Unit9>
@@ -97,7 +98,7 @@
         <UnitName Value="WallpaperSetterProvider"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="11" Y="42"/>
-        <UsageCount Value="104"/>
+        <UsageCount Value="106"/>
       </Unit9>
       <Unit10>
         <Filename Value="os/osutils.pas"/>
@@ -106,7 +107,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="7"/>
         <CursorPos X="25" Y="16"/>
-        <UsageCount Value="99"/>
+        <UsageCount Value="101"/>
       </Unit10>
       <Unit11>
         <Filename Value="common/wpccommontypes.pas"/>
@@ -115,16 +116,16 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="20"/>
         <CursorPos X="24" Y="42"/>
-        <UsageCount Value="94"/>
+        <UsageCount Value="96"/>
       </Unit11>
       <Unit12>
         <Filename Value="script/wpcscriptcommons.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScriptCommons"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="5"/>
         <TopLine Value="36"/>
-        <CursorPos X="49" Y="54"/>
-        <UsageCount Value="86"/>
+        <CursorPos X="28" Y="41"/>
+        <UsageCount Value="88"/>
         <Loaded Value="True"/>
       </Unit12>
       <Unit13>
@@ -133,7 +134,7 @@
         <UnitName Value="WpcWallpaperStyles"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="29" Y="37"/>
-        <UsageCount Value="69"/>
+        <UsageCount Value="71"/>
       </Unit13>
       <Unit14>
         <Filename Value="common/wpcimage.pas"/>
@@ -317,123 +318,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="1929" TopLine="1910"/>
+        <Caret Line="1957" TopLine="1946"/>
       </Position1>
       <Position2>
         <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="1920" TopLine="1910"/>
+        <Caret Line="2072" TopLine="2059"/>
       </Position2>
       <Position3>
         <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="1921" TopLine="1910"/>
+        <Caret Line="723" Column="10" TopLine="704"/>
       </Position3>
       <Position4>
         <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="1922" TopLine="1910"/>
+        <Caret Line="1952" Column="36" TopLine="1945"/>
       </Position4>
       <Position5>
         <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="1930" TopLine="1910"/>
+        <Caret Line="156" Column="23" TopLine="145"/>
       </Position5>
       <Position6>
         <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="1943" Column="50" TopLine="1930"/>
+        <Caret Line="730" Column="3" TopLine="711"/>
       </Position6>
       <Position7>
         <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="1944" Column="18" TopLine="1930"/>
+        <Caret Line="776" Column="27" TopLine="751"/>
       </Position7>
       <Position8>
         <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="1943" Column="25" TopLine="1930"/>
+        <Caret Line="1975" TopLine="1964"/>
       </Position8>
       <Position9>
-        <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="1944" Column="17" TopLine="1930"/>
+        <Filename Value="script/wpcscriptcommons.pas"/>
+        <Caret Line="25" Column="5"/>
       </Position9>
       <Position10>
         <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="1919" TopLine="1907"/>
+        <Caret Line="1975" TopLine="1964"/>
       </Position10>
       <Position11>
         <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="1942" Column="20" TopLine="1927"/>
+        <Caret Line="726" Column="12" TopLine="714"/>
       </Position11>
       <Position12>
         <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="2073" TopLine="2057"/>
+        <Caret Line="725" Column="20" TopLine="709"/>
       </Position12>
       <Position13>
         <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="729" TopLine="707"/>
+        <Caret Line="726" Column="27" TopLine="709"/>
       </Position13>
       <Position14>
         <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="1215" Column="12" TopLine="1201"/>
+        <Caret Line="921" Column="56" TopLine="909"/>
       </Position14>
       <Position15>
         <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="1647"/>
+        <Caret Line="1917" Column="45" TopLine="1904"/>
       </Position15>
       <Position16>
-        <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="1957" TopLine="1946"/>
+        <Filename Value="forms/mainform.pas"/>
+        <Caret Line="24" Column="56" TopLine="19"/>
       </Position16>
       <Position17>
-        <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="2072" TopLine="2059"/>
+        <Filename Value="forms/mainform.pas"/>
+        <Caret Line="25" Column="56" TopLine="19"/>
       </Position17>
       <Position18>
-        <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="723" Column="10" TopLine="704"/>
+        <Filename Value="forms/mainform.pas"/>
+        <Caret Line="26" Column="56" TopLine="19"/>
       </Position18>
       <Position19>
-        <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="1952" Column="36" TopLine="1945"/>
+        <Filename Value="forms/mainform.pas"/>
+        <Caret Line="27" Column="56" TopLine="19"/>
       </Position19>
       <Position20>
-        <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="156" Column="23" TopLine="145"/>
+        <Filename Value="forms/mainform.pas"/>
+        <Caret Line="28" Column="56" TopLine="19"/>
       </Position20>
       <Position21>
-        <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="730" Column="3" TopLine="711"/>
+        <Filename Value="forms/mainform.pas"/>
+        <Caret Line="29" Column="56" TopLine="19"/>
       </Position21>
       <Position22>
-        <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="776" Column="27" TopLine="751"/>
+        <Filename Value="forms/mainform.pas"/>
+        <Caret Line="30" Column="56" TopLine="19"/>
       </Position22>
       <Position23>
-        <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="1975" TopLine="1964"/>
+        <Filename Value="forms/mainform.pas"/>
+        <Caret Line="31" Column="56" TopLine="19"/>
       </Position23>
       <Position24>
-        <Filename Value="script/wpcscriptcommons.pas"/>
-        <Caret Line="25" Column="5"/>
+        <Filename Value="forms/mainform.pas"/>
+        <Caret Line="32" Column="56" TopLine="19"/>
       </Position24>
       <Position25>
-        <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="1975" TopLine="1964"/>
+        <Filename Value="forms/mainform.pas"/>
+        <Caret Line="33" Column="56" TopLine="19"/>
       </Position25>
       <Position26>
-        <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="726" Column="12" TopLine="714"/>
+        <Filename Value="forms/mainform.pas"/>
+        <Caret Line="34" Column="56" TopLine="19"/>
       </Position26>
       <Position27>
-        <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="725" Column="20" TopLine="709"/>
+        <Filename Value="forms/mainform.pas"/>
+        <Caret Line="72" Column="64" TopLine="61"/>
       </Position27>
       <Position28>
-        <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="726" Column="27" TopLine="709"/>
+        <Filename Value="forms/mainform.pas"/>
+        <Caret Line="73" Column="64" TopLine="62"/>
       </Position28>
       <Position29>
-        <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="921" Column="56" TopLine="909"/>
+        <Filename Value="forms/mainform.pas"/>
+        <Caret Line="79" Column="74" TopLine="64"/>
       </Position29>
       <Position30>
-        <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="1917" Column="45" TopLine="1904"/>
+        <Filename Value="forms/mainform.pas"/>
+        <Caret Line="38" Column="25" TopLine="29"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

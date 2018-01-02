@@ -1,24 +1,93 @@
 object BannerForm: TBannerForm
-  Left = 421
+  Left = 419
   Height = 240
-  Top = 134
+  Top = 145
   Width = 320
-  ActiveControl = Button1
   Caption = 'BannerForm'
-  ClientHeight = 240
-  ClientWidth = 320
+  OnCreate = FormCreate
   LCLVersion = '1.6.4.0'
-  object Button1: TButton
-    Left = 128
-    Height = 25
-    Top = 96
-    Width = 75
-    Caption = 'Test'
-    OnClick = Button1Click
-    TabOrder = 0
+  object SelectScriptDialog: TOpenDialog
+    left = 16
+    top = 72
   end
-  object OpenDialog1: TOpenDialog
-    left = 152
-    top = 136
+  object WPCTrayIcon: TTrayIcon
+    PopUpMenu = WPCMainPopupMenu
+    left = 16
+    top = 8
+  end
+  object WPCMainPopupMenu: TPopupMenu
+    left = 88
+    top = 8
+    object StopMenuItem: TMenuItem
+      Caption = 'Stop'
+      OnClick = StopMenuItemClick
+    end
+    object ScriptMenuItem: TMenuItem
+      Caption = 'Script'
+      object RunScriptMenuItem: TMenuItem
+        Caption = 'Run Script ...'
+        OnClick = RunScriptMenuItemClick
+      end
+      object ScriptEditorMenuItem: TMenuItem
+        Caption = 'Script Editor ...'
+        OnClick = ScriptEditorMenuItemClick
+      end
+    end
+    object WallpaperMenuItem: TMenuItem
+      Caption = 'Wallpaper'
+      object SetWallpaperDirectoryMenuItem: TMenuItem
+        Caption = 'Set Directory ...'
+        OnClick = SetWallpaperDirectoryMenuItemClick
+      end
+      object NextWallpaperMenuItem: TMenuItem
+        Caption = 'Next'
+        OnClick = NextWallpaperMenuItemClick
+      end
+      object PreviousWallpaperMenuItem: TMenuItem
+        Caption = 'Previous'
+        OnClick = PreviousWallpaperMenuItemClick
+      end
+      object Separator2MenuItem: TMenuItem
+        Caption = '-'
+      end
+      object SetWallpaperImageMenuItem: TMenuItem
+        Caption = 'Set Image ...'
+        OnClick = SetWallpaperImageMenuItemClick
+      end
+    end
+    object Separator1MenuItem: TMenuItem
+      Caption = '-'
+    end
+    object OptionsMenuItem: TMenuItem
+      Caption = 'Options ...'
+      OnClick = OptionsMenuItemClick
+    end
+    object InfoMenuItem: TMenuItem
+      Caption = 'Info'
+      object DocsMenuItem: TMenuItem
+        Caption = 'Docs'
+        OnClick = DocsMenuItemClick
+      end
+      object AboutMenuItem: TMenuItem
+        Caption = 'About'
+        OnClick = AboutMenuItemClick
+      end
+    end
+    object ExitMenuItem: TMenuItem
+      Caption = 'Exit'
+      OnClick = ExitMenuItemClick
+    end
+  end
+  object MainContextMenuImageList: TImageList
+    left = 160
+    top = 8
+  end
+  object SelectWallpaperDirectoryDialog: TSelectDirectoryDialog
+    left = 88
+    top = 72
+  end
+  object SelectWallpaperDialog: TOpenPictureDialog
+    left = 160
+    top = 72
   end
 end
