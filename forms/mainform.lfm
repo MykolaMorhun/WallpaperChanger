@@ -3,8 +3,12 @@ object BannerForm: TBannerForm
   Height = 240
   Top = 145
   Width = 320
+  BorderStyle = bsNone
   Caption = 'BannerForm'
   OnCreate = FormCreate
+  PopupMenu = WPCMainPopupMenu
+  Position = poScreenCenter
+  ShowInTaskBar = stNever
   LCLVersion = '1.6.4.0'
   object SelectScriptDialog: TOpenDialog
     left = 16

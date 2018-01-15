@@ -62,64 +62,67 @@ implementation
 
 (* Application initialization *)
 
-procedure TBannerForm.FormCreate(Sender: TObject);
+procedure TBannerForm.FormCreate(Sender : TObject);
 begin
+  BannerForm.ShowInTaskBar := stNever;
   WPCTrayIcon.Show();
+  // create WPCApplicaion instance
+  BannerForm.Hide();
 end;
 
 (* Application menu handlers *)
 
-procedure TBannerForm.StopMenuItemClick(Sender: TObject);
+procedure TBannerForm.StopMenuItemClick(Sender : TObject);
 begin
 
 end;
 
-procedure TBannerForm.RunScriptMenuItemClick(Sender: TObject);
+procedure TBannerForm.RunScriptMenuItemClick(Sender : TObject);
 begin
 
 end;
 
-procedure TBannerForm.ScriptEditorMenuItemClick(Sender: TObject);
+procedure TBannerForm.ScriptEditorMenuItemClick(Sender : TObject);
 begin
 
 end;
 
-procedure TBannerForm.SetWallpaperDirectoryMenuItemClick(Sender: TObject);
+procedure TBannerForm.SetWallpaperDirectoryMenuItemClick(Sender : TObject);
 begin
 
 end;
 
-procedure TBannerForm.NextWallpaperMenuItemClick(Sender: TObject);
+procedure TBannerForm.NextWallpaperMenuItemClick(Sender : TObject);
 begin
 
 end;
 
-procedure TBannerForm.PreviousWallpaperMenuItemClick(Sender: TObject);
+procedure TBannerForm.PreviousWallpaperMenuItemClick(Sender : TObject);
 begin
 
 end;
 
-procedure TBannerForm.SetWallpaperImageMenuItemClick(Sender: TObject);
+procedure TBannerForm.SetWallpaperImageMenuItemClick(Sender : TObject);
 begin
 
 end;
 
-procedure TBannerForm.OptionsMenuItemClick(Sender: TObject);
+procedure TBannerForm.OptionsMenuItemClick(Sender : TObject);
 begin
 
 end;
 
-procedure TBannerForm.DocsMenuItemClick(Sender: TObject);
+procedure TBannerForm.DocsMenuItemClick(Sender : TObject);
 begin
 
 end;
 
-procedure TBannerForm.AboutMenuItemClick(Sender: TObject);
+procedure TBannerForm.AboutMenuItemClick(Sender : TObject);
 begin
 
 end;
 
-procedure TBannerForm.ExitMenuItemClick(Sender: TObject);
+procedure TBannerForm.ExitMenuItemClick(Sender : TObject);
 begin
   BannerForm.Close();
 end;
