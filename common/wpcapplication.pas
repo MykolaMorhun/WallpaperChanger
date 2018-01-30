@@ -1,46 +1,58 @@
-unit WPCApplication;
+unit WpcApplication;
 
 {$mode objfpc}{$H+}
 
 interface
 
 uses
-  Classes, SysUtils;
+  Classes, SysUtils,
+  WpcOptions, WpcScriptParser;
+
+const
+  SETTINGS_FILE = 'WPCSettings.ini';
+  STATE_FILE = 'WPCState.ini';
 
 type
 
-  // Singleton. Holds application state and modules objects.
-
   { TWPCApplication }
 
-  TWPCApplication = class(TObject)
+  // Singleton. Holds application state and modules objects.
+  TWpcApplication = class(TObject)
+  private
+    ApplicationSettings : TWpcPersistentSettings;
+    ApplicationStateSettings : TWpcStateSettings;
   public
     constructor Create();
-    destructor Destroy();
+    destructor Destroy(); override;
   private
     procedure initialize();
   end;
 
 implementation
 
-{ TWPCApplication }
+{ TWpcApplication }
 
-constructor TWPCApplication.Create();
+constructor TWpcApplication.Create();
 begin
   initialize();
 end;
 
-destructor TWPCApplication.Destroy();
+destructor TWpcApplication.Destroy();
 begin
-
+  ApplicationSettings.Free();
+  ApplicationStateSettings.Free();
 end;
 
 {
   Loads configs, creates required objects.
 }
-procedure TWPCApplication.initialize();
+procedure TWpcApplication.initialize();
 begin
+  ApplicationSettings := TWpcPersistentSettings.Create(SETTINGS_FILE);
+  ApplicationSettings.ReadFromFile();
 
+  ApplicationStateSettings := TWpcStateSettings.Create(STATE_FILE);
+  ApplicationStateSettings.ReadFromFile();
 end;
 
 

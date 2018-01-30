@@ -9,7 +9,7 @@ uses
   Fgl, DateUtils,
   WpcStatementProperties,
   WpcScriptCommons,
-  WpcCommonTypes,
+  WpcImage,
   WpcWallpaperStyles,
   WpcExceptions;
 

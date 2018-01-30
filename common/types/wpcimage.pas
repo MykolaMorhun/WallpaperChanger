@@ -1,4 +1,4 @@
-unit WpcCommonTypes;
+unit WpcImage;
 
 {$mode objfpc}{$H+}
 
@@ -8,8 +8,6 @@ uses
   Classes, SysUtils;
 
 type
-
-  TWpcTimeMeasurementUnits = (MILLISECONDS, SECONDS, MINUTES, HOURS, DAYS);
 
   { TWPCImage }
 
@@ -27,7 +25,7 @@ implementation
 
 { TWPCImage }
 
-constructor TWpcImage.Create(Path: String);
+constructor TWpcImage.Create(Path : String);
 begin
   Self.Path := Path;
 end;

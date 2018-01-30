@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils,
-  WpcCommonTypes,
+  WpcTimeMeasurementUnits,
   WpcExceptions;
 
 type

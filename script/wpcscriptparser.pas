@@ -11,8 +11,9 @@ uses
   WpcStatements,
   WpcStatementProperties,
   WpcScriptCommons,
-  WpcCommonTypes,
   WpcWallpaperStyles,
+  WpcTimeMeasurementUnits,
+  WpcImage,
   WpcExceptions,
   OSUtils;
 

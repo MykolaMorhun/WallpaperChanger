@@ -27,15 +27,12 @@ function StrToWallpaperStyle(Style : String) : TWallpaperStyle;
 
 implementation
 
-function WallpaperStyleToStr(Style: TWallpaperStyle): String;
+function WallpaperStyleToStr(Style: TWallpaperStyle) : String;
 begin
   case (Style) of
     CENTER: Result := WPST_CENTER;
     TILE: Result := WPST_TILE;
     STRETCH : Result := WPST_STRETCH;
-    else
-      // Should never happen
-      raise Exception.Create('Unregistered wallpaper style.');
   end;
 end;
 

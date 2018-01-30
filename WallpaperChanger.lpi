@@ -32,7 +32,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="15">
+    <Units Count="20">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -91,25 +91,50 @@
         <UnitName Value="OSUtils"/>
       </Unit10>
       <Unit11>
-        <Filename Value="common/wpccommontypes.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="WpcCommonTypes"/>
-      </Unit11>
-      <Unit12>
         <Filename Value="script/wpcscriptcommons.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScriptCommons"/>
-      </Unit12>
-      <Unit13>
-        <Filename Value="common/wpcwallpaperstyles.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="WpcWallpaperStyles"/>
-      </Unit13>
-      <Unit14>
+      </Unit11>
+      <Unit12>
         <Filename Value="common/wpcapplication.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="WPCApplication"/>
+        <UnitName Value="WpcApplication"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="common/wpcoptions.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcOptions"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="common/types/wpcwallpaperstyles.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcWallpaperStyles"/>
       </Unit14>
+      <Unit15>
+        <Filename Value="common/types/wpcdesktopenvironments.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcDesktopEnvironments"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="common/types/wpcosfamilies.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcOSFamilies"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="common/types/wpcwallpaperchangeralgorithms.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcWallpaperChangerAlgorithms"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="common/types/wpcimage.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcImage"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="common/types/wpctimemeasurementunits.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcTimeMeasurementUnits"/>
+      </Unit19>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -119,7 +144,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="forms;common;script;os"/>
+      <OtherUnitFiles Value="forms;common;script;os;common/types"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

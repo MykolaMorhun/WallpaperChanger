@@ -79,7 +79,7 @@ end;
 function TWpcScript.GetBranchNames() : TStringList;
 var
   BranchesNames : TStringList;
-  i            : Integer;
+  i             : Integer;
 begin
   BranchesNames := TStringList.Create();
 
