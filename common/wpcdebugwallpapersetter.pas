@@ -1,4 +1,4 @@
-unit WallpaperSetter;
+unit WpcDebugWallpaperSetter;
 
 {$mode objfpc}{$H+}
 
@@ -6,41 +6,28 @@ interface
 
 uses
   Classes, SysUtils,
-  WpcCommonTypes,
+  WallpaperSetter,
   WpcWallpaperStyles,
   WpcExceptions;
 
 type
 
-  // TODO add all types, like WINDOWS_7, XFCE, ...
-  TWpcWallpaperSetterType = (
-    WPST_AUTODETECT,
-    WPST_DEBUG,
-    WPST_CUSTOM,
-    WPST_
-  );
-
-  { IWallpaperSetter }
-
-  IWallpaperSetter = class(TObject)
-    procedure SetDesktopWallpaper(Path : String; Style : TWallpaperStyle); virtual; abstract;
-  end;
-
   { TWpcDebugWallpaperSetter }
 
-  TWpcDebugWallpaperSetter = class(IWallpaperSetter)
-  private
-    FLogFile : TextFile;
-  public
-    constructor Create(LogFile : String);
-    destructor Destroy; override;
+   TWpcDebugWallpaperSetter = class(IWallpaperSetter)
+   private
+     FLogFile : TextFile;
+   public
+     constructor Create(LogFile : String);
+     destructor Destroy; override;
 
-    procedure SetDesktopWallpaper(Path : String; Style : TWallpaperStyle); override;
-  end;
+     procedure SetDesktopWallpaper(Path : String; Style : TWallpaperStyle); override;
+     function IsWallpaperStyleSupported(Style : TWallpaperStyle) : Boolean; override;
+   end;
 
-implementation
+ implementation
 
-{ TWpcDebugWallpaperSetter }
+ { TWpcDebugWallpaperSetter }
 
 constructor TWpcDebugWallpaperSetter.Create(LogFile: String);
 begin
@@ -60,6 +47,12 @@ procedure TWpcDebugWallpaperSetter.SetDesktopWallpaper(Path: String; Style: TWal
 begin
   Writeln(FLogFile, Path, ' : ', Style, ' at ', DateTimeToStr(Now()));
 end;
+
+function TWpcDebugWallpaperSetter.IsWallpaperStyleSupported(Style: TWallpaperStyle): Boolean;
+begin
+ Result := True;
+end;
+
 
 end.
 

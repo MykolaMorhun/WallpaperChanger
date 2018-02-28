@@ -61,79 +61,79 @@
         <UnitName Value="WpcStatementProperties"/>
       </Unit4>
       <Unit5>
-        <Filename Value="os/wallpapersetter.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="WallpaperSetter"/>
-      </Unit5>
-      <Unit6>
         <Filename Value="script/wpcscriptparser.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScriptParser"/>
-      </Unit6>
-      <Unit7>
+      </Unit5>
+      <Unit6>
         <Filename Value="script/wpcscript.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScript"/>
-      </Unit7>
-      <Unit8>
+      </Unit6>
+      <Unit7>
         <Filename Value="script/wpcscriptexecutor.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScriptExecutor"/>
-      </Unit8>
-      <Unit9>
-        <Filename Value="os/wallpapersetterprovider.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="WallpaperSetterProvider"/>
-      </Unit9>
-      <Unit10>
+      </Unit7>
+      <Unit8>
         <Filename Value="os/osutils.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="OSUtils"/>
-      </Unit10>
-      <Unit11>
+      </Unit8>
+      <Unit9>
         <Filename Value="script/wpcscriptcommons.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScriptCommons"/>
-      </Unit11>
-      <Unit12>
+      </Unit9>
+      <Unit10>
         <Filename Value="common/wpcapplication.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcApplication"/>
-      </Unit12>
-      <Unit13>
+      </Unit10>
+      <Unit11>
         <Filename Value="common/wpcoptions.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcOptions"/>
-      </Unit13>
-      <Unit14>
+      </Unit11>
+      <Unit12>
         <Filename Value="common/types/wpcwallpaperstyles.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcWallpaperStyles"/>
-      </Unit14>
-      <Unit15>
+      </Unit12>
+      <Unit13>
         <Filename Value="common/types/wpcdesktopenvironments.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcDesktopEnvironments"/>
-      </Unit15>
-      <Unit16>
-        <Filename Value="common/types/wpcosfamilies.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="WpcOSFamilies"/>
-      </Unit16>
-      <Unit17>
+      </Unit13>
+      <Unit14>
         <Filename Value="common/types/wpcwallpaperchangeralgorithms.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcWallpaperChangerAlgorithms"/>
-      </Unit17>
-      <Unit18>
+      </Unit14>
+      <Unit15>
         <Filename Value="common/types/wpcimage.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcImage"/>
-      </Unit18>
-      <Unit19>
+      </Unit15>
+      <Unit16>
         <Filename Value="common/types/wpctimemeasurementunits.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcTimeMeasurementUnits"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="common/interfaces/wallpapersetter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WallpaperSetter"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="common/interfaces/wallpapersetterfactory.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WallpaperSetterFactory"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="common/interfaces/environmentdetector.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EnvironmentDetector"/>
       </Unit19>
     </Units>
   </ProjectOptions>
@@ -144,7 +144,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="forms;common;script;os;common/types"/>
+      <OtherUnitFiles Value="forms;common;script;os;common/types;common/interfaces"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

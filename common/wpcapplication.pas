@@ -6,7 +6,11 @@ interface
 
 uses
   Classes, SysUtils,
-  WpcOptions, WpcScriptParser;
+  WpcOptions,
+  WallpaperSetterFactory,
+  WallpaperSetter,
+  WpcScriptParser,
+  WpcExceptions;
 
 const
   SETTINGS_FILE = 'WPCSettings.ini';
@@ -21,11 +25,14 @@ type
   private
     ApplicationSettings : TWpcPersistentSettings;
     ApplicationStateSettings : TWpcStateSettings;
+
+    WallpaperSetter : IWallpaperSetter;
+    WallpaperSetterFactory : IWpcWallpaperSetterFactory;
   public
     constructor Create();
     destructor Destroy(); override;
   private
-    procedure initialize();
+    procedure Initialize();
   end;
 
 implementation
@@ -34,19 +41,22 @@ implementation
 
 constructor TWpcApplication.Create();
 begin
-  initialize();
+  Initialize();
 end;
 
 destructor TWpcApplication.Destroy();
 begin
   ApplicationSettings.Free();
   ApplicationStateSettings.Free();
+
+  if (WallpaperSetter <> nil) then FreeAndNil(WallpaperSetter);
+  WallpaperSetterFactory.Free();
 end;
 
 {
   Loads configs, creates required objects.
 }
-procedure TWpcApplication.initialize();
+procedure TWpcApplication.Initialize();
 begin
   ApplicationSettings := TWpcPersistentSettings.Create(SETTINGS_FILE);
   ApplicationSettings.ReadFromFile();

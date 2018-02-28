@@ -8,7 +8,13 @@ uses
   Classes, SysUtils;
 
 const
-  DE_WINDOWS_EXPLORER_ID = 'WINDOWS_EXPLORER';
+  DE_WINDOWS_XP_ID = 'WINDOWS_XP';
+  DE_WINDOWS_VISTA_ID = 'WINDOWS_VISTA';
+  DE_WINDOWS_7_ID = 'WINDOWS_7';
+  DE_WINDOWS_8_ID = 'WINDOWS_8';
+  DE_WINDOWS_10_ID = 'WINDOWS_10';
+  DE_REACTOS_ID = 'REACTOS';
+
   DE_GNOME_ID = 'GNOME';
   DE_MATE_ID = 'MATE';
   DE_CINNAMON_ID = 'CINNAMON';
@@ -21,15 +27,40 @@ const
   DE_ENLIGHTENMENT_ID = 'ENLIGHTENMENT';
   DE_BUDGIE_ID = 'BUDGIE';
   DE_DEEPIN_ID = 'DEEPIN';
+
+  DE_CUSTOM_ID = 'CUSTOM';
+  DE_DEBUG_ID = 'DEBUG';
   DE_UNKNOWN_ID = 'UNKNOWN';
+
 type
 
   TDesktopEnvironment = (
-    DE_WINDOWS_EXPLORER,
-    DE_GNOME, DE_MATE, DE_CINNAMON, DE_KDE, DE_XFCE, DE_LXDE, DE_LXQT, DE_UNITY, DE_PANTHEON, DE_ENLIGHTENMENT, DE_BUDGIE, DE_DEEPIN,
+    DE_WINDOWS_XP,
+    DE_WINDOWS_VISTA,
+    DE_WINDOWS_7,
+    DE_WINDOWS_8,
+    DE_WINDOWS_10,
+    DE_REACTOS,
+
+    DE_GNOME,
+    DE_MATE,
+    DE_CINNAMON,
+    DE_KDE,
+    DE_XFCE,
+    DE_LXDE,
+    DE_LXQT,
+    DE_UNITY,
+    DE_PANTHEON,
+    DE_ENLIGHTENMENT,
+    DE_BUDGIE,
+    DE_DEEPIN,
+
+    DE_CUSTOM,
+    DE_DEBUG,
     DE_UNKNOWN
   );
 
+  TDesktopEnvironmentsSet = Set of TDesktopEnvironment;
 
 function DesktopEnvironmentToStr(DesktopEnvironment : TDesktopEnvironment) : String;
 function StrToDesktopEnvironment(DesktopEnvironment : String) : TDesktopEnvironment;
@@ -39,7 +70,13 @@ implementation
 function DesktopEnvironmentToStr(DesktopEnvironment : TDesktopEnvironment) : String;
 begin
   case (DesktopEnvironment) of
-    DE_WINDOWS_EXPLORER: Result := DE_WINDOWS_EXPLORER_ID;
+    DE_WINDOWS_XP:       Result := DE_WINDOWS_XP_ID;
+    DE_WINDOWS_VISTA:    Result := DE_WINDOWS_VISTA_ID;
+    DE_WINDOWS_7:        Result := DE_WINDOWS_7_ID;
+    DE_WINDOWS_8:        Result := DE_WINDOWS_8_ID;
+    DE_WINDOWS_10:       Result := DE_WINDOWS_10_ID;
+    DE_REACTOS:          Result := DE_REACTOS_ID;
+
     DE_GNOME:            Result := DE_GNOME_ID;
     DE_MATE:             Result := DE_MATE_ID;
     DE_CINNAMON:         Result := DE_CINNAMON_ID;
@@ -52,6 +89,9 @@ begin
     DE_ENLIGHTENMENT:    Result := DE_ENLIGHTENMENT_ID;
     DE_BUDGIE:           Result := DE_BUDGIE_ID;
     DE_DEEPIN:           Result := DE_DEEPIN_ID;
+
+    DE_CUSTOM:           Result := DE_CUSTOM_ID;
+    DE_DEBUG:            Result := DE_DEBUG_ID;
     else
       Result := DE_UNKNOWN_ID;
   end;
@@ -60,7 +100,13 @@ end;
 function StrToDesktopEnvironment(DesktopEnvironment : String): TDesktopEnvironment;
 begin
   case (UpperCase(DesktopEnvironment)) of
-    DE_WINDOWS_EXPLORER_ID: Result := DE_WINDOWS_EXPLORER;
+    DE_WINDOWS_XP_ID:       Result := DE_WINDOWS_XP;
+    DE_WINDOWS_VISTA_ID:    Result := DE_WINDOWS_VISTA;
+    DE_WINDOWS_7_ID:        Result := DE_WINDOWS_7;
+    DE_WINDOWS_8_ID:        Result := DE_WINDOWS_8;
+    DE_WINDOWS_10_ID:       Result := DE_WINDOWS_10;
+    DE_REACTOS_ID:          Result := DE_REACTOS;
+
     DE_GNOME_ID:            Result := DE_GNOME;
     DE_MATE_ID:             Result := DE_MATE;
     DE_CINNAMON_ID:         Result := DE_CINNAMON;
@@ -73,6 +119,9 @@ begin
     DE_ENLIGHTENMENT_ID:    Result := DE_ENLIGHTENMENT;
     DE_BUDGIE_ID:           Result := DE_BUDGIE;
     DE_DEEPIN_ID:           Result := DE_DEEPIN;
+
+    DE_CUSTOM_ID:           Result := DE_CUSTOM;
+    DE_DEBUG_ID:            Result := DE_DEBUG;
     else
       Result := DE_UNKNOWN;
   end;

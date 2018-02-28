@@ -8,7 +8,7 @@ uses
   Classes, SysUtils,
   IniFiles,
   WpcExceptions,
-  WpcWallpaperStyles, WpcDesktopEnvironments, WpcOSFamilies, WpcWallpaperChangerAlgorithms;
+  WpcWallpaperStyles, WpcDesktopEnvironments, WpcWallpaperChangerAlgorithms;
 
 type
 
@@ -37,9 +37,6 @@ type
     EXTERNAL_SETTER_KEY = 'ExternalSetter';
     RUN_LAST_SCRIPT_ON_START_KEY = 'RunOnStart';
 
-    OS_FAMILY_KEY = 'OSFamily';
-    OS_NAME_KEY = 'OSName';
-    OS_VERSION_KEY = 'OSVersion';
     DESKTOP_ENVIRONMENT_KEY = 'DesktopEnvironment';
 
     WALLPAPER_STYLE_KEY = 'Style';
@@ -53,9 +50,6 @@ type
     DEFAULT_EXTERNAL_SETTER = '';
     DEFAULT_RUN_ON_START = true;
 
-    DEFAULT_OS_FAMILY = OSF_UNKNOWN;
-    DEFAULT_OS_NAME = 'Unknown';
-    DEFAULT_OS_VERSION = 'Unknown';
     DEFAULT_DESKTOP_ENVIRONMENT = DE_UNKNOWN;
 
     DEFAULT_WALLPAPER_STYLE = CENTER;
@@ -69,9 +63,6 @@ type
     FExternalSetter    : String;
     FRunOnStart        : Boolean;
 
-    FOsFamily           : TOsFamily;
-    FOsName             : String;
-    FOsVersion          : String;
     FDesktopEnvironment : TDesktopEnvironment;
 
     FWallpaperStyle : TWallpaperStyle;
@@ -94,12 +85,6 @@ type
     // Whether last script should be run on application start
     property RunOnStart : Boolean read FRunOnStart write FRunOnStart;
 
-    // Operation system family, e.g. Windows
-    property OsFamily : TOsFamily read FOsFamily;
-    // Operation system name, e.g. Ubuntu
-    property OsName : String read FOsName write FOsName;
-    // Operation system version
-    property OsVersion : String read FOsVersion write FOsVersion;
     // Graphical desktop environment, e.g. XFCE
     property DesktopEnvironment : TDesktopEnvironment read FDesktopEnvironment write FDesktopEnvironment;
 
@@ -174,9 +159,6 @@ begin
     FExternalSetter := SettingsFile.ReadString(ENGINE_SECTION, EXTERNAL_SETTER_KEY, DEFAULT_EXTERNAL_SETTER);
     FRunOnStart := SettingsFile.ReadBool(ENGINE_SECTION, RUN_LAST_SCRIPT_ON_START_KEY, DEFAULT_RUN_ON_START);
 
-    FOsFamily := StrToOsFamily(SettingsFile.ReadString(ENVIRONMENT_SECTION, OS_FAMILY_KEY, OSF_UNKNOWN_ID));
-    FOsName := SettingsFile.ReadString(ENVIRONMENT_SECTION, OS_NAME_KEY, DEFAULT_OS_NAME);
-    FOsVersion := SettingsFile.ReadString(ENVIRONMENT_SECTION, OS_VERSION_KEY, DEFAULT_OS_VERSION);
     FDesktopEnvironment := StrToDesktopEnvironment(SettingsFile.ReadString(ENVIRONMENT_SECTION, DESKTOP_ENVIRONMENT_KEY, DE_UNKNOWN_ID));
 
     FWallpaperStyle := StrToWallpaperStyle(SettingsFile.ReadString(WALLAPAPER_SECTION, WALLPAPER_STYLE_KEY, WPST_CENTER));
@@ -201,9 +183,6 @@ begin
     SettingsFile.WriteString(ENGINE_SECTION, EXTERNAL_SETTER_KEY, FExternalSetter);
     SettingsFile.WriteBool(ENGINE_SECTION, RUN_LAST_SCRIPT_ON_START_KEY, FRunOnStart);
 
-    SettingsFile.WriteString(ENVIRONMENT_SECTION, OS_FAMILY_KEY, OsFamilyToStr(FOsFamily));
-    SettingsFile.WriteString(ENVIRONMENT_SECTION, OS_NAME_KEY, FOsName);
-    SettingsFile.WriteString(ENVIRONMENT_SECTION, OS_VERSION_KEY, FOsVersion);
     SettingsFile.WriteString(ENVIRONMENT_SECTION, DESKTOP_ENVIRONMENT_KEY, DesktopEnvironmentToStr(FDesktopEnvironment));
 
     SettingsFile.WriteString(WALLAPAPER_SECTION, WALLPAPER_STYLE_KEY, WallpaperStyleToStr(FWallpaperStyle));
@@ -225,9 +204,6 @@ begin
   FExternalSetter := DEFAULT_EXTERNAL_SETTER;
   FRunOnStart := DEFAULT_RUN_ON_START;
 
-  FOsFamily := DEFAULT_OS_FAMILY;
-  FOsName := DEFAULT_OS_NAME;
-  FOsVersion := DEFAULT_OS_VERSION;
   FDesktopEnvironment := DEFAULT_DESKTOP_ENVIRONMENT;
 
   FWallpaperStyle := DEFAULT_WALLPAPER_STYLE;

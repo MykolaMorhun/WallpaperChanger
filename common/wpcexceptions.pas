@@ -14,7 +14,7 @@ type
 
   TWpcUseErrorException = class(TWpcException);
 
-  TWpcEnvironmentDetectorException = class(TWpcException);
+  TWpcRuntimeException = class(TWpcException);
 
   { TWpcScriptParseException }
 
