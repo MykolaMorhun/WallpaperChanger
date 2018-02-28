@@ -32,7 +32,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="20">
+    <Units Count="23">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -121,20 +121,32 @@
         <UnitName Value="WpcTimeMeasurementUnits"/>
       </Unit16>
       <Unit17>
-        <Filename Value="common/interfaces/wallpapersetter.pas"/>
+        <Filename Value="os/envdetector/wpclinuxenvironmentdetector.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="WallpaperSetter"/>
+        <UnitName Value="WpcLinuxEnvironmentDetector"/>
       </Unit17>
       <Unit18>
-        <Filename Value="common/interfaces/wallpapersetterfactory.pas"/>
+        <Filename Value="common/interfaces/wpcenvironmentdetector.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="WallpaperSetterFactory"/>
       </Unit18>
       <Unit19>
-        <Filename Value="common/interfaces/environmentdetector.pas"/>
+        <Filename Value="common/interfaces/wpcwallpapersetter.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="EnvironmentDetector"/>
       </Unit19>
+      <Unit20>
+        <Filename Value="common/interfaces/wpcwallpapersetterfactory.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="os/envdetector/wpcwindowsenvironmentdetector.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcWindowsEnvironmentDetector"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="os/providers/wpcenvironmentdetectorprovider.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcEnvironmentDetectorProvider"/>
+      </Unit22>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -144,7 +156,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="forms;common;script;os;common/types;common/interfaces"/>
+      <OtherUnitFiles Value="forms;common;script;os;common/types;os/envdetector;common/interfaces;os/providers"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

@@ -1,4 +1,4 @@
-unit WallpaperSetter;
+unit WpcWallpaperSetter;
 
 {$mode objfpc}{$H+}
 

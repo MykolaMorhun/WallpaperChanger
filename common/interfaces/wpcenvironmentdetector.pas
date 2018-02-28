@@ -1,4 +1,4 @@
-unit EnvironmentDetector;
+unit WpcEnvironmentDetector;
 
 {$mode objfpc}{$H+}
 

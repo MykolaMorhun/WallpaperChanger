@@ -7,7 +7,7 @@ uses
   cthreads, cmem,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, MainForm, EnvironmentDetector;
+  Forms, MainForm;
 
 {$R *.res}
 

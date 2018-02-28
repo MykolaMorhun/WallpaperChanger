@@ -7,8 +7,9 @@ interface
 uses
   Classes, SysUtils,
   WpcOptions,
-  WallpaperSetterFactory,
-  WallpaperSetter,
+  WpcWallpaperSetterFactory,
+  WpcWallpaperSetter,
+  WpcEnvironmentDetector, WpcEnvironmentDetectorProvider,
   WpcScriptParser,
   WpcExceptions;
 
@@ -28,6 +29,8 @@ type
 
     WallpaperSetter : IWallpaperSetter;
     WallpaperSetterFactory : IWpcWallpaperSetterFactory;
+
+    EnvironmentDetector : IWpcEnvironmentDetector;
   public
     constructor Create();
     destructor Destroy(); override;
@@ -51,6 +54,8 @@ begin
 
   if (WallpaperSetter <> nil) then FreeAndNil(WallpaperSetter);
   WallpaperSetterFactory.Free();
+
+  EnvironmentDetector.Free();
 end;
 
 {
@@ -63,6 +68,8 @@ begin
 
   ApplicationStateSettings := TWpcStateSettings.Create(STATE_FILE);
   ApplicationStateSettings.ReadFromFile();
+
+  EnvironmentDetector := GetEnvironmentDetector();
 end;
 
 
