@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils,
-  WallpaperSetter,
+  WpcWallpaperSetter,
   WpcDesktopEnvironments;
 
 type

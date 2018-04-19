@@ -33,8 +33,7 @@ type
     WALLAPAPER_SECTION = 'Wallpaper';
     SIMPLE_CHANGER_SECTION = 'SimpleChanger';
 
-    USE_INTERNAL_SETTER_KEY = 'UseInternal';
-    EXTERNAL_SETTER_KEY = 'ExternalSetter';
+    CUSTOM_SETTER_KEY = 'CustomSetter';
     RUN_LAST_SCRIPT_ON_START_KEY = 'RunOnStart';
 
     DESKTOP_ENVIRONMENT_KEY = 'DesktopEnvironment';
@@ -45,9 +44,9 @@ type
     SIMPLE_CHANGER_CONSTANT_DELAY_VALUE_KEY = 'ConstantDelayValue';
     SIMPLE_CHANGER_MINIMAL_DELAY_KEY = 'MinimalDelayValue';
     SIMPLE_CHANGER_MAXIMAL_DELAY_KEY = 'MaximalDelayValue';
+    SIMPLE_CHANGER_KEEP_ORDER_KEY = 'KeepOrder';
   private const
-    DEFAULT_USE_INTERNAL_SETTER = true;
-    DEFAULT_EXTERNAL_SETTER = '';
+    DEFAULT_CUSTOM_SETTER = '';
     DEFAULT_RUN_ON_START = true;
 
     DEFAULT_DESKTOP_ENVIRONMENT = DE_UNKNOWN;
@@ -58,9 +57,9 @@ type
     DEFAULT_CONSTANT_DELAY = 60 * 60 * 1000;
     DEFAULT_MINIMAL_DELAY = 60 * 5 * 1000;
     DEFAULT_MAXIMAL_DELAY = 60 * 60 * 10 * 1000;
+    DEFAULT_KEEP_ORDER = true;
   private
-    FUseInternalSetter : Boolean;
-    FExternalSetter    : String;
+    FCustomSetter      : String;
     FRunOnStart        : Boolean;
 
     FDesktopEnvironment : TDesktopEnvironment;
@@ -71,6 +70,7 @@ type
     FConstantDelay    : Integer;
     FMinimalDelay     : Integer;
     FMaximalDelay     : Integer;
+    FKeepOrder        : Boolean;
   private
     procedure SetConstantDelay(Delay : Integer);
     procedure SetMinimalDelay(Delay : Integer);
@@ -78,10 +78,8 @@ type
 
     procedure ValidateDelay(Delay : Integer);
   public
-    // Determines whether internal wallpaper setter should be used
-    property UseInternalSetter : Boolean read FUseInternalSetter write FUseInternalSetter;
     // External (provided by user) utility for setting wallpaper
-    property ExternalSetter : String read FExternalSetter write FExternalSetter;
+    property CustomSetter : String read FCustomSetter write FCustomSetter;
     // Whether last script should be run on application start
     property RunOnStart : Boolean read FRunOnStart write FRunOnStart;
 
@@ -98,6 +96,9 @@ type
     // Determines minimal and maximal delay between change of wallpaper. Used only if UseConstantDelay is false
     property MinimalDelay : Integer read FMinimalDelay write SetMinimalDelay;
     property MaximalDelay : Integer read FMaximalDelay write SetMaximalDelay;
+    // If true all images in specified folder will be added into list and setter will use them in a circle with correct navigation next/prev.
+    // If false each time new image from specified folder will be picked. It is possible to have the same image more then one time.
+    property KeepOrder : Boolean read FKeepOrder write FKeepOrder;
   public
     procedure ReadFromFile(); override;
     procedure SaveIntoFile(); override;
@@ -155,8 +156,7 @@ var
 begin
   SettingsFile := TIniFile.Create(PathToIniFile);
   try
-    FUseInternalSetter := SettingsFile.ReadBool(ENGINE_SECTION, USE_INTERNAL_SETTER_KEY, DEFAULT_USE_INTERNAL_SETTER);
-    FExternalSetter := SettingsFile.ReadString(ENGINE_SECTION, EXTERNAL_SETTER_KEY, DEFAULT_EXTERNAL_SETTER);
+    FCustomSetter := SettingsFile.ReadString(ENGINE_SECTION, CUSTOM_SETTER_KEY, DEFAULT_CUSTOM_SETTER);
     FRunOnStart := SettingsFile.ReadBool(ENGINE_SECTION, RUN_LAST_SCRIPT_ON_START_KEY, DEFAULT_RUN_ON_START);
 
     FDesktopEnvironment := StrToDesktopEnvironment(SettingsFile.ReadString(ENVIRONMENT_SECTION, DESKTOP_ENVIRONMENT_KEY, DE_UNKNOWN_ID));
@@ -167,6 +167,7 @@ begin
     FConstantDelay := SettingsFile.ReadInteger(SIMPLE_CHANGER_SECTION, SIMPLE_CHANGER_USE_CONSTANT_DELAY_KEY, DEFAULT_CONSTANT_DELAY);
     FMinimalDelay := SettingsFile.ReadInteger(SIMPLE_CHANGER_SECTION, SIMPLE_CHANGER_MINIMAL_DELAY_KEY, DEFAULT_MINIMAL_DELAY);
     FMaximalDelay := SettingsFile.ReadInteger(SIMPLE_CHANGER_SECTION, SIMPLE_CHANGER_MAXIMAL_DELAY_KEY, DEFAULT_MAXIMAL_DELAY);
+    FKeepOrder := SettingsFile.ReadBool(SIMPLE_CHANGER_SECTION, SIMPLE_CHANGER_KEEP_ORDER_KEY, DEFAULT_KEEP_ORDER);
   finally
     SettingsFile.Free();
   end;
@@ -179,8 +180,7 @@ begin
   SettingsFile := TIniFile.Create(PathToIniFile);
   SettingsFile.CacheUpdates := true;
   try
-    SettingsFile.WriteBool(ENGINE_SECTION, USE_INTERNAL_SETTER_KEY, FUseInternalSetter);
-    SettingsFile.WriteString(ENGINE_SECTION, EXTERNAL_SETTER_KEY, FExternalSetter);
+    SettingsFile.WriteString(ENGINE_SECTION, CUSTOM_SETTER_KEY, FCustomSetter);
     SettingsFile.WriteBool(ENGINE_SECTION, RUN_LAST_SCRIPT_ON_START_KEY, FRunOnStart);
 
     SettingsFile.WriteString(ENVIRONMENT_SECTION, DESKTOP_ENVIRONMENT_KEY, DesktopEnvironmentToStr(FDesktopEnvironment));
@@ -191,6 +191,7 @@ begin
     SettingsFile.WriteInteger(SIMPLE_CHANGER_SECTION, SIMPLE_CHANGER_CONSTANT_DELAY_VALUE_KEY, FConstantDelay);
     SettingsFile.WriteInteger(SIMPLE_CHANGER_SECTION, SIMPLE_CHANGER_MINIMAL_DELAY_KEY, FMinimalDelay);
     SettingsFile.WriteInteger(SIMPLE_CHANGER_SECTION, SIMPLE_CHANGER_MAXIMAL_DELAY_KEY, FMinimalDelay);
+    SettingsFile.WriteBool(SIMPLE_CHANGER_SECTION, SIMPLE_CHANGER_KEEP_ORDER_KEY, FKeepOrder);
 
     SettingsFile.UpdateFile();
   finally
@@ -200,8 +201,7 @@ end;
 
 procedure TWpcPersistentSettings.ResetToDefault();
 begin
-  FUseInternalSetter := DEFAULT_USE_INTERNAL_SETTER;
-  FExternalSetter := DEFAULT_EXTERNAL_SETTER;
+  FCustomSetter := DEFAULT_CUSTOM_SETTER;
   FRunOnStart := DEFAULT_RUN_ON_START;
 
   FDesktopEnvironment := DEFAULT_DESKTOP_ENVIRONMENT;
@@ -212,6 +212,7 @@ begin
   FConstantDelay := DEFAULT_CONSTANT_DELAY;
   FMinimalDelay := DEFAULT_MINIMAL_DELAY;
   FMaximalDelay := DEFAULT_MAXIMAL_DELAY;
+  FKeepOrder := DEFAULT_KEEP_ORDER;
 end;
 
 procedure TWpcPersistentSettings.SetConstantDelay(Delay : Integer);
@@ -224,7 +225,7 @@ procedure TWpcPersistentSettings.SetMinimalDelay(Delay : Integer);
 begin
   ValidateDelay(Delay);
   if (Delay > FMaximalDelay) then
-    raise TWpcIllegalArgumentException.Create('Minimal delay shild be less then maximal.');
+    raise TWpcIllegalArgumentException.Create('Minimal delay should be less then maximal.');
   FMinimalDelay := Delay;
 end;
 
@@ -232,7 +233,7 @@ procedure TWpcPersistentSettings.SetMaximalDelay(Delay : Integer);
 begin
   ValidateDelay(Delay);
   if (Delay < FMinimalDelay) then
-    raise TWpcIllegalArgumentException.Create('Mmaximal delay shild be greater then minimal.');
+    raise TWpcIllegalArgumentException.Create('Mmaximal delay should be greater then minimal.');
   FMaximalDelay := Delay;
 end;
 

@@ -26,7 +26,8 @@ implementation
 function TWpcLinuxEnvironmentDetector.Detect(): TDesktopEnvironment;
 begin
   // TODO implement
-  Result := DE_UNKNOWN;
+  // Result := DE_UNKNOWN;
+  Result := DE_CUSTOM;
 end;
 
 end.

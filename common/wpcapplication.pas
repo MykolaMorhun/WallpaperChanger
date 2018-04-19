@@ -8,7 +8,8 @@ uses
   Classes, SysUtils,
   WpcOptions,
   WpcWallpaperSetterFactory,
-  WpcWallpaperSetter,
+  WpcDesktopEnvironments,
+  WpcWallpaperSetter, WpcWallpaperSetterFactoryProvider,
   WpcEnvironmentDetector, WpcEnvironmentDetectorProvider,
   WpcScriptParser,
   WpcExceptions;
@@ -27,15 +28,16 @@ type
     ApplicationSettings : TWpcPersistentSettings;
     ApplicationStateSettings : TWpcStateSettings;
 
+    EnvironmentDetector : IWpcEnvironmentDetector;
     WallpaperSetter : IWallpaperSetter;
     WallpaperSetterFactory : IWpcWallpaperSetterFactory;
-
-    EnvironmentDetector : IWpcEnvironmentDetector;
   public
     constructor Create();
     destructor Destroy(); override;
   private
     procedure Initialize();
+
+    procedure UpdateWallpaperSetter(DesktopEnvironment : TDesktopEnvironment);
   end;
 
 implementation
@@ -54,8 +56,7 @@ begin
 
   if (WallpaperSetter <> nil) then FreeAndNil(WallpaperSetter);
   WallpaperSetterFactory.Free();
-
-  EnvironmentDetector.Free();
+  if (EnvironmentDetector <> nil) then FreeAndNil(EnvironmentDetector);
 end;
 
 {
@@ -70,6 +71,24 @@ begin
   ApplicationStateSettings.ReadFromFile();
 
   EnvironmentDetector := GetEnvironmentDetector();
+  WallpaperSetterFactory := GetWallpaperSetterFactory();
+
+  UpdateWallpaperSetter(ApplicationSettings.DesktopEnvironment);
+end;
+
+procedure TWpcApplication.UpdateWallpaperSetter(DesktopEnvironment : TDesktopEnvironment);
+begin
+  if (WallpaperSetter <> nil) then FreeAndNil(WallpaperSetter);
+
+  if (DesktopEnvironment = DE_AUTODETECT) then begin
+    DesktopEnvironment := EnvironmentDetector.Detect();
+  end;
+
+  if (DesktopEnvironment = DE_UNKNOWN) then begin
+    // TODO show options dialog to set DE manually
+  end;
+
+  WallpaperSetter := WallpaperSetterFactory.GetWallpaperSetter(DesktopEnvironment);
 end;
 
 

@@ -29,7 +29,7 @@ const
   DE_DEEPIN_ID = 'DEEPIN';
 
   DE_CUSTOM_ID = 'CUSTOM';
-  DE_DEBUG_ID = 'DEBUG';
+  DE_AUTODETECT_ID = 'AUTODETECT';
   DE_UNKNOWN_ID = 'UNKNOWN';
 
 type
@@ -56,7 +56,7 @@ type
     DE_DEEPIN,
 
     DE_CUSTOM,
-    DE_DEBUG,
+    DE_AUTODETECT,
     DE_UNKNOWN
   );
 
@@ -91,7 +91,7 @@ begin
     DE_DEEPIN:           Result := DE_DEEPIN_ID;
 
     DE_CUSTOM:           Result := DE_CUSTOM_ID;
-    DE_DEBUG:            Result := DE_DEBUG_ID;
+    DE_AUTODETECT:       Result := DE_AUTODETECT_ID;
     else
       Result := DE_UNKNOWN_ID;
   end;
@@ -121,7 +121,7 @@ begin
     DE_DEEPIN_ID:           Result := DE_DEEPIN;
 
     DE_CUSTOM_ID:           Result := DE_CUSTOM;
-    DE_DEBUG_ID:            Result := DE_DEBUG;
+    DE_AUTODETECT_ID:       Result := DE_AUTODETECT;
     else
       Result := DE_UNKNOWN;
   end;

@@ -32,7 +32,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="23">
+    <Units Count="25">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -128,14 +128,17 @@
       <Unit18>
         <Filename Value="common/interfaces/wpcenvironmentdetector.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcEnvironmentDetector"/>
       </Unit18>
       <Unit19>
         <Filename Value="common/interfaces/wpcwallpapersetter.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcWallpaperSetter"/>
       </Unit19>
       <Unit20>
         <Filename Value="common/interfaces/wpcwallpapersetterfactory.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcWallpaperSetterFactory"/>
       </Unit20>
       <Unit21>
         <Filename Value="os/envdetector/wpcwindowsenvironmentdetector.pas"/>
@@ -147,6 +150,16 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcEnvironmentDetectorProvider"/>
       </Unit22>
+      <Unit23>
+        <Filename Value="os/wpsetters/wpclinuxwallpapersetterfactory.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcLinuxWallpaperSetterFactory"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="os/wpsetters/wpccustomwallpapersetter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcCustomWallpaperSetter"/>
+      </Unit24>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -156,7 +169,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="forms;common;script;os;common/types;os/envdetector;common/interfaces;os/providers"/>
+      <OtherUnitFiles Value="forms;common;script;os;common/types;os/envdetector;common/interfaces;os/providers;os/wpsetters"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

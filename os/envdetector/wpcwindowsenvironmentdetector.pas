@@ -27,7 +27,6 @@ function TWpcWindowsEnvironmentDetector.Detect: TDesktopEnvironment;
 begin
   // TODO implement
   Result := DE_UNKNOWN;
-end;
 
 end.
 
