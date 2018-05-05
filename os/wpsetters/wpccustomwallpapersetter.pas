@@ -6,6 +6,7 @@ interface
 
 uses
   Classes, SysUtils,
+  Process,
   WpcWallpaperSetter,
   WpcWallpaperStyles;
 
@@ -25,22 +26,23 @@ type
 
 implementation
 
+uses
+  WpcApplication;
+
 { TWpcLinuxCustomWallpaperSetter }
 
 constructor TWpcCustomWallpaperSetter.Create();
 begin
-  // TODO read PathToExecutable from settings
+  PathToExecutable := ApplicationManager.CurrentSettings.CustomSetter;
 end;
 
 procedure TWpcCustomWallpaperSetter.SetDesktopWallpaper(Path : String; Style : TWallpaperStyle);
+var
+  output : String;
 begin
-  try
-    SysUtils.ExecuteProcess(PathToExecutable, [Path, WallpaperStyleToStr(Style)], []);
-  except
-    on E : EOSError do begin
-      // Custom setter failed, skip it.
-    end;
-  end;
+  RunCommand(PathToExecutable, [ Path, WallpaperStyleToStr(Style) ],
+             output,
+             [ poWaitOnExit ]);
 end;
 
 function TWpcCustomWallpaperSetter.IsWallpaperStyleSupported(Style : TWallpaperStyle) : Boolean;

@@ -11,6 +11,8 @@ object BannerForm: TBannerForm
   ShowInTaskBar = stNever
   LCLVersion = '1.6.4.0'
   object SelectScriptDialog: TOpenDialog
+    Title = 'Select script'
+    Filter = 'Wallpaper Changer Script|*.wcs|All files|*.*'
     left = 16
     top = 72
   end

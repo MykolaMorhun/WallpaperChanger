@@ -11,7 +11,7 @@ uses
   WpcStatements,
   WpcScript,
   WpcExceptions,
-  WallpaperSetter;
+  WpcWallpaperSetter;
 
 type
 

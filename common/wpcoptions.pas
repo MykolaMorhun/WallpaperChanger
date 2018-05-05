@@ -33,12 +33,12 @@ type
     WALLAPAPER_SECTION = 'Wallpaper';
     SIMPLE_CHANGER_SECTION = 'SimpleChanger';
 
-    CUSTOM_SETTER_KEY = 'CustomSetter';
+    CUSTOM_SETTER_KEY = 'ExternalSetter';
     RUN_LAST_SCRIPT_ON_START_KEY = 'RunOnStart';
 
     DESKTOP_ENVIRONMENT_KEY = 'DesktopEnvironment';
 
-    WALLPAPER_STYLE_KEY = 'Style';
+    WALLPAPER_STYLE_KEY = 'DefaultStyle';
 
     SIMPLE_CHANGER_USE_CONSTANT_DELAY_KEY = 'UseConstantDelay';
     SIMPLE_CHANGER_CONSTANT_DELAY_VALUE_KEY = 'ConstantDelayValue';

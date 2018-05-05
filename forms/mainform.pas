@@ -5,8 +5,10 @@ unit MainForm;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics,
-  Dialogs, ExtCtrls, Menus, ExtDlgs;
+  Classes, SysUtils, FileUtil,
+  Forms, Controls, Graphics, Dialogs, ExtCtrls, Menus, ExtDlgs,
+  WpcApplication, WpcApplicationManager,
+  WpcExceptions;
 
 type
 
@@ -60,17 +62,20 @@ implementation
 
 { TBannerForm }
 
-(* Application initialization *)
+(* ApplicationManager initialization *)
 
 procedure TBannerForm.FormCreate(Sender : TObject);
 begin
   BannerForm.ShowInTaskBar := stNever;
   WPCTrayIcon.Show();
-  // create WPCApplicaion instance
+
+  ApplicationManager := TWpcApplicationManager.Create();
+  ApplicationManager.ApplySettings(); // init app with settings from config file
+
   BannerForm.Hide();
 end;
 
-(* Application menu handlers *)
+(* ApplicationManager menu handlers *)
 
 procedure TBannerForm.StopMenuItemClick(Sender : TObject);
 begin
@@ -78,8 +83,27 @@ begin
 end;
 
 procedure TBannerForm.RunScriptMenuItemClick(Sender : TObject);
+var
+  ErrorMessage: String;
 begin
-
+  try
+    if (SelectScriptDialog.Execute()) then begin
+      ApplicationManager.RunScript(SelectScriptDialog.FileName);
+    end;
+  except
+    on ParseExcepton : TWpcScriptParseException do begin
+      ErrorMessage := Concat('Failed to parse script: ', ParseExcepton.Message);
+      if (ParseExcepton.Line <> TWpcScriptParseException.UNKNOWN_LINE) then
+        ErrorMessage := Concat(ErrorMessage, ' Line: ', IntToStr(ParseExcepton.Line + 1));
+      if (ParseExcepton.WordNumer <> TWpcScriptParseException.UNKNOWN_WORD_NUMBER) then
+        ErrorMessage := Concat(ErrorMessage, ' Word: ', IntToStr(ParseExcepton.WordNumer + 1));
+      ShowMessage(ErrorMessage);
+    end;
+    on WpcException : TWpcException do begin
+      ErrorMessage := Concat('Error: ', WpcException.Message);
+      ShowMessage(ErrorMessage);
+    end;
+  end;
 end;
 
 procedure TBannerForm.ScriptEditorMenuItemClick(Sender : TObject);
@@ -124,6 +148,7 @@ end;
 
 procedure TBannerForm.ExitMenuItemClick(Sender : TObject);
 begin
+  // TODO stop all jobs
   BannerForm.Close();
 end;
 
