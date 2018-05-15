@@ -13,8 +13,7 @@ uses
   WpcEnvironmentDetector, WpcEnvironmentDetectorProvider,
   WpcScriptParser,
   WpcScript,
-  WpcScriptExecutor,
-  WpcExceptions;
+  WpcScriptExecutor;
 
 const
   SETTINGS_FILE = 'WPCSettings.ini';

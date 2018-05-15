@@ -9,7 +9,7 @@ uses
   StrUtils,
   FpcUnit, TestRegistry,
   ParserBaseTestCase,
-  WpcStatements,
+  WpcChooserStatements,
   WpcScriptParser;
 
 type

@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, FpcUnit, TestRegistry,
   ParserBaseTestCase,
   ChooserStatementBaseTestCase,
-  WpcStatements,
+  WpcChooserStatements,
   WpcScriptParser;
 
 type

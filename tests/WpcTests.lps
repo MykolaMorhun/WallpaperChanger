@@ -3,7 +3,7 @@
   <ProjectSession>
     <Version Value="10"/>
     <BuildModes Active="Default"/>
-    <Units Count="53">
+    <Units Count="73">
       <Unit0>
         <Filename Value="WpcTests.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -16,8 +16,8 @@
         <Filename Value="Parser/parserbasetestcase.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ParserBaseTestCase"/>
-        <EditorIndex Value="3"/>
-        <CursorPos Y="4"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="22" Y="12"/>
         <UsageCount Value="128"/>
         <Loaded Value="True"/>
       </Unit1>
@@ -25,10 +25,11 @@
         <Filename Value="Parser/waitstatementparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WaitStatementParsingTest"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="181"/>
-        <CursorPos X="71" Y="221"/>
+        <EditorIndex Value="8"/>
+        <TopLine Value="2"/>
+        <CursorPos X="18" Y="12"/>
         <UsageCount Value="128"/>
+        <Loaded Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="../script/wpcscript.pas"/>
@@ -48,7 +49,6 @@
       </Unit4>
       <Unit5>
         <Filename Value="../script/wpcscriptexecutor.pas"/>
-        <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScriptExecutor"/>
         <EditorIndex Value="-1"/>
         <UsageCount Value="128"/>
@@ -58,35 +58,30 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScriptParser"/>
         <IsVisibleTab Value="True"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="415"/>
-        <CursorPos X="3" Y="380"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="483"/>
+        <CursorPos X="54" Y="493"/>
         <UsageCount Value="128"/>
         <Loaded Value="True"/>
       </Unit6>
       <Unit7>
         <Filename Value="../script/wpcstatementproperties.pas"/>
-        <IsPartOfProject Value="True"/>
         <UnitName Value="WpcStatementProperties"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="88"/>
         <CursorPos X="20" Y="102"/>
         <UsageCount Value="128"/>
-        <Loaded Value="True"/>
       </Unit7>
       <Unit8>
         <Filename Value="../script/wpcstatements.pas"/>
-        <IsPartOfProject Value="True"/>
         <UnitName Value="WpcStatements"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="135"/>
         <CursorPos X="27" Y="146"/>
         <UsageCount Value="128"/>
-        <Loaded Value="True"/>
       </Unit8>
       <Unit9>
         <Filename Value="../common/wpccommontypes.pas"/>
-        <IsPartOfProject Value="True"/>
         <UnitName Value="WpcCommonTypes"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="77" Y="12"/>
@@ -103,7 +98,6 @@
       </Unit10>
       <Unit11>
         <Filename Value="../common/wpcwallpaperstyles.pas"/>
-        <IsPartOfProject Value="True"/>
         <UnitName Value="WpcWallpaperStyles"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
@@ -123,8 +117,9 @@
         <Filename Value="Parser/stopstatementparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="StopStatementParsingTest"/>
-        <EditorIndex Value="4"/>
-        <CursorPos X="63" Y="77"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="2"/>
+        <CursorPos X="18" Y="12"/>
         <UsageCount Value="126"/>
         <Loaded Value="True"/>
       </Unit13>
@@ -132,45 +127,45 @@
         <Filename Value="Parser/setwallpaperstatementparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SetWallpaperStatementParsingTest"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="6"/>
         <TopLine Value="2"/>
-        <CursorPos X="9" Y="15"/>
+        <CursorPos X="18" Y="12"/>
         <UsageCount Value="118"/>
+        <Loaded Value="True"/>
       </Unit14>
       <Unit15>
         <Filename Value="Parser/switchbranchstatementparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SwitchBranchStatementParsingTest"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="73"/>
-        <CursorPos X="71" Y="91"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="2"/>
+        <CursorPos X="18" Y="12"/>
         <UsageCount Value="115"/>
+        <Loaded Value="True"/>
       </Unit15>
       <Unit16>
         <Filename Value="Parser/usebranchstatementparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="UseBranchStatementParsingTest"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="125"/>
-        <CursorPos X="44" Y="134"/>
+        <EditorIndex Value="4"/>
+        <CursorPos X="18" Y="12"/>
         <UsageCount Value="115"/>
+        <Loaded Value="True"/>
       </Unit16>
       <Unit17>
         <Filename Value="Parser/chooserstatementbasetestcase.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ChooserStatementBaseTestCase"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="472"/>
-        <CursorPos Y="485"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="23" Y="12"/>
         <UsageCount Value="114"/>
-        <Loaded Value="True"/>
       </Unit17>
       <Unit18>
         <Filename Value="Parser/wallpaperchooserstatementparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WallpaperChooserStatementParsingTest"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="43"/>
+        <CursorPos X="23" Y="11"/>
         <UsageCount Value="108"/>
       </Unit18>
       <Unit19>
@@ -178,7 +173,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="SwitchBranchChooserStatementParsingTest"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="7"/>
+        <CursorPos X="23" Y="11"/>
         <UsageCount Value="102"/>
       </Unit19>
       <Unit20>
@@ -186,6 +181,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="UseBranchChooserStatementParsingTest"/>
         <EditorIndex Value="-1"/>
+        <CursorPos X="23" Y="11"/>
         <UsageCount Value="100"/>
       </Unit20>
       <Unit21>
@@ -202,8 +198,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="DelayValuesParsingTest"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="26"/>
-        <CursorPos X="90" Y="38"/>
+        <CursorPos X="20" Y="12"/>
         <UsageCount Value="89"/>
       </Unit22>
       <Unit23>
@@ -211,8 +206,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ProbabilityValueParsingTest"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="91"/>
-        <CursorPos X="91" Y="101"/>
+        <CursorPos X="20" Y="12"/>
         <UsageCount Value="81"/>
       </Unit23>
       <Unit24>
@@ -220,8 +214,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="TimesValueParsingTest"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="68"/>
-        <CursorPos X="33" Y="91"/>
+        <CursorPos X="19" Y="12"/>
         <UsageCount Value="79"/>
       </Unit24>
       <Unit25>
@@ -244,10 +237,10 @@
         <Filename Value="Parser/Values/selectorvaluesbasetest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SelectorValuesBaseTest"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="120"/>
-        <CursorPos X="3" Y="124"/>
+        <EditorIndex Value="3"/>
+        <CursorPos X="24" Y="12"/>
         <UsageCount Value="72"/>
+        <Loaded Value="True"/>
       </Unit27>
       <Unit28>
         <Filename Value="Parser/Values/seasonvalueparsingtest.pas"/>
@@ -437,120 +430,271 @@
         <CursorPos X="3" Y="290"/>
         <UsageCount Value="10"/>
       </Unit52>
+      <Unit53>
+        <Filename Value="../script/statements/wpcwaitstatement.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit53>
+      <Unit54>
+        <Filename Value="../script/statements/properties/wpcstatementproperties.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcStatementProperties"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="23" Y="8"/>
+        <UsageCount Value="20"/>
+      </Unit54>
+      <Unit55>
+        <Filename Value="../script/executor/wpcscriptexecutor.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit55>
+      <Unit56>
+        <Filename Value="../common/wpcoptions.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit56>
+      <Unit57>
+        <Filename Value="../common/wpcapplication.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit57>
+      <Unit58>
+        <Filename Value="../common/wpcapplicationmanager.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit58>
+      <Unit59>
+        <Filename Value="../common/interfaces/wpcenvironmentdetector.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit59>
+      <Unit60>
+        <Filename Value="../common/types/wpcimage.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit60>
+      <Unit61>
+        <Filename Value="../script/statements/wpcwallpaperstatement.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcWallpaperStatement"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="22" Y="20"/>
+        <UsageCount Value="20"/>
+      </Unit61>
+      <Unit62>
+        <Filename Value="../script/statements/wpcbranchactionsstatements.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit62>
+      <Unit63>
+        <Filename Value="../script/statements/wpcbasestatement.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit63>
+      <Unit64>
+        <Filename Value="../script/statements/wpcbranchstatement.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit64>
+      <Unit65>
+        <Filename Value="../script/statements/wpcchooserstatements.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit65>
+      <Unit66>
+        <Filename Value="../script/statements/wpcstopstatement.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit66>
+      <Unit67>
+        <Filename Value="../common/interfaces/wpcwallpapersetterfactory.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit67>
+      <Unit68>
+        <Filename Value="../common/interfaces/wpcwallpapersetter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit68>
+      <Unit69>
+        <Filename Value="../common/types/wpctimemeasurementunits.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit69>
+      <Unit70>
+        <Filename Value="../common/types/wpcwallpaperstyles.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit70>
+      <Unit71>
+        <Filename Value="../common/types/wpcwallpaperchangeralgorithms.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit71>
+      <Unit72>
+        <Filename Value="../common/types/wpcdesktopenvironments.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit72>
     </Units>
-    <JumpHistory Count="28" HistoryIndex="27">
+    <JumpHistory Count="22" HistoryIndex="21">
       <Position1>
         <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="2182" TopLine="2173"/>
+        <Caret Line="1589" TopLine="1575"/>
       </Position1>
       <Position2>
         <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="2190" TopLine="2173"/>
+        <Caret Line="1590" TopLine="1575"/>
       </Position2>
       <Position3>
         <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="2181" TopLine="2173"/>
+        <Caret Line="1574" TopLine="1563"/>
       </Position3>
       <Position4>
         <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="2183" Column="26" TopLine="2173"/>
+        <Caret Line="1575" TopLine="1563"/>
       </Position4>
       <Position5>
         <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="2190" TopLine="2173"/>
+        <Caret Line="29" Column="22" TopLine="16"/>
       </Position5>
       <Position6>
         <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="1598" TopLine="1588"/>
+        <Caret Line="1408" Column="37" TopLine="1388"/>
       </Position6>
       <Position7>
         <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="1574" TopLine="1564"/>
+        <Caret Line="587" Column="25"/>
       </Position7>
       <Position8>
         <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="2181" TopLine="2169"/>
+        <Caret Line="1714" Column="101" TopLine="1714"/>
       </Position8>
       <Position9>
         <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="1574" TopLine="1564"/>
+        <Caret Line="588" Column="16" TopLine="578"/>
       </Position9>
       <Position10>
         <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="1584" TopLine="1572"/>
+        <Caret Line="446" Column="42" TopLine="436"/>
       </Position10>
       <Position11>
-        <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="1588" TopLine="1575"/>
+        <Filename Value="Parser/parserbasetestcase.pas"/>
+        <Caret Line="4"/>
       </Position11>
       <Position12>
-        <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="1589" TopLine="1575"/>
+        <Filename Value="Parser/parserbasetestcase.pas"/>
+        <Caret Line="12" Column="3"/>
       </Position12>
       <Position13>
-        <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="1590" TopLine="1575"/>
+        <Filename Value="Parser/Values/selectorvaluesbasetest.pas"/>
+        <Caret Line="124" Column="3" TopLine="120"/>
       </Position13>
       <Position14>
-        <Filename Value="Parser/chooserstatementbasetestcase.pas"/>
-        <Caret Line="565" Column="20" TopLine="548"/>
+        <Filename Value="Parser/Values/selectorvaluesbasetest.pas"/>
+        <Caret Line="12" Column="3"/>
       </Position14>
       <Position15>
-        <Filename Value="Parser/chooserstatementbasetestcase.pas"/>
-        <Caret Line="566" Column="16" TopLine="548"/>
+        <Filename Value="Parser/usebranchstatementparsingtest.pas"/>
+        <Caret Line="11" Column="29"/>
       </Position15>
       <Position16>
-        <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="1574" TopLine="1563"/>
+        <Filename Value="Parser/usebranchstatementparsingtest.pas"/>
+        <Caret Line="12" Column="18" TopLine="2"/>
       </Position16>
       <Position17>
-        <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="1575" TopLine="1563"/>
+        <Filename Value="Parser/switchbranchstatementparsingtest.pas"/>
+        <Caret Line="11" Column="29"/>
       </Position17>
       <Position18>
-        <Filename Value="Parser/chooserstatementbasetestcase.pas"/>
-        <Caret Line="564" Column="35" TopLine="551"/>
+        <Filename Value="Parser/setwallpaperstatementparsingtest.pas"/>
+        <Caret Line="11" Column="24"/>
       </Position18>
       <Position19>
-        <Filename Value="Parser/chooserstatementbasetestcase.pas"/>
-        <Caret Line="566" TopLine="551"/>
+        <Filename Value="Parser/stopstatementparsingtest.pas"/>
+        <Caret Line="11" Column="19"/>
       </Position19>
       <Position20>
-        <Filename Value="Parser/chooserstatementbasetestcase.pas"/>
-        <Caret Line="484" TopLine="468"/>
+        <Filename Value="Parser/waitstatementparsingtest.pas"/>
+        <Caret Line="11" Column="19"/>
       </Position20>
       <Position21>
-        <Filename Value="Parser/chooserstatementbasetestcase.pas"/>
-        <Caret Line="486" TopLine="475"/>
+        <Filename Value="Parser/waitstatementparsingtest.pas"/>
+        <Caret Line="13" Column="3" TopLine="2"/>
       </Position21>
       <Position22>
-        <Filename Value="Parser/chooserstatementbasetestcase.pas"/>
-        <Caret Line="485" TopLine="472"/>
+        <Filename Value="../script/wpcscriptparser.pas"/>
+        <Caret Line="388" Column="21" TopLine="380"/>
       </Position22>
-      <Position23>
-        <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="29" Column="22" TopLine="16"/>
-      </Position23>
-      <Position24>
-        <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="1408" Column="37" TopLine="1388"/>
-      </Position24>
-      <Position25>
-        <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="587" Column="25"/>
-      </Position25>
-      <Position26>
-        <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="1714" Column="101" TopLine="1714"/>
-      </Position26>
-      <Position27>
-        <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="588" Column="16" TopLine="578"/>
-      </Position27>
-      <Position28>
-        <Filename Value="../script/wpcscriptparser.pas"/>
-        <Caret Line="446" Column="42" TopLine="436"/>
-      </Position28>
     </JumpHistory>
   </ProjectSession>
   <Debugging>

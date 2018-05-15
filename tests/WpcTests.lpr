@@ -18,7 +18,7 @@ uses
   WallpaperChooserStatementParsingTest,
   SwitchBranchChooserStatementParsingTest,
   UseBranchChooserStatementParsingTest,
-  BranchesParsingTest,
+  BranchesParsingTest, WpcWallpaperStatement,
 
   ValuesParsingBaseTest,
   DelayValuesParsingTest,

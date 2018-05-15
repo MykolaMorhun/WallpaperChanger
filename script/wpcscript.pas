@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils,
   Fgl,
-  WpcStatements,
+  WpcBranchStatement,
   WpcExceptions;
 
 const

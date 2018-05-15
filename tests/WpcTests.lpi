@@ -35,7 +35,7 @@
         <PackageName Value="FCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="36">
+    <Units Count="48">
       <Unit0>
         <Filename Value="WpcTests.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -61,167 +61,212 @@
         <UnitName Value="WpcScriptCommons"/>
       </Unit4>
       <Unit5>
-        <Filename Value="../script/wpcscriptexecutor.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="WpcScriptExecutor"/>
-      </Unit5>
-      <Unit6>
         <Filename Value="../script/wpcscriptparser.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScriptParser"/>
-      </Unit6>
-      <Unit7>
-        <Filename Value="../script/wpcstatementproperties.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="WpcStatementProperties"/>
-      </Unit7>
-      <Unit8>
-        <Filename Value="../script/wpcstatements.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="WpcStatements"/>
-      </Unit8>
-      <Unit9>
-        <Filename Value="../common/wpccommontypes.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="WpcCommonTypes"/>
-      </Unit9>
-      <Unit10>
+      </Unit5>
+      <Unit6>
         <Filename Value="../common/wpcexceptions.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcExceptions"/>
-      </Unit10>
-      <Unit11>
-        <Filename Value="../common/wpcwallpaperstyles.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="WpcWallpaperStyles"/>
-      </Unit11>
-      <Unit12>
+      </Unit6>
+      <Unit7>
         <Filename Value="../os/osutils.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="OSUtils"/>
-      </Unit12>
-      <Unit13>
+      </Unit7>
+      <Unit8>
         <Filename Value="Parser/stopstatementparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="StopStatementParsingTest"/>
-      </Unit13>
-      <Unit14>
+      </Unit8>
+      <Unit9>
         <Filename Value="Parser/setwallpaperstatementparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SetWallpaperStatementParsingTest"/>
-      </Unit14>
-      <Unit15>
+      </Unit9>
+      <Unit10>
         <Filename Value="Parser/switchbranchstatementparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SwitchBranchStatementParsingTest"/>
-      </Unit15>
-      <Unit16>
+      </Unit10>
+      <Unit11>
         <Filename Value="Parser/usebranchstatementparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="UseBranchStatementParsingTest"/>
-      </Unit16>
-      <Unit17>
+      </Unit11>
+      <Unit12>
         <Filename Value="Parser/chooserstatementbasetestcase.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ChooserStatementBaseTestCase"/>
-      </Unit17>
-      <Unit18>
+      </Unit12>
+      <Unit13>
         <Filename Value="Parser/wallpaperchooserstatementparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WallpaperChooserStatementParsingTest"/>
-      </Unit18>
-      <Unit19>
+      </Unit13>
+      <Unit14>
         <Filename Value="Parser/switchbranchchooserstatementparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SwitchBranchChooserStatementParsingTest"/>
-      </Unit19>
-      <Unit20>
+      </Unit14>
+      <Unit15>
         <Filename Value="Parser/usebranchchooserstatementparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="UseBranchChooserStatementParsingTest"/>
-      </Unit20>
-      <Unit21>
+      </Unit15>
+      <Unit16>
         <Filename Value="Parser/branchesparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="BranchesParsingTest"/>
-      </Unit21>
-      <Unit22>
+      </Unit16>
+      <Unit17>
         <Filename Value="Parser/Values/delayvaluesparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DelayValuesParsingTest"/>
-      </Unit22>
-      <Unit23>
+      </Unit17>
+      <Unit18>
         <Filename Value="Parser/Values/probabilityvalueparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ProbabilityValueParsingTest"/>
-      </Unit23>
-      <Unit24>
+      </Unit18>
+      <Unit19>
         <Filename Value="Parser/Values/timesvalueparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="TimesValueParsingTest"/>
-      </Unit24>
-      <Unit25>
+      </Unit19>
+      <Unit20>
         <Filename Value="Parser/Values/valuesparsingbasetest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ValuesParsingBaseTest"/>
-      </Unit25>
-      <Unit26>
+      </Unit20>
+      <Unit21>
         <Filename Value="Parser/Values/wallpaperstylevalueparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WallpaperStyleValueParsingTest"/>
-      </Unit26>
-      <Unit27>
+      </Unit21>
+      <Unit22>
         <Filename Value="Parser/Values/selectorvaluesbasetest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SelectorValuesBaseTest"/>
-      </Unit27>
-      <Unit28>
+      </Unit22>
+      <Unit23>
         <Filename Value="Parser/Values/seasonvalueparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SeasonValueParsingTest"/>
-      </Unit28>
-      <Unit29>
+      </Unit23>
+      <Unit24>
         <Filename Value="Parser/Values/weightvalueparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WeightValueParsingTest"/>
-      </Unit29>
-      <Unit30>
+      </Unit24>
+      <Unit25>
         <Filename Value="Parser/Values/weekdayvalueparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WeekdayValueParsingTest"/>
-      </Unit30>
-      <Unit31>
+      </Unit25>
+      <Unit26>
         <Filename Value="Parser/Values/monthvalueparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MonthValueParsingTest"/>
-      </Unit31>
-      <Unit32>
+      </Unit26>
+      <Unit27>
         <Filename Value="Parser/Values/datevaluesparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DateValuesParsingTest"/>
-      </Unit32>
-      <Unit33>
+      </Unit27>
+      <Unit28>
         <Filename Value="Parser/Values/timevaluesparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="TimeValuesParsingTest"/>
-      </Unit33>
-      <Unit34>
+      </Unit28>
+      <Unit29>
         <Filename Value="Util/datetimetestutils.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DateTimeTestUtils"/>
-      </Unit34>
-      <Unit35>
+      </Unit29>
+      <Unit30>
         <Filename Value="Parser/Values/datetimevaluesparsingtest.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DateTimeValuesParsingTest"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="../script/statements/wpcwaitstatement.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="../script/statements/properties/wpcstatementproperties.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcStatementProperties"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="../script/executor/wpcscriptexecutor.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="../common/interfaces/wpcenvironmentdetector.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="../common/types/wpcimage.pas"/>
+        <IsPartOfProject Value="True"/>
       </Unit35>
+      <Unit36>
+        <Filename Value="../script/statements/wpcwallpaperstatement.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcWallpaperStatement"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="../script/statements/wpcbranchactionsstatements.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="../script/statements/wpcbasestatement.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="../script/statements/wpcbranchstatement.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="../script/statements/wpcchooserstatements.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="../script/statements/wpcstopstatement.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="../common/interfaces/wpcwallpapersetterfactory.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit42>
+      <Unit43>
+        <Filename Value="../common/interfaces/wpcwallpapersetter.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit43>
+      <Unit44>
+        <Filename Value="../common/types/wpctimemeasurementunits.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit44>
+      <Unit45>
+        <Filename Value="../common/types/wpcwallpaperstyles.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit45>
+      <Unit46>
+        <Filename Value="../common/types/wpcwallpaperchangeralgorithms.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit46>
+      <Unit47>
+        <Filename Value="../common/types/wpcdesktopenvironments.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit47>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="Parser;../script;../common;../os;Parser/Values;Util"/>
+      <OtherUnitFiles Value="Parser;../script;../common;../os;Parser/Values;Util;../script/statements;../script/statements/properties;../script/executor;../common/interfaces;../common/types"/>
     </SearchPaths>
   </CompilerOptions>
   <Debugging>

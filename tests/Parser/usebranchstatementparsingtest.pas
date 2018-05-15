@@ -8,9 +8,8 @@ uses
   Classes, SysUtils, FpcUnit, TestRegistry,
   ParserBaseTestCase,
   WpcScriptCommons,
-  WpcStatements,
-  WpcScriptParser,
-  WpcExceptions;
+  WpcBranchActionsStatements,
+  WpcScriptParser;
 
 type
 

@@ -9,7 +9,7 @@ uses
   ParserBaseTestCase,
   ValuesParsingBaseTest,
   WpcScriptCommons,
-  WpcStatements,
+  WpcStopStatement,
   WpcScriptParser;
 
 type

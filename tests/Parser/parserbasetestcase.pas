@@ -9,7 +9,7 @@ uses
   FpcUnit, TestRegistry,
   WpcScriptParser,
   WpcScript,
-  WpcStatements,
+  WpcBranchStatement,
   WpcExceptions,
   WpcWallpaperStyles;
 

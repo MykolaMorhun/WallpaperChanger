@@ -8,10 +8,16 @@ interface
 uses
   Classes, SysUtils,
   WpcScriptCommons,
-  WpcStatements,
+  WpcBaseStatement,
+  WpcBranchStatement,
+  WpcBranchActionsStatements,
+  WpcWallpaperStatement,
+  WpcChooserStatements,
+  WpcWaitStatement,
+  WpcStopStatement,
   WpcScript,
-  WpcExceptions,
-  WpcWallpaperSetter;
+  WpcWallpaperSetter,
+  WpcExceptions;
 
 type
 

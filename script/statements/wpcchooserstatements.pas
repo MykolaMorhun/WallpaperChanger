@@ -1,4 +1,4 @@
-unit WpcStatements;
+unit WpcChooserStatements;
 
 {$mode objfpc}{$H+}
 
@@ -7,120 +7,13 @@ interface
 uses
   Classes, SysUtils,
   Fgl, DateUtils,
-  WpcStatementProperties,
+  WpcBaseStatement,
+  WpcWallpaperStatement,
+  WpcBranchActionsStatements,
   WpcScriptCommons,
-  WpcImage,
-  WpcWallpaperStyles,
   WpcExceptions;
 
 type
-
-  { IWpcScriptStatement }
-
-  IWpcBaseScriptStatement = class
-  public
-    function GetId() : TWpcStatemetId; virtual; abstract;
-  end;
-
-  { TWpcWaitStatement }
-
-  TWpcWaitStatement = class(IWpcBaseScriptStatement)
-  private
-    FDelay       : TWpcDelayStatementProperty;
-    FProbability : TWpcProbabilityStatementProperty;
-    FTimes       : TWpcTimesStatementProperty;
-  public
-    constructor Create(Delay : LongWord);
-    destructor Destroy(); override;
-  public
-    procedure SetDelay(Delay : LongWord);
-    function GetDelay() : LongWord;
-    procedure SetProbability(Probability : Byte);
-    function GetProbability() : Byte;
-    procedure SetTimes(Times : LongWord);
-    function GetTimes() : LongWord;
-
-    function GetId() : TWpcStatemetId; override;
-  end;
-
-  { TWpcWallpaperStatement }
-
-  TWpcWallpaperStatement = class(IWpcBaseScriptStatement)
-  private
-    FImage       : TWpcImage;
-    FStyle       : TWallpaperStyle;
-    FDelay       : TWpcDelayStatementProperty;
-    FProbability : TWpcProbabilityStatementProperty;
-  public
-    constructor Create(Image : TWpcImage);
-    destructor Destroy(); override;
-  public
-    procedure SetImage(Image : TWpcImage);
-    function GetImage() : TWpcImage;
-    procedure SetStyle(Style : TWallpaperStyle);
-    function GetStyle() : TWallpaperStyle;
-    procedure SetDelay(Delay : LongWord);
-    function GetDelay() : LongWord;
-    procedure SetProbability(Probability : Byte);
-    function GetProbability() : Byte;
-
-    function GetId() : TWpcStatemetId; override;
-  end;
-
-  { TWpcStopStatement }
-
-  TWpcStopStatement = class(IWpcBaseScriptStatement)
-  private
-    FProbability : TWpcProbabilityStatementProperty;
-  public
-    constructor Create();
-    destructor Destroy(); override;
-  public
-    procedure SetProbability(Probability : Byte);
-    function GetProbability() : Byte;
-
-    function GetId() : TWpcStatemetId; override;
-  end;
-
-  { IWpcBranchReferrer }
-
-  IWpcBranchReferrer = class abstract(IWpcBaseScriptStatement)
-  protected
-    FBarnchName : String;
-  public
-    procedure SetBarnchName(BranchName : String);
-    function GetBranchName() : String;
-  end;
-
-  { TWpcSwitchBranch }
-
-  TWpcSwitchBranchStatement = class(IWpcBranchReferrer)
-  private
-    FProbability : TWpcProbabilityStatementProperty;
-  public
-    constructor Create(BranchName : String);
-    destructor Destroy(); override;
-  public
-    procedure SetProbability(Probability : Byte);
-    function GetProbability() : Byte;
-
-    function GetId() : TWpcStatemetId; override;
-  end;
-
-  { TWpcUseBranchStatement }
-
-  TWpcUseBranchStatement = class(TWpcSwitchBranchStatement)
-  private
-    FTimes : TWpcTimesStatementProperty;
-  public
-    constructor Create(BranchName : String);
-    destructor Destroy(); override;
-  public
-    procedure SetTimes(Times : LongWord);
-    function GetTimes() : LongWord;
-
-    function GetId() : TWpcStatemetId; override;
-  end;
 
   { TWpcChooserItem }
 
@@ -141,7 +34,7 @@ type
     function GetItems() : TListOfChooserItems; virtual; abstract;
   end;
 
-  { TWpcAbstarctChooserStatement }
+  { TWpcSelector }
 
   TWpcSelector = (S_WEIGHT, S_SEASON, S_WEEKDAY, S_MONTH, S_DATE, S_TIME, S_DATETIME);
 
@@ -152,11 +45,13 @@ type
       3: (Sequential : Integer);
   end;
 
+  { TWpcAbstarctChooserStatement }
+
   generic TWpcAbstarctChooserStatement<T : IWpcBaseScriptStatement> = class abstract(IWpcChooserItems)
   protected
     FSelector    : TWpcSelector;
     FItems       : TListOfChooserItems;
-    FFinished    : Boolean; // Locks AddItem after ChooseItem call
+    FFinished    : Boolean;  // Locks AddItem after ChooseItem call
     FTotalWeight : LongWord; // Is used to cache sum of item's weights
   public
     constructor Create(Selector : TWpcSelector);
@@ -204,250 +99,11 @@ type
     function GetId() : TWpcStatemetId; override;
   end;
 
-  { TWpcBranchStatement }
-
-  TListOfBranchStatements = specialize TFPGList<IWpcBaseScriptStatement>;
-
-  TWpcBranchStatement = class(IWpcBaseScriptStatement)
-  private
-    FStatements : TListOfBranchStatements;
-    FBranchName : String;
-  public
-    constructor Create(BranchName : String);
-    destructor Destroy(); override;
-  public
-    procedure AddStatement(Statement : IWpcBaseScriptStatement);
-    function GetStatement(StatementNumber : Integer) : IWpcBaseScriptStatement;
-    function GetBranchStatements() : TListOfBranchStatements;
-    function CountStatements() : Integer;
-    function GetName() : String;
-
-    function GetId() : TWpcStatemetId; override;
-  end;
-
   // Due to Free Pascal limitations it is here, but should be in implementation section.
   function ComparatorTWpcChooserItem(const Item1, Item2 : TWpcChooserItem) : Integer;
 
 
 implementation
-
-
-{ TWpcWaitStatement }
-
-function TWpcWaitStatement.GetId() : TWpcStatemetId;
-begin
-  Result := WPC_WAIT_STATEMENT_ID;
-end;
-
-constructor TWpcWaitStatement.Create(Delay : LongWord);
-begin
-  FDelay := TWpcDelayStatementProperty.Create();
-  FProbability := TWpcProbabilityStatementProperty.Create();
-  FTimes := TWpcTimesStatementProperty.Create();
-
-  FDelay.Delay := Delay;
-end;
-
-destructor TWpcWaitStatement.Destroy();
-begin
-  FDelay.Free();
-  FProbability.Free();
-  FTimes.Free();
-  inherited Destroy;
-end;
-
-procedure TWpcWaitStatement.SetDelay(Delay : LongWord);
-begin
-  FDelay.Delay := Delay;
-end;
-
-function TWpcWaitStatement.GetDelay() : LongWord;
-begin
-   Result := FDelay.Delay;
-end;
-
-procedure TWpcWaitStatement.SetProbability(Probability : Byte);
-begin
-  FProbability.Probability := Probability;
-end;
-
-function TWpcWaitStatement.GetProbability() : Byte;
-begin
-  Result := FProbability.Probability;
-end;
-
-procedure TWpcWaitStatement.SetTimes(Times : LongWord);
-begin
-  FTimes.Times := Times;
-end;
-
-function TWpcWaitStatement.GetTimes() : LongWord;
-begin
-  Result := FTimes.Times;
-end;
-
-{ TWpcWallpaperStatement }
-
-function TWpcWallpaperStatement.GetId() : TWpcStatemetId;
-begin
-  Result := WPC_WALLPAPER_STATEMENT_ID;
-end;
-
-constructor TWpcWallpaperStatement.Create(Image : TWpcImage);
-begin
-  if (Image = nil) then
-    raise TWpcIllegalArgumentException.Create('Wallpaper image is mandatory.');
-  FImage := Image;
-  FDelay := TWpcDelayStatementProperty.Create();
-  FProbability := TWpcProbabilityStatementProperty.Create();
-end;
-
-destructor TWpcWallpaperStatement.Destroy();
-begin
-  FImage.Free();
-  FDelay.Free();
-  FProbability.Free();
-  inherited Destroy();
-end;
-
-procedure TWpcWallpaperStatement.SetImage(Image : TWpcImage);
-begin
-  if (Image <> nil) then
-    FImage := Image;
-end;
-
-function TWpcWallpaperStatement.GetImage() : TWpcImage;
-begin
-  Result := FImage;
-end;
-
-procedure TWpcWallpaperStatement.SetStyle(Style : TWallpaperStyle);
-begin
-  FStyle := Style;
-end;
-
-function TWpcWallpaperStatement.GetStyle() : TWallpaperStyle;
-begin
-  Result := FStyle;
-end;
-
-procedure TWpcWallpaperStatement.SetDelay(Delay : LongWord);
-begin
-  FDelay.Delay := Delay;
-end;
-
-function TWpcWallpaperStatement.GetDelay() : LongWord;
-begin
-  Result := FDelay.Delay;
-end;
-
-procedure TWpcWallpaperStatement.SetProbability(Probability : Byte);
-begin
-  FProbability.Probability := Probability;
-end;
-
-function TWpcWallpaperStatement.GetProbability() : Byte;
-begin
-  Result := FProbability.Probability;
-end;
-
-{ TWpcStopStatement }
-
-function TWpcStopStatement.GetId() : TWpcStatemetId;
-begin
-  Result := WPC_STOP_STATEMENT_ID;
-end;
-
-constructor TWpcStopStatement.Create();
-begin
-  FProbability := TWpcProbabilityStatementProperty.Create();
-end;
-
-destructor TWpcStopStatement.Destroy();
-begin
-  FProbability.Free();
-  inherited Destroy();
-end;
-
-procedure TWpcStopStatement.SetProbability(Probability : Byte);
-begin
-  FProbability.Probability := Probability;
-end;
-
-function TWpcStopStatement.GetProbability() : Byte;
-begin
-  Result := FProbability.Probability;
-end;
-
-{ IWpcBranchReferrer }
-
-procedure IWpcBranchReferrer.SetBarnchName(BranchName : String);
-begin
-  FBarnchName := BranchName;
-end;
-
-function IWpcBranchReferrer.GetBranchName() : String;
-begin
-  Result := FBarnchName;
-end;
-
-{ TWpcSwitchBranchStatement }
-
-function TWpcSwitchBranchStatement.GetId() : TWpcStatemetId;
-begin
-  Result := WPC_SWITCH_BRANCH_STATEMENT_ID;
-end;
-
-constructor TWpcSwitchBranchStatement.Create(BranchName : String);
-begin
-  FBarnchName := BranchName;
-  FProbability := TWpcProbabilityStatementProperty.Create();
-end;
-
-destructor TWpcSwitchBranchStatement.Destroy();
-begin
-  FProbability.Free();
-  inherited Destroy();
-end;
-
-procedure TWpcSwitchBranchStatement.SetProbability(Probability : Byte);
-begin
-  FProbability.Probability := Probability;
-end;
-
-function TWpcSwitchBranchStatement.GetProbability() : Byte;
-begin
-  Result := FProbability.Probability;
-end;
-
-{ TWpcUseBranchStatement }
-
-function TWpcUseBranchStatement.GetId() : TWpcStatemetId;
-begin
-  Result := WPC_USE_BRANCH_STATEMENT_ID;
-end;
-
-constructor TWpcUseBranchStatement.Create(BranchName : String);
-begin
-  FTimes := TWpcTimesStatementProperty.Create();
-  inherited Create(BranchName);
-end;
-
-destructor TWpcUseBranchStatement.Destroy();
-begin
-  FTimes.Free();
-  inherited Destroy();
-end;
-
-procedure TWpcUseBranchStatement.SetTimes(Times : LongWord);
-begin
-  FTimes.Times := Times;
-end;
-
-function TWpcUseBranchStatement.GetTimes() : LongWord;
-begin
-  Result := FTimes.Times;
-end;
 
 { TWpcAbstarctChooserStatement }
 
@@ -663,7 +319,7 @@ begin
 end;
 
 {
-  Findsfor item with given weight and returns its index.
+  Finds for item with given weight and returns its index.
   If specified item not found -1 will be returned.
 }
 function TWpcAbstarctChooserStatement.FindItemByWeight(Weight : LongWord) : Integer;
@@ -708,54 +364,6 @@ end;
 function TWpcUseBranchChooserStatement.GetId() : TWpcStatemetId;
 begin
   Result := WPC_BRANCH_TO_USE_CHOOSER_STATEMENT_ID;
-end;
-
-{ TWpcBranchStatement }
-
-function TWpcBranchStatement.GetId() : TWpcStatemetId;
-begin
-  Result := WPC_BRANCH_STATEMENT_ID;
-end;
-
-constructor TWpcBranchStatement.Create(BranchName : String);
-begin
-  FBranchName := BranchName;
-  FStatements := TListOfBranchStatements.Create();
-end;
-
-destructor TWpcBranchStatement.Destroy();
-var
-  Statement : IWpcBaseScriptStatement;
-begin
-  for Statement in FStatements do
-    Statement.Free();
-  FStatements.Free();
-  inherited Destroy();
-end;
-
-procedure TWpcBranchStatement.AddStatement(Statement : IWpcBaseScriptStatement);
-begin
-  FStatements.Add(Statement);
-end;
-
-function TWpcBranchStatement.GetStatement(StatementNumber : Integer) : IWpcBaseScriptStatement;
-begin
-  Result := FStatements[StatementNumber];
-end;
-
-function TWpcBranchStatement.GetBranchStatements() : TListOfBranchStatements;
-begin
-  Result := FStatements;
-end;
-
-function TWpcBranchStatement.CountStatements() : Integer;
-begin
-  Result := FStatements.Count;
-end;
-
-function TWpcBranchStatement.GetName() : String;
-begin
-  Result := FBranchName;
 end;
 
 

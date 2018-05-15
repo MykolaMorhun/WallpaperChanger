@@ -8,9 +8,8 @@ uses
   Classes, SysUtils, FpcUnit, TestRegistry,
   ParserBaseTestCase,
   WpcScriptCommons,
-  WpcStatements,
+  WpcWallpaperStatement,
   WpcScriptParser,
-  WpcExceptions,
   WpcWallpaperStyles;
 
 const

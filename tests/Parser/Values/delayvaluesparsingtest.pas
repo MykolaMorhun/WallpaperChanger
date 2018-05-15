@@ -9,9 +9,9 @@ uses
   ParserBaseTestCase,
   ValuesParsingBaseTest,
   WpcScriptCommons,
-  WpcStatements,
+  WpcWaitStatement,
   WpcStatementProperties,
-  WpcCommonTypes,
+  WpcTimeMeasurementUnits,
   WpcScriptParser;
 
 type
