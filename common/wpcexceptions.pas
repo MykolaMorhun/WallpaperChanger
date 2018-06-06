@@ -8,6 +8,7 @@ uses
   Classes, SysUtils;
 
 type
+
   TWpcException = class(Exception);
 
   TWpcIllegalArgumentException = class(TWpcException);
@@ -62,6 +63,7 @@ begin
   FWordNumber := ErrWordNumber;
   FMessage := ErrMessage;
 end;
+
 
 end.
 

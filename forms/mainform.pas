@@ -79,7 +79,7 @@ end;
 
 procedure TBannerForm.StopMenuItemClick(Sender : TObject);
 begin
-
+  ApplicationManager.StopScript();
 end;
 
 procedure TBannerForm.RunScriptMenuItemClick(Sender : TObject);

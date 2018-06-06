@@ -32,7 +32,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="32">
+    <Units Count="33">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -151,50 +151,55 @@
         <UnitName Value="WpcApplicationManager"/>
       </Unit22>
       <Unit23>
-        <Filename Value="script/executor/wpcscriptexecutor.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="WpcScriptExecutor"/>
-      </Unit23>
-      <Unit24>
         <Filename Value="script/statements/properties/wpcstatementproperties.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcStatementProperties"/>
-      </Unit24>
-      <Unit25>
+      </Unit23>
+      <Unit24>
         <Filename Value="script/statements/wpcwaitstatement.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcWaitStatement"/>
-      </Unit25>
-      <Unit26>
+      </Unit24>
+      <Unit25>
         <Filename Value="script/statements/wpcbasestatement.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcBaseStatement"/>
-      </Unit26>
-      <Unit27>
+      </Unit25>
+      <Unit26>
         <Filename Value="script/statements/wpcwallpaperstatement.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcWallpaperStatement"/>
-      </Unit27>
-      <Unit28>
+      </Unit26>
+      <Unit27>
         <Filename Value="script/statements/wpcstopstatement.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcStopStatement"/>
-      </Unit28>
-      <Unit29>
+      </Unit27>
+      <Unit28>
         <Filename Value="script/statements/wpcbranchactionsstatements.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcBranchActionsStatements"/>
-      </Unit29>
-      <Unit30>
+      </Unit28>
+      <Unit29>
         <Filename Value="script/statements/wpcbranchstatement.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcBranchStatement"/>
-      </Unit30>
-      <Unit31>
+      </Unit29>
+      <Unit30>
         <Filename Value="script/statements/wpcchooserstatements.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcChooserStatements"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="script/executor/wpcscriptexecutor.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcScriptExecutor"/>
       </Unit31>
+      <Unit32>
+        <Filename Value="script/executor/wpcinthreadscriptexecutor.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcInThreadScriptExecutor"/>
+      </Unit32>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -204,7 +209,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="forms;common;script;os;common/types;os/envdetector;common/interfaces;os/providers;os/wpsetters;script/executor;script/statements;script/statements/properties"/>
+      <OtherUnitFiles Value="forms;common;script;os;common/types;os/envdetector;common/interfaces;os/providers;os/wpsetters;script/statements;script/statements/properties;script/executor"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
