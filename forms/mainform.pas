@@ -148,7 +148,10 @@ end;
 
 procedure TBannerForm.ExitMenuItemClick(Sender : TObject);
 begin
-  // TODO stop all jobs
+  if (ApplicationManager.IsScriptRunning()) then begin
+    ApplicationManager.StopScript();
+  end;
+
   BannerForm.Close();
 end;
 

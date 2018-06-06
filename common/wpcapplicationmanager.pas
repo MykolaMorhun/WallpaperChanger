@@ -51,6 +51,7 @@ type
 
     procedure RunScript(PathToScript : String);
     procedure StopScript();
+    function IsScriptRunning() : Boolean;
   private
     procedure OnScriptStoppedCallback();
   private
@@ -130,6 +131,11 @@ end;
 procedure TWpcApplicationManager.StopScript();
 begin
   FScriptExecutor.Terminate();
+end;
+
+function TWpcApplicationManager.IsScriptRunning() : Boolean;
+begin
+  Result := FScriptExecutor.IsRunning();
 end;
 
 procedure TWpcApplicationManager.OnScriptStoppedCallback();
