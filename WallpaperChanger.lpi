@@ -32,7 +32,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="33">
+    <Units Count="35">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -200,6 +200,16 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcInThreadScriptExecutor"/>
       </Unit32>
+      <Unit33>
+        <Filename Value="script/statements/wpcdirectorystatement.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcDirectoryStatement"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="common/types/wpcdirectory.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcDirectory"/>
+      </Unit34>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -12,6 +12,7 @@ type
   TWpcStatemetId = (
     WPC_WAIT_STATEMENT_ID,
     WPC_WALLPAPER_STATEMENT_ID,
+    WPC_DIRECTORY_STATEMENT_ID,
     WPC_STOP_STATEMENT_ID,
     WPC_SWITCH_BRANCH_STATEMENT_ID,
     WPC_USE_BRANCH_STATEMENT_ID,
@@ -45,6 +46,7 @@ begin
   case (StatementId) of
     WPC_WAIT_STATEMENT_ID:                     Result := 'WAIT';
     WPC_WALLPAPER_STATEMENT_ID:                Result := 'SET WALLPAPER';
+    WPC_DIRECTORY_STATEMENT_ID:                Result := 'SET WALLPAPERS FROM DIRECTORY';
     WPC_STOP_STATEMENT_ID:                     Result := 'STOP';
     WPC_SWITCH_BRANCH_STATEMENT_ID:            Result := 'SWITCH BRANCH';
     WPC_USE_BRANCH_STATEMENT_ID:               Result := 'USE BRANCH';

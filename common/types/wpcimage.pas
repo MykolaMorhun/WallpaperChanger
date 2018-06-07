@@ -5,7 +5,8 @@ unit WpcImage;
 interface
 
 uses
-  Classes, SysUtils;
+  Classes, SysUtils,
+  Fgl;
 
 type
 
@@ -20,6 +21,8 @@ type
     function GetPath() : String;
     function IsExists() : Boolean;
   end;
+
+  TWpcImagesList = specialize TFPGList<TWpcImage>;
 
 implementation
 

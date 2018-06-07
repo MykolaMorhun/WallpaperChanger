@@ -12,6 +12,7 @@ uses
   WpcBranchStatement,
   WpcBranchActionsStatements,
   WpcWallpaperStatement,
+  WpcDirectoryStatement,
   WpcChooserStatements,
   WpcWaitStatement,
   WpcStopStatement,
@@ -20,6 +21,7 @@ uses
   WpcWallpaperStyles,
   WpcTimeMeasurementUnits,
   WpcImage,
+  WpcDirectory,
   WpcExceptions,
   OSUtils;
 
@@ -63,6 +65,8 @@ const
   TIME_KEYWORD = 'TIME';
   DATETIME_KEYWORD = 'DATETIME';
   TO_KEYWORD = 'TO';
+  ORDERED_KEYWORD = 'ORDERED';
+  RECURSIVE_KEYWORD = 'RECURSIVE';
 
   WPC_DATE_SEPARATOR = '.';
   WPC_TIME_SEPARATOR = ':';
@@ -97,7 +101,7 @@ type
     FDefaultDelay : LongWord;
     FDefaultDelayUnits : TWpcTimeMeasurementUnits;
     FDefaultWallpaperStyle : TWallpaperStyle;
-    FDefaultImagesDirectory : String;
+    FDefaultImagesDirectory : TWpcDirectory;
 
     FComputedDefaultDelay : LongWord;
   public
@@ -115,7 +119,7 @@ type
     function GetDefaultDelay() : LongWord;
     function GetDefaultDelayUnits() : TWpcTimeMeasurementUnits;
     function GetDefaultWallpaperStyle() : TWallpaperStyle;
-    function GetDefaultImagesDirectory() : String;
+    function GetDefaultImagesDirectory() : TWpcDirectory;
   private
     procedure ParseHeaders();
     procedure ParseDirsVariables();
@@ -134,6 +138,7 @@ type
 
     function ParseWaitStatement(LineWords : TStringList) : IWpcBaseScriptStatement;
     function ParseWallpaperStatement(LineWords : TStringList) : IWpcBaseScriptStatement;
+    function ParseDirectoryStatement(LineWords : TStringList) : IWpcBaseScriptStatement;
     function ParseStopStatement(LineWords : TStringList) : IWpcBaseScriptStatement;
     function ParseSwitchBranchStatement(LineWords : TStringList) : IWpcBaseScriptStatement;
     function ParseUseBranchStatement(LineWords : TStringList) : IWpcBaseScriptStatement;
@@ -142,10 +147,11 @@ type
     function ParseBranchToSwitchChooserStatement(LineWords : TStringList) : IWpcBaseScriptStatement;
 
     function ParseWallpaperStatementData(LineWords : TStringList; Index : Integer) : TWpcWallpaperStatement;
+    function ParseDirectoryStatementData(LineWords : TStringList; Index : Integer) : TWpcDirectoryStatement;
     function ParseSwitchBranchStatementData(LineWords : TStringList; Index : Integer) : TWpcSwitchBranchStatement;
     function ParseUseBranchStatementData(LineWords : TStringList; Index : Integer) : TWpcUseBranchStatement;
 
-    function ParseDirectory(LineWords : TStringList; var Index : Integer) : String;
+    function ParseDirectory(LineWords : TStringList; var Index : Integer) : TWpcDirectory;
     function ParseImage(LineWords : TStringList; var Index : Integer) : TWpcImage;
 
     function GetDefaultStatementProperties() : TStatementProperties;
@@ -212,7 +218,7 @@ begin
   FDefaultDelay := 5;
   FDefaultDelayUnits := MINUTES;
   FDefaultWallpaperStyle := CENTER;
-  FDefaultImagesDirectory := ''; // TODO implement respecting of this value.
+  FDefaultImagesDirectory := nil; // TODO implement respecting of this value.
 
   FComputedDefaultDelay := TWpcDelayStatementProperty.ConvertToMilliseconds(FDefaultDelay, FDefaultDelayUnits);
 
@@ -224,6 +230,7 @@ begin
   FDirsVariables.Free();
   FImagesVariables.Free();
   FDelaysVariables.Free();
+  if (FDefaultImagesDirectory <> nil) then FDefaultImagesDirectory.Free();
 
   inherited Destroy();
 end;
@@ -346,9 +353,9 @@ begin
 end;
 
 {
-  Returns empty string if no value is set.
+  Returns nil if no value is set.
 }
-function TWpcScriptParser.GetDefaultImagesDirectory() : String;
+function TWpcScriptParser.GetDefaultImagesDirectory() : TWpcDirectory;
 begin
   Result := FDefaultImagesDirectory;
 end;
@@ -591,8 +598,6 @@ begin
               raise TWpcScriptParseException.Create('Path to images directory is expected, but nothing found.', FCurrentLine, CurrentWordIndex);
 
             FDefaultImagesDirectory := ParseDirectory(LineWords, CurrentWordIndex);
-            if (FDefaultImagesDirectory.EndsWith(PATH_SEPARATOR)) then
-             Delete(FDefaultImagesDirectory, Length(FDefaultImagesDirectory), 1);
 
             Inc(CurrentWordIndex);
             EnsureEndOfLine(LineWords, CurrentWordIndex);
@@ -816,6 +821,8 @@ begin
           BranchStatement := ParseWaitStatement(LineWords);
         WPC_WALLPAPER_STATEMENT_ID:
           BranchStatement := ParseWallpaperStatement(LineWords);
+        WPC_DIRECTORY_STATEMENT_ID:
+          BranchStatement := ParseDirectoryStatement(LineWords);
         WPC_STOP_STATEMENT_ID:
           BranchStatement := ParseStopStatement(LineWords);
         WPC_SWITCH_BRANCH_STATEMENT_ID:
@@ -926,6 +933,39 @@ begin
 
   Inc(CurrentWordIndex);
   Result := ParseWallpaperStatementData(LineWords, CurrentWordIndex);
+end;
+
+{
+  Syntax:
+  SET DIRECTORY <Path> [RECURSIVE] [ORDERED] [STYLE <Style>] [FOR <Time>] [WITH PROBABILITY <0-100>] [<1-n> TIMES]
+  Where:
+    - Directory could be:
+       * absolute or relative path to a directory with wallpapers
+       * $DirVariable
+    - Recursive: flag. If set image from subdirectories will be used.
+                 If not set only images within specified directory will be used.
+    - Ordered: flag. If is set a list from images within the directory will be built
+               and next wallpaper will be chosen as next item in the list;
+               if not set then any wallpaper form the directory could be chosen including the same one.
+    - Style: a value from TWallpaperStyle
+    - Time: specifies delay between wallpaper changes.
+            When the property is not set, minimal delay will be used.
+            It is recomended to always specify this property.
+    - Times: defines how many times new image will be set as a wallpaper.
+}
+function TWpcScriptParser.ParseDirectoryStatement(LineWords : TStringList): IWpcBaseScriptStatement;
+var
+  CurrentWordIndex : Integer;
+begin
+  CurrentWordIndex := 0;
+  EnsureKeyWord(LineWords, CurrentWordIndex, SET_KEYWORD);
+
+  Inc(CurrentWordIndex);
+  EnsureKeyWord(LineWords, CurrentWordIndex, DIRECTORY_KEYWORD);
+
+  Inc(CurrentWordIndex);
+  Result := ParseDirectoryStatementData(LineWords, CurrentWordIndex);
+
 end;
 
 {
@@ -1325,6 +1365,55 @@ begin
 end;
 
 {
+  Parses Directory statement data.
+  Syntax the same as for Directory statement, but without SET DIRECTORY keywords:
+  <Path> [RECURSIVE] [ORDERED] [STYLE <Style>] [FOR <Time>] [WITH PROBABILITY <0-100>] [<1-n> TIMES]
+}
+function TWpcScriptParser.ParseDirectoryStatementData(LineWords : TStringList; Index : Integer): TWpcDirectoryStatement;
+var
+  DirectoryStatement  : TWpcDirectoryStatement;
+  Directory           : TWpcDirectory;
+  StatementProperties : TStatementProperties;
+  IsOrdered           : Boolean;
+  IsRecursive         : Boolean;
+  CurrentWordIndex    : Integer;
+begin
+  CurrentWordIndex := Index;
+
+  Directory := ParseDirectory(LineWords, CurrentWordIndex);
+
+  if (CheckKeyWord(SafeGet(LineWords, CurrentWordIndex), ORDERED_KEYWORD)) then begin
+    Inc(CurrentWordIndex);
+    IsOrdered := True;
+  end
+  else
+    IsOrdered := False;
+
+  if (CheckKeyWord(SafeGet(LineWords, CurrentWordIndex), RECURSIVE_KEYWORD)) then begin
+    Inc(CurrentWordIndex);
+    IsRecursive := True;
+  end
+  else
+    IsRecursive := False;
+
+  try
+    StatementProperties := ParseStatementPropertiesAndEnsureEndOfLine(
+      [WPC_WALLPAPER_STYLE_PROPERTY_ID, WPC_DELAY_STATEMENT_PROPERY_ID, WPC_PROBABILITY_STATEMENT_PROPERY_ID, WPC_TIMES_STATEMENT_PROPERY_ID],
+      LineWords, CurrentWordIndex);
+  except
+    Directory.Free();
+    raise;
+  end;
+
+  DirectoryStatement := TWpcDirectoryStatement.Create(Directory, IsOrdered, IsRecursive);
+  DirectoryStatement.SetStyle(StatementProperties.Style);
+  DirectoryStatement.SetDelay(StatementProperties.Delay);
+  DirectoryStatement.SetProbability(StatementProperties.Probability);
+  DirectoryStatement.SetTimes(StatementProperties.Times);
+  Result := DirectoryStatement;
+end;
+
+{
   Parses Switch Branch statement data.
   Syntax the same as for Switch Branch statement, but without SWITCH BRANCH keywords:
   <Name> [WITH PROBABILITY <0-100>]
@@ -1390,7 +1479,7 @@ end;
   Where Path is absolute or relative path to a directory.
   Note, that, Path could contain spaces, but in that case it should be contained into double quotes.
 }
-function TWpcScriptParser.ParseDirectory(LineWords : TStringList; var Index : Integer): String;
+function TWpcScriptParser.ParseDirectory(LineWords : TStringList; var Index : Integer): TWpcDirectory;
 var
   PathReference : String;
 begin
@@ -1412,7 +1501,10 @@ begin
   if (FCheckScriptResources and (not DirectoryExists(PathReference))) then
     raise TWpcScriptParseException.Create('Directory "' + PathReference + '" does not exist.', FCurrentLine);
 
-  Result := PathReference;
+  if (PathReference.EndsWith(PATH_SEPARATOR)) then
+    Delete(PathReference, Length(PathReference), 1);
+
+  Result := TWpcDirectory.Create(PathReference);
 end;
 
 {
@@ -1717,7 +1809,8 @@ end;
   will return 2
   Note, non-empty upper-case array is mandatory.
 }
-function TWpcScriptParser.ParseSequentialNumberWithAlias(Value : String; Aliases : Array of String) : Integer;
+function TWpcScriptParser.ParseSequentialNumberWithAlias(Value: String;
+  Aliases: array of String): Integer;
 var
   AliasesNumber         : Integer;
   ParsedSequentialValue : Integer;
@@ -2118,7 +2211,12 @@ function TWpcScriptParser.ProbeStatementType(LineWords : TStringList) : TWpcStat
 begin
   case (UpperCase(SafeGet(LineWords, 0))) of
     SET_KEYWORD:
-      Result := WPC_WALLPAPER_STATEMENT_ID;
+      case (UpperCase(SafeGet(LineWords, 1))) of
+        WALLPAPER_KEYWORD:
+          Result := WPC_WALLPAPER_STATEMENT_ID;
+        DIRECTORY_KEYWORD:
+          Result := WPC_DIRECTORY_STATEMENT_ID;
+      end;
     WAIT_KEYWORD:
       Result := WPC_WAIT_STATEMENT_ID;
     SWITCH_KEYWORD:
@@ -2128,22 +2226,20 @@ begin
     STOP_KEYWORD:
       Result := WPC_STOP_STATEMENT_ID;
     CHOOSE_KEYWORD:
-      begin
-        case (UpperCase(SafeGet(LineWords, 1))) of
-          WALLPAPER_KEYWORD:
-            Result := WPC_WALLPAPER_CHOOSER_STATEMENT_ID;
-          BRANCH_KEYWORD:
-            case (UpperCase(SafeGet(LineWords, 3))) of
-              SWITCH_KEYWORD:
-                Result := WPC_BRANCH_TO_SWITCH_CHOOSER_STATEMENT_ID;
-              USE_KEYWORD:
-                Result := WPC_BRANCH_TO_USE_CHOOSER_STATEMENT_ID;
-              else
-                Result := WPC_UNKNOWN_STATEMENT;
-            end
-          else
-            Result := WPC_UNKNOWN_STATEMENT;
-        end
+      case (UpperCase(SafeGet(LineWords, 1))) of
+        WALLPAPER_KEYWORD:
+          Result := WPC_WALLPAPER_CHOOSER_STATEMENT_ID;
+        BRANCH_KEYWORD:
+          case (UpperCase(SafeGet(LineWords, 3))) of
+            SWITCH_KEYWORD:
+              Result := WPC_BRANCH_TO_SWITCH_CHOOSER_STATEMENT_ID;
+            USE_KEYWORD:
+              Result := WPC_BRANCH_TO_USE_CHOOSER_STATEMENT_ID;
+            else
+              Result := WPC_UNKNOWN_STATEMENT;
+          end
+        else
+          Result := WPC_UNKNOWN_STATEMENT;
       end;
     END_KEYWORD:
       Result := WPC_END_OF_BLOCK_STATEMENT;

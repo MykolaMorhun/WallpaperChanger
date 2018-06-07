@@ -14,6 +14,7 @@ uses
   WpcBranchStatement,
   WpcBranchActionsStatements,
   WpcWallpaperStatement,
+  WpcDirectoryStatement,
   WpcChooserStatements,
   WpcWaitStatement,
   WpcStopStatement,
@@ -74,6 +75,7 @@ type
 
     procedure ExecuteWaitStatement(Statement : TWpcWaitStatement); //inline;
     procedure ExecuteWallpaperStatement(Statement : TWpcWallpaperStatement); //inline;
+    procedure ExecuteDirectoryStatement(Statement : TWpcDirectoryStatement); //inline;
     procedure ExecuteStopStatement(Statement : TWpcStopStatement); //inline;
     procedure ExecuteSwitchBranchStatement(Statement : TWpcSwitchBranchStatement); //inline;
     procedure ExecuteUseBtranchStatement(Statement : TWpcUseBranchStatement); //inline;
@@ -195,6 +197,8 @@ begin
       ExecuteWaitStatement(TWpcWaitStatement(Statement));
     WPC_WALLPAPER_STATEMENT_ID:
       ExecuteWallpaperStatement(TWpcWallpaperStatement(Statement));
+    WPC_DIRECTORY_STATEMENT_ID:
+      ExecuteDirectoryStatement(TWpcDirectoryStatement(Statement));
     WPC_STOP_STATEMENT_ID:
       ExecuteStopStatement(TWpcStopStatement(Statement));
     WPC_SWITCH_BRANCH_STATEMENT_ID:
@@ -229,6 +233,20 @@ begin
       TimerSleep(Statement.GetDelay())
     else
       ContunueExecution();
+  end
+  else
+    ContunueExecution();
+end;
+
+procedure TWpcInThreadScriptExecutor.ExecuteDirectoryStatement(Statement : TWpcDirectoryStatement);
+begin
+  if (IsTriggered(Statement.GetProbability())) then begin
+    FWallpaperSetter.SetDesktopWallpaper(Statement.GetNextImage().GetPath(), Statement.GetStyle());
+    if (Statement.GetDelay() <> 0) then
+      TimerSleep(Statement.GetDelay())
+    else
+      // continue execution but release executor stack
+      TimerSleep(1);
   end
   else
     ContunueExecution();
@@ -381,9 +399,15 @@ function TWpcInThreadScriptExecutor.GetTimes(Statement : IWpcBaseScriptStatement
 begin
   case (Statement.GetId()) of
     WPC_WAIT_STATEMENT_ID:
-      Result := (TWpcWaitStatement(Statement)).GetTimes();
+      Result := TWpcWaitStatement(Statement).GetTimes();
     WPC_USE_BRANCH_STATEMENT_ID:
-      Result := (TWpcUseBranchStatement(Statement)).GetTimes();
+      Result := TWpcUseBranchStatement(Statement).GetTimes();
+    WPC_DIRECTORY_STATEMENT_ID:
+      if (TWpcDirectoryStatement(Statement).CountImages() = 0) then
+        // Skip this statement because specified directory doesn't contain any image
+        Result := 0
+      else
+        Result := TWpcDirectoryStatement(Statement).GetTimes();
   else
     Result := 1;
   end;
