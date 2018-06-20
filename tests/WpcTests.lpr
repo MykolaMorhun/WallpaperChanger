@@ -12,6 +12,7 @@ uses
   WaitStatementParsingTest,
   StopStatementParsingTest,
   SetWallpaperStatementParsingTest,
+  SetDirectoryStatementParsingTest,
   SwitchBranchStatementParsingTest,
   UseBranchStatementParsingTest,
   ChooserStatementBaseTestCase,

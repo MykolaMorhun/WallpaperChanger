@@ -32,6 +32,8 @@ type
       // If true then list from images will be created and next will return next from the list,
       // If false each next image will be chosen with random and could select the same image as before.
       FIsOrdered   : Boolean;
+      // If true then adds images from subfolders into the list.
+      FIsRecursive : Boolean;
 
       FImagesList        : TWpcImagesList;
       FCurrentImageIndex : Integer;
@@ -42,7 +44,8 @@ type
       destructor Destroy(); override;
     public
       function GetDirectory() : TWpcDirectory;
-      function GetOrdered(): Boolean;
+      function IsOrdered(): Boolean;
+      function IsRecurcive() : Boolean;
       function CountImages() : Integer;
 
       procedure SetStyle(Style : TWallpaperStyle);
@@ -73,6 +76,7 @@ begin
     raise TWpcIllegalArgumentException.Create('Directory is mandatory.');
   FDirectory := Directory;
   FIsOrdered := IsOrdered;
+  FIsRecursive := IsRecursive;
   FDelay := TWpcDelayStatementProperty.Create();
   FTimes := TWpcTimesStatementProperty.Create();
   FProbability := TWpcProbabilityStatementProperty.Create();
@@ -105,9 +109,14 @@ begin
   Result := FDirectory;
 end;
 
-function TWpcDirectoryStatement.GetOrdered(): Boolean;
+function TWpcDirectoryStatement.IsOrdered(): Boolean;
 begin
   Result := FIsOrdered;
+end;
+
+function TWpcDirectoryStatement.IsRecurcive() : Boolean;
+begin
+  Result := FIsRecursive;
 end;
 
 {
