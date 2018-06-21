@@ -22,6 +22,7 @@ type
   public
     procedure SetDesktopWallpaper(Path : String; Style : TWallpaperStyle); override;
     function IsWallpaperStyleSupported(Style : TWallpaperStyle) : Boolean; override;
+    function IsWallpaperTypeSupported(Image : String) : Boolean; override;
   end;
 
 implementation
@@ -46,6 +47,11 @@ begin
 end;
 
 function TWpcCustomWallpaperSetter.IsWallpaperStyleSupported(Style : TWallpaperStyle) : Boolean;
+begin
+  Result := true;
+end;
+
+function TWpcCustomWallpaperSetter.IsWallpaperTypeSupported(Image : String) : Boolean;
 begin
   Result := true;
 end;
