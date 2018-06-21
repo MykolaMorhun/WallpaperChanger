@@ -937,7 +937,7 @@ end;
 
 {
   Syntax:
-  SET DIRECTORY <Path> [RECURSIVE] [ORDERED] [STYLE <Style>] [FOR <Time>] [WITH PROBABILITY <0-100>] [<1-n> TIMES]
+  SET WALLPAPER FROM DIRECTORY <Path> [RECURSIVE] [ORDERED] [STYLE <Style>] [FOR <Time>] [WITH PROBABILITY <0-100>] [<1-n> TIMES]
   Where:
     - Directory could be:
        * absolute or relative path to a directory with wallpapers
@@ -959,6 +959,12 @@ var
 begin
   CurrentWordIndex := 0;
   EnsureKeyWord(LineWords, CurrentWordIndex, SET_KEYWORD);
+
+  Inc(CurrentWordIndex);
+  EnsureKeyWord(LineWords, CurrentWordIndex, WALLPAPER_KEYWORD);
+
+  Inc(CurrentWordIndex);
+  EnsureKeyWord(LineWords, CurrentWordIndex, FROM_KEYWORD);
 
   Inc(CurrentWordIndex);
   EnsureKeyWord(LineWords, CurrentWordIndex, DIRECTORY_KEYWORD);
@@ -1366,7 +1372,7 @@ end;
 
 {
   Parses Directory statement data.
-  Syntax the same as for Directory statement, but without SET DIRECTORY keywords:
+  Syntax the same as for Directory statement, but without SET WALLPAPER FROM DIRECTORY keywords:
   <Path> [RECURSIVE] [ORDERED] [STYLE <Style>] [FOR <Time>] [WITH PROBABILITY <0-100>] [<1-n> TIMES]
 }
 function TWpcScriptParser.ParseDirectoryStatementData(LineWords : TStringList; Index : Integer): TWpcDirectoryStatement;
@@ -2213,9 +2219,14 @@ begin
     SET_KEYWORD:
       case (UpperCase(SafeGet(LineWords, 1))) of
         WALLPAPER_KEYWORD:
-          Result := WPC_WALLPAPER_STATEMENT_ID;
-        DIRECTORY_KEYWORD:
-          Result := WPC_DIRECTORY_STATEMENT_ID;
+          case (UpperCase(SafeGet(LineWords, 2))) of
+            FROM_KEYWORD:
+              Result := WPC_DIRECTORY_STATEMENT_ID
+            else
+              Result := WPC_WALLPAPER_STATEMENT_ID
+          end
+        else
+          Result := WPC_UNKNOWN_STATEMENT;
       end;
     WAIT_KEYWORD:
       Result := WPC_WAIT_STATEMENT_ID;

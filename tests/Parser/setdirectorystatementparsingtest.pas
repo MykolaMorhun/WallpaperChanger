@@ -14,7 +14,7 @@ uses
   WpcWallpaperStyles;
 
 const
-  SET_DIRECTORY = SET_KEYWORD + ' ' + DIRECTORY_KEYWORD + ' ';
+  SET_DIRECTORY = SET_KEYWORD + ' ' + WALLPAPER_KEYWORD + ' ' + FROM_KEYWORD + ' ' + DIRECTORY_KEYWORD + ' ';
   DIRECTORY_WITH_WALLPAPERS = 'path' + PATH_SEPARATOR + 'wallpapers';
 type
 
@@ -53,7 +53,7 @@ implementation
 
 { TSetDirectoryStatementParsingTest }
 
-// SET DIRECTORY path/wallpaper
+// SET WALLPAPER FROM DIRECTORY path/wallpaper
 procedure TSetDirectoryStatementParsingTest.ShouldParseBaseDirectoryStatement();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS);
@@ -93,7 +93,7 @@ begin
   AssertFalse(WRONG_STATEMENT_PROPRTY_VALUE, DirectoryStatement.IsOrdered());
 end;
 
-// SET DIRECTORY path/wallpaper ORDERED
+// SET WALLPAPER FROM DIRECTORY path/wallpaper ORDERED
 procedure TSetDirectoryStatementParsingTest.ShouldParseDirectoryStatementWithOrderedFlag();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + ' ' + ORDERED_KEYWORD);
@@ -111,7 +111,7 @@ begin
   AssertFalse(WRONG_STATEMENT_PROPRTY_VALUE, DirectoryStatement.IsRecurcive());
 end;
 
-// SET DIRECTORY path/wallpaper ORDERED RECURSIVE
+// SET WALLPAPER FROM DIRECTORY path/wallpaper ORDERED RECURSIVE
 procedure TSetDirectoryStatementParsingTest.ShouldParseDirectoryStatementWithAllFlags();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + ' ' + ORDERED_KEYWORD + ' ' + RECURSIVE_KEYWORD);
@@ -129,7 +129,7 @@ begin
   AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, DirectoryStatement.IsOrdered());
 end;
 
-// SET DIRECTORY path/wallpaper STYLE STRETCH
+// SET WALLPAPER FROM DIRECTORY path/wallpaper STYLE STRETCH
 procedure TSetDirectoryStatementParsingTest.ShouldParseDirectoryStatementWithStyleProperty();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + STYLE_PROPERTY);
@@ -146,7 +146,7 @@ begin
   AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, DirectoryStatement.GetStyle() = TEST_DEFAULT_STYLE_VALUE);
 end;
 
-// SET DIRECTORY path/wallpaper FOR 5m
+// SET WALLPAPER FROM DIRECTORY path/wallpaper FOR 5m
 procedure TSetDirectoryStatementParsingTest.ShouldParseDirectoryStatementWithDelayProperty();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + DELAY_FOR_PROPERTY);
@@ -163,7 +163,7 @@ begin
   AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_DELAY_VALUE, DirectoryStatement.GetDelay());
 end;
 
-// SET DIRECTORY path/wallpaper WITH PROBABILITY 50
+// SET WALLPAPER FROM DIRECTORY path/wallpaper WITH PROBABILITY 50
 procedure TSetDirectoryStatementParsingTest.ShouldParseDirectoryStatementWithProbabilityProperty();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + WITH_PROBABILITY_PROPERTY);
@@ -180,7 +180,7 @@ begin
   AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_PROBABILITY_VALUE, DirectoryStatement.GetProbability());
 end;
 
-// SET DIRECTORY path/wallpaper 4 TIMES
+// SET WALLPAPER FROM DIRECTORY path/wallpaper 4 TIMES
 procedure TSetDirectoryStatementParsingTest.ShouldParseDirectoryStatementWithTimesProperty();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + X_TIMES_PROPERTY);
@@ -197,7 +197,7 @@ begin
   AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_TIMES_VALUE, DirectoryStatement.GetTimes());
 end;
 
-// SET DIRECTORY path/wallpaper STYLE STRETCH FOR 5m WITH PROBABILITY 50 4 TIMES
+// SET WALLPAPER FROM DIRECTORY path/wallpaper STYLE STRETCH FOR 5m WITH PROBABILITY 50 4 TIMES
 procedure TSetDirectoryStatementParsingTest.ShouldParseDirectoryStatementWithAllProperties();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + STYLE_PROPERTY + DELAY_FOR_PROPERTY + WITH_PROBABILITY_PROPERTY + X_TIMES_PROPERTY);
@@ -217,7 +217,7 @@ begin
   AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_TIMES_VALUE, DirectoryStatement.GetTimes());
 end;
 
-// SET DIRECTORY path/wallpaper ORDERED RECURCIVE STYLE STRETCH FOR 5m WITH PROBABILITY 50 4 TIMES
+// SET WALLPAPER FROM DIRECTORY path/wallpaper ORDERED RECURCIVE STYLE STRETCH FOR 5m WITH PROBABILITY 50 4 TIMES
 procedure TSetDirectoryStatementParsingTest.ShouldParseDirectoryStatementWithAllFlagsAndAllProperties();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + ' ' + ORDERED_KEYWORD + ' ' + RECURSIVE_KEYWORD + STYLE_PROPERTY + DELAY_FOR_PROPERTY + WITH_PROBABILITY_PROPERTY + X_TIMES_PROPERTY);
@@ -239,112 +239,112 @@ begin
   AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_TIMES_VALUE, DirectoryStatement.GetTimes());
 end;
 
-// SET DIRECTORY
+// SET WALLPAPER FROM DIRECTORY
 procedure TSetDirectoryStatementParsingTest.SholudRaiseScriptParseExceptionWhenNoDirectorySpecified();
 begin
   ScriptLines.Add(SET_DIRECTORY);
   WrapInMainBranch(ScriptLines);
 
-  AssertScriptParseExceptionOnParse(1, 2);
+  AssertScriptParseExceptionOnParse(1, 4);
 end;
 
-// SET DIRECTORY path/wallpaper TODAY
+// SET WALLPAPER FROM DIRECTORY path/wallpaper TODAY
 procedure TSetDirectoryStatementParsingTest.SholudRaiseScriptParseExceptionWhenUnknownWordAddedAtTheEndOfBase();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + ' TODAY');
   WrapInMainBranch(ScriptLines);
 
-  AssertScriptParseExceptionOnParse(1, 3);
+  AssertScriptParseExceptionOnParse(1, 5);
 end;
 
-// SET DIRECTORY path/wallpaper TODAY ORDERED
+// SET WALLPAPER FROM DIRECTORY path/wallpaper TODAY ORDERED
 procedure TSetDirectoryStatementParsingTest.SholudRaiseScriptParseExceptionWhenUnknownWordAddedBeforeFlags();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + ' TODAY ' + ORDERED_KEYWORD);
   WrapInMainBranch(ScriptLines);
 
-  AssertScriptParseExceptionOnParse(1, 3);
+  AssertScriptParseExceptionOnParse(1, 5);
 end;
 
-// SET DIRECTORY path/wallpaper ORDERED TODAY RECURSIVE
+// SET WALLPAPER FROM DIRECTORY path/wallpaper ORDERED TODAY RECURSIVE
 procedure TSetDirectoryStatementParsingTest.SholudRaiseScriptParseExceptionWhenUnknownWordAddedBetweenFlags();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + ' ' + ORDERED_KEYWORD + ' TODAY ' + RECURSIVE_KEYWORD);
   WrapInMainBranch(ScriptLines);
 
-  AssertScriptParseExceptionOnParse(1, 4);
+  AssertScriptParseExceptionOnParse(1, 6);
 end;
 
-// SET DIRECTORY path/wallpaper ORDERED RECURSIVE TODAY
+// SET WALLPAPER FROM DIRECTORY path/wallpaper ORDERED RECURSIVE TODAY
 procedure TSetDirectoryStatementParsingTest.SholudRaiseScriptParseExceptionWhenUnknownWordAddedAfterFlags();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + ' ' + ORDERED_KEYWORD + ' ' + RECURSIVE_KEYWORD + ' TODAY');
   WrapInMainBranch(ScriptLines);
 
-  AssertScriptParseExceptionOnParse(1, 5);
+  AssertScriptParseExceptionOnParse(1, 7);
 end;
 
-// SET DIRECTORY path/wallpaper SMOOTHLY STYLE CENTER
+// SET WALLPAPER FROM DIRECTORY path/wallpaper SMOOTHLY STYLE CENTER
 procedure TSetDirectoryStatementParsingTest.SholudRaiseScriptParseExceptionWhenUnknownWordAddedBeforeProperties();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + ' SMOOTHLY ' + STYLE_PROPERTY);
   WrapInMainBranch(ScriptLines);
 
-  AssertScriptParseExceptionOnParse(1, 3);
+  AssertScriptParseExceptionOnParse(1, 5);
 end;
 
-// SET DIRECTORY path/wallpaper STYLE CENTER SMOOTHLY 4 TIMES
+// SET WALLPAPER FROM DIRECTORY path/wallpaper STYLE CENTER SMOOTHLY 4 TIMES
 procedure TSetDirectoryStatementParsingTest.SholudRaiseScriptParseExceptionWhenUnknownWordAddedBetweenProperties();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + STYLE_PROPERTY + ' SMOOTHLY ' + X_TIMES_PROPERTY);
   WrapInMainBranch(ScriptLines);
 
-  AssertScriptParseExceptionOnParse(1, 5);
+  AssertScriptParseExceptionOnParse(1, 7);
 end;
 
-// SET DIRECTORY path/wallpaper STYLE CENTER FOR 5m ONCE
+// SET WALLPAPER FROM DIRECTORY path/wallpaper STYLE CENTER FOR 5m ONCE
 procedure TSetDirectoryStatementParsingTest.SholudRaiseScriptParseExceptionWhenUnknownWordAddedAfterProperties();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS +  STYLE_PROPERTY + DELAY_FOR_PROPERTY + ' ONCE ');
   WrapInMainBranch(ScriptLines);
 
-  AssertScriptParseExceptionOnParse(1, 7);
+  AssertScriptParseExceptionOnParse(1, 9);
 end;
 
-// SET DIRECTORY path/wallpaper STYLE CENTER RECURSIVE 4 TIMES
+// SET WALLPAPER FROM DIRECTORY path/wallpaper STYLE CENTER RECURSIVE 4 TIMES
 procedure TSetDirectoryStatementParsingTest.SholudRaiseScriptParseExceptionWhenRecursiveFlagIsAddedBetweenProperties();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + STYLE_PROPERTY + ' ' + RECURSIVE_KEYWORD + ' ' + X_TIMES_PROPERTY);
   WrapInMainBranch(ScriptLines);
 
-  AssertScriptParseExceptionOnParse(1, 5);
+  AssertScriptParseExceptionOnParse(1, 7);
 end;
 
-// SET DIRECTORY path/wallpaper STYLE CENTER ORDERED 4 TIMES
+// SET WALLPAPER FROM DIRECTORY path/wallpaper STYLE CENTER ORDERED 4 TIMES
 procedure TSetDirectoryStatementParsingTest.SholudRaiseScriptParseExceptionWhenOrderedFlagIsAddedBetweenProperties();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + STYLE_PROPERTY + ' ' + ORDERED_KEYWORD + ' ' + X_TIMES_PROPERTY);
   WrapInMainBranch(ScriptLines);
 
-  AssertScriptParseExceptionOnParse(1, 5);
+  AssertScriptParseExceptionOnParse(1, 7);
 end;
 
-// SET DIRECTORY path/wallpaper STYLE CENTER WITH PROBABILITY 50 RECURSIVE
+// SET WALLPAPER FROM DIRECTORY path/wallpaper STYLE CENTER WITH PROBABILITY 50 RECURSIVE
 procedure TSetDirectoryStatementParsingTest.SholudRaiseScriptParseExceptionWhenRecursiveFlagIsAddedAtTheEndOfProperties();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + STYLE_PROPERTY + WITH_PROBABILITY_PROPERTY + RECURSIVE_KEYWORD);
   WrapInMainBranch(ScriptLines);
 
-  AssertScriptParseExceptionOnParse(1, 8);
+  AssertScriptParseExceptionOnParse(1, 10);
 end;
 
-// SET DIRECTORY path/wallpaper STYLE CENTER WITH PROBABILITY 50 ORDERED
+// SET WALLPAPER FROM DIRECTORY path/wallpaper STYLE CENTER WITH PROBABILITY 50 ORDERED
 procedure TSetDirectoryStatementParsingTest.SholudRaiseScriptParseExceptionWhenOrderedFlagIsAddedAtTheEndOfProperties();
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + STYLE_PROPERTY + WITH_PROBABILITY_PROPERTY + RECURSIVE_KEYWORD);
   WrapInMainBranch(ScriptLines);
 
-  AssertScriptParseExceptionOnParse(1, 8);
+  AssertScriptParseExceptionOnParse(1, 10);
 end;
 
 
