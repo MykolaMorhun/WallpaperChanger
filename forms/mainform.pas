@@ -6,8 +6,9 @@ interface
 
 uses
   Classes, SysUtils, FileUtil,
-  Forms, Controls, Graphics, Dialogs, ExtCtrls, Menus, ExtDlgs,
+  Forms, Controls, Graphics, Dialogs, ExtCtrls, Menus, ExtDlgs, LCLType,
   WpcApplication, WpcApplicationManager,
+  WpcImage, WpcDirectory,
   WpcExceptions;
 
 type
@@ -20,6 +21,7 @@ type
     SelectWallpaperDirectoryDialog: TSelectDirectoryDialog;
     SelectWallpaperDialog: TOpenPictureDialog;
     MainContextMenuImageList: TImageList;
+
     WPCMainPopupMenu: TPopupMenu;
     StopMenuItem: TMenuItem;
     ScriptMenuItem: TMenuItem;
@@ -54,7 +56,7 @@ type
   end;
 
 var
-  BannerForm: TBannerForm;
+  BannerForm : TBannerForm;
 
 implementation
 
@@ -112,8 +114,30 @@ begin
 end;
 
 procedure TBannerForm.SetWallpaperDirectoryMenuItemClick(Sender : TObject);
+var
+  Directory : TWpcDirectory;
 begin
-
+  if (SelectWallpaperDirectoryDialog.Execute()) then begin
+    try
+      Directory := TWpcDirectory.Create(SelectWallpaperDirectoryDialog.FileName);
+      try
+        ApplicationManager.SetWallpapersFromDirectory(Directory);
+      except
+        on E : TWpcUseErrorException do begin
+          // A script is already running
+          if (Application.MessageBox('Another script is already running. Would you like to replace it?',
+                                     'Conflict',
+                                     MB_ICONQUESTION + MB_YESNO) = IDYES) then begin
+            ApplicationManager.StopScript();
+            ApplicationManager.SetWallpapersFromDirectory(Directory);
+          end;
+          // else do nothing
+        end;
+      end;
+    finally
+      Directory.Free();
+    end;
+  end;
 end;
 
 procedure TBannerForm.NextWallpaperMenuItemClick(Sender : TObject);
@@ -127,8 +151,22 @@ begin
 end;
 
 procedure TBannerForm.SetWallpaperImageMenuItemClick(Sender : TObject);
+var
+  Image : TWpcImage;
 begin
-
+  if (SelectWallpaperDialog.Execute()) then begin
+    try
+      Image := TWpcImage.Create(SelectWallpaperDialog.FileName);
+      try
+        ApplicationManager.SetWallpaper(Image);
+      except
+        on E : TWpcUseErrorException do
+          ShowMessage(E.Message);
+      end;
+    finally
+      Image.Free();
+    end;
+  end;
 end;
 
 procedure TBannerForm.OptionsMenuItemClick(Sender : TObject);

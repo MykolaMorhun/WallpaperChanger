@@ -7,13 +7,20 @@ interface
 uses
   Classes, SysUtils,
   WpcOptions,
-  WpcWallpaperSetterFactory,
+  WpcWallpaperChangerAlgorithms,
   WpcDesktopEnvironments,
-  WpcWallpaperSetter, WpcWallpaperSetterFactoryProvider,
-  WpcEnvironmentDetector, WpcEnvironmentDetectorProvider,
+  WpcWallpaperSetterFactoryProvider,
+  WpcWallpaperSetterFactory,
+  WpcWallpaperSetter,
+  WpcWallpaperStyles,
+  WpcEnvironmentDetectorProvider,
+  WpcEnvironmentDetector,
   WpcScriptParser,
   WpcScript,
-  WpcScriptExecutor, WpcInThreadScriptExecutor;
+  WpcScriptsGenerator,
+  WpcScriptExecutor, WpcInThreadScriptExecutor,
+  WpcImage, WpcDirectory,
+  WpcExceptions;
 
 const
   SETTINGS_FILE = 'WPCSettings.ini';
@@ -33,6 +40,7 @@ type
     FWallpaperSetter        : IWallpaperSetter;
     FWallpaperSetterFactory : IWpcWallpaperSetterFactory;
 
+    FScriptsGenerator : TWpcScriptsGenerator;
     FScriptExecutor : IWpcScriptExecutor;
 
     // Current script data
@@ -52,6 +60,9 @@ type
     procedure RunScript(PathToScript : String);
     procedure StopScript();
     function IsScriptRunning() : Boolean;
+
+    procedure SetWallpaper(Image : TWpcImage);
+    procedure SetWallpapersFromDirectory(Directory : TWpcDirectory);
   private
     procedure OnScriptStoppedCallback();
   private
@@ -70,6 +81,8 @@ begin
 
   FEnvironmentDetector := GetEnvironmentDetector();
   FWallpaperSetterFactory := GetWallpaperSetterFactory();
+
+  FScriptsGenerator := TWpcScriptsGenerator.Create();
 end;
 
 destructor TWpcApplicationManager.Destroy();
@@ -80,6 +93,8 @@ begin
 
   FApplicationSettings.Free();
   FApplicationStateSettings.Free();
+
+  FScriptsGenerator.Free();
 
   if (FWallpaperSetter <> nil) then FreeAndNil(FWallpaperSetter);
   FWallpaperSetterFactory.Free();
@@ -118,6 +133,9 @@ begin
     FScriptParser := TWpcScriptParser.Create(FScriptContent);
     FScript := FScriptParser.Parse();
     FScriptExecutor.RunScript(FScript);
+
+    FApplicationStateSettings.LastType := WPCA_SCRIPT;
+    FApplicationStateSettings.LastScript := PathToScript;
   except
     on E: Exception do begin
       if (FScript <> nil) then FreeAndNil(FScript);
@@ -136,6 +154,33 @@ end;
 function TWpcApplicationManager.IsScriptRunning() : Boolean;
 begin
   Result := FScriptExecutor.IsRunning();
+end;
+
+procedure TWpcApplicationManager.SetWallpaper(Image : TWpcImage);
+begin
+  if (not FWallpaperSetter.IsWallpaperStyleSupported(FApplicationSettings.WallpaperStyle)) then
+    raise TWpcUseErrorException.Create(WallpaperStyleToStr(FApplicationSettings.WallpaperStyle) + ' wallpaper style is not supported by current environment.');
+  if (not FWallpaperSetter.IsWallpaperTypeSupported(Image.GetPath())) then
+    raise TWpcUseErrorException.Create('Current environment doesn''t support file "' + ExtractFileName(Image.GetPath()) + '" as a wallpaper.');
+
+  FWallpaperSetter.SetDesktopWallpaper(Image.GetPath(), FApplicationSettings.WallpaperStyle);
+
+  FApplicationStateSettings.LastType := WPCA_IMAGE;
+  FApplicationStateSettings.LastWallpaper := Image.GetPath();
+end;
+
+procedure TWpcApplicationManager.SetWallpapersFromDirectory(Directory : TWpcDirectory);
+var
+  Script : TWpcScript;
+begin
+  if (IsScriptRunning()) then
+    raise TWpcUseErrorException.Create('Script is alredy running.');
+
+  Script := FScriptsGenerator.GenerateDirectoryStatementScript(Directory, FApplicationSettings);
+  FScriptExecutor.RunScript(Script);
+
+  FApplicationStateSettings.LastType := WPCA_DIRECTORY;
+  FApplicationStateSettings.LastDirectory := Directory.GetPath();
 end;
 
 procedure TWpcApplicationManager.OnScriptStoppedCallback();

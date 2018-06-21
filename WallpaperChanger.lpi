@@ -32,7 +32,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="35">
+    <Units Count="36">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -210,6 +210,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcDirectory"/>
       </Unit34>
+      <Unit35>
+        <Filename Value="common/wpcscriptsgenerator.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcScriptsGenerator"/>
+      </Unit35>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

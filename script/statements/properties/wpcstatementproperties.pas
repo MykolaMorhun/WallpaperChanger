@@ -31,7 +31,7 @@ type
 
   TWpcProbabilityStatementProperty = class(TObject)
   private
-    FProbability: Byte;  // percents
+    FProbability: Byte; // percents
     procedure SetProbability(Probability: Byte);
   public
     property Probability : Byte read FProbability write SetProbability default 100;
@@ -40,6 +40,8 @@ type
   { TWpcTimesStatementProperty }
 
   TWpcTimesStatementProperty = class(TObject)
+  public const
+    MAX_TIMES = high(LongWord);
   private
     FTimes: LongWord;
     procedure SetTimes(Times: LongWord);
