@@ -22,6 +22,8 @@ type
   // xfce: STRETCHed, TILEd, CENTERed , SCALED (fit), Zoomed
   // NONE ?
 
+  TWpcSetOfWallpaperStyles = Set of TWallpaperStyle;
+
 function WallpaperStyleToStr(Style : TWallpaperStyle) : String;
 function StrToWallpaperStyle(Style : String) : TWallpaperStyle;
 

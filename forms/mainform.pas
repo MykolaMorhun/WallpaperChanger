@@ -171,7 +171,7 @@ end;
 
 procedure TBannerForm.OptionsMenuItemClick(Sender : TObject);
 begin
-
+  ApplicationManager.OpenOptionsForm();
 end;
 
 procedure TBannerForm.DocsMenuItemClick(Sender : TObject);

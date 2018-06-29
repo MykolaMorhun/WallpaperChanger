@@ -20,7 +20,9 @@ uses
   WpcScriptsGenerator,
   WpcScriptExecutor, WpcInThreadScriptExecutor,
   WpcImage, WpcDirectory,
-  WpcExceptions;
+  WpcExceptions,
+
+  OptionsWindow;
 
 const
   SETTINGS_FILE = 'WPCSettings.ini';
@@ -47,6 +49,8 @@ type
     FScriptContent : TStringList;
     FScriptParser  : TWpcScriptParser;
     FScript        : TWpcScript;
+  private
+    FOptionsWindow : TOptionsForm;
   public
     constructor Create();
     destructor Destroy(); override;
@@ -54,6 +58,10 @@ type
     // Supposed to be changed only from options window or ApplicationManager.
     property CurrentSettings : TWpcPersistentSettings read FApplicationSettings;
     property CurrentState : TWpcStateSettings read FApplicationStateSettings;
+
+    property EnvironmentDetector : IWpcEnvironmentDetector read FEnvironmentDetector;
+    property WallpaperSetter : IWallpaperSetter read FWallpaperSetter;
+    property WallpaperSetterFactory : IWpcWallpaperSetterFactory read FWallpaperSetterFactory;
   public
     procedure ApplySettings();
 
@@ -63,11 +71,12 @@ type
 
     procedure SetWallpaper(Image : TWpcImage);
     procedure SetWallpapersFromDirectory(Directory : TWpcDirectory);
+  public
+    procedure OpenOptionsForm(ForceSetEnvironment : Boolean = False);
   private
     procedure OnScriptStoppedCallback();
   private
     procedure ReadSettings();
-    procedure UpdateWallpaperSetter(DesktopEnvironment : TDesktopEnvironment);
   end;
 
 
@@ -87,6 +96,8 @@ end;
 
 destructor TWpcApplicationManager.Destroy();
 begin
+  if (FOptionsWindow <> nil) then FOptionsWindow.Free();
+
   // Stop script execution if any
   if (FScriptExecutor.IsRunning()) then
     FScriptExecutor.Terminate();
@@ -118,11 +129,30 @@ end;
   Should be invoked for full initialization of the application.
 }
 procedure TWpcApplicationManager.ApplySettings();
+var
+  DesktopEnvironment : TDesktopEnvironment;
 begin
-  UpdateWallpaperSetter(CurrentSettings.DesktopEnvironment);
+  // Update wallpaper setter
+  if (FWallpaperSetter <> nil) then FreeAndNil(FWallpaperSetter);
+
+  DesktopEnvironment := CurrentSettings.DesktopEnvironment;
+  if (DesktopEnvironment = DE_AUTODETECT) then begin
+    DesktopEnvironment := FEnvironmentDetector.Detect();
+  end;
+  if (DesktopEnvironment = DE_UNKNOWN) then begin
+    OpenOptionsForm(true);
+    exit;
+  end;
+  FWallpaperSetter := FWallpaperSetterFactory.GetWallpaperSetter(DesktopEnvironment);
+
+  // Update script executor
+  if (FScriptExecutor <> nil) then FScriptExecutor.Free();
+
   FScriptExecutor := TWpcInThreadScriptExecutor.Create(FWallpaperSetter);
   FScriptExecutor.SetOnStopCallback(@OnScriptStoppedCallback);
 end;
+
+(* Engine *)
 
 procedure TWpcApplicationManager.RunScript(PathToScript: String);
 begin
@@ -183,29 +213,21 @@ begin
   FApplicationStateSettings.LastDirectory := Directory.GetPath();
 end;
 
+(* UI *)
+
+procedure TWpcApplicationManager.OpenOptionsForm(ForceSetEnvironment : Boolean = False);
+begin
+  if (FOptionsWindow = nil) then
+    FOptionsWindow := TOptionsForm.Create(nil);
+
+  FOptionsWindow.ShowOptinsForm(ForceSetEnvironment);
+end;
+
 procedure TWpcApplicationManager.OnScriptStoppedCallback();
 begin
   if (FScript <> nil) then FreeAndNil(FScript);
   if (FScriptParser <> nil) then FreeAndNil(FScriptParser);
   if (FScriptContent <> nil) then FreeAndNil(FScriptContent);
-end;
-
-{
-  Updates wallpaper setter according to given environment.
-}
-procedure TWpcApplicationManager.UpdateWallpaperSetter(DesktopEnvironment : TDesktopEnvironment);
-begin
-  if (FWallpaperSetter <> nil) then FreeAndNil(FWallpaperSetter);
-
-  if (DesktopEnvironment = DE_AUTODETECT) then begin
-    DesktopEnvironment := FEnvironmentDetector.Detect();
-  end;
-
-  if (DesktopEnvironment = DE_UNKNOWN) then begin
-    // TODO show options dialog to set DE manually
-  end;
-
-  FWallpaperSetter := FWallpaperSetterFactory.GetWallpaperSetter(DesktopEnvironment);
 end;
 
 
