@@ -38,7 +38,14 @@ var
 begin
   DirectoryStatement := TWpcDirectoryStatement.Create(Dirctory, Settings.KeepOrder, true);
   DirectoryStatement.SetStyle(Settings.WallpaperStyle);
-  DirectoryStatement.SetDelay(Settings.ConstantDelay); // TODO add support for vary delay
+  if (Settings.UseConstantDelay) then begin
+    DirectoryStatement.SetDelay(Settings.ConstantDelay);
+    DirectoryStatement.SetRamdomDelay(0);
+  end
+  else begin
+    DirectoryStatement.SetDelay(Settings.MinimalDelay);
+    DirectoryStatement.SetRamdomDelay(Settings.MaximalDelay - Settings.MinimalDelay);
+  end;
   DirectoryStatement.SetTimes(TWpcTimesStatementProperty.MAX_TIMES); // TODO add FOREVER flag
   DirectoryStatement.SetProbability(100);
 

@@ -239,11 +239,19 @@ begin
 end;
 
 procedure TWpcInThreadScriptExecutor.ExecuteDirectoryStatement(Statement : TWpcDirectoryStatement);
+var
+  TotalDelay : LongWord;
 begin
   if (IsTriggered(Statement.GetProbability())) then begin
     FWallpaperSetter.SetDesktopWallpaper(Statement.GetNextImage().GetPath(), Statement.GetStyle());
-    if (Statement.GetDelay() <> 0) then
-      TimerSleep(Statement.GetDelay())
+
+    if (Statement.GetRandomDelay() <> 0) then
+      TotalDelay := Statement.GetDelay() + Random(Statement.GetRandomDelay() + 1)
+    else
+      TotalDelay := Statement.GetDelay();
+
+    if (TotalDelay <> 0) then
+      TimerSleep(TotalDelay)
     else
       // continue execution but release executor stack
       TimerSleep(1);

@@ -26,6 +26,7 @@ type
       FDirectory   : TWpcDirectory;
       FStyle       : TWallpaperStyle;
       FDelay       : TWpcDelayStatementProperty;
+      FRandomDelay : TWpcDelayStatementProperty;
       FTimes       : TWpcTimesStatementProperty;
       FProbability : TWpcProbabilityStatementProperty;
       // Component specific property.
@@ -52,6 +53,8 @@ type
       function GetStyle() : TWallpaperStyle;
       procedure SetDelay(Delay : LongWord);
       function GetDelay() : LongWord;
+      procedure SetRamdomDelay(Delay : LongWord);
+      function GetRandomDelay() : LongWord;
       procedure SetTimes(Times : LongWord);
       function GetTimes() : LongWord;
       procedure SetProbability(Probability : Byte);
@@ -78,6 +81,7 @@ begin
   FIsOrdered := IsOrdered;
   FIsRecursive := IsRecursive;
   FDelay := TWpcDelayStatementProperty.Create();
+  FRandomDelay := TWpcDelayStatementProperty.Create();
   FTimes := TWpcTimesStatementProperty.Create();
   FProbability := TWpcProbabilityStatementProperty.Create();
 
@@ -94,6 +98,7 @@ var
 begin
   FDirectory.Free();
   FDelay.Free();
+  FRandomDelay.Free();
   FTimes.Free();
   FProbability.Free();
 
@@ -145,6 +150,16 @@ end;
 function TWpcDirectoryStatement.GetDelay(): LongWord;
 begin
   Result := FDelay.Delay;
+end;
+
+procedure TWpcDirectoryStatement.SetRamdomDelay(Delay: LongWord);
+begin
+  FRandomDelay.Delay := Delay;
+end;
+
+function TWpcDirectoryStatement.GetRandomDelay: LongWord;
+begin
+  Result := FRandomDelay.Delay;
 end;
 
 procedure TWpcDirectoryStatement.SetTimes(Times : LongWord);
