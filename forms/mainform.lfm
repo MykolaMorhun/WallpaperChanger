@@ -28,6 +28,18 @@ object BannerForm: TBannerForm
       Caption = 'Stop'
       OnClick = StopMenuItemClick
     end
+    object NextWallpaperMenuItem: TMenuItem
+      Caption = 'Next'
+      OnClick = NextWallpaperMenuItemClick
+    end
+    object PreviousWallpaperMenuItem: TMenuItem
+      Caption = 'Previous'
+      Visible = False
+      OnClick = PreviousWallpaperMenuItemClick
+    end
+    object Separator3MenuItem: TMenuItem
+      Caption = '-'
+    end
     object ScriptMenuItem: TMenuItem
       Caption = 'Script'
       object RunScriptMenuItem: TMenuItem
@@ -44,17 +56,6 @@ object BannerForm: TBannerForm
       object SetWallpaperDirectoryMenuItem: TMenuItem
         Caption = 'Set Directory ...'
         OnClick = SetWallpaperDirectoryMenuItemClick
-      end
-      object NextWallpaperMenuItem: TMenuItem
-        Caption = 'Next'
-        OnClick = NextWallpaperMenuItemClick
-      end
-      object PreviousWallpaperMenuItem: TMenuItem
-        Caption = 'Previous'
-        OnClick = PreviousWallpaperMenuItemClick
-      end
-      object Separator2MenuItem: TMenuItem
-        Caption = '-'
       end
       object SetWallpaperImageMenuItem: TMenuItem
         Caption = 'Set Image ...'

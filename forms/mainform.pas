@@ -16,6 +16,7 @@ type
   { TBannerForm }
 
   TBannerForm = class(TForm)
+    Separator3MenuItem: TMenuItem;
     WPCTrayIcon: TTrayIcon;
     SelectScriptDialog: TOpenDialog;
     SelectWallpaperDirectoryDialog: TSelectDirectoryDialog;
@@ -31,7 +32,6 @@ type
     SetWallpaperDirectoryMenuItem: TMenuItem;
     PreviousWallpaperMenuItem: TMenuItem;
     NextWallpaperMenuItem: TMenuItem;
-    Separator2MenuItem: TMenuItem;
     SetWallpaperImageMenuItem: TMenuItem;
     Separator1MenuItem: TMenuItem;
     OptionsMenuItem: TMenuItem;
@@ -53,6 +53,11 @@ type
     procedure DocsMenuItemClick(Sender: TObject);
     procedure AboutMenuItemClick(Sender: TObject);
     procedure ExitMenuItemClick(Sender: TObject);
+  private
+    function GetTargetFile(Dialog : TFileDialog) : String;
+    function WarnScriptIsRunning() : Boolean; inline;
+    procedure MenuOnScriptStop(); inline;
+    procedure MenuOnScriptStart(); inline;
   end;
 
 var
@@ -74,6 +79,7 @@ begin
   ApplicationManager := TWpcApplicationManager.Create();
   ApplicationManager.ApplySettings(); // init app with settings from config file
 
+  MenuOnScriptStop();
   BannerForm.Hide();
 end;
 
@@ -82,28 +88,32 @@ end;
 procedure TBannerForm.StopMenuItemClick(Sender : TObject);
 begin
   ApplicationManager.StopScript();
+  MenuOnScriptStop();
 end;
 
 procedure TBannerForm.RunScriptMenuItemClick(Sender : TObject);
 var
-  ErrorMessage: String;
+  ScriptPath : String;
+  ErrorMessage : String;
 begin
-  try
-    if (SelectScriptDialog.Execute()) then begin
+  ScriptPath := GetTargetFile(SelectScriptDialog);
+  if (ScriptPath <> '') then begin
+    try
       ApplicationManager.RunScript(SelectScriptDialog.FileName);
-    end;
-  except
-    on ParseExcepton : TWpcScriptParseException do begin
-      ErrorMessage := Concat('Failed to parse script: ', ParseExcepton.Message);
-      if (ParseExcepton.Line <> TWpcScriptParseException.UNKNOWN_LINE) then
-        ErrorMessage := Concat(ErrorMessage, ' Line: ', IntToStr(ParseExcepton.Line + 1));
-      if (ParseExcepton.WordNumer <> TWpcScriptParseException.UNKNOWN_WORD_NUMBER) then
-        ErrorMessage := Concat(ErrorMessage, ' Word: ', IntToStr(ParseExcepton.WordNumer + 1));
-      ShowMessage(ErrorMessage);
-    end;
-    on WpcException : TWpcException do begin
-      ErrorMessage := Concat('Error: ', WpcException.Message);
-      ShowMessage(ErrorMessage);
+      MenuOnScriptStart();
+    except
+      on ParseExcepton : TWpcScriptParseException do begin
+        ErrorMessage := Concat('Failed to parse script: ', ParseExcepton.Message);
+        if (ParseExcepton.Line <> TWpcScriptParseException.UNKNOWN_LINE) then
+          ErrorMessage := Concat(ErrorMessage, ' Line: ', IntToStr(ParseExcepton.Line + 1));
+        if (ParseExcepton.WordNumer <> TWpcScriptParseException.UNKNOWN_WORD_NUMBER) then
+          ErrorMessage := Concat(ErrorMessage, ' Word: ', IntToStr(ParseExcepton.WordNumer + 1));
+        ShowMessage(ErrorMessage);
+      end;
+      on WpcException : TWpcException do begin
+        ErrorMessage := Concat('Error: ', WpcException.Message);
+        ShowMessage(ErrorMessage);
+      end;
     end;
   end;
 end;
@@ -115,39 +125,33 @@ end;
 
 procedure TBannerForm.SetWallpaperDirectoryMenuItemClick(Sender : TObject);
 var
+  DirectoryPath : String;
   Directory : TWpcDirectory;
 begin
-  if (SelectWallpaperDirectoryDialog.Execute()) then begin
+  DirectoryPath := GetTargetFile(SelectWallpaperDirectoryDialog);
+  if (DirectoryPath <> '') then begin
+    Directory := TWpcDirectory.Create(SelectWallpaperDirectoryDialog.FileName);
     try
-      Directory := TWpcDirectory.Create(SelectWallpaperDirectoryDialog.FileName);
-      try
-        ApplicationManager.SetWallpapersFromDirectory(Directory);
-      except
-        on E : TWpcUseErrorException do begin
-          // A script is already running
-          if (Application.MessageBox('Another script is already running. Would you like to replace it?',
-                                     'Conflict',
-                                     MB_ICONQUESTION + MB_YESNO) = IDYES) then begin
-            ApplicationManager.StopScript();
-            ApplicationManager.SetWallpapersFromDirectory(Directory);
-          end;
-          // else do nothing
-        end;
+      ApplicationManager.SetWallpapersFromDirectory(Directory);
+    except
+      on E : TWpcRuntimeException do begin
+        ShowMessage('Specified directory doesn''t contain images.');
+        exit;
       end;
-    finally
-      Directory.Free();
     end;
+
+    MenuOnScriptStart();
   end;
 end;
 
 procedure TBannerForm.NextWallpaperMenuItemClick(Sender : TObject);
 begin
-
+  ApplicationManager.SetNextWallpaper();
 end;
 
 procedure TBannerForm.PreviousWallpaperMenuItemClick(Sender : TObject);
 begin
-
+  // TODO implement
 end;
 
 procedure TBannerForm.SetWallpaperImageMenuItemClick(Sender : TObject);
@@ -155,8 +159,8 @@ var
   Image : TWpcImage;
 begin
   if (SelectWallpaperDialog.Execute()) then begin
+    Image := TWpcImage.Create(SelectWallpaperDialog.FileName);
     try
-      Image := TWpcImage.Create(SelectWallpaperDialog.FileName);
       try
         ApplicationManager.SetWallpaper(Image);
       except
@@ -191,6 +195,63 @@ begin
   end;
 
   BannerForm.Close();
+end;
+
+(* Helpers *)
+
+{
+  Shows Select dialog to user to choose required item.
+  If another script is running user will be asked about it termination or this action cancelation first.
+  Returns:
+    path to item (Dialog.FileName) - if new action should be started (and terminates current script if needed)
+    empty string - if user canceled termination of current script or canceled choose dialog
+}
+function TBannerForm.GetTargetFile(Dialog: TFileDialog): String;
+var
+  ShouldTerminateCurrentScript : Boolean;
+begin
+  ShouldTerminateCurrentScript := False;
+  if (ApplicationManager.IsScriptRunning()) then
+    if (WarnScriptIsRunning()) then
+      ShouldTerminateCurrentScript := True
+    else begin
+      Result := '';
+      exit;
+    end;
+
+  if (Dialog.Execute()) then begin
+    if (ShouldTerminateCurrentScript) then begin
+      ApplicationManager.StopScript();
+      MenuOnScriptStop();
+    end;
+    Result := Dialog.FileName;
+  end
+  else
+    Result := '';
+end;
+
+{
+  Shows warning to user that another script is already running and asks about replacing it.
+  Returns true if user wants to replace current script and false otherwise.
+}
+function TBannerForm.WarnScriptIsRunning() : Boolean;
+begin
+  Result := IDYES =
+    Application.MessageBox('Another script is already running. Would you like to replace it?',
+                           'Conflict',
+                           MB_ICONQUESTION + MB_YESNO);
+end;
+
+procedure TBannerForm.MenuOnScriptStop();
+begin
+  StopMenuItem.Enabled := False;
+  NextWallpaperMenuItem.Enabled := False;
+end;
+
+procedure TBannerForm.MenuOnScriptStart();
+begin
+  StopMenuItem.Enabled := True;
+  NextWallpaperMenuItem.Enabled := True;
 end;
 
 

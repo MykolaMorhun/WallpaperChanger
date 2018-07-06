@@ -11,7 +11,8 @@ uses
   WpcScript,
   WpcBranchStatement,
   WpcDirectoryStatement,
-  WpcStatementProperties;
+  WpcStatementProperties,
+  WpcExceptions;
 
 type
 
@@ -27,6 +28,7 @@ implementation
 
 {
   Generates script for changing wallpapers within spesified directory.
+  Throws Runtime exception if specified directory doesn't contain images.
 
   Settings is read only.
 }
@@ -37,6 +39,11 @@ var
   DirectoryStatement : TWpcDirectoryStatement;
 begin
   DirectoryStatement := TWpcDirectoryStatement.Create(Dirctory, Settings.KeepOrder, true);
+  if (DirectoryStatement.CountImages() = 0) then begin
+    DirectoryStatement.Free();
+    raise TWpcRuntimeException.Create('Specified directory doesn''t contain images');
+  end;
+
   DirectoryStatement.SetStyle(Settings.WallpaperStyle);
   if (Settings.UseConstantDelay) then begin
     DirectoryStatement.SetDelay(Settings.ConstantDelay);

@@ -67,10 +67,12 @@ type
 
     procedure RunScript(PathToScript : String);
     procedure StopScript();
-    function IsScriptRunning() : Boolean;
+    function IsScriptRunning() : Boolean; inline;
 
     procedure SetWallpaper(Image : TWpcImage);
     procedure SetWallpapersFromDirectory(Directory : TWpcDirectory);
+
+    procedure SetNextWallpaper();
   public
     procedure OpenOptionsForm(ForceSetEnvironment : Boolean = False);
   private
@@ -178,6 +180,9 @@ end;
 
 procedure TWpcApplicationManager.StopScript();
 begin
+  if (not IsScriptRunning()) then
+    raise TWpcUseErrorException.Create('Script is not running.');
+
   FScriptExecutor.Terminate();
 end;
 
@@ -211,6 +216,14 @@ begin
 
   FApplicationStateSettings.LastType := WPCA_DIRECTORY;
   FApplicationStateSettings.LastDirectory := Directory.GetPath();
+end;
+
+procedure TWpcApplicationManager.SetNextWallpaper();
+begin
+  if (not IsScriptRunning()) then
+    raise TWpcUseErrorException.Create('Script is not running.');
+
+  FScriptExecutor.SkipCurrentDelay();
 end;
 
 (* UI *)
