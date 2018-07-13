@@ -22,7 +22,8 @@ uses
   WpcImage, WpcDirectory,
   WpcExceptions,
 
-  OptionsWindow;
+  OptionsWindow,
+  WpcScriptEditorForm;
 
 const
   SETTINGS_FILE = 'WPCSettings.ini';
@@ -51,6 +52,7 @@ type
     FScript        : TWpcScript;
   private
     FOptionsWindow : TOptionsForm;
+    FScriptEditorWindow : TScriptEditorForm;
   public
     constructor Create();
     destructor Destroy(); override;
@@ -75,6 +77,7 @@ type
     procedure SetNextWallpaper();
   public
     procedure OpenOptionsForm(ForceSetEnvironment : Boolean = False);
+    procedure OpenScriptEditorForm();
   private
     procedure OnScriptStoppedCallback();
   private
@@ -94,11 +97,15 @@ begin
   FWallpaperSetterFactory := GetWallpaperSetterFactory();
 
   FScriptsGenerator := TWpcScriptsGenerator.Create();
+
+  FOptionsWindow := nil;
+  FScriptEditorWindow := nil;
 end;
 
 destructor TWpcApplicationManager.Destroy();
 begin
   if (FOptionsWindow <> nil) then FOptionsWindow.Free();
+  if (FScriptEditorWindow <> nil) then FScriptEditorWindow.Free();
 
   // Stop script execution if any
   if (FScriptExecutor.IsRunning()) then
@@ -234,6 +241,14 @@ begin
     FOptionsWindow := TOptionsForm.Create(nil);
 
   FOptionsWindow.ShowOptinsForm(ForceSetEnvironment);
+end;
+
+procedure TWpcApplicationManager.OpenScriptEditorForm();
+begin
+  if (FScriptEditorWindow = nil) then
+    FScriptEditorWindow := TScriptEditorForm.Create(nil);
+
+  FScriptEditorWindow.Show();
 end;
 
 procedure TWpcApplicationManager.OnScriptStoppedCallback();

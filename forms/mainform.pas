@@ -120,7 +120,7 @@ end;
 
 procedure TBannerForm.ScriptEditorMenuItemClick(Sender : TObject);
 begin
-
+  ApplicationManager.OpenScriptEditorForm();
 end;
 
 procedure TBannerForm.SetWallpaperDirectoryMenuItemClick(Sender : TObject);

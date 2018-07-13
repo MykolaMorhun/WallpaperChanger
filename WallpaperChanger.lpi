@@ -27,12 +27,15 @@
         <FormatVersion Value="1"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="1">
+    <RequiredPackages Count="2">
       <Item1>
-        <PackageName Value="LCL"/>
+        <PackageName Value="SynEdit"/>
       </Item1>
+      <Item2>
+        <PackageName Value="LCL"/>
+      </Item2>
     </RequiredPackages>
-    <Units Count="37">
+    <Units Count="38">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -223,6 +226,14 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="OptionsWindow"/>
       </Unit36>
+      <Unit37>
+        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ScriptEditorForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="WpcScriptEditorForm"/>
+      </Unit37>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -232,7 +243,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="forms;common;script;os;common/types;os/envdetector;common/interfaces;os/providers;os/wpsetters;script/statements;script/statements/properties;script/executor"/>
+      <OtherUnitFiles Value="forms;common;script;os;common/types;os/envdetector;common/interfaces;os/providers;os/wpsetters;script/statements;script/statements/properties;script/executor;scripteditor"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

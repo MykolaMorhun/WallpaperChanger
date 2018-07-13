@@ -1,0 +1,880 @@
+object ScriptEditorForm: TScriptEditorForm
+  Left = 493
+  Height = 400
+  Top = 141
+  Width = 600
+  Caption = 'Wallpaper Changer Script Editor'
+  ClientHeight = 370
+  ClientWidth = 600
+  Menu = ScriptEditorMainMenu
+  Position = poDefault
+  LCLVersion = '1.6.4.0'
+  object ScriptEditorStatusBar: TStatusBar
+    Left = 0
+    Height = 28
+    Top = 342
+    Width = 600
+    Panels = <>
+  end
+  inline ScriptSynEdit: TSynEdit
+    Left = 0
+    Height = 342
+    Top = 0
+    Width = 600
+    Align = alClient
+    Font.Height = -17
+    Font.Name = 'DejaVu Sans Mono'
+    Font.Pitch = fpFixed
+    Font.Quality = fqNonAntialiased
+    ParentColor = False
+    ParentFont = False
+    TabOrder = 1
+    Gutter.Width = 61
+    Gutter.MouseActions = <>
+    RightGutter.Width = 0
+    RightGutter.MouseActions = <>
+    Keystrokes = <    
+      item
+        Command = ecUp
+        ShortCut = 38
+      end    
+      item
+        Command = ecSelUp
+        ShortCut = 8230
+      end    
+      item
+        Command = ecScrollUp
+        ShortCut = 16422
+      end    
+      item
+        Command = ecDown
+        ShortCut = 40
+      end    
+      item
+        Command = ecSelDown
+        ShortCut = 8232
+      end    
+      item
+        Command = ecScrollDown
+        ShortCut = 16424
+      end    
+      item
+        Command = ecLeft
+        ShortCut = 37
+      end    
+      item
+        Command = ecSelLeft
+        ShortCut = 8229
+      end    
+      item
+        Command = ecWordLeft
+        ShortCut = 16421
+      end    
+      item
+        Command = ecSelWordLeft
+        ShortCut = 24613
+      end    
+      item
+        Command = ecRight
+        ShortCut = 39
+      end    
+      item
+        Command = ecSelRight
+        ShortCut = 8231
+      end    
+      item
+        Command = ecWordRight
+        ShortCut = 16423
+      end    
+      item
+        Command = ecSelWordRight
+        ShortCut = 24615
+      end    
+      item
+        Command = ecPageDown
+        ShortCut = 34
+      end    
+      item
+        Command = ecSelPageDown
+        ShortCut = 8226
+      end    
+      item
+        Command = ecPageBottom
+        ShortCut = 16418
+      end    
+      item
+        Command = ecSelPageBottom
+        ShortCut = 24610
+      end    
+      item
+        Command = ecPageUp
+        ShortCut = 33
+      end    
+      item
+        Command = ecSelPageUp
+        ShortCut = 8225
+      end    
+      item
+        Command = ecPageTop
+        ShortCut = 16417
+      end    
+      item
+        Command = ecSelPageTop
+        ShortCut = 24609
+      end    
+      item
+        Command = ecLineStart
+        ShortCut = 36
+      end    
+      item
+        Command = ecSelLineStart
+        ShortCut = 8228
+      end    
+      item
+        Command = ecEditorTop
+        ShortCut = 16420
+      end    
+      item
+        Command = ecSelEditorTop
+        ShortCut = 24612
+      end    
+      item
+        Command = ecLineEnd
+        ShortCut = 35
+      end    
+      item
+        Command = ecSelLineEnd
+        ShortCut = 8227
+      end    
+      item
+        Command = ecEditorBottom
+        ShortCut = 16419
+      end    
+      item
+        Command = ecSelEditorBottom
+        ShortCut = 24611
+      end    
+      item
+        Command = ecToggleMode
+        ShortCut = 45
+      end    
+      item
+        Command = ecCopy
+        ShortCut = 16429
+      end    
+      item
+        Command = ecPaste
+        ShortCut = 8237
+      end    
+      item
+        Command = ecDeleteChar
+        ShortCut = 46
+      end    
+      item
+        Command = ecCut
+        ShortCut = 8238
+      end    
+      item
+        Command = ecDeleteLastChar
+        ShortCut = 8
+      end    
+      item
+        Command = ecDeleteLastChar
+        ShortCut = 8200
+      end    
+      item
+        Command = ecDeleteLastWord
+        ShortCut = 16392
+      end    
+      item
+        Command = ecUndo
+        ShortCut = 32776
+      end    
+      item
+        Command = ecRedo
+        ShortCut = 40968
+      end    
+      item
+        Command = ecLineBreak
+        ShortCut = 13
+      end    
+      item
+        Command = ecSelectAll
+        ShortCut = 16449
+      end    
+      item
+        Command = ecCopy
+        ShortCut = 16451
+      end    
+      item
+        Command = ecBlockIndent
+        ShortCut = 24649
+      end    
+      item
+        Command = ecLineBreak
+        ShortCut = 16461
+      end    
+      item
+        Command = ecInsertLine
+        ShortCut = 16462
+      end    
+      item
+        Command = ecDeleteWord
+        ShortCut = 16468
+      end    
+      item
+        Command = ecBlockUnindent
+        ShortCut = 24661
+      end    
+      item
+        Command = ecPaste
+        ShortCut = 16470
+      end    
+      item
+        Command = ecCut
+        ShortCut = 16472
+      end    
+      item
+        Command = ecDeleteLine
+        ShortCut = 16473
+      end    
+      item
+        Command = ecDeleteEOL
+        ShortCut = 24665
+      end    
+      item
+        Command = ecUndo
+        ShortCut = 16474
+      end    
+      item
+        Command = ecRedo
+        ShortCut = 24666
+      end    
+      item
+        Command = ecGotoMarker0
+        ShortCut = 16432
+      end    
+      item
+        Command = ecGotoMarker1
+        ShortCut = 16433
+      end    
+      item
+        Command = ecGotoMarker2
+        ShortCut = 16434
+      end    
+      item
+        Command = ecGotoMarker3
+        ShortCut = 16435
+      end    
+      item
+        Command = ecGotoMarker4
+        ShortCut = 16436
+      end    
+      item
+        Command = ecGotoMarker5
+        ShortCut = 16437
+      end    
+      item
+        Command = ecGotoMarker6
+        ShortCut = 16438
+      end    
+      item
+        Command = ecGotoMarker7
+        ShortCut = 16439
+      end    
+      item
+        Command = ecGotoMarker8
+        ShortCut = 16440
+      end    
+      item
+        Command = ecGotoMarker9
+        ShortCut = 16441
+      end    
+      item
+        Command = ecSetMarker0
+        ShortCut = 24624
+      end    
+      item
+        Command = ecSetMarker1
+        ShortCut = 24625
+      end    
+      item
+        Command = ecSetMarker2
+        ShortCut = 24626
+      end    
+      item
+        Command = ecSetMarker3
+        ShortCut = 24627
+      end    
+      item
+        Command = ecSetMarker4
+        ShortCut = 24628
+      end    
+      item
+        Command = ecSetMarker5
+        ShortCut = 24629
+      end    
+      item
+        Command = ecSetMarker6
+        ShortCut = 24630
+      end    
+      item
+        Command = ecSetMarker7
+        ShortCut = 24631
+      end    
+      item
+        Command = ecSetMarker8
+        ShortCut = 24632
+      end    
+      item
+        Command = ecSetMarker9
+        ShortCut = 24633
+      end    
+      item
+        Command = EcFoldLevel1
+        ShortCut = 41009
+      end    
+      item
+        Command = EcFoldLevel2
+        ShortCut = 41010
+      end    
+      item
+        Command = EcFoldLevel3
+        ShortCut = 41011
+      end    
+      item
+        Command = EcFoldLevel4
+        ShortCut = 41012
+      end    
+      item
+        Command = EcFoldLevel5
+        ShortCut = 41013
+      end    
+      item
+        Command = EcFoldLevel6
+        ShortCut = 41014
+      end    
+      item
+        Command = EcFoldLevel7
+        ShortCut = 41015
+      end    
+      item
+        Command = EcFoldLevel8
+        ShortCut = 41016
+      end    
+      item
+        Command = EcFoldLevel9
+        ShortCut = 41017
+      end    
+      item
+        Command = EcFoldLevel0
+        ShortCut = 41008
+      end    
+      item
+        Command = EcFoldCurrent
+        ShortCut = 41005
+      end    
+      item
+        Command = EcUnFoldCurrent
+        ShortCut = 41003
+      end    
+      item
+        Command = EcToggleMarkupWord
+        ShortCut = 32845
+      end    
+      item
+        Command = ecNormalSelect
+        ShortCut = 24654
+      end    
+      item
+        Command = ecColumnSelect
+        ShortCut = 24643
+      end    
+      item
+        Command = ecLineSelect
+        ShortCut = 24652
+      end    
+      item
+        Command = ecTab
+        ShortCut = 9
+      end    
+      item
+        Command = ecShiftTab
+        ShortCut = 8201
+      end    
+      item
+        Command = ecMatchBracket
+        ShortCut = 24642
+      end    
+      item
+        Command = ecColSelUp
+        ShortCut = 40998
+      end    
+      item
+        Command = ecColSelDown
+        ShortCut = 41000
+      end    
+      item
+        Command = ecColSelLeft
+        ShortCut = 40997
+      end    
+      item
+        Command = ecColSelRight
+        ShortCut = 40999
+      end    
+      item
+        Command = ecColSelPageDown
+        ShortCut = 40994
+      end    
+      item
+        Command = ecColSelPageBottom
+        ShortCut = 57378
+      end    
+      item
+        Command = ecColSelPageUp
+        ShortCut = 40993
+      end    
+      item
+        Command = ecColSelPageTop
+        ShortCut = 57377
+      end    
+      item
+        Command = ecColSelLineStart
+        ShortCut = 40996
+      end    
+      item
+        Command = ecColSelLineEnd
+        ShortCut = 40995
+      end    
+      item
+        Command = ecColSelEditorTop
+        ShortCut = 57380
+      end    
+      item
+        Command = ecColSelEditorBottom
+        ShortCut = 57379
+      end>
+    MouseActions = <>
+    MouseTextActions = <>
+    MouseSelActions = <>
+    Lines.Strings = (
+      ''
+    )
+    VisibleSpecialChars = [vscSpace, vscTabAtLast]
+    ScrollBars = ssAutoBoth
+    SelectedColor.BackPriority = 50
+    SelectedColor.ForePriority = 50
+    SelectedColor.FramePriority = 50
+    SelectedColor.BoldPriority = 50
+    SelectedColor.ItalicPriority = 50
+    SelectedColor.UnderlinePriority = 50
+    SelectedColor.StrikeOutPriority = 50
+    BracketHighlightStyle = sbhsBoth
+    BracketMatchColor.Background = clNone
+    BracketMatchColor.Foreground = clNone
+    BracketMatchColor.Style = [fsBold]
+    FoldedCodeColor.Background = clNone
+    FoldedCodeColor.Foreground = clGray
+    FoldedCodeColor.FrameColor = clGray
+    MouseLinkColor.Background = clNone
+    MouseLinkColor.Foreground = clBlue
+    LineHighlightColor.Background = clNone
+    LineHighlightColor.Foreground = clNone
+    OnChange = ScriptSynEditChange
+    inline SynLeftGutterPartList1: TSynGutterPartList
+      object SynGutterMarks1: TSynGutterMarks
+        Width = 24
+        MouseActions = <>
+      end
+      object SynGutterLineNumber1: TSynGutterLineNumber
+        Width = 21
+        MouseActions = <>
+        MarkupInfo.Background = clBtnFace
+        MarkupInfo.Foreground = clNone
+        DigitCount = 2
+        ShowOnlyLineNumbersMultiplesOf = 1
+        ZeroStart = False
+        LeadingZeros = False
+      end
+      object SynGutterChanges1: TSynGutterChanges
+        Width = 4
+        MouseActions = <>
+        ModifiedColor = 59900
+        SavedColor = clGreen
+      end
+      object SynGutterSeparator1: TSynGutterSeparator
+        Width = 2
+        MouseActions = <>
+        MarkupInfo.Background = clWhite
+        MarkupInfo.Foreground = clGray
+      end
+      object SynGutterCodeFolding1: TSynGutterCodeFolding
+        MouseActions = <>
+        MarkupInfo.Background = clNone
+        MarkupInfo.Foreground = clGray
+        MouseActionsExpanded = <>
+        MouseActionsCollapsed = <>
+      end
+    end
+  end
+  object ScriptEditorMainMenu: TMainMenu
+    left = 160
+    top = 72
+    object FileMenuItem: TMenuItem
+      Caption = 'File'
+      object FileNewMenuItem: TMenuItem
+        Caption = 'New'
+        object FileNewBlankMenuItem: TMenuItem
+          Action = FileNewBlankScriptAction
+          Caption = 'Blank script'
+        end
+        object FileNewBaseMenuItem: TMenuItem
+          Action = FileNewBaseScriptAction
+          Caption = 'Base script'
+        end
+        object FileNewFullMenuItem: TMenuItem
+          Action = FileNewFullScriptAction
+          Caption = 'Full script'
+        end
+      end
+      object FileOpenMenuItem: TMenuItem
+        Action = FileOpenScriptAction
+        Caption = 'Open ...'
+      end
+      object FileSaveMenuItem: TMenuItem
+        Action = FileSaveScriptAction
+        Caption = 'Save'
+      end
+      object FileSaveAsMenuItem: TMenuItem
+        Action = FileSaveScriptAsAction
+        Caption = 'Save as ...'
+      end
+      object FileSeparator1MenuItem: TMenuItem
+        Caption = '-'
+      end
+      object FileReadOnlyMenuItem: TMenuItem
+        Action = FileToggleReadOnlyAction
+        Caption = 'Read only'
+      end
+      object FileSeparator2MenuItem: TMenuItem
+        Caption = '-'
+      end
+      object FileCloseEditorMenuItem: TMenuItem
+        Action = CloseEditorWindowAction
+        Caption = 'Close Editor'
+      end
+    end
+    object ScriptMenuItem: TMenuItem
+      Caption = 'Script'
+      object ScriptCheckSyntaxMenuItem: TMenuItem
+        Action = ScriptCheckSyntaxAction
+        Caption = 'Check syntax'
+      end
+      object ScriptCheckResourcesMenuItem: TMenuItem
+        Action = ScriptCheckResourcesAction
+        Caption = 'Check resources'
+      end
+      object ScriptRunLogMenuItem: TMenuItem
+        Action = ScriptRunLogAction
+        Caption = 'Run in log mode'
+      end
+      object ScriptRunMenuItem: TMenuItem
+        Action = ScriptRunAction
+        Caption = 'Run'
+      end
+      object ScriptStopMenuItem: TMenuItem
+        Action = ScriptStopAction
+        Caption = 'Stop'
+      end
+    end
+    object BranchMenuItem: TMenuItem
+      Caption = 'Branch'
+      object BranchAddMenuItem: TMenuItem
+        Action = BranchAddAction
+        Caption = 'Add ...'
+      end
+    end
+    object StatementMenuItem: TMenuItem
+      Caption = 'Statement'
+      object StatementInsertMenuItem: TMenuItem
+        Caption = 'Insert'
+        object StatementInsertWaitMenuItem: TMenuItem
+          Action = StatementInsertWaitAction
+          Caption = 'Wait'
+        end
+        object StatementInsertWallpaperMenuItem: TMenuItem
+          Action = StatementInsertSetWallpaperAction
+          Caption = 'Set wallpaper'
+        end
+        object StatementInsertDirectoryMenuItem: TMenuItem
+          Action = StatementInsertSetDirectoryAction
+          Caption = 'Set directory'
+        end
+        object StatementInsertUseBranchMenuItem: TMenuItem
+          Action = StatementInsertUseBranchAction
+          Caption = 'Use branch'
+        end
+        object StatementInsertSwithcBranchMenuItem: TMenuItem
+          Action = StatementInsertSwitchBranchAction
+          Caption = 'Switch branch'
+        end
+        object StatementInsertChooserMenuItem: TMenuItem
+          Caption = 'Chooser'
+          object StatementInsertChooserWallpaperMenuItem: TMenuItem
+            Action = StatementInsertWallpaperChooserAction
+            Caption = 'Wallpaper'
+          end
+          object StatementInsertChooserUseBranchMenuItem: TMenuItem
+            Action = StatementInsertUseBranchChooserAction
+            Caption = 'Use branch'
+          end
+          object StatementInsertChooserSwitchBranchMenuItem: TMenuItem
+            Action = StatementInsertSwitchBranchChooserAction
+            Caption = 'Switch branch'
+          end
+        end
+        object StatementInsertStopMenuItem: TMenuItem
+          Action = StatementInsertStopAction
+          Caption = 'Stop'
+        end
+      end
+      object StatementInsertPropertyMenuItem: TMenuItem
+        Caption = 'Insert property'
+        object StatementPropertyDelayMenuItem: TMenuItem
+          Action = StatementInsertDelayPropertyAction
+          Caption = 'Delay'
+        end
+        object StatementPropertyProbabilityMenuItem: TMenuItem
+          Action = StatementInsertProbabilityPropertyAction
+          Caption = 'Probability'
+        end
+        object StatementPropertyTimesMenuItem: TMenuItem
+          Action = StatementInsertTimesPropertyAction
+          Caption = 'Times'
+        end
+        object StatementPropertyWallpaperStyleMenuItem: TMenuItem
+          Action = StatementInsertWallpaperStylePropertyAction
+          Caption = 'Wallpaper style '
+        end
+      end
+      object StatementEditMenuItem: TMenuItem
+        Action = StatementEditAction
+        Caption = 'Edit ...'
+      end
+      object StatementSeparator1: TMenuItem
+        Caption = '-'
+      end
+      object StatementInsertDialogMenuItem: TMenuItem
+        Action = StatementToggleInsertInteractiveAction
+        Caption = 'Interactive insertion'
+      end
+    end
+    object ResourceMenuItem: TMenuItem
+      Caption = 'Resource'
+      object ResourceInsertImageMenuItem: TMenuItem
+        Action = ResourceInsertImageAction
+        Caption = 'Insert image ...'
+      end
+      object ResourceInsertDirectoryMenuItem: TMenuItem
+        Action = ResourceInsertDirectoryAction
+        Caption = 'Insert directory ...'
+      end
+    end
+    object HelpMenuItem: TMenuItem
+      Caption = 'Help'
+      object HelpDocsMenuItem: TMenuItem
+        Action = HelpDocumentationAction
+        Caption = 'Documentation ...'
+      end
+      object HelpAboutMenuItem: TMenuItem
+        Action = HelpAboutAction
+        Caption = 'About ...'
+      end
+    end
+  end
+  object ScriptEditorImageList: TImageList
+    left = 160
+    top = 192
+  end
+  object ScriptEditorActionList: TActionList
+    left = 160
+    top = 128
+    object ScriptCheckSyntaxAction: TAction
+      Category = 'script'
+      Caption = 'Check script syntax'
+      OnExecute = ScriptCheckSyntaxActionExecute
+    end
+    object ScriptCheckResourcesAction: TAction
+      Category = 'script'
+      Caption = 'Check script resources'
+      OnExecute = ScriptCheckResourcesActionExecute
+    end
+    object ScriptRunLogAction: TAction
+      Category = 'script'
+      Caption = 'Run script in log mode'
+      OnExecute = ScriptRunLogActionExecute
+    end
+    object ScriptRunAction: TAction
+      Category = 'script'
+      Caption = 'Run script'
+      OnExecute = ScriptRunActionExecute
+    end
+    object ScriptStopAction: TAction
+      Category = 'script'
+      Caption = 'Stop script'
+      OnExecute = ScriptStopActionExecute
+    end
+    object FileNewBlankScriptAction: TAction
+      Category = 'file'
+      Caption = 'New blank Script'
+      OnExecute = FileNewBlankScriptActionExecute
+    end
+    object FileNewBaseScriptAction: TAction
+      Category = 'file'
+      Caption = 'New base script'
+      OnExecute = FileNewBaseScriptActionExecute
+    end
+    object FileNewFullScriptAction: TAction
+      Category = 'file'
+      Caption = 'New full script'
+      OnExecute = FileNewFullScriptActionExecute
+    end
+    object FileOpenScriptAction: TAction
+      Category = 'file'
+      Caption = 'Open script'
+      OnExecute = FileOpenScriptActionExecute
+    end
+    object FileSaveScriptAction: TAction
+      Category = 'file'
+      Caption = 'Save script'
+      OnExecute = FileSaveScriptActionExecute
+    end
+    object FileSaveScriptAsAction: TAction
+      Category = 'file'
+      Caption = 'Save script as ...'
+      OnExecute = FileSaveScriptAsActionExecute
+    end
+    object FileToggleReadOnlyAction: TAction
+      Category = 'file'
+      Caption = 'Toggle read only'
+      OnExecute = FileToggleReadOnlyActionExecute
+    end
+    object BranchAddAction: TAction
+      Category = 'branch'
+      Caption = 'Add branch'
+      OnExecute = BranchAddActionExecute
+    end
+    object HelpDocumentationAction: TAction
+      Category = 'help'
+      Caption = 'Documentation'
+      OnExecute = HelpDocumentationActionExecute
+    end
+    object HelpAboutAction: TAction
+      Category = 'help'
+      Caption = 'About'
+      OnExecute = HelpAboutActionExecute
+    end
+    object ResourceInsertImageAction: TAction
+      Category = 'resource'
+      Caption = 'Insert image link'
+      OnExecute = ResourceInsertImageActionExecute
+    end
+    object ResourceInsertDirectoryAction: TAction
+      Category = 'resource'
+      Caption = 'Insert directory link'
+      OnExecute = ResourceInsertDirectoryActionExecute
+    end
+    object DialogEditAction: TAction
+      Caption = 'DialogEditAction'
+    end
+    object StatementEditAction: TAction
+      Category = 'statement'
+      Caption = 'Edit statement'
+      OnExecute = StatementEditActionExecute
+    end
+    object CloseEditorWindowAction: TAction
+      Category = 'file'
+      Caption = 'Close script editor'
+      OnExecute = CloseEditorWindowActionExecute
+    end
+    object StatementToggleInsertInteractiveAction: TAction
+      Category = 'statement'
+      Caption = 'Toggle interactive insert for statement'
+      OnExecute = StatementToggleInsertInteractiveActionExecute
+    end
+    object StatementInsertDelayPropertyAction: TAction
+      Category = 'statement'
+      Caption = 'Insert delay statement property'
+    end
+    object StatementInsertProbabilityPropertyAction: TAction
+      Category = 'statement'
+      Caption = 'Insert probability  statement property'
+    end
+    object StatementInsertTimesPropertyAction: TAction
+      Category = 'statement'
+      Caption = 'insert times  statement property'
+    end
+    object StatementInsertWallpaperStylePropertyAction: TAction
+      Category = 'statement'
+      Caption = 'Insert wallpaper style  statement property'
+    end
+    object StatementInsertWaitAction: TAction
+      Category = 'statement'
+      Caption = 'Insert wait statement'
+      OnExecute = StatementInsertWaitActionExecute
+    end
+    object StatementInsertSetWallpaperAction: TAction
+      Category = 'statement'
+      Caption = 'Insert set wallpaper statement'
+      OnExecute = StatementInsertSetWallpaperActionExecute
+    end
+    object StatementInsertSetDirectoryAction: TAction
+      Category = 'statement'
+      Caption = 'Insert set directory  statement'
+      OnExecute = StatementInsertSetDirectoryActionExecute
+    end
+    object StatementInsertUseBranchAction: TAction
+      Category = 'statement'
+      Caption = 'Insert use branch statement'
+      OnExecute = StatementInsertUseBranchActionExecute
+    end
+    object StatementInsertSwitchBranchAction: TAction
+      Category = 'statement'
+      Caption = 'Insert switch branch  statement'
+      OnExecute = StatementInsertSwitchBranchActionExecute
+    end
+    object StatementInsertWallpaperChooserAction: TAction
+      Category = 'statement'
+      Caption = 'Insert wallpaper chooser statement'
+      OnExecute = StatementInsertWallpaperChooserActionExecute
+    end
+    object StatementInsertUseBranchChooserAction: TAction
+      Category = 'statement'
+      Caption = 'Insert use branch chooser statement'
+      OnExecute = StatementInsertUseBranchChooserActionExecute
+    end
+    object StatementInsertSwitchBranchChooserAction: TAction
+      Category = 'statement'
+      Caption = 'Insert switch branch chooser statement'
+      OnExecute = StatementInsertSwitchBranchChooserActionExecute
+    end
+    object StatementInsertStopAction: TAction
+      Category = 'statement'
+      Caption = 'Insert stop statement'
+      OnExecute = StatementInsertStopActionExecute
+    end
+  end
+  object ScriptSaveDialog: TSaveDialog
+    Title = 'Save Wallpaper Changer script as'
+    DefaultExt = '.wcs'
+    Filter = 'Wallpaper Changer Scripts|*.wcs|All files|*.*'
+    left = 512
+    top = 16
+  end
+  object ScriptOpenDialog: TOpenDialog
+    Title = 'Open Wallpaper Changer script for editing'
+    Filter = 'Wallpaper Changes Scripts|*.wcs|All files|*.*'
+    left = 432
+    top = 16
+  end
+end
