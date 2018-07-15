@@ -6,17 +6,24 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, SynEdit, Forms, Controls, Graphics, Dialogs,
-  Menus, ComCtrls, ActnList, LCLType,
+  Menus, ComCtrls, ActnList, LCLType, ExtDlgs,
   WpcScriptParser,
-  WpcScript;
+  WpcScript,
+  WpcWallpaperStyles;
 
 type
 
   { TScriptEditorForm }
 
   TScriptEditorForm = class(TForm)
+    StatementInsertPropertyInteractiveAction: TAction;
+    StatementInsertInteractiveAction: TAction;
+    MenuItem1: TMenuItem;
+    StatementInsertInteractiveMenuItem: TMenuItem;
+    ResourceOpenPictureDialog: TOpenPictureDialog;
     ScriptOpenDialog: TOpenDialog;
     ScriptSaveDialog: TSaveDialog;
+    ResourceSelectDirectoryDialog: TSelectDirectoryDialog;
     StatementInsertStopAction: TAction;
     StatementInsertSwitchBranchChooserAction: TAction;
     StatementInsertUseBranchChooserAction: TAction;
@@ -90,7 +97,7 @@ type
     StatementPropertyDelayMenuItem: TMenuItem;
     StatementEditMenuItem: TMenuItem;
     StatementInsertPropertyMenuItem: TMenuItem;
-    StatementInsertDialogMenuItem: TMenuItem;
+    StatementToggleInteractiveInsertionMenuItem: TMenuItem;
     StatementInsertMenuItem: TMenuItem;
     ResourceInsertDirectoryMenuItem: TMenuItem;
     ResourceInsertImageMenuItem: TMenuItem;
@@ -113,6 +120,7 @@ type
     procedure FileSaveScriptActionExecute(Sender: TObject);
     procedure FileSaveScriptAsActionExecute(Sender: TObject);
     procedure FileToggleReadOnlyActionExecute(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure HelpAboutActionExecute(Sender: TObject);
     procedure HelpDocumentationActionExecute(Sender: TObject);
     procedure ResourceInsertDirectoryActionExecute(Sender: TObject);
@@ -122,32 +130,55 @@ type
     procedure ScriptRunActionExecute(Sender: TObject);
     procedure ScriptRunLogActionExecute(Sender: TObject);
     procedure ScriptStopActionExecute(Sender: TObject);
-    procedure ScriptSynEditChange(Sender: TObject);
     procedure StatementEditActionExecute(Sender: TObject);
+    procedure StatementInsertDelayPropertyActionExecute(Sender: TObject);
+    procedure StatementInsertInteractiveActionExecute(Sender: TObject);
+    procedure StatementInsertProbabilityPropertyActionExecute(Sender: TObject);
+    procedure StatementInsertPropertyInteractiveActionExecute(Sender: TObject);
     procedure StatementInsertSetDirectoryActionExecute(Sender: TObject);
     procedure StatementInsertSetWallpaperActionExecute(Sender: TObject);
     procedure StatementInsertStopActionExecute(Sender: TObject);
     procedure StatementInsertSwitchBranchActionExecute(Sender: TObject);
     procedure StatementInsertSwitchBranchChooserActionExecute(Sender: TObject);
+    procedure StatementInsertTimesPropertyActionExecute(Sender: TObject);
     procedure StatementInsertUseBranchActionExecute(Sender: TObject);
     procedure StatementInsertUseBranchChooserActionExecute(Sender: TObject);
     procedure StatementInsertWaitActionExecute(Sender: TObject);
     procedure StatementInsertWallpaperChooserActionExecute(Sender: TObject);
+    procedure StatementInsertWallpaperStylePropertyActionExecute(Sender: TObject);
     procedure StatementToggleInsertInteractiveActionExecute(Sender: TObject);
+  const
+    LINE_BREAK = #10#13;
+
+    DEFAULT_WALLPAPER = 'path';
+    DEFAULT_DIRECTORY = 'path';
+    DEFAULT_BARNCH_NAME = 'BranchName';
+    DEFAULT_SELECTOR = WEIGHT_KEYWORD;
+    DEFAULT_DELAY = '5m';
+    DEFAULT_TIMES = '5';
+    DEFAULT_PROBABILITY = '50';
   private
-    // true if any changes were made in the current script
-    FIsDirty : Boolean;
     // Path to the file in which the current script is saved. Empty string if none.
     FScriptPath : String;
     // Script under editing
     FCurrentScript : TSynEdit;
+    // Determinas if insertion of script components shows UI
+    FInteractiveInsertion : Boolean;
   public
     constructor Create(TheOwner : TComponent); override;
-  public
+    destructor Destroy(); override;
+  private
     function AskSave(Sender : TObject = nil) : Boolean;
+  private
+    procedure InsertNewLineIfCurrentNotEmpty();
+    function GetLeftIndent(Line : String) : String;
+    function CountLeftIndent(Line : String) : Integer;
+    function IsEmptyOrWhitespace(Arg : String) : Boolean;
   end;
 
 implementation
+uses
+  WpcApplication;
 
 {$R *.lfm}
 
@@ -157,11 +188,21 @@ constructor TScriptEditorForm.Create(TheOwner: TComponent);
 begin
   inherited Create(TheOwner);
 
+  if ((Screen.Width >= 1024) and (Screen.Height >= 768)) then begin
+    Width := 850;
+    Height := 620;
+  end;
+
   FCurrentScript := ScriptSynEdit;
-  FIsDirty := False;
   FScriptPath := '';
+  FInteractiveInsertion := False;
 
   FileNewBaseScriptActionExecute(Self);
+end;
+
+destructor TScriptEditorForm.Destroy();
+begin
+  inherited Destroy();
 end;
 
 (* Actions *)
@@ -181,8 +222,8 @@ begin
 
   FCurrentScript.ClearAll();
   FCurrentScript.Lines.Clear();
+  FCurrentScript.Modified := False;
 
-  FIsDirty := False;
   FScriptPath := '';
 end;
 
@@ -199,11 +240,10 @@ begin
     Lines.Add(END_KEYWORD + ' ' + BRANCH_KEYWORD);
     Lines.Add('');
 
-    CaretX := 3;
-    CaretY := 2;
+    CaretXY := Point(3, 2);
+    Modified := False;
   end;
 
-  FIsDirty := False;
   FScriptPath := '';
 end;
 
@@ -240,11 +280,10 @@ begin
     Lines.Add(END_KEYWORD + ' ' + BRANCH_KEYWORD);
     Lines.Add('');
 
-    CaretX := 3;
-    CaretY := 22;
+    CaretXY := Point(3, 22);
+    Modified := False;
   end;
 
-  FIsDirty := False;
   FScriptPath := '';
 end;
 
@@ -255,14 +294,16 @@ begin
   if (ScriptOpenDialog.Execute()) then begin
     FScriptPath := ScriptOpenDialog.FileName;
     FCurrentScript.Lines.LoadFromFile(FScriptPath);
-    FIsDirty := False;
+    FCurrentScript.Modified := False;
   end;
 end;
 
 procedure TScriptEditorForm.FileSaveScriptActionExecute(Sender : TObject);
 begin
-  if (FScriptPath <> '') then
-    FCurrentScript.Lines.SaveToFile(FScriptPath)
+  if (FScriptPath <> '') then begin
+    FCurrentScript.Lines.SaveToFile(FScriptPath);
+    FCurrentScript.Modified := False;
+  end
   else
     FileSaveScriptAsActionExecute(Sender);
 end;
@@ -271,13 +312,22 @@ procedure TScriptEditorForm.FileSaveScriptAsActionExecute(Sender : TObject);
 begin
   if (ScriptSaveDialog.Execute()) then begin
     FScriptPath := ScriptSaveDialog.FileName;
-    ScriptSynEdit.Lines.SaveToFile(FScriptPath);
+    FCurrentScript.Lines.SaveToFile(FScriptPath);
+    FCurrentScript.Modified := False;
   end
 end;
 
 procedure TScriptEditorForm.FileToggleReadOnlyActionExecute(Sender : TObject);
+var
+  IsReadOnly : Boolean;
 begin
-  // TODO
+  IsReadOnly := not FileToggleReadOnlyAction.Checked;
+
+  FileToggleReadOnlyAction.Checked := IsReadOnly;
+  FCurrentScript.ReadOnly := IsReadOnly;
+  BranchMenuItem.Enabled := not IsReadOnly;
+  StatementMenuItem.Enabled := not IsReadOnly;
+  ResourceMenuItem.Enabled := not IsReadOnly;
 end;
 
 // Script
@@ -311,53 +361,222 @@ end;
 // Branch
 
 procedure TScriptEditorForm.BranchAddActionExecute(Sender : TObject);
+var
+  BranchName : String;
 begin
+  BranchName := '';
+  if (InputQuery('New branch', 'Branch name: ', BranchName)) then
+    if (BranchName <> '') then
+      with FCurrentScript do begin
+        Append('');
+        Append(BRANCH_KEYWORD + ' ' + BranchName);
+        Append('  ');
+        Append(END_KEYWORD + ' ' + BRANCH_KEYWORD);
 
+        CaretXY := Point(3, Lines.Count - 1);
+      end;
 end;
 
 // Statement
 
 procedure TScriptEditorForm.StatementInsertWaitActionExecute(Sender : TObject);
 begin
-
+  if (FInteractiveInsertion) then begin
+    // TODO
+  end
+  else begin
+    InsertNewLineIfCurrentNotEmpty();
+    FCurrentScript.InsertTextAtCaret(WAIT_KEYWORD + ' ' + DEFAULT_DELAY);
+    FCurrentScript.SelectWord();
+  end;
 end;
 
 procedure TScriptEditorForm.StatementInsertSetDirectoryActionExecute(Sender : TObject);
 begin
-
+  if (FInteractiveInsertion) then begin
+    // TODO
+  end
+  else begin
+    InsertNewLineIfCurrentNotEmpty();
+    FCurrentScript.InsertTextAtCaret(SET_KEYWORD + ' ' + WALLPAPER_KEYWORD + ' ' + FROM_KEYWORD + ' ' + DIRECTORY_KEYWORD + ' ' + DEFAULT_DIRECTORY);
+    FCurrentScript.SelectWord();
+  end;
 end;
 
 procedure TScriptEditorForm.StatementInsertSetWallpaperActionExecute(Sender : TObject);
 begin
-
+  if (FInteractiveInsertion) then begin
+    // TODO
+  end
+  else begin
+    InsertNewLineIfCurrentNotEmpty();
+    FCurrentScript.InsertTextAtCaret(SET_KEYWORD + ' ' + WALLPAPER_KEYWORD + ' ' + DEFAULT_WALLPAPER);
+    FCurrentScript.SelectWord();
+  end;
 end;
 
 procedure TScriptEditorForm.StatementInsertUseBranchActionExecute(Sender : TObject);
 begin
-
+  if (FInteractiveInsertion) then begin
+    // TODO
+  end
+  else begin
+    InsertNewLineIfCurrentNotEmpty();
+    FCurrentScript.InsertTextAtCaret(USE_KEYWORD + ' ' + BRANCH_KEYWORD + ' ' + DEFAULT_BARNCH_NAME);
+    FCurrentScript.SelectWord();
+  end;
 end;
 
 procedure TScriptEditorForm.StatementInsertSwitchBranchActionExecute(Sender : TObject);
 begin
-
+  if (FInteractiveInsertion) then begin
+    // TODO
+  end
+  else begin
+    InsertNewLineIfCurrentNotEmpty();
+    FCurrentScript.InsertTextAtCaret(SWITCH_KEYWORD + ' ' + TO_KEYWORD + ' ' + BRANCH_KEYWORD + ' ' + DEFAULT_BARNCH_NAME);
+    FCurrentScript.SelectWord();
+  end;
 end;
 
 procedure TScriptEditorForm.StatementInsertWallpaperChooserActionExecute(Sender : TObject);
+var
+  Indent : String;
+  i      : Integer;
 begin
+  if (FInteractiveInsertion) then begin
+    // TODO
+  end
+  else begin
+    Indent := GetLeftIndent(FCurrentScript.LineText);
+    InsertNewLineIfCurrentNotEmpty();
+    FCurrentScript.TextBetweenPoints[FCurrentScript.CaretXY, FCurrentScript.CaretXY] :=
+      CHOOSE_KEYWORD + ' ' + WALLPAPER_KEYWORD + ' ' + BY_KEYWORD + ' ' + DEFAULT_SELECTOR + ' ' + FROM_KEYWORD +
+      LINE_BREAK +
+      Indent + END_KEYWORD + ' ' + CHOOSE_KEYWORD;
 
+    for i:=1 to 3 do
+      FCurrentScript.CaretXY := FCurrentScript.NextWordPos();
+    FCurrentScript.SelectWord();
+  end;
 end;
 
 procedure TScriptEditorForm.StatementInsertUseBranchChooserActionExecute(Sender : TObject);
+var
+  Indent : String;
+  i      : Integer;
 begin
+  if (FInteractiveInsertion) then begin
+    // TODO
+  end
+  else begin
+    Indent := GetLeftIndent(FCurrentScript.LineText);
+    InsertNewLineIfCurrentNotEmpty();
+    FCurrentScript.TextBetweenPoints[FCurrentScript.CaretXY, FCurrentScript.CaretXY] :=
+      CHOOSE_KEYWORD + ' ' + BRANCH_KEYWORD + ' ' + TO_KEYWORD + ' ' + USE_KEYWORD + ' ' + BY_KEYWORD + ' ' + DEFAULT_SELECTOR + ' ' + FROM_KEYWORD +
+      LINE_BREAK +
+      Indent + END_KEYWORD + ' ' + CHOOSE_KEYWORD;
 
+    for i:=1 to 5 do
+      FCurrentScript.CaretXY := FCurrentScript.NextWordPos();
+    FCurrentScript.SelectWord();
+  end;
 end;
 
 procedure TScriptEditorForm.StatementInsertSwitchBranchChooserActionExecute(Sender : TObject);
+var
+  Indent : String;
+  i      : Integer;
+begin
+  if (FInteractiveInsertion) then begin
+    // TODO
+  end
+  else begin
+    Indent := GetLeftIndent(FCurrentScript.LineText);
+    InsertNewLineIfCurrentNotEmpty();
+    FCurrentScript.TextBetweenPoints[FCurrentScript.CaretXY, FCurrentScript.CaretXY] :=
+      CHOOSE_KEYWORD + ' ' + BRANCH_KEYWORD + ' ' + TO_KEYWORD + ' ' + SWITCH_KEYWORD + ' ' + BY_KEYWORD + ' ' + DEFAULT_SELECTOR + ' ' + FROM_KEYWORD +
+      LINE_BREAK +
+      Indent + END_KEYWORD + ' ' + CHOOSE_KEYWORD;
+
+    for i:=1 to 5 do
+      FCurrentScript.CaretXY := FCurrentScript.NextWordPos();
+    FCurrentScript.SelectWord();
+  end;
+end;
+
+procedure TScriptEditorForm.StatementInsertStopActionExecute(Sender : TObject);
+begin
+  if (FInteractiveInsertion) then begin
+    // TODO
+  end
+  else begin
+    InsertNewLineIfCurrentNotEmpty();
+    FCurrentScript.InsertTextAtCaret(STOP_KEYWORD + ' ');
+  end;
+end;
+
+procedure TScriptEditorForm.StatementInsertDelayPropertyActionExecute(Sender : TObject);
+begin
+  if (FInteractiveInsertion) then begin
+    // TODO
+  end
+  else begin
+    FCurrentScript.InsertTextAtCaret(' ' + FOR_KEYWORD + ' ' + DEFAULT_DELAY);
+    FCurrentScript.SelectWord();
+  end;
+end;
+
+procedure TScriptEditorForm.StatementInsertProbabilityPropertyActionExecute(Sender : TObject);
+begin
+  if (FInteractiveInsertion) then begin
+    // TODO
+  end
+  else begin
+    FCurrentScript.InsertTextAtCaret(' ' + WITH_KEYWORD + ' ' + PROBABILITY_KEYWORD + ' ' + DEFAULT_PROBABILITY);
+    FCurrentScript.SelectWord();
+  end;
+end;
+
+procedure TScriptEditorForm.StatementInsertTimesPropertyActionExecute(Sender : TObject);
+begin
+  if (FInteractiveInsertion) then begin
+    // TODO
+  end
+  else begin
+    FCurrentScript.InsertTextAtCaret(' ' + DEFAULT_TIMES + ' ' + TIMES_KEYWORD);
+    FCurrentScript.CaretXY := FCurrentScript.PrevWordPos();
+    FCurrentScript.CaretXY := FCurrentScript.PrevWordPos();
+    FCurrentScript.SelectWord();
+  end;
+end;
+
+procedure TScriptEditorForm.StatementInsertWallpaperStylePropertyActionExecute(Sender : TObject);
+var
+  WallpaperStyleString : String;
+begin
+  if (FInteractiveInsertion) then begin
+    // TODO
+  end
+  else begin
+    WallpaperStyleString := WallpaperStyleToStr(ApplicationManager.CurrentSettings.WallpaperStyle);
+    FCurrentScript.InsertTextAtCaret(' ' + STYLE_KEYWORD + ' ' + WallpaperStyleString);
+    FCurrentScript.SelectWord();
+  end;
+end;
+
+procedure TScriptEditorForm.StatementToggleInsertInteractiveActionExecute(Sender : TObject);
+begin
+  FInteractiveInsertion := not FInteractiveInsertion;
+  StatementToggleInsertInteractiveAction.Checked := not StatementToggleInsertInteractiveAction.Checked;
+end;
+
+procedure TScriptEditorForm.StatementInsertInteractiveActionExecute(Sender : TObject);
 begin
 
 end;
 
-procedure TScriptEditorForm.StatementInsertStopActionExecute(Sender : TObject);
+procedure TScriptEditorForm.StatementInsertPropertyInteractiveActionExecute(Sender : TObject);
 begin
 
 end;
@@ -367,40 +586,37 @@ begin
 
 end;
 
-procedure TScriptEditorForm.StatementToggleInsertInteractiveActionExecute(Sender : TObject);
-begin
-
-end;
-
 // Resource
 
 procedure TScriptEditorForm.ResourceInsertImageActionExecute(Sender : TObject);
 begin
-
+  if (ResourceOpenPictureDialog.Execute()) then
+    FCurrentScript.InsertTextAtCaret(ResourceOpenPictureDialog.FileName);
 end;
 
 procedure TScriptEditorForm.ResourceInsertDirectoryActionExecute(Sender : TObject);
 begin
-
+  if (ResourceSelectDirectoryDialog.Execute()) then
+    FCurrentScript.InsertTextAtCaret(ResourceSelectDirectoryDialog.FileName);
 end;
 
 // Help
 
 procedure TScriptEditorForm.HelpAboutActionExecute(Sender : TObject);
 begin
-
+  // TODO use app manager
 end;
 
 procedure TScriptEditorForm.HelpDocumentationActionExecute(Sender : TObject);
 begin
-
+  // TODO use app manager
 end;
 
 (* UI handlers *)
 
-procedure TScriptEditorForm.ScriptSynEditChange(Sender: TObject);
+procedure TScriptEditorForm.FormCloseQuery(Sender : TObject; var CanClose : boolean);
 begin
-  FIsDirty := True;
+  CanClose := not AskSave(Sender);
 end;
 
 (* Helpers *)
@@ -411,7 +627,7 @@ end;
 }
 function TScriptEditorForm.AskSave(Sender : TObject = nil) : Boolean;
 begin
-  if (FIsDirty) then
+  if (FCurrentScript.Modified) then
     case (Application.MessageBox('Would you like to save changes?',
                                  'Unsaved changes',
                                  MB_ICONQUESTION + MB_YESNOCANCEL)) of
@@ -427,6 +643,57 @@ begin
     end
   else
     Result := False;
+end;
+
+{
+  Checks if current line contains meaning text (whitespaces are ignored) and if so
+  inserts new line after current and put caret in it.
+}
+procedure TScriptEditorForm.InsertNewLineIfCurrentNotEmpty();
+var
+  Indent : Integer;
+begin
+  if (not IsEmptyOrWhitespace(FCurrentScript.LineText)) then begin
+    Indent := CountLeftIndent(FCurrentScript.LineText);
+    FCurrentScript.TextBetweenPoints[Point(FCurrentScript.LineText.Length + 1, FCurrentScript.CaretY),
+                                     Point(0, FCurrentScript.CaretY + 1)] := LINE_BREAK;
+    FCurrentScript.CaretX := Indent + 1;
+    FCurrentScript.CaretY := FCurrentScript.CaretY + 1;
+  end;
+end;
+
+{
+  Returns string with number of spaces like in the given one form the left.
+}
+function TScriptEditorForm.GetLeftIndent(Line : String) : String;
+begin
+  Result := Copy(Line, 1, CountLeftIndent(Line));
+end;
+
+{
+  Counts number of spaces at the given string beginning.
+}
+function TScriptEditorForm.CountLeftIndent(Line : String) : Integer;
+var
+  i : Integer;
+begin
+  i := 1;
+  while (Line[i] = ' ') do
+    Inc(i);
+
+  Result := i-1;
+end;
+
+function TScriptEditorForm.IsEmptyOrWhitespace(Arg : String) : Boolean;
+var
+  i : Integer;
+begin
+  for i:=1 to Length(Arg) do
+    if (not (Arg[i] in WHITESPACE_SET)) then begin
+      Result := False;
+      exit;
+    end;
+  Result := True;
 end;
 
 

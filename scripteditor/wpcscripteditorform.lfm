@@ -6,7 +6,10 @@ object ScriptEditorForm: TScriptEditorForm
   Caption = 'Wallpaper Changer Script Editor'
   ClientHeight = 370
   ClientWidth = 600
+  Constraints.MinHeight = 150
+  Constraints.MinWidth = 200
   Menu = ScriptEditorMainMenu
+  OnCloseQuery = FormCloseQuery
   Position = poDefault
   LCLVersion = '1.6.4.0'
   object ScriptEditorStatusBar: TStatusBar
@@ -460,6 +463,7 @@ object ScriptEditorForm: TScriptEditorForm
     Lines.Strings = (
       ''
     )
+    Options = [eoAutoIndent, eoBracketHighlight, eoGroupUndo, eoScrollPastEol, eoSmartTabs, eoTabIndent, eoTabsToSpaces, eoTrimTrailingSpaces]
     VisibleSpecialChars = [vscSpace, vscTabAtLast]
     ScrollBars = ssAutoBoth
     SelectedColor.BackPriority = 50
@@ -480,7 +484,6 @@ object ScriptEditorForm: TScriptEditorForm
     MouseLinkColor.Foreground = clBlue
     LineHighlightColor.Background = clNone
     LineHighlightColor.Foreground = clNone
-    OnChange = ScriptSynEditChange
     inline SynLeftGutterPartList1: TSynGutterPartList
       object SynGutterMarks1: TSynGutterMarks
         Width = 24
@@ -657,16 +660,29 @@ object ScriptEditorForm: TScriptEditorForm
           Caption = 'Wallpaper style '
         end
       end
-      object StatementEditMenuItem: TMenuItem
-        Action = StatementEditAction
-        Caption = 'Edit ...'
+      object StatementToggleInteractiveInsertionMenuItem: TMenuItem
+        Action = StatementToggleInsertInteractiveAction
+        Caption = 'Interactive insertion'
+        Visible = False
       end
       object StatementSeparator1: TMenuItem
         Caption = '-'
+        Visible = False
       end
-      object StatementInsertDialogMenuItem: TMenuItem
-        Action = StatementToggleInsertInteractiveAction
-        Caption = 'Interactive insertion'
+      object StatementInsertInteractiveMenuItem: TMenuItem
+        Action = StatementInsertInteractiveAction
+        Caption = 'Insert ...'
+        Visible = False
+      end
+      object MenuItem1: TMenuItem
+        Action = StatementInsertPropertyInteractiveAction
+        Caption = 'Insert property ...'
+        Visible = False
+      end
+      object StatementEditMenuItem: TMenuItem
+        Action = StatementEditAction
+        Caption = 'Edit ...'
+        Visible = False
       end
     end
     object ResourceMenuItem: TMenuItem
@@ -805,18 +821,22 @@ object ScriptEditorForm: TScriptEditorForm
     object StatementInsertDelayPropertyAction: TAction
       Category = 'statement'
       Caption = 'Insert delay statement property'
+      OnExecute = StatementInsertDelayPropertyActionExecute
     end
     object StatementInsertProbabilityPropertyAction: TAction
       Category = 'statement'
       Caption = 'Insert probability  statement property'
+      OnExecute = StatementInsertProbabilityPropertyActionExecute
     end
     object StatementInsertTimesPropertyAction: TAction
       Category = 'statement'
       Caption = 'insert times  statement property'
+      OnExecute = StatementInsertTimesPropertyActionExecute
     end
     object StatementInsertWallpaperStylePropertyAction: TAction
       Category = 'statement'
       Caption = 'Insert wallpaper style  statement property'
+      OnExecute = StatementInsertWallpaperStylePropertyActionExecute
     end
     object StatementInsertWaitAction: TAction
       Category = 'statement'
@@ -863,6 +883,16 @@ object ScriptEditorForm: TScriptEditorForm
       Caption = 'Insert stop statement'
       OnExecute = StatementInsertStopActionExecute
     end
+    object StatementInsertInteractiveAction: TAction
+      Category = 'statement'
+      Caption = 'Interactive insert statement'
+      OnExecute = StatementInsertInteractiveActionExecute
+    end
+    object StatementInsertPropertyInteractiveAction: TAction
+      Category = 'statement'
+      Caption = 'Interactive insert statement property'
+      OnExecute = StatementInsertPropertyInteractiveActionExecute
+    end
   end
   object ScriptSaveDialog: TSaveDialog
     Title = 'Save Wallpaper Changer script as'
@@ -876,5 +906,13 @@ object ScriptEditorForm: TScriptEditorForm
     Filter = 'Wallpaper Changes Scripts|*.wcs|All files|*.*'
     left = 432
     top = 16
+  end
+  object ResourceSelectDirectoryDialog: TSelectDirectoryDialog
+    left = 512
+    top = 96
+  end
+  object ResourceOpenPictureDialog: TOpenPictureDialog
+    left = 432
+    top = 96
   end
 end
