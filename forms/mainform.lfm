@@ -13,6 +13,7 @@ object BannerForm: TBannerForm
   object SelectScriptDialog: TOpenDialog
     Title = 'Select script'
     Filter = 'Wallpaper Changer Script|*.wcs|All files|*.*'
+    Options = [ofFileMustExist, ofEnableSizing, ofViewDetail]
     left = 16
     top = 72
   end
@@ -90,10 +91,12 @@ object BannerForm: TBannerForm
     top = 8
   end
   object SelectWallpaperDirectoryDialog: TSelectDirectoryDialog
+    Options = [ofFileMustExist, ofEnableSizing, ofViewDetail]
     left = 88
     top = 72
   end
   object SelectWallpaperDialog: TOpenPictureDialog
+    Options = [ofFileMustExist, ofEnableSizing, ofViewDetail]
     left = 160
     top = 72
   end

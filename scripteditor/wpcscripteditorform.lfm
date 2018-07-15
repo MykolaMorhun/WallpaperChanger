@@ -992,14 +992,17 @@ object ScriptEditorForm: TScriptEditorForm
     Height = 945
     Title = 'Open Wallpaper Changer script for editing'
     Filter = 'Wallpaper Changes Scripts|*.wcs|All files|*.*'
+    Options = [ofFileMustExist, ofEnableSizing, ofViewDetail]
     left = 432
     top = 16
   end
   object ResourceSelectDirectoryDialog: TSelectDirectoryDialog
+    Options = [ofFileMustExist, ofEnableSizing, ofViewDetail]
     left = 512
     top = 96
   end
   object ResourceOpenPictureDialog: TOpenPictureDialog
+    Options = [ofFileMustExist, ofEnableSizing, ofViewDetail]
     left = 432
     top = 96
   end
