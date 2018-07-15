@@ -94,7 +94,6 @@ end;
 procedure TBannerForm.RunScriptMenuItemClick(Sender : TObject);
 var
   ScriptPath : String;
-  ErrorMessage : String;
 begin
   ScriptPath := GetTargetFile(SelectScriptDialog);
   if (ScriptPath <> '') then begin
@@ -102,18 +101,10 @@ begin
       ApplicationManager.RunScript(SelectScriptDialog.FileName);
       MenuOnScriptStart();
     except
-      on ParseExcepton : TWpcScriptParseException do begin
-        ErrorMessage := Concat('Failed to parse script: ', ParseExcepton.Message);
-        if (ParseExcepton.Line <> TWpcScriptParseException.UNKNOWN_LINE) then
-          ErrorMessage := Concat(ErrorMessage, ' Line: ', IntToStr(ParseExcepton.Line + 1));
-        if (ParseExcepton.WordNumer <> TWpcScriptParseException.UNKNOWN_WORD_NUMBER) then
-          ErrorMessage := Concat(ErrorMessage, ' Word: ', IntToStr(ParseExcepton.WordNumer + 1));
-        ShowMessage(ErrorMessage);
-      end;
-      on WpcException : TWpcException do begin
-        ErrorMessage := Concat('Error: ', WpcException.Message);
-        ShowMessage(ErrorMessage);
-      end;
+      on ParseExcepton : TWpcScriptParseException do
+       ShowMessage(ParseExcepton.PrettyMessage);
+      on WpcException : TWpcException do
+        ShowMessage(Concat('Error: ', WpcException.Message));
     end;
   end;
 end;

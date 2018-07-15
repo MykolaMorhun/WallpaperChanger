@@ -27,10 +27,13 @@ type
     FLine       : Integer;
     FWordNumber : Integer;
     FMessage    : String;
+  private
+    function GetPrettyMessage() : String;
   public
-    property Line      : Integer read FLine;
-    property WordNumer : Integer read FWordNumber;
-    property Message   : String  read FMessage;
+    property Line          : Integer read FLine;
+    property WordNumer     : Integer read FWordNumber;
+    property Message       : String  read FMessage;
+    property PrettyMessage : String  read GetPrettyMessage;
   public
     constructor Create(ErrMessage: String);
     constructor Create(ErrMessage : String; ErrLine : Integer);
@@ -62,6 +65,15 @@ begin
   FLine := ErrLine;
   FWordNumber := ErrWordNumber;
   FMessage := ErrMessage;
+end;
+
+function TWpcScriptParseException.GetPrettyMessage(): String;
+begin
+  Result := Concat('Failed to parse script: ', FMessage);
+  if (FLine <> UNKNOWN_LINE) then
+    Result := Concat(Result, 'Line: ', IntToStr(FLine + 1));
+  if (FWordNumber <> UNKNOWN_WORD_NUMBER) then
+    Result := Concat(Result, ' word: ', IntToStr(FWordNumber + 1));
 end;
 
 

@@ -6,24 +6,36 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, SynEdit, Forms, Controls, Graphics, Dialogs,
-  Menus, ComCtrls, ActnList, LCLType, ExtDlgs,
+  Menus, ComCtrls, ActnList, LCLType, ExtDlgs, ExtCtrls, StdCtrls,
   WpcScriptParser,
   WpcScript,
-  WpcWallpaperStyles;
+  WpcWallpaperStyles,
+  WpcExceptions;
 
 type
 
   { TScriptEditorForm }
 
   TScriptEditorForm = class(TForm)
-    StatementInsertPropertyInteractiveAction: TAction;
-    StatementInsertInteractiveAction: TAction;
-    MenuItem1: TMenuItem;
-    StatementInsertInteractiveMenuItem: TMenuItem;
+    ScriptEditorActionList: TActionList;
+    ScriptEditorImageList: TImageList;
+    ScriptEditorMainMenu: TMainMenu;
+    EditorPanel: TPanel;
+    ScriptSynEdit: TSynEdit;
+    BottomPanel: TPanel;
+    EditorBottomPanelSplitter: TSplitter;
+    BottomPanelMemo: TMemo;
+    BottomPanelToolBar: TToolBar;
+    HideBottomPanelToolButton: TToolButton;
+    ClearBottomPanelToolButton: TToolButton;
+
     ResourceOpenPictureDialog: TOpenPictureDialog;
     ScriptOpenDialog: TOpenDialog;
     ScriptSaveDialog: TSaveDialog;
     ResourceSelectDirectoryDialog: TSelectDirectoryDialog;
+
+    StatementInsertPropertyInteractiveAction: TAction;
+    StatementInsertInteractiveAction: TAction;
     StatementInsertStopAction: TAction;
     StatementInsertSwitchBranchChooserAction: TAction;
     StatementInsertUseBranchChooserAction: TAction;
@@ -53,8 +65,11 @@ type
     FileNewFullScriptAction: TAction;
     FileNewBaseScriptAction: TAction;
     FileNewBlankScriptAction: TAction;
+    ViewFontSizeDecreaseAction: TAction;
+    ViewFontSizeIncreaseAction: TAction;
+    ViewToggleBottomPanelAction: TAction;
+    CleanBottomPanelOutputAction: TAction;
     ScriptStopAction: TAction;
-    ScriptRunAction: TAction;
     ScriptRunLogAction: TAction;
     ScriptCheckResourcesAction: TAction;
     ScriptCheckSyntaxAction: TAction;
@@ -71,9 +86,14 @@ type
     FileSeparator1MenuItem: TMenuItem;
     FileReadOnlyMenuItem: TMenuItem;
     FileSeparator2MenuItem: TMenuItem;
+    ViewMenuItem: TMenuItem;
+    ViewSeparator1MenuItem: TMenuItem;
+    ViewFontSizeDecreaseMenuItem: TMenuItem;
+    ViewFontSizeIncreaseMenuItem: TMenuItem;
+    ViewFontSizeMenuItem: TMenuItem;
+    ViewToggleBottomPanelMenuItem: TMenuItem;
     ScriptMenuItem: TMenuItem;
     ScriptStopMenuItem: TMenuItem;
-    ScriptRunMenuItem: TMenuItem;
     ScriptRunLogMenuItem: TMenuItem;
     ScriptCheckResourcesMenuItem: TMenuItem;
     ScriptCheckSyntaxMenuItem: TMenuItem;
@@ -98,6 +118,8 @@ type
     StatementEditMenuItem: TMenuItem;
     StatementInsertPropertyMenuItem: TMenuItem;
     StatementToggleInteractiveInsertionMenuItem: TMenuItem;
+    StatementInsertInteractivePropertyMenuItem: TMenuItem;
+    StatementInsertInteractiveMenuItem: TMenuItem;
     StatementInsertMenuItem: TMenuItem;
     ResourceInsertDirectoryMenuItem: TMenuItem;
     ResourceInsertImageMenuItem: TMenuItem;
@@ -106,12 +128,8 @@ type
     HelpDocsMenuItem: TMenuItem;
     HelpAboutMenuItem: TMenuItem;
 
-    ScriptEditorActionList: TActionList;
-    ScriptEditorImageList: TImageList;
-    ScriptEditorMainMenu: TMainMenu;
-    ScriptEditorStatusBar: TStatusBar;
-    ScriptSynEdit: TSynEdit;
     procedure BranchAddActionExecute(Sender: TObject);
+    procedure CleanBottomPanelOutputActionExecute(Sender: TObject);
     procedure CloseEditorWindowActionExecute(Sender: TObject);
     procedure FileNewBaseScriptActionExecute(Sender: TObject);
     procedure FileNewBlankScriptActionExecute(Sender: TObject);
@@ -127,7 +145,6 @@ type
     procedure ResourceInsertImageActionExecute(Sender: TObject);
     procedure ScriptCheckResourcesActionExecute(Sender: TObject);
     procedure ScriptCheckSyntaxActionExecute(Sender: TObject);
-    procedure ScriptRunActionExecute(Sender: TObject);
     procedure ScriptRunLogActionExecute(Sender: TObject);
     procedure ScriptStopActionExecute(Sender: TObject);
     procedure StatementEditActionExecute(Sender: TObject);
@@ -147,6 +164,9 @@ type
     procedure StatementInsertWallpaperChooserActionExecute(Sender: TObject);
     procedure StatementInsertWallpaperStylePropertyActionExecute(Sender: TObject);
     procedure StatementToggleInsertInteractiveActionExecute(Sender: TObject);
+    procedure ViewFontSizeDecreaseActionExecute(Sender: TObject);
+    procedure ViewFontSizeIncreaseActionExecute(Sender: TObject);
+    procedure ViewToggleBottomPanelActionExecute(Sender: TObject);
   const
     LINE_BREAK = #10#13;
 
@@ -157,6 +177,9 @@ type
     DEFAULT_DELAY = '5m';
     DEFAULT_TIMES = '5';
     DEFAULT_PROBABILITY = '50';
+
+    MINIMAL_FONT_SIZE = 6;
+    MAXIMAL_FONT_SIZE = 32;
   private
     // Path to the file in which the current script is saved. Empty string if none.
     FScriptPath : String;
@@ -169,11 +192,15 @@ type
     destructor Destroy(); override;
   private
     function AskSave(Sender : TObject = nil) : Boolean;
+
+    procedure ShowBottomPanel(Sender : TObject = nil); inline;
   private
     procedure InsertNewLineIfCurrentNotEmpty();
     function GetLeftIndent(Line : String) : String;
-    function CountLeftIndent(Line : String) : Integer;
+    function CountLeadSpaces(Line : String) : Integer;
     function IsEmptyOrWhitespace(Arg : String) : Boolean;
+
+    procedure CheckScript(CheckResources : Boolean);
   end;
 
 implementation
@@ -187,15 +214,18 @@ uses
 constructor TScriptEditorForm.Create(TheOwner: TComponent);
 begin
   inherited Create(TheOwner);
+  FCurrentScript := ScriptSynEdit;
+  FScriptPath := '';
+  FInteractiveInsertion := False;
+
+  // Hide bottom panel
+  EditorBottomPanelSplitter.Visible := False;
+  BottomPanel.Visible := False;
 
   if ((Screen.Width >= 1024) and (Screen.Height >= 768)) then begin
     Width := 850;
     Height := 620;
   end;
-
-  FCurrentScript := ScriptSynEdit;
-  FScriptPath := '';
-  FInteractiveInsertion := False;
 
   FileNewBaseScriptActionExecute(Self);
 end;
@@ -330,25 +360,47 @@ begin
   ResourceMenuItem.Enabled := not IsReadOnly;
 end;
 
+// View
+
+procedure TScriptEditorForm.ViewToggleBottomPanelActionExecute(Sender: TObject);
+begin
+  ViewToggleBottomPanelAction.Checked := not ViewToggleBottomPanelAction.Checked;
+  EditorBottomPanelSplitter.Visible := not EditorBottomPanelSplitter.Visible;
+  BottomPanel.Visible := not BottomPanel.Visible;
+end;
+
+procedure TScriptEditorForm.ViewFontSizeIncreaseActionExecute(Sender: TObject);
+begin
+  if (FCurrentScript.Font.Size < MAXIMAL_FONT_SIZE) then
+      FCurrentScript.Font.Size := FCurrentScript.Font.Size + 1;
+end;
+
+procedure TScriptEditorForm.ViewFontSizeDecreaseActionExecute(Sender: TObject);
+begin
+  if (FCurrentScript.Font.Size > MINIMAL_FONT_SIZE) then
+    FCurrentScript.Font.Size := FCurrentScript.Font.Size - 1;
+end;
+
+procedure TScriptEditorForm.CleanBottomPanelOutputActionExecute(Sender : TObject);
+begin
+  BottomPanelMemo.Clear();
+end;
+
 // Script
 
 procedure TScriptEditorForm.ScriptCheckSyntaxActionExecute(Sender : TObject);
 begin
-
+  ShowBottomPanel(Sender);
+  CheckScript(False);
 end;
 
 procedure TScriptEditorForm.ScriptCheckResourcesActionExecute(Sender : TObject);
 begin
-
+  ShowBottomPanel(Sender);
+  CheckScript(True);
 end;
-
 
 procedure TScriptEditorForm.ScriptRunLogActionExecute(Sender : TObject);
-begin
-
-end;
-
-procedure TScriptEditorForm.ScriptRunActionExecute(Sender : TObject);
 begin
 
 end;
@@ -645,6 +697,12 @@ begin
     Result := False;
 end;
 
+procedure TScriptEditorForm.ShowBottomPanel(Sender : TObject = nil);
+begin
+  if (not ViewToggleBottomPanelAction.Checked) then
+    ViewToggleBottomPanelActionExecute(Sender);
+end;
+
 {
   Checks if current line contains meaning text (whitespaces are ignored) and if so
   inserts new line after current and put caret in it.
@@ -654,7 +712,7 @@ var
   Indent : Integer;
 begin
   if (not IsEmptyOrWhitespace(FCurrentScript.LineText)) then begin
-    Indent := CountLeftIndent(FCurrentScript.LineText);
+    Indent := CountLeadSpaces(FCurrentScript.LineText);
     FCurrentScript.TextBetweenPoints[Point(FCurrentScript.LineText.Length + 1, FCurrentScript.CaretY),
                                      Point(0, FCurrentScript.CaretY + 1)] := LINE_BREAK;
     FCurrentScript.CaretX := Indent + 1;
@@ -667,13 +725,13 @@ end;
 }
 function TScriptEditorForm.GetLeftIndent(Line : String) : String;
 begin
-  Result := Copy(Line, 1, CountLeftIndent(Line));
+  Result := Copy(Line, 1, CountLeadSpaces(Line));
 end;
 
 {
   Counts number of spaces at the given string beginning.
 }
-function TScriptEditorForm.CountLeftIndent(Line : String) : Integer;
+function TScriptEditorForm.CountLeadSpaces(Line : String) : Integer;
 var
   i : Integer;
 begin
@@ -694,6 +752,57 @@ begin
       exit;
     end;
   Result := True;
+end;
+
+procedure TScriptEditorForm.CheckScript(CheckResources : Boolean);
+var
+  ScriptLines   : TStringList;
+  ScriptParser  : TWpcScriptParser;
+  Script        : TWpcScript;
+  i             : Integer;
+begin
+  Script := nil;
+  ScriptLines := TStringList.Create();
+  ScriptLines.Assign(FCurrentScript.Lines);
+  ScriptParser := TWpcScriptParser.Create(ScriptLines);
+  ScriptParser.CheckScriptResources := CheckResources;
+  try
+    try
+      Script := ScriptParser.Parse();
+      BottomPanelMemo.Append('Script syntax is OK');
+      if (CheckResources) then
+         BottomPanelMemo.Append('Script resources is OK');
+    except
+      on ParseException : TWpcScriptParseException do begin
+        BottomPanelMemo.Append('Failed to parse script: ');
+        BottomPanelMemo.Append('  ' + ParseException.Message);
+        if (ParseException.Line <> TWpcScriptParseException.UNKNOWN_LINE) then
+          if (ParseException.WordNumer <> TWpcScriptParseException.UNKNOWN_WORD_NUMBER) then
+            BottomPanelMemo.Append('  At: line ' + IntToStr(ParseException.Line + 1) +
+                                       ', word ' + IntToStr(ParseException.WordNumer + 1))
+          else
+            BottomPanelMemo.Append('  At line: ' + IntToStr(ParseException.Line + 1));
+        BottomPanelMemo.Append('');
+
+        if (ParseException.Line <> TWpcScriptParseException.UNKNOWN_LINE) then begin
+          FCurrentScript.CaretXY := Point(1, ParseException.Line + 1);
+          if (ParseException.WordNumer <> TWpcScriptParseException.UNKNOWN_WORD_NUMBER) then begin
+            for i:=1 to (ParseException.WordNumer + 1) do
+              FCurrentScript.CaretXY := FCurrentScript.NextWordPos();
+            FCurrentScript.SelectWord();
+          end
+          else
+            FCurrentScript.SelectLine();
+        end;
+      end;
+      on E : Exception do
+        BottomPanelMemo.Append('Unxpected error: ' + E.Message);
+    end;
+  finally
+    if (Script <> nil) then Script.Free();
+    ScriptParser.Free();
+    ScriptLines.Free();
+  end;
 end;
 
 
