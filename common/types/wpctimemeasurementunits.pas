@@ -5,7 +5,8 @@ unit WpcTimeMeasurementUnits;
 interface
 
 uses
-  Classes, SysUtils;
+  Classes, SysUtils,
+  WpcExceptions;
 
 type
 
@@ -36,12 +37,14 @@ end;
 
 function StrToTimeMeasurementUnit(MeasurementUnit : String) : TWpcTimeMeasurementUnits;
 begin
-  case (MeasurementUnit) of
+  case (LowerCase(MeasurementUnit)) of
     MU_MILLISECONDS_STRING: Result := MILLISECONDS;
     MU_SECONDS_STRING:      Result := SECONDS;
     MU_MINUTES_STRING:      Result := MINUTES;
     MU_HOURS_STRING:        Result := HOURS;
     MU_DAYS_STRING:         Result := DAYS;
+  else
+    raise TWpcException.Create('Invalid measurement unit "' + MeasurementUnit + '"');
   end;
 end;
 

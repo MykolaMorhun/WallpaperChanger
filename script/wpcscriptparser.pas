@@ -41,6 +41,7 @@ const
   DELAYS_KEYWORD = 'DELAYS';
   DELAY_KEYWORD = 'DELAY';
   DEFAULTS_KEYWORD = 'DEFAULTS';
+  UNITS_KEYWORD = 'UNITS';
   BRANCH_KEYWORD = 'BRANCH';
   END_KEYWORD = 'END';
   WAIT_KEYWORD = 'WAIT';
@@ -57,6 +58,10 @@ const
   PROBABILITY_KEYWORD = 'PROBABILITY';
   FOR_KEYWORD = 'FOR';
   TIMES_KEYWORD = 'TIMES';
+  TO_KEYWORD = 'TO';
+  ORDERED_KEYWORD = 'ORDERED';
+  RECURSIVE_KEYWORD = 'RECURSIVE';
+
   WEIGHT_KEYWORD = 'WEIGHT';
   SEASON_KEYWORD = 'SEASON';
   WEEKDAY_KEYWORD = 'WEEKDAY';
@@ -64,9 +69,17 @@ const
   DATE_KEYWORD = 'DATE';
   TIME_KEYWORD = 'TIME';
   DATETIME_KEYWORD = 'DATETIME';
-  TO_KEYWORD = 'TO';
-  ORDERED_KEYWORD = 'ORDERED';
-  RECURSIVE_KEYWORD = 'RECURSIVE';
+
+  SEASONS : Array[1..4] of String = (
+    'WINTER', 'SPRING', 'SUMMER', 'AUTUMN'
+  );
+  MONTHS : Array[1..12] of String = (
+    'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
+    'JULY', 'AUGUST','SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'
+  );
+  DAYS_OF_WEEK : Array[1..7] of String = (
+    'SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'
+  );
 
   WPC_DATE_SEPARATOR = '.';
   WPC_TIME_SEPARATOR = ':';
@@ -550,7 +563,7 @@ begin
         DELAY_KEYWORD:
           begin
             Inc(CurrentWordIndex);
-            if (CheckKeyWord(SafeGet(LineWords, CurrentWordIndex), 'UNITS')) then begin
+            if (CheckKeyWord(SafeGet(LineWords, CurrentWordIndex), UNITS_KEYWORD)) then begin
               Inc(CurrentWordIndex);
 
               AWord := SafeGet(LineWords, CurrentWordIndex);
@@ -1722,7 +1735,7 @@ end;
   Note, that WEIGHT selector with default value (1) could be ommited.
 }
 function TWpcScriptParser.ParseAndRemoveSelector(LineWords : TStringList; Selector : TWpcSelector) : TWpcSelectorValueHolder;
-  function GetSelectorKeywordBySelector(Selector : TWpcSelector) : String;
+  function SelectorToStr(Selector : TWpcSelector) : String;
   begin
     case (Selector) of
       S_WEIGHT:   Result := WEIGHT_KEYWORD;
@@ -1753,7 +1766,7 @@ begin
   end;
 
   // Handle selector keyword without a value
-  if (SafeGet(LineWords, Len-1) = GetSelectorKeywordBySelector(Selector)) then
+  if (SafeGet(LineWords, Len-1) = SelectorToStr(Selector)) then
     raise TWpcScriptParseException.Create('Selector value expected.', FCurrentLine, Len-1);
 
   // Handle ommited WEIGHT selector and its default value.
@@ -1891,14 +1904,11 @@ end;
 }
 function TWpcScriptParser.ParseDelayMeasurmentUnitsValue(MeasurementUnits : String) : TWpcTimeMeasurementUnits;
 begin
-  case (MeasurementUnits) of
-    's' : Result := SECONDS;
-    'm' : Result := MINUTES;
-    'h' : Result := HOURS;
-    'd' : Result := DAYS;
-    'ms': result := MILLISECONDS;
-  else
-    raise TWpcScriptParseException.Create('Failed to parse delay measurment units: "' + MeasurementUnits + '".', FCurrentLine);
+  try
+    Result := StrToTimeMeasurementUnit(MeasurementUnits);
+  except
+    on E : TWpcException do
+      raise TWpcScriptParseException.Create('Failed to parse delay measurment units: "' + MeasurementUnits + '".', FCurrentLine);
   end;
 end;
 
@@ -1996,10 +2006,6 @@ end;
   Where Winter is season with index 1
 }
 function TWpcScriptParser.ParseSeasonValue(Season : String) : Integer;
-const
-  SEASONS : Array[1..4] of String = (
-    'WINTER', 'SPRING', 'SUMMER', 'AUTUMN'
-    );
 begin
   Result := ParseSequentialNumberWithAlias(Season, SEASONS);
 end;
@@ -2010,10 +2016,6 @@ end;
   Where Sunday is day with index 1
 }
 function TWpcScriptParser.ParseWeekdayValue(Weekday : String) : Integer;
-const
-  DAYS_OF_WEEK : Array[1..7] of String = (
-    'SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'
-    );
 begin
   Result := ParseSequentialNumberWithAlias(Weekday, DAYS_OF_WEEK);
 end;
@@ -2024,10 +2026,6 @@ end;
   Where January is month with index 1
 }
 function TWpcScriptParser.ParseMonthValue(Month : String) : Integer;
-const
-  MONTHS : Array[1..12] of String = (
-    'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'
-    );
 begin
   Result := ParseSequentialNumberWithAlias(Month, MONTHS);
 end;

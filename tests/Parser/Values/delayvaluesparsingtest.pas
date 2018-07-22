@@ -154,7 +154,7 @@ end;
 
 procedure TDelayValuesParsingTest.ShouldRaiseScriptParseExceptionIfInvalidMeasurementUnitGiven();
 const
-  WRONG_MEASUREMENT_UNITS : Array[1..5] of String = ('us', 'ps', 'Ms', 'ns', 'ds');
+  WRONG_MEASUREMENT_UNITS : Array[1..5] of String = ('us', 'ps', 'Mm', 'ns', 'ds');
 var
   i : Integer;
 begin

@@ -5,8 +5,10 @@ unit WpcScriptEditorForm;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, SynEdit, Forms, Controls, Graphics, Dialogs,
-  Menus, ComCtrls, ActnList, LCLType, ExtDlgs, ExtCtrls, StdCtrls,
+  Classes, SysUtils, FileUtil, SynEdit, SynHighlighterAny, Forms, Controls,
+  Graphics, Dialogs, Menus, ComCtrls, ActnList, LCLType, ExtDlgs, ExtCtrls,
+  StdCtrls,
+  WpcScriptSyntaxHighlighterConfigurrer,
   WpcScriptParser,
   WpcScript,
   WpcWallpaperStyles,
@@ -227,6 +229,10 @@ begin
     Height := 620;
   end;
 
+  // Set highlighter
+  ScriptSynEdit.Highlighter := CreateWallpaperChangerScriptHighlighter(ScriptSynEdit);
+
+  // Fill editor with basic script template
   FileNewBaseScriptActionExecute(Self);
 end;
 

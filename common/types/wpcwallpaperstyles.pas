@@ -16,6 +16,7 @@ const
 
 type
    // TODO alises for strings, FILL == ZOOM, FIT == SCALED, STRETCH == STRETCHED, ... but Enum should be unique.
+  // Unknown should be the last
    TWallpaperStyle = (CENTER, TILE, STRETCH, UNKNOWN);
   // ROS: STRETCH, TILE, CENTER  (alias CENTRE ?)
   // win7: FILL(ZOOM), FIT(scaled),  STRETCH, TILE, CENTER

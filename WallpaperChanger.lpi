@@ -35,7 +35,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="38">
+    <Units Count="39">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -234,6 +234,11 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="WpcScriptEditorForm"/>
       </Unit37>
+      <Unit38>
+        <Filename Value="scripteditor/wpcscriptsyntaxhighlighterconfigurrer.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcScriptSyntaxHighlighterConfigurrer"/>
+      </Unit38>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
