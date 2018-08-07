@@ -35,7 +35,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="39">
+    <Units Count="47">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -239,6 +239,46 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScriptSyntaxHighlighterConfigurrer"/>
       </Unit38>
+      <Unit39>
+        <Filename Value="scripteditor/wpcscripteditorconstantslist.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcScriptEditorConstantsList"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="scripteditor/autocomplete/wpcstaticscriptautocompletion.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcStaticScriptAutocompletion"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="scripteditor/autocomplete/wpcabstractscriptautocompletion.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcAbstractScriptAutocompletion"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="scripteditor/autocomplete/wpcscriptautocompletion.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcScriptAutocompletion"/>
+      </Unit42>
+      <Unit43>
+        <Filename Value="scripteditor/autocomplete/wpcbasicscriptautocompletion.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcBasicScriptAutocompletion"/>
+      </Unit43>
+      <Unit44>
+        <Filename Value="scripteditor/autocomplete/wpcabstractdynamicscriptautocompletion.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcAbstractDynamicScriptAutocompletion"/>
+      </Unit44>
+      <Unit45>
+        <Filename Value="scripteditor/autocomplete/wpcadvancedscriptautocompletion.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcAdvancedScriptAutocompletion"/>
+      </Unit45>
+      <Unit46>
+        <Filename Value="scripteditor/autocomplete/wpcscriptautocompletionmanager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcScriptAutocompletionManager"/>
+      </Unit46>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -248,7 +288,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="forms;common;script;os;common/types;os/envdetector;common/interfaces;os/providers;os/wpsetters;script/statements;script/statements/properties;script/executor;scripteditor;scripteditor/forms"/>
+      <OtherUnitFiles Value="forms;common;script;os;common/types;os/envdetector;common/interfaces;os/providers;os/wpsetters;script/statements;script/statements/properties;script/executor;scripteditor;scripteditor/forms;scripteditor/autocomplete"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

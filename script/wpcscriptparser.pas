@@ -111,9 +111,10 @@ type
     FDirsVariables   : TMapStringString;
     FImagesVariables : TMapStringString;
     FDelaysVariables : TMapStringLongWord;
-    FDefaultDelay : LongWord;
-    FDefaultDelayUnits : TWpcTimeMeasurementUnits;
-    FDefaultWallpaperStyle : TWallpaperStyle;
+
+    FDefaultDelay           : LongWord;
+    FDefaultDelayUnits      : TWpcTimeMeasurementUnits;
+    FDefaultWallpaperStyle  : TWallpaperStyle;
     FDefaultImagesDirectory : TWpcDirectory;
 
     FComputedDefaultDelay : LongWord;

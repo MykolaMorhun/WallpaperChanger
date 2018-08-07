@@ -5,10 +5,13 @@ unit WpcScriptEditorForm;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, SynEdit, SynHighlighterAny, Forms, Controls,
-  Graphics, Dialogs, Menus, ComCtrls, ActnList, LCLType, ExtDlgs, ExtCtrls,
-  StdCtrls,
+  Classes, SysUtils,
+  FileUtil, SynEdit, SynHighlighterAny, SynCompletion, Forms, Controls,
+  Graphics, Dialogs, Menus, ComCtrls, ActnList, ExtDlgs, ExtCtrls, StdCtrls,
+  Types, LCLType,
   WpcScriptSyntaxHighlighterConfigurrer,
+  WpcScriptAutocompletionManager,
+  WpcAbstractDynamicScriptAutocompletion,
   WpcScriptParser,
   WpcScript,
   WpcWallpaperStyles,
@@ -67,6 +70,7 @@ type
     FileNewFullScriptAction: TAction;
     FileNewBaseScriptAction: TAction;
     FileNewBlankScriptAction: TAction;
+    ScriptSynCompletion: TSynCompletion;
     ViewFontSizeDecreaseAction: TAction;
     ViewFontSizeIncreaseAction: TAction;
     ViewToggleBottomPanelAction: TAction;
@@ -149,6 +153,11 @@ type
     procedure ScriptCheckSyntaxActionExecute(Sender: TObject);
     procedure ScriptRunLogActionExecute(Sender: TObject);
     procedure ScriptStopActionExecute(Sender: TObject);
+    procedure ScriptSynCompletionCodeCompletion(var Value: string;
+      SourceValue: string; var SourceStart, SourceEnd: TPoint;
+      KeyChar: TUTF8Char; Shift: TShiftState);
+    procedure ScriptSynCompletionExecute(Sender: TObject);
+    procedure ScriptSynCompletionSearchPosition(var APosition: integer);
     procedure StatementEditActionExecute(Sender: TObject);
     procedure StatementInsertDelayPropertyActionExecute(Sender: TObject);
     procedure StatementInsertInteractiveActionExecute(Sender: TObject);
@@ -189,6 +198,8 @@ type
     FCurrentScript : TSynEdit;
     // Determinas if insertion of script components shows UI
     FInteractiveInsertion : Boolean;
+
+    FAutocompleteManager : TWpcScriptAutocompletionManager;
   public
     constructor Create(TheOwner : TComponent); override;
     destructor Destroy(); override;
@@ -220,6 +231,9 @@ begin
   FScriptPath := '';
   FInteractiveInsertion := False;
 
+  // Create autocomplete resolver
+  FAutocompleteManager := TWpcScriptAutocompletionManager.Create(SACM_BASIC);
+
   // Hide bottom panel
   EditorBottomPanelSplitter.Visible := False;
   BottomPanel.Visible := False;
@@ -238,6 +252,8 @@ end;
 
 destructor TScriptEditorForm.Destroy();
 begin
+  FAutocompleteManager.Free();
+
   inherited Destroy();
 end;
 
@@ -675,6 +691,82 @@ end;
 procedure TScriptEditorForm.FormCloseQuery(Sender : TObject; var CanClose : boolean);
 begin
   CanClose := not AskSave(Sender);
+end;
+
+(* Autocomplete *)
+
+procedure TScriptEditorForm.ScriptSynCompletionExecute(Sender : TObject);
+var
+  CompletionWords : TStrings;
+begin
+  CompletionWords := FAutocompleteManager.CreateAutocompleteList(
+    FCurrentScript.Lines, FCurrentScript.CaretXY, ScriptSynCompletion.CurrentString);
+  ScriptSynCompletion.ItemList.Assign(CompletionWords);
+
+  CompletionWords.Free();
+
+  // WORKAROUND for SynEdit bug when Search Position is invoked before Execute
+  ScriptSynCompletion.Position := 0;
+end;
+
+procedure TScriptEditorForm.ScriptSynCompletionSearchPosition(var APosition : Integer);
+var
+  CompletionWords : TStrings;
+begin
+  CompletionWords := FAutocompleteManager.UpdateAutocompleteList(ScriptSynCompletion.CurrentString);
+  ScriptSynCompletion.ItemList.Assign(CompletionWords);
+  if (CompletionWords.Count > 0) then
+    APosition := 0
+  else
+    APosition := -1;
+
+  CompletionWords.Free();
+end;
+
+procedure TScriptEditorForm.ScriptSynCompletionCodeCompletion(
+  var Value: String; SourceValue: String;
+  var SourceStart, SourceEnd: TPoint;
+  KeyChar: TUTF8Char; Shift: TShiftState);
+
+  function QuoteIfContainsSpaces(Arg : String) : String; inline;
+  begin
+    if (Arg.IndexOf(' ') <> -1) then
+      Result := QUOTE_SYMBOL + Arg + QUOTE_SYMBOL
+    else
+      Result := Arg;
+  end;
+
+  function ShowInsertPictureDialog() : String; inline;
+  begin
+    if (ResourceOpenPictureDialog.Execute()) then
+      Result := QuoteIfContainsSpaces(ResourceOpenPictureDialog.FileName)
+    else
+      Result := '';
+  end;
+
+  function ShowInsertDirectoryDialog() : String; inline;
+  begin
+    if (ResourceSelectDirectoryDialog.Execute()) then
+      Result := QuoteIfContainsSpaces(ResourceSelectDirectoryDialog.FileName)
+    else
+      Result := '';
+  end;
+
+begin
+  if (Value = TWpcAbstractDynamicScriptAutocompletion.FILE_PATH_INSERTION) then begin
+    Value := ShowInsertPictureDialog();
+    exit;
+  end;
+
+  if (Value = TWpcAbstractDynamicScriptAutocompletion.DIR_PATH_INSERTION) then begin
+    Value := ShowInsertDirectoryDialog();
+    exit;
+  end;
+
+  if (Value <> SourceValue) then begin
+    FCurrentScript.InsertTextAtCaret(' ');
+    FCurrentScript.CaretX := FCurrentScript.CaretX + 1;
+  end;
 end;
 
 (* Helpers *)

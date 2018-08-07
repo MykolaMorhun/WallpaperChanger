@@ -1,7 +1,7 @@
 object ScriptEditorForm: TScriptEditorForm
-  Left = 370
+  Left = 368
   Height = 400
-  Top = 245
+  Top = 180
   Width = 600
   Caption = 'Wallpaper Changer Script Editor'
   ClientHeight = 381
@@ -1008,5 +1008,22 @@ object ScriptEditorForm: TScriptEditorForm
     Options = [ofFileMustExist, ofEnableSizing, ofViewDetail]
     left = 432
     top = 96
+  end
+  object ScriptSynCompletion: TSynCompletion
+    OnExecute = ScriptSynCompletionExecute
+    Position = 0
+    LinesInWindow = 6
+    OnSearchPosition = ScriptSynCompletionSearchPosition
+    SelectedColor = clHighlight
+    CaseSensitive = False
+    Width = 262
+    AutoUseSingleIdent = True
+    ShortCut = 16416
+    EndOfTokenChr = '()[].'
+    OnCodeCompletion = ScriptSynCompletionCodeCompletion
+    ExecCommandID = ecSynCompletionExecute
+    Editor = ScriptSynEdit
+    left = 288
+    top = 32
   end
 end

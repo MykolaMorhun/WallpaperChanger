@@ -1,0 +1,61 @@
+unit WpcScriptEditorConstantsList;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils,
+  WpcScriptParser;
+
+const
+  KEYWORDS : Array[1..26] of String = (
+    DIRECTORIES_KEYWORD,
+    DIRECTORY_KEYWORD,
+    IMAGES_KEYWORD,
+    DELAYS_KEYWORD,
+    DELAY_KEYWORD,
+    DEFAULTS_KEYWORD,
+    UNITS_KEYWORD,
+    BRANCH_KEYWORD,
+    END_KEYWORD,
+    WAIT_KEYWORD,
+    STOP_KEYWORD,
+    CHOOSE_KEYWORD,
+    BY_KEYWORD,
+    FROM_KEYWORD,
+    SWITCH_KEYWORD,
+    USE_KEYWORD,
+    SET_KEYWORD,
+    WALLPAPER_KEYWORD,
+    STYLE_KEYWORD,
+    WITH_KEYWORD,
+    PROBABILITY_KEYWORD,
+    FOR_KEYWORD,
+    TIMES_KEYWORD,
+    TO_KEYWORD,
+    ORDERED_KEYWORD,
+    RECURSIVE_KEYWORD
+  );
+
+  HEADER_SECTION_KEYWORDS : Array[1..4] of String = (
+    IMAGES_KEYWORD,
+    DIRECTORIES_KEYWORD,
+    DELAYS_KEYWORD,
+    DEFAULTS_KEYWORD
+  );
+
+  SELECTORS : Array[1..7] of String = (
+    WEIGHT_KEYWORD,
+    SEASON_KEYWORD,
+    WEEKDAY_KEYWORD,
+    MONTH_KEYWORD,
+    DATE_KEYWORD,
+    TIME_KEYWORD,
+    DATETIME_KEYWORD
+  );
+
+implementation
+
+end.
+
