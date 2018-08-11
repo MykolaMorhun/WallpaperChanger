@@ -3,12 +3,12 @@
   <ProjectSession>
     <Version Value="10"/>
     <BuildModes Active="Default"/>
-    <Units Count="133">
+    <Units Count="137">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="18" Y="10"/>
+        <CursorPos X="51" Y="17"/>
         <UsageCount Value="200"/>
       </Unit0>
       <Unit1>
@@ -46,8 +46,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScript"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="57"/>
-        <CursorPos X="3" Y="14"/>
+        <TopLine Value="15"/>
+        <CursorPos X="3" Y="20"/>
         <UsageCount Value="200"/>
       </Unit4>
       <Unit5>
@@ -64,8 +64,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScriptCommons"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="4"/>
-        <CursorPos X="5" Y="15"/>
+        <CursorPos X="22"/>
         <UsageCount Value="200"/>
       </Unit6>
       <Unit7>
@@ -118,8 +117,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcTimeMeasurementUnits"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="19"/>
-        <CursorPos X="34" Y="27"/>
+        <TopLine Value="3"/>
+        <CursorPos X="12" Y="24"/>
         <UsageCount Value="201"/>
       </Unit12>
       <Unit13>
@@ -143,8 +142,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcWallpaperSetter"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="6"/>
-        <CursorPos X="23" Y="18"/>
+        <TopLine Value="5"/>
+        <CursorPos X="73" Y="16"/>
         <UsageCount Value="200"/>
       </Unit15>
       <Unit16>
@@ -153,7 +152,7 @@
         <UnitName Value="WpcWallpaperSetterFactory"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2"/>
-        <CursorPos X="14" Y="16"/>
+        <CursorPos X="86" Y="17"/>
         <UsageCount Value="200"/>
       </Unit16>
       <Unit17>
@@ -204,19 +203,21 @@
         <Filename Value="common/wpcapplicationmanager.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcApplicationManager"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="42"/>
-        <CursorPos X="35" Y="52"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="176"/>
+        <CursorPos X="47" Y="188"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
       </Unit22>
       <Unit23>
         <Filename Value="script/statements/properties/wpcstatementproperties.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcStatementProperties"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="23"/>
-        <CursorPos Y="33"/>
-        <UsageCount Value="195"/>
+        <TopLine Value="7"/>
+        <CursorPos X="29" Y="16"/>
+        <UsageCount Value="207"/>
       </Unit23>
       <Unit24>
         <Filename Value="script/statements/wpcwaitstatement.pas"/>
@@ -225,15 +226,15 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="34"/>
         <CursorPos X="36" Y="31"/>
-        <UsageCount Value="195"/>
+        <UsageCount Value="207"/>
       </Unit24>
       <Unit25>
         <Filename Value="script/statements/wpcbasestatement.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcBaseStatement"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="26" Y="15"/>
-        <UsageCount Value="195"/>
+        <CursorPos X="22"/>
+        <UsageCount Value="207"/>
       </Unit25>
       <Unit26>
         <Filename Value="script/statements/wpcwallpaperstatement.pas"/>
@@ -242,7 +243,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="79"/>
         <CursorPos X="23" Y="65"/>
-        <UsageCount Value="195"/>
+        <UsageCount Value="207"/>
       </Unit26>
       <Unit27>
         <Filename Value="script/statements/wpcstopstatement.pas"/>
@@ -251,7 +252,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="41"/>
         <CursorPos X="3" Y="8"/>
-        <UsageCount Value="195"/>
+        <UsageCount Value="207"/>
       </Unit27>
       <Unit28>
         <Filename Value="script/statements/wpcbranchactionsstatements.pas"/>
@@ -259,7 +260,7 @@
         <UnitName Value="WpcBranchActionsStatements"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="42" Y="23"/>
-        <UsageCount Value="195"/>
+        <UsageCount Value="207"/>
       </Unit28>
       <Unit29>
         <Filename Value="script/statements/wpcbranchstatement.pas"/>
@@ -268,7 +269,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="58"/>
         <CursorPos Y="79"/>
-        <UsageCount Value="195"/>
+        <UsageCount Value="207"/>
       </Unit29>
       <Unit30>
         <Filename Value="script/statements/wpcchooserstatements.pas"/>
@@ -277,25 +278,25 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="12"/>
         <CursorPos X="20" Y="104"/>
-        <UsageCount Value="195"/>
+        <UsageCount Value="207"/>
       </Unit30>
       <Unit31>
         <Filename Value="script/executor/wpcscriptexecutor.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScriptExecutor"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="18"/>
-        <CursorPos X="14" Y="30"/>
-        <UsageCount Value="193"/>
+        <TopLine Value="13"/>
+        <CursorPos X="59" Y="13"/>
+        <UsageCount Value="205"/>
       </Unit31>
       <Unit32>
         <Filename Value="script/executor/wpcinthreadscriptexecutor.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcInThreadScriptExecutor"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="48"/>
-        <CursorPos X="60" Y="64"/>
-        <UsageCount Value="191"/>
+        <TopLine Value="28"/>
+        <CursorPos X="35" Y="11"/>
+        <UsageCount Value="203"/>
       </Unit32>
       <Unit33>
         <Filename Value="script/statements/wpcdirectorystatement.pas"/>
@@ -304,7 +305,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="82"/>
         <CursorPos X="11" Y="80"/>
-        <UsageCount Value="171"/>
+        <UsageCount Value="183"/>
       </Unit33>
       <Unit34>
         <Filename Value="common/types/wpcdirectory.pas"/>
@@ -312,7 +313,7 @@
         <UnitName Value="WpcDirectory"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="40" Y="36"/>
-        <UsageCount Value="171"/>
+        <UsageCount Value="183"/>
       </Unit34>
       <Unit35>
         <Filename Value="common/wpcscriptsgenerator.pas"/>
@@ -321,7 +322,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="32"/>
         <CursorPos X="63" Y="41"/>
-        <UsageCount Value="162"/>
+        <UsageCount Value="174"/>
       </Unit35>
       <Unit36>
         <Filename Value="forms/optionswindow.pas"/>
@@ -331,9 +332,9 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="OptionsWindow"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="161"/>
-        <CursorPos X="36" Y="170"/>
-        <UsageCount Value="156"/>
+        <TopLine Value="75"/>
+        <CursorPos X="18" Y="81"/>
+        <UsageCount Value="168"/>
       </Unit36>
       <Unit37>
         <Filename Value="scripteditor/wpcscripteditorform.pas"/>
@@ -343,9 +344,9 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="WpcScriptEditorForm"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="699"/>
-        <CursorPos X="11" Y="759"/>
-        <UsageCount Value="96"/>
+        <TopLine Value="416"/>
+        <CursorPos X="3" Y="427"/>
+        <UsageCount Value="108"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit37>
@@ -356,7 +357,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="77"/>
         <CursorPos X="64" Y="67"/>
-        <UsageCount Value="66"/>
+        <UsageCount Value="78"/>
       </Unit38>
       <Unit39>
         <Filename Value="scripteditor/wpcscripteditorconstantslist.pas"/>
@@ -365,7 +366,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="32"/>
         <CursorPos X="74" Y="32"/>
-        <UsageCount Value="60"/>
+        <UsageCount Value="72"/>
       </Unit39>
       <Unit40>
         <Filename Value="scripteditor/autocomplete/wpcstaticscriptautocompletion.pas"/>
@@ -373,7 +374,7 @@
         <UnitName Value="WpcStaticScriptAutocompletion"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="79" Y="15"/>
-        <UsageCount Value="40"/>
+        <UsageCount Value="52"/>
       </Unit40>
       <Unit41>
         <Filename Value="scripteditor/autocomplete/wpcabstractscriptautocompletion.pas"/>
@@ -382,7 +383,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="10"/>
         <CursorPos Y="94"/>
-        <UsageCount Value="40"/>
+        <UsageCount Value="52"/>
       </Unit41>
       <Unit42>
         <Filename Value="scripteditor/autocomplete/wpcscriptautocompletion.pas"/>
@@ -391,37 +392,34 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="19"/>
         <CursorPos X="45" Y="32"/>
-        <UsageCount Value="40"/>
+        <UsageCount Value="52"/>
       </Unit42>
       <Unit43>
         <Filename Value="scripteditor/autocomplete/wpcbasicscriptautocompletion.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcBasicScriptAutocompletion"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="137"/>
+        <TopLine Value="118"/>
         <CursorPos X="75" Y="117"/>
-        <UsageCount Value="40"/>
+        <UsageCount Value="52"/>
       </Unit43>
       <Unit44>
         <Filename Value="scripteditor/autocomplete/wpcabstractdynamicscriptautocompletion.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcAbstractDynamicScriptAutocompletion"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="11"/>
         <CursorPos X="42" Y="19"/>
-        <UsageCount Value="38"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="50"/>
       </Unit44>
       <Unit45>
         <Filename Value="scripteditor/autocomplete/wpcadvancedscriptautocompletion.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcAdvancedScriptAutocompletion"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="133"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="17"/>
         <CursorPos X="48" Y="17"/>
-        <UsageCount Value="38"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="50"/>
       </Unit45>
       <Unit46>
         <Filename Value="scripteditor/autocomplete/wpcscriptautocompletionmanager.pas"/>
@@ -430,16 +428,32 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="18"/>
         <CursorPos X="22" Y="42"/>
-        <UsageCount Value="36"/>
+        <UsageCount Value="48"/>
       </Unit46>
       <Unit47>
+        <Filename Value="scripteditor/tracer/wpcinthreadscripttracer.pas"/>
+        <UnitName Value="WpcInThreadScriptTracer"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="22"/>
+        <CursorPos Y="2"/>
+        <UsageCount Value="27"/>
+      </Unit47>
+      <Unit48>
+        <Filename Value="common/interfaces/wpclogger.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcLogger"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="36" Y="14"/>
+        <UsageCount Value="32"/>
+      </Unit48>
+      <Unit49>
         <Filename Value="scripteditor/wpcscriptautocomplete.pas"/>
         <UnitName Value="WpcScriptAutocomplete"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="28" Y="12"/>
-        <UsageCount Value="41"/>
-      </Unit47>
-      <Unit48>
+        <UsageCount Value="40"/>
+      </Unit49>
+      <Unit50>
         <Filename Value="scripteditor/forms/wpcscripteditorwallpaperstyleselectionform.pas"/>
         <ComponentName Value="WallpaperStyleSelectionForm"/>
         <HasResources Value="True"/>
@@ -448,731 +462,641 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="39" Y="52"/>
-        <UsageCount Value="18"/>
-      </Unit48>
-      <Unit49>
+        <UsageCount Value="17"/>
+      </Unit50>
+      <Unit51>
         <Filename Value="script/executor/wpcabstractscriptexecutor.pas"/>
         <UnitName Value="WpcAbstractScriptExecutor"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="51" Y="34"/>
-        <UsageCount Value="29"/>
-      </Unit49>
-      <Unit50>
+        <UsageCount Value="28"/>
+      </Unit51>
+      <Unit52>
         <Filename Value="script/wpcstatements.pas"/>
         <UnitName Value="WpcStatements"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="159"/>
         <CursorPos X="24" Y="171"/>
-        <UsageCount Value="187"/>
-      </Unit50>
-      <Unit51>
+        <UsageCount Value="186"/>
+      </Unit52>
+      <Unit53>
         <Filename Value="script/wpcstatementproperties.pas"/>
         <UnitName Value="WpcStatementProperties"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="91"/>
         <CursorPos X="20" Y="102"/>
-        <UsageCount Value="187"/>
-      </Unit51>
-      <Unit52>
+        <UsageCount Value="186"/>
+      </Unit53>
+      <Unit54>
         <Filename Value="script/wpcscriptexecutor.pas"/>
         <UnitName Value="WpcScriptExecutor"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="153"/>
         <CursorPos X="54" Y="162"/>
-        <UsageCount Value="186"/>
-      </Unit52>
-      <Unit53>
+        <UsageCount Value="185"/>
+      </Unit54>
+      <Unit55>
         <Filename Value="common/interfaces/wallpapersetter.pas"/>
         <UnitName Value="WallpaperSetter"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="12"/>
-        <UsageCount Value="12"/>
-      </Unit53>
-      <Unit54>
+        <UsageCount Value="11"/>
+      </Unit55>
+      <Unit56>
         <Filename Value="common/interfaces/wallpapersetterfactory.pas"/>
         <UnitName Value="WallpaperSetterFactory"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2"/>
         <CursorPos X="4" Y="13"/>
-        <UsageCount Value="12"/>
-      </Unit54>
-      <Unit55>
+        <UsageCount Value="11"/>
+      </Unit56>
+      <Unit57>
         <Filename Value="common/interfaces/environmentdetector.pas"/>
         <UnitName Value="EnvironmentDetector"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="76" Y="9"/>
-        <UsageCount Value="12"/>
-      </Unit55>
-      <Unit56>
+        <UsageCount Value="11"/>
+      </Unit57>
+      <Unit58>
         <Filename Value="os/envdetector/wpcenvironmentdetector.pas"/>
         <UnitName Value="WpcEnvironmentDetector"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="36" Y="11"/>
-        <UsageCount Value="11"/>
-      </Unit56>
-      <Unit57>
+        <UsageCount Value="10"/>
+      </Unit58>
+      <Unit59>
         <Filename Value="common/types/wpcosfamilies.pas"/>
         <UnitName Value="WpcOSFamilies"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="6"/>
         <CursorPos X="17" Y="13"/>
-        <UsageCount Value="25"/>
-      </Unit57>
-      <Unit58>
+        <UsageCount Value="24"/>
+      </Unit59>
+      <Unit60>
         <Filename Value="common/wpsetter/wallpapersetterprovider.pas"/>
         <UnitName Value="WallpaperSetterProvider"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="43"/>
         <CursorPos X="28" Y="52"/>
-        <UsageCount Value="13"/>
-      </Unit58>
-      <Unit59>
+        <UsageCount Value="12"/>
+      </Unit60>
+      <Unit61>
         <Filename Value="common/wpsetter/wpcdebugwallpapersetter.pas"/>
         <UnitName Value="WpcDebugWallpaperSetter"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="9"/>
         <CursorPos X="4" Y="17"/>
-        <UsageCount Value="12"/>
-      </Unit59>
-      <Unit60>
+        <UsageCount Value="11"/>
+      </Unit61>
+      <Unit62>
         <Filename Value="common/types/wpcenvironment.pas"/>
         <UnitName Value="WpcEnvironment"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2"/>
         <CursorPos X="3" Y="13"/>
-        <UsageCount Value="10"/>
-      </Unit60>
-      <Unit61>
+        <UsageCount Value="9"/>
+      </Unit62>
+      <Unit63>
         <Filename Value="os/wpcenvironmentdetector.pas"/>
         <UnitName Value="WpcEnvironmentDetector"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="48" Y="23"/>
-        <UsageCount Value="9"/>
-      </Unit61>
-      <Unit62>
+        <UsageCount Value="8"/>
+      </Unit63>
+      <Unit64>
         <Filename Value="os/wallpapersetter.pas"/>
         <UnitName Value="WallpaperSetter"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="57" Y="8"/>
-        <UsageCount Value="187"/>
-      </Unit62>
-      <Unit63>
+        <UsageCount Value="186"/>
+      </Unit64>
+      <Unit65>
         <Filename Value="os/wallpapersetterprovider.pas"/>
         <UnitName Value="WallpaperSetterProvider"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <CursorPos X="11" Y="42"/>
-        <UsageCount Value="113"/>
-      </Unit63>
-      <Unit64>
+        <UsageCount Value="112"/>
+      </Unit65>
+      <Unit66>
         <Filename Value="common/wpccommontypes.pas"/>
         <UnitName Value="WpcCommonTypes"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="10"/>
-        <UsageCount Value="103"/>
-      </Unit64>
-      <Unit65>
+        <UsageCount Value="102"/>
+      </Unit66>
+      <Unit67>
         <Filename Value="common/wpcwallpaperstyles.pas"/>
         <UnitName Value="WpcWallpaperStyles"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="8" Y="20"/>
-        <UsageCount Value="65"/>
-      </Unit65>
-      <Unit66>
+        <UsageCount Value="64"/>
+      </Unit67>
+      <Unit68>
         <Filename Value="common/wpcimage.pas"/>
         <UnitName Value="WpcImage"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="18"/>
         <CursorPos X="28" Y="42"/>
-        <UsageCount Value="125"/>
-      </Unit66>
-      <Unit67>
+        <UsageCount Value="124"/>
+      </Unit68>
+      <Unit69>
         <Filename Value="script/wpcscriptcommon.pas"/>
         <UnitName Value="WpcScriptCommons"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="18"/>
-        <UsageCount Value="6"/>
-      </Unit67>
-      <Unit68>
+        <UsageCount Value="5"/>
+      </Unit69>
+      <Unit70>
         <Filename Value="script/wpcscriptcommonconstants.pas"/>
         <UnitName Value="WpcScriptCommonConstants"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3"/>
         <CursorPos X="10" Y="9"/>
-        <UsageCount Value="119"/>
-      </Unit68>
-      <Unit69>
+        <UsageCount Value="118"/>
+      </Unit70>
+      <Unit71>
         <Filename Value="script/wpcscriptparserhelper.pas"/>
         <UnitName Value="WpcScriptParserHelper"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="14"/>
         <CursorPos X="12" Y="22"/>
-        <UsageCount Value="2"/>
-      </Unit69>
-      <Unit70>
+        <UsageCount Value="1"/>
+      </Unit71>
+      <Unit72>
         <Filename Value="/usr/share/fpcsrc/3.0.0/rtl/objpas/fgl.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="178"/>
         <CursorPos X="16" Y="191"/>
-        <UsageCount Value="7"/>
-      </Unit70>
-      <Unit71>
+        <UsageCount Value="6"/>
+      </Unit72>
+      <Unit73>
         <Filename Value="/usr/share/fpcsrc/3.0.0/rtl/inc/systemh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1136"/>
         <CursorPos X="11" Y="1150"/>
-        <UsageCount Value="3"/>
-      </Unit71>
-      <Unit72>
+        <UsageCount Value="2"/>
+      </Unit73>
+      <Unit74>
         <Filename Value="/usr/share/fpcsrc/3.0.0/packages/rtl-objpas/src/inc/dateutil.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="169"/>
         <CursorPos X="45" Y="182"/>
-        <UsageCount Value="7"/>
-      </Unit72>
-      <Unit73>
+        <UsageCount Value="6"/>
+      </Unit74>
+      <Unit75>
         <Filename Value="/usr/share/fpcsrc/3.0.0/packages/rtl-objpas/src/inc/strutils.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="196"/>
         <CursorPos X="10" Y="209"/>
-        <UsageCount Value="1"/>
-      </Unit73>
-      <Unit74>
+        <UsageCount Value="0"/>
+      </Unit75>
+      <Unit76>
         <Filename Value="/usr/lib/lazarus/1.6/components/synedit/synregexpr.pas"/>
         <UnitName Value="SynRegExpr"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="4076"/>
-        <UsageCount Value="1"/>
-      </Unit74>
-      <Unit75>
+        <UsageCount Value="0"/>
+      </Unit76>
+      <Unit77>
         <Filename Value="/usr/share/fpcsrc/3.0.0/packages/regexpr/src/regexpr.pas"/>
         <UnitName Value="RegExpr"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="441"/>
         <CursorPos Y="456"/>
-        <UsageCount Value="1"/>
-      </Unit75>
-      <Unit76>
+        <UsageCount Value="0"/>
+      </Unit77>
+      <Unit78>
         <Filename Value="/usr/share/fpcsrc/3.0.0/rtl/objpas/classes/classesh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="689"/>
         <CursorPos X="14" Y="700"/>
-        <UsageCount Value="3"/>
-      </Unit76>
-      <Unit77>
+        <UsageCount Value="2"/>
+      </Unit78>
+      <Unit79>
         <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/objpas/fgl.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="101"/>
         <CursorPos X="19" Y="110"/>
-        <UsageCount Value="10"/>
-      </Unit77>
-      <Unit78>
+        <UsageCount Value="9"/>
+      </Unit79>
+      <Unit80>
         <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/inc/objpash.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="182"/>
         <CursorPos X="23" Y="193"/>
-        <UsageCount Value="8"/>
-      </Unit78>
-      <Unit79>
+        <UsageCount Value="7"/>
+      </Unit80>
+      <Unit81>
         <Filename Value="/usr/share/fpcsrc/3.0.2/packages/rtl-objpas/src/inc/strutils.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3089"/>
         <CursorPos X="3" Y="3108"/>
-        <UsageCount Value="10"/>
-      </Unit79>
-      <Unit80>
+        <UsageCount Value="9"/>
+      </Unit81>
+      <Unit82>
         <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/objpas/sysutils/sysstrh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="105"/>
         <CursorPos X="10" Y="118"/>
-        <UsageCount Value="7"/>
-      </Unit80>
-      <Unit81>
+        <UsageCount Value="6"/>
+      </Unit82>
+      <Unit83>
         <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/objpas/sysutils/syshelph.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="84"/>
         <CursorPos X="14" Y="96"/>
-        <UsageCount Value="10"/>
-      </Unit81>
-      <Unit82>
+        <UsageCount Value="9"/>
+      </Unit83>
+      <Unit84>
         <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/objpas/classes/classesh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2157"/>
         <CursorPos X="10" Y="2193"/>
-        <UsageCount Value="9"/>
-      </Unit82>
-      <Unit83>
+        <UsageCount Value="8"/>
+      </Unit84>
+      <Unit85>
         <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/objpas/classes/stringl.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="743"/>
         <CursorPos Y="750"/>
-        <UsageCount Value="9"/>
-      </Unit83>
-      <Unit84>
+        <UsageCount Value="8"/>
+      </Unit85>
+      <Unit86>
         <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/objpas/sysutils/sysutilh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="100"/>
         <CursorPos X="23" Y="125"/>
-        <UsageCount Value="5"/>
-      </Unit84>
-      <Unit85>
+        <UsageCount Value="4"/>
+      </Unit86>
+      <Unit87>
         <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/inc/systemh.inc"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="1137"/>
-        <CursorPos X="11" Y="1150"/>
-        <UsageCount Value="7"/>
-      </Unit85>
-      <Unit86>
+        <TopLine Value="809"/>
+        <CursorPos X="10" Y="820"/>
+        <UsageCount Value="9"/>
+      </Unit87>
+      <Unit88>
         <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/inc/objpas.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="269"/>
         <CursorPos Y="283"/>
-        <UsageCount Value="4"/>
-      </Unit86>
-      <Unit87>
+        <UsageCount Value="3"/>
+      </Unit88>
+      <Unit89>
         <Filename Value="/usr/share/lazarus/1.6.4/lcl/forms.pp"/>
         <UnitName Value="Forms"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="397"/>
         <CursorPos X="15" Y="612"/>
-        <UsageCount Value="2"/>
-      </Unit87>
-      <Unit88>
+        <UsageCount Value="1"/>
+      </Unit89>
+      <Unit90>
         <Filename Value="/usr/share/fpcsrc/3.0.2/packages/fcl-base/src/inifiles.pp"/>
         <UnitName Value="IniFiles"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="167"/>
         <CursorPos X="31" Y="172"/>
-        <UsageCount Value="9"/>
-      </Unit88>
-      <Unit89>
+        <UsageCount Value="8"/>
+      </Unit90>
+      <Unit91>
         <Filename Value="common/wpsetter/wallpapersetter.pas"/>
         <UnitName Value="WallpaperSetter"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2"/>
         <CursorPos X="23" Y="16"/>
-        <UsageCount Value="8"/>
-      </Unit89>
-      <Unit90>
+        <UsageCount Value="7"/>
+      </Unit91>
+      <Unit92>
         <Filename Value="os/envdetector/linuxenvironmentdetector.pas"/>
         <UnitName Value="LinuxEnvironmentDetector"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="15" Y="22"/>
-        <UsageCount Value="7"/>
-      </Unit90>
-      <Unit91>
+        <UsageCount Value="6"/>
+      </Unit92>
+      <Unit93>
         <Filename Value="os/providers/wpcwallpapersetterfactoryprovider.pas"/>
         <UnitName Value="WpcWallpaperSetterFactoryProvider"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="7"/>
-      </Unit91>
-      <Unit92>
+        <UsageCount Value="6"/>
+      </Unit93>
+      <Unit94>
         <Filename Value="os/wpsetters/linux/wpclinuxcustomwallpapersetter.pas"/>
         <UnitName Value="WpcLinuxCustomWallpaperSetter"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="14" Y="31"/>
-        <UsageCount Value="7"/>
-      </Unit92>
-      <Unit93>
+        <UsageCount Value="6"/>
+      </Unit94>
+      <Unit95>
         <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/unix/sysutils.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1388"/>
         <CursorPos X="24" Y="1401"/>
-        <UsageCount Value="7"/>
-      </Unit93>
-      <Unit94>
+        <UsageCount Value="6"/>
+      </Unit95>
+      <Unit96>
         <Filename Value="/usr/share/lazarus/1.6.4/lcl/dialogs.pp"/>
         <UnitName Value="Dialogs"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="519"/>
         <CursorPos X="11" Y="530"/>
-        <UsageCount Value="4"/>
-      </Unit94>
-      <Unit95>
+        <UsageCount Value="3"/>
+      </Unit96>
+      <Unit97>
         <Filename Value="/usr/share/fpcsrc/3.0.2/packages/fcl-process/src/process.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <CursorPos X="36" Y="24"/>
-        <UsageCount Value="7"/>
-      </Unit95>
-      <Unit96>
+        <UsageCount Value="6"/>
+      </Unit97>
+      <Unit98>
         <Filename Value="script/parser/wpcscriptparser.pas"/>
         <EditorIndex Value="-1"/>
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="7"/>
-      </Unit96>
-      <Unit97>
+        <UsageCount Value="6"/>
+      </Unit98>
+      <Unit99>
         <Filename Value="script/statements/wpcstatements.pas"/>
         <UnitName Value="WpcStatements"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="43"/>
         <CursorPos X="39" Y="5"/>
-        <UsageCount Value="7"/>
-      </Unit97>
-      <Unit98>
+        <UsageCount Value="6"/>
+      </Unit99>
+      <Unit100>
         <Filename Value="script/statements/wpcstatement.pas"/>
         <UnitName Value="WpcStatement"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="86" Y="11"/>
-        <UsageCount Value="7"/>
-      </Unit98>
-      <Unit99>
+        <UsageCount Value="6"/>
+      </Unit100>
+      <Unit101>
         <Filename Value="script/statements/wpcbranchstatements.pas"/>
         <UnitName Value="WpcBranchStatements"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="19"/>
         <CursorPos X="25" Y="54"/>
-        <UsageCount Value="7"/>
-      </Unit99>
-      <Unit100>
-        <Filename Value="../../../.cache/.fr-qlRYmY/TestTimer/testtimer1main.lfm"/>
-        <EditorIndex Value="-1"/>
-        <UsageCount Value="8"/>
-        <DefaultSyntaxHighlighter Value="LFM"/>
-      </Unit100>
-      <Unit101>
-        <Filename Value="/usr/share/fpcsrc/3.0.2/packages/fcl-stl/src/gstack.pp"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="51"/>
-        <CursorPos X="3" Y="60"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="6"/>
       </Unit101>
       <Unit102>
+        <Filename Value="../../../.cache/.fr-qlRYmY/TestTimer/testtimer1main.lfm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="7"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit102>
+      <Unit103>
+        <Filename Value="/usr/share/fpcsrc/3.0.2/packages/fcl-stl/src/gstack.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="19"/>
+        <CursorPos X="14" Y="30"/>
+        <UsageCount Value="9"/>
+      </Unit103>
+      <Unit104>
         <Filename Value="/usr/share/fpcsrc/3.0.2/packages/fcl-base/src/fptimer.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="79"/>
         <CursorPos X="14" Y="95"/>
-        <UsageCount Value="8"/>
-      </Unit102>
-      <Unit103>
+        <UsageCount Value="7"/>
+      </Unit104>
+      <Unit105>
         <Filename Value="/usr/share/fpcsrc/3.0.2/packages/fcl-stl/src/gvector.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="105"/>
         <CursorPos X="3" Y="113"/>
-        <UsageCount Value="9"/>
-      </Unit103>
-      <Unit104>
+        <UsageCount Value="8"/>
+      </Unit105>
+      <Unit106>
         <Filename Value="script/executor/wpcinthreaddebugscriptexecutor.pas"/>
         <UnitName Value="WpcInThreadDebugScriptExecutor"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="61" Y="19"/>
-        <UsageCount Value="9"/>
-      </Unit104>
-      <Unit105>
+        <UsageCount Value="8"/>
+      </Unit106>
+      <Unit107>
         <Filename Value="/usr/share/lazarus/1.6.4/lcl/stdctrls.pp"/>
         <UnitName Value="StdCtrls"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1519"/>
         <CursorPos X="14" Y="1535"/>
-        <UsageCount Value="1"/>
-      </Unit105>
-      <Unit106>
+        <UsageCount Value="0"/>
+      </Unit107>
+      <Unit108>
         <Filename Value="/usr/share/lazarus/1.6.4/lcl/controls.pp"/>
         <UnitName Value="Controls"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1535"/>
         <CursorPos X="15" Y="1544"/>
-        <UsageCount Value="1"/>
-      </Unit106>
-      <Unit107>
+        <UsageCount Value="0"/>
+      </Unit108>
+      <Unit109>
         <Filename Value="/usr/share/lazarus/1.6.4/lcl/lcltype.pp"/>
         <UnitName Value="LCLType"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="100"/>
-        <UsageCount Value="10"/>
-      </Unit107>
-      <Unit108>
+        <UsageCount Value="9"/>
+      </Unit109>
+      <Unit110>
         <Filename Value="/usr/share/lazarus/1.6.4/lcl/include/customform.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1975"/>
         <CursorPos X="47" Y="1985"/>
-        <UsageCount Value="5"/>
-      </Unit108>
-      <Unit109>
+        <UsageCount Value="4"/>
+      </Unit110>
+      <Unit111>
         <Filename Value="/usr/share/lazarus/1.6.4/lcl/include/control.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3201"/>
         <CursorPos X="3" Y="3206"/>
-        <UsageCount Value="1"/>
-      </Unit109>
-      <Unit110>
+        <UsageCount Value="0"/>
+      </Unit111>
+      <Unit112>
         <Filename Value="/usr/share/lazarus/1.6.4/lcl/extdlgs.pas"/>
         <UnitName Value="ExtDlgs"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="39"/>
         <CursorPos X="3" Y="50"/>
-        <UsageCount Value="3"/>
-      </Unit110>
-      <Unit111>
+        <UsageCount Value="2"/>
+      </Unit112>
+      <Unit113>
         <Filename Value="scripteditor/wpcscripteditorform.lfm"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="10"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
-      </Unit111>
-      <Unit112>
+      </Unit113>
+      <Unit114>
         <Filename Value="WallpaperChanger.lpi"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="XML"/>
-      </Unit112>
-      <Unit113>
+      </Unit114>
+      <Unit115>
         <Filename Value="/usr/share/lazarus/1.6.4/lcl/actnlist.pas"/>
         <UnitName Value="ActnList"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="135"/>
         <CursorPos X="14" Y="197"/>
-        <UsageCount Value="5"/>
-      </Unit113>
-      <Unit114>
+        <UsageCount Value="4"/>
+      </Unit115>
+      <Unit116>
         <Filename Value="/usr/share/lazarus/1.6.4/lcl/include/customaction.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="230"/>
         <CursorPos X="3" Y="241"/>
-        <UsageCount Value="5"/>
-      </Unit114>
-      <Unit115>
+        <UsageCount Value="4"/>
+      </Unit116>
+      <Unit117>
         <Filename Value="/usr/share/lazarus/1.6.4/components/synedit/synedit.pp"/>
         <UnitName Value="SynEdit"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1239"/>
         <CursorPos X="14" Y="1251"/>
-        <UsageCount Value="8"/>
-      </Unit115>
-      <Unit116>
+        <UsageCount Value="7"/>
+      </Unit117>
+      <Unit118>
         <Filename Value="/usr/share/lazarus/1.6.4/components/synedit/syneditmiscclasses.pp"/>
         <UnitName Value="SynEditMiscClasses"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="92"/>
         <CursorPos X="15" Y="104"/>
-        <UsageCount Value="5"/>
-      </Unit116>
-      <Unit117>
+        <UsageCount Value="4"/>
+      </Unit118>
+      <Unit119>
         <Filename Value="scripteditor/wpcscripttextdata.pas"/>
         <UnitName Value="WpcScriptTextData"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="21"/>
         <CursorPos X="20" Y="44"/>
-        <UsageCount Value="19"/>
-      </Unit117>
-      <Unit118>
+        <UsageCount Value="18"/>
+      </Unit119>
+      <Unit120>
         <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/objpas/classes/classes.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="932"/>
         <CursorPos X="3" Y="941"/>
-        <UsageCount Value="6"/>
-      </Unit118>
-      <Unit119>
+        <UsageCount Value="5"/>
+      </Unit120>
+      <Unit121>
         <Filename Value="/usr/share/lazarus/1.6.4/components/synedit/syneditkeycmds.pp"/>
         <UnitName Value="SynEditKeyCmds"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="303"/>
         <CursorPos X="3" Y="298"/>
-        <UsageCount Value="7"/>
-      </Unit119>
-      <Unit120>
+        <UsageCount Value="6"/>
+      </Unit121>
+      <Unit122>
         <Filename Value="/usr/share/lazarus/1.6.4/lcl/graphics.pp"/>
         <UnitName Value="Graphics"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="51"/>
         <CursorPos X="3" Y="64"/>
-        <UsageCount Value="8"/>
-      </Unit120>
-      <Unit121>
+        <UsageCount Value="7"/>
+      </Unit122>
+      <Unit123>
         <Filename Value="script/executor/wpcdebuginthreadscriptexecutor.pas"/>
         <UnitName Value="WpcDebugInThreadScriptExecutor"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="61" Y="15"/>
-        <UsageCount Value="18"/>
-      </Unit121>
-      <Unit122>
+        <UsageCount Value="17"/>
+      </Unit123>
+      <Unit124>
         <Filename Value="/usr/share/lazarus/1.6.4/components/synedit/synhighlighterany.pas"/>
         <UnitName Value="SynHighlighterAny"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="158"/>
         <CursorPos X="3" Y="90"/>
-        <UsageCount Value="8"/>
-      </Unit122>
-      <Unit123>
+        <UsageCount Value="7"/>
+      </Unit124>
+      <Unit125>
         <Filename Value="/usr/share/lazarus/1.6.4/components/synedit/synedithighlighter.pp"/>
         <UnitName Value="SynEditHighlighter"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="92" Y="247"/>
-        <UsageCount Value="8"/>
-      </Unit123>
-      <Unit124>
+        <UsageCount Value="7"/>
+      </Unit125>
+      <Unit126>
         <Filename Value="/usr/share/lazarus/1.6.4/components/synedit/syncompletion.pas"/>
         <UnitName Value="SynCompletion"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="55"/>
         <CursorPos X="3" Y="68"/>
-        <UsageCount Value="10"/>
-      </Unit124>
-      <Unit125>
+        <UsageCount Value="9"/>
+      </Unit126>
+      <Unit127>
         <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/inc/typshrdh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="65"/>
         <CursorPos X="3" Y="62"/>
-        <UsageCount Value="9"/>
-      </Unit125>
-      <Unit126>
+        <UsageCount Value="8"/>
+      </Unit127>
+      <Unit128>
         <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/inc/typshrd.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="64"/>
         <CursorPos X="3" Y="80"/>
-        <UsageCount Value="9"/>
-      </Unit126>
-      <Unit127>
+        <UsageCount Value="8"/>
+      </Unit128>
+      <Unit129>
         <Filename Value="scripteditor/autocomplete/wpcscriptautocomplete.pas"/>
         <UnitName Value="WpcScriptAutocomplete"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="36" Y="25"/>
-        <UsageCount Value="20"/>
-      </Unit127>
-      <Unit128>
+        <UsageCount Value="19"/>
+      </Unit129>
+      <Unit130>
         <Filename Value="scripteditor/autocomplete/wpcabstractscriptautocomplete.pas"/>
         <UnitName Value="WpcAbstractScriptAutocomplete"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="35"/>
-        <UsageCount Value="20"/>
-      </Unit128>
-      <Unit129>
+        <UsageCount Value="19"/>
+      </Unit130>
+      <Unit131>
         <Filename Value="scripteditor/autocomplete/wpcstaticscriptautocomplete.pas"/>
         <UnitName Value="WpcStaticScriptAutocomplete"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="67" Y="5"/>
-        <UsageCount Value="20"/>
-      </Unit129>
-      <Unit130>
+        <UsageCount Value="19"/>
+      </Unit131>
+      <Unit132>
         <Filename Value="scripteditor/autocomplete/wpcscriptcompletionmanager.pas"/>
         <UnitName Value="WpcScriptCompletionManager"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="15"/>
-        <UsageCount Value="20"/>
-      </Unit130>
-      <Unit131>
+        <UsageCount Value="19"/>
+      </Unit132>
+      <Unit133>
         <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/objpas/types.pp"/>
         <UnitName Value="Types"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="10"/>
-      </Unit131>
-      <Unit132>
+        <UsageCount Value="9"/>
+      </Unit133>
+      <Unit134>
         <Filename Value="/usr/share/fpcsrc/3.0.2/rtl/objpas/sysutils/syshelp.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="695"/>
         <CursorPos X="3" Y="654"/>
-        <UsageCount Value="10"/>
-      </Unit132>
+        <UsageCount Value="9"/>
+      </Unit134>
+      <Unit135>
+        <Filename Value="script/executor/wpcinthreadscripttracer.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcInThreadScriptTracer"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="4"/>
+        <UsageCount Value="30"/>
+      </Unit135>
+      <Unit136>
+        <Filename Value="scripteditor/wpcdebugscripttracelogger.pas"/>
+        <UnitName Value="WpcDebugScriptTraceLogger"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="63" Y="6"/>
+        <UsageCount Value="30"/>
+      </Unit136>
     </Units>
-    <JumpHistory Count="26" HistoryIndex="25">
-      <Position1>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="712" TopLine="694"/>
-      </Position1>
-      <Position2>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="701" TopLine="694"/>
-      </Position2>
-      <Position3>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="701" TopLine="694"/>
-      </Position3>
-      <Position4>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="727" Column="3" TopLine="719"/>
-      </Position4>
-      <Position5>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="712" TopLine="700"/>
-      </Position5>
-      <Position6>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="701" TopLine="696"/>
-      </Position6>
-      <Position7>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="712" TopLine="696"/>
-      </Position7>
-      <Position8>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="701" TopLine="696"/>
-      </Position8>
-      <Position9>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="712" TopLine="696"/>
-      </Position9>
-      <Position10>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="701" TopLine="696"/>
-      </Position10>
-      <Position11>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="712" TopLine="696"/>
-      </Position11>
-      <Position12>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="701" TopLine="696"/>
-      </Position12>
-      <Position13>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="712" TopLine="696"/>
-      </Position13>
-      <Position14>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="713" TopLine="696"/>
-      </Position14>
-      <Position15>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="714" TopLine="696"/>
-      </Position15>
-      <Position16>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="715" TopLine="696"/>
-      </Position16>
-      <Position17>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="713" Column="13" TopLine="699"/>
-      </Position17>
-      <Position18>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="709" Column="41" TopLine="696"/>
-      </Position18>
-      <Position19>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="709" Column="42" TopLine="696"/>
-      </Position19>
-      <Position20>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="712" Column="52" TopLine="695"/>
-      </Position20>
-      <Position21>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="712" Column="52" TopLine="695"/>
-      </Position21>
-      <Position22>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="738" Column="19" TopLine="722"/>
-      </Position22>
-      <Position23>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="734" Column="55" TopLine="722"/>
-      </Position23>
-      <Position24>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="14" Column="43"/>
-      </Position24>
-      <Position25>
-        <Filename Value="script/wpcscriptparser.pas"/>
-        <Caret Line="2389" Column="37" TopLine="2382"/>
-      </Position25>
-      <Position26>
-        <Filename Value="scripteditor/wpcscripteditorform.pas"/>
-        <Caret Line="735" Column="86" TopLine="725"/>
-      </Position26>
-    </JumpHistory>
+    <JumpHistory HistoryIndex="-1"/>
   </ProjectSession>
   <Debugging>
     <BreakPoints Count="2">

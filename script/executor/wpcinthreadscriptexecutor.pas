@@ -20,6 +20,8 @@ uses
   WpcStopStatement,
   WpcScript,
   WpcWallpaperSetter,
+  WpcWallpaperStyles,
+  WpcImage,
   WpcExceptions;
 
 type
@@ -32,24 +34,25 @@ type
     it applies needed action and release control fast.
   }
   TWpcInThreadScriptExecutor = class(IWpcScriptExecutor)
-  private type
-    TWpcInThreadScriptExecutorStackEntryInfo = record
-      // Is used for iterations within statement
-      Counter : Integer;
-    end;
+  protected
+    type
+      TWpcInThreadScriptExecutorStackEntryInfo = record
+        // Is used for iterations within statement
+        Counter : Integer;
+      end;
 
-    TWpcInThreadScriptExecutorStackEntry = record
-      // Name of branch in which execution pointer is set
-      Branch : String;
-      // Number of statement on which execution pointer is set. Starts form zero.
-      Statement : Integer;
-      // Additional info about current statement
-      FrameInfo : TWpcInThreadScriptExecutorStackEntryInfo;
-    end;
+      TWpcInThreadScriptExecutorStackEntry = record
+        // Name of branch in which execution pointer is set
+        Branch : String;
+        // Number of statement on which execution pointer is set. Starts form zero.
+        Statement : Integer;
+        // Additional info about current statement
+        FrameInfo : TWpcInThreadScriptExecutorStackEntryInfo;
+      end;
 
-    TWpcInThreadScriptExecutorStack = specialize TStack<TWpcInThreadScriptExecutorStackEntry>;
+      TWpcInThreadScriptExecutorStack = specialize TStack<TWpcInThreadScriptExecutorStackEntry>;
 
-  private
+  protected
     FWallpaperSetter : IWallpaperSetter;
     // Stores current script
     FScript : TWpcScript;
@@ -68,31 +71,34 @@ type
     procedure Terminate(); override;
     procedure SkipCurrentDelay(); override;
     function IsRunning() : Boolean; override;
-    procedure SetOnStopCallback(Callback : TWpcScriptExecutorStopCallback); override;
-  private
-    procedure ExecuteBranch(BranchName : String);
-    procedure ExecuteStatement(Statement : IWpcBaseScriptStatement); //inline;
 
-    procedure ExecuteWaitStatement(Statement : TWpcWaitStatement); //inline;
-    procedure ExecuteWallpaperStatement(Statement : TWpcWallpaperStatement); //inline;
-    procedure ExecuteDirectoryStatement(Statement : TWpcDirectoryStatement); //inline;
-    procedure ExecuteStopStatement(Statement : TWpcStopStatement); //inline;
-    procedure ExecuteSwitchBranchStatement(Statement : TWpcSwitchBranchStatement); //inline;
-    procedure ExecuteUseBtranchStatement(Statement : TWpcUseBranchStatement); //inline;
-    procedure ExecuteWallpaperChooserStatement(Statement : TWpcWallpaperChooserStatement); //inline;
-    procedure ExecuteBranchToUseChooserStatement(Statement : TWpcUseBranchChooserStatement); //inline;
-    procedure ExecuteBranchToSwitchChooserStatement(Statement : TWpcSwitchBranchChooserStatement); //inline;
+    procedure SetOnStopCallback(Callback : TWpcScriptExecutorStopCallback); override;
+  protected
+    procedure ExecuteBranch(BranchName : String);
+    procedure ExecuteStatement(Statement : IWpcBaseScriptStatement);
+
+    procedure ExecuteWaitStatement(Statement : TWpcWaitStatement);
+    procedure ExecuteWallpaperStatement(Statement : TWpcWallpaperStatement);
+    procedure ExecuteDirectoryStatement(Statement : TWpcDirectoryStatement);
+    procedure ExecuteStopStatement(Statement : TWpcStopStatement);
+    procedure ExecuteSwitchBranchStatement(Statement : TWpcSwitchBranchStatement);
+    procedure ExecuteUseBtranchStatement(Statement : TWpcUseBranchStatement);
+    procedure ExecuteWallpaperChooserStatement(Statement : TWpcWallpaperChooserStatement);
+    procedure ExecuteBranchToUseChooserStatement(Statement : TWpcUseBranchChooserStatement);
+    procedure ExecuteBranchToSwitchChooserStatement(Statement : TWpcSwitchBranchChooserStatement);
 
     function IsTriggered(Probability : Byte) : Boolean;
+    procedure SetWallpaper(Image : TWpcImage; Style : TWallpaperStyle);
 
     procedure ContunueExecution();
     function Next() : Boolean;
-    procedure IncStatementPointer(); //inline;
-    procedure DecStatementTimesCounter(); //inline;
-    procedure SetStatementTimesCounter(Value : Integer); //inline;
-    function GetCurrentStatement() : IWpcBaseScriptStatement; //inline;
+    procedure ExitCurrentBranch();
+    procedure IncStatementPointer(); inline;
+    procedure DecStatementTimesCounter(); inline;
+    procedure SetStatementTimesCounter(Value : Integer); inline;
+    function GetCurrentStatement() : IWpcBaseScriptStatement; inline;
     function GetTimes(Statement : IWpcBaseScriptStatement) : LongWord;
-  private
+
     procedure TimerSleep(Milliseconds : LongWord);
     procedure TimerCallback(Sender: TObject);
   end;
@@ -228,7 +234,7 @@ end;
 procedure TWpcInThreadScriptExecutor.ExecuteWallpaperStatement(Statement : TWpcWallpaperStatement);
 begin
   if (IsTriggered(Statement.GetProbability())) then begin
-    FWallpaperSetter.SetDesktopWallpaper(Statement.GetImage().GetPath(), Statement.GetStyle());
+    SetWallpaper(Statement.GetImage(), Statement.GetStyle());
     if (Statement.GetDelay() <> 0) then
       TimerSleep(Statement.GetDelay())
     else
@@ -243,7 +249,7 @@ var
   TotalDelay : LongWord;
 begin
   if (IsTriggered(Statement.GetProbability())) then begin
-    FWallpaperSetter.SetDesktopWallpaper(Statement.GetNextImage().GetPath(), Statement.GetStyle());
+    SetWallpaper(Statement.GetNextImage(), Statement.GetStyle());
 
     if (Statement.GetRandomDelay() <> 0) then
       TotalDelay := Statement.GetDelay() + Random(Statement.GetRandomDelay() + 1)
@@ -310,6 +316,11 @@ begin
   else Result := (Random(101) < Probability);
 end;
 
+procedure TWpcInThreadScriptExecutor.SetWallpaper(Image : TWpcImage; Style : TWallpaperStyle);
+begin
+  FWallpaperSetter.SetDesktopWallpaper(Image.GetPath(), Style);
+end;
+
 {
   Continues execution of current script.
   Depending on the current state it could continue execution of current statement,
@@ -323,14 +334,14 @@ begin
   while (FStack.Top().FrameInfo.Counter = 0) do begin
     // Move to the next statement
     if (not Next()) then begin
-      FStack.Pop(); // return from this branch
+      ExitCurrentBranch(); // return from this branch
       if (FStack.IsEmpty()) then begin
         // We just returned from the top (main) branch. End of execution is reached.
         Terminate();
         exit;
       end;
       // Here this method should be invoked recursively (with brach on top of the stack we just returned to).
-      // But instead of recursion while loop if used.
+      // But instead of recursion while loop is used.
     end;
   end;
 
@@ -353,6 +364,11 @@ begin
     SetStatementTimesCounter(GetTimes(GetCurrentStatement()));
     Result := True;
   end;
+end;
+
+procedure TWpcInThreadScriptExecutor.ExitCurrentBranch();
+begin
+  FStack.Pop();
 end;
 
 {
