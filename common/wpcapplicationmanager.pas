@@ -245,9 +245,8 @@ end;
 
 procedure TWpcApplicationManager.OpenScriptEditorForm();
 begin
-  if (FScriptEditorWindow = nil) then
-    FScriptEditorWindow := TScriptEditorForm.Create(nil);
-
+  // Create new from each time. It will destroy itself on close.
+  FScriptEditorWindow := TScriptEditorForm.Create(nil);
   FScriptEditorWindow.Show();
 end;
 

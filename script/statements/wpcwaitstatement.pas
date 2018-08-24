@@ -57,7 +57,7 @@ begin
   FDelay.Free();
   FProbability.Free();
   FTimes.Free();
-  inherited Destroy;
+  inherited Destroy();
 end;
 
 procedure TWpcWaitStatement.SetDelay(Delay : LongWord);

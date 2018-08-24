@@ -1,30 +1,31 @@
 object ScriptEditorForm: TScriptEditorForm
-  Left = 368
+  Left = 444
   Height = 400
-  Top = 180
+  Top = 179
   Width = 600
   Caption = 'Wallpaper Changer Script Editor'
-  ClientHeight = 381
+  ClientHeight = 370
   ClientWidth = 600
   Constraints.MinHeight = 150
   Constraints.MinWidth = 200
   Menu = ScriptEditorMainMenu
+  OnClose = FormClose
   OnCloseQuery = FormCloseQuery
-  Position = poDefault
+  Position = poDefaultPosOnly
   LCLVersion = '1.6.4.0'
   object EditorPanel: TPanel
     Left = 0
-    Height = 276
+    Height = 265
     Top = 0
     Width = 600
     Align = alClient
-    ClientHeight = 276
+    ClientHeight = 265
     ClientWidth = 600
     TabOrder = 0
     inline ScriptSynEdit: TSynEdit
       Cursor = crDefault
       Left = 1
-      Height = 274
+      Height = 263
       Top = 1
       Width = 598
       Align = alClient
@@ -529,7 +530,7 @@ object ScriptEditorForm: TScriptEditorForm
   object BottomPanel: TPanel
     Left = 0
     Height = 100
-    Top = 281
+    Top = 270
     Width = 600
     Align = alBottom
     ClientHeight = 100
@@ -563,6 +564,10 @@ object ScriptEditorForm: TScriptEditorForm
       Top = 1
       Width = 574
       Align = alClient
+      Font.Height = -16
+      Font.Name = 'DejaVu Sans Mono'
+      Font.Pitch = fpFixed
+      ParentFont = False
       ReadOnly = True
       ScrollBars = ssAutoBoth
       TabOrder = 1
@@ -572,7 +577,7 @@ object ScriptEditorForm: TScriptEditorForm
     Cursor = crVSplit
     Left = 0
     Height = 5
-    Top = 276
+    Top = 265
     Width = 600
     Align = alBottom
     ResizeAnchor = akBottom
@@ -828,11 +833,13 @@ object ScriptEditorForm: TScriptEditorForm
       Category = 'file'
       Caption = 'Open script'
       OnExecute = FileOpenScriptActionExecute
+      ShortCut = 16463
     end
     object FileSaveScriptAction: TAction
       Category = 'file'
       Caption = 'Save script'
       OnExecute = FileSaveScriptActionExecute
+      ShortCut = 16467
     end
     object FileSaveScriptAsAction: TAction
       Category = 'file'
@@ -966,6 +973,7 @@ object ScriptEditorForm: TScriptEditorForm
       Category = 'view'
       Caption = 'Toggle bottom panel'
       OnExecute = ViewToggleBottomPanelActionExecute
+      ShortCut = 16450
     end
     object ViewFontSizeIncreaseAction: TAction
       Category = 'view'

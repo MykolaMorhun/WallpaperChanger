@@ -26,12 +26,14 @@ type
   public
     procedure SetDelay(PDelay : LongWord);
     procedure SetDelay(PDelay : LongWord; MeasurementUnit : TWpcTimeMeasurementUnits);
+
+    function ToString(Readable : Boolean = false) : String;
   public
     property Delay : LongWord read FDelay write SetDelay default 0;
   public
     class function ConvertToMilliseconds(PDelay : LongWord; PMeasurementUnit : TWpcTimeMeasurementUnits) : LongWord;
     class function ConvertToUnit(PMilliseconds : LongWord; PMeasurementUnit : TWpcTimeMeasurementUnits) : LongWord;
-    class procedure ConvertToReadableUnits(PMilliseconds : LongWord; var MsDelay : LongWord; var MeasurementUnit : TWpcTimeMeasurementUnits);
+    class procedure ConvertToReadableUnits(PMilliseconds : LongWord; var ReadableDelay : LongWord; var MeasurementUnit : TWpcTimeMeasurementUnits);
   end;
 
   { TWpcProbabilityStatementProperty }
@@ -39,7 +41,9 @@ type
   TWpcProbabilityStatementProperty = class(TObject)
   private
     FProbability: Byte; // percents
-    procedure SetProbability(Probability: Byte);
+    procedure SetProbability(Probability : Byte);
+  public
+    function ToString() : String; override;
   public
     property Probability : Byte read FProbability write SetProbability default 100;
   end;
@@ -51,7 +55,9 @@ type
     MAX_TIMES = high(LongWord);
   private
     FTimes: LongWord;
-    procedure SetTimes(Times: LongWord);
+    procedure SetTimes(Times : LongWord);
+  public
+    function ToString() : String; override;
   public
     property Times : LongWord read FTimes write SetTimes default 1;
   end;
@@ -61,7 +67,9 @@ type
   TWpcWeightStatementProperty = class(TObject)
   private
     FWeight: LongWord;
-    procedure SetWeight(Weight: LongWord);
+    procedure SetWeight(Weight : LongWord);
+  public
+    function ToString() : String; override;
   public
     property Weight : LongWord read FWeight write SetWeight default 1;
   end;
@@ -72,7 +80,7 @@ implementation
 
 { TWpcDelayStatementProperty }
 
-procedure TWpcDelayStatementProperty.SetDelay(PDelay: LongWord);
+procedure TWpcDelayStatementProperty.SetDelay(PDelay : LongWord);
 begin
   if (PDelay > MAX_DELAY_VALUE) then
     raise TWpcIllegalArgumentException.Create('Too long wait time.');
@@ -84,8 +92,21 @@ begin
   FDelay := ConvertToMilliseconds(PDelay, MeasurementUnit);
 end;
 
+function TWpcDelayStatementProperty.ToString(Readable : Boolean): String;
+var
+  ReadableDelay   : LongWord;
+  MeasurementUnit : TWpcTimeMeasurementUnits;
+begin
+  if (Readable) then begin
+    ConvertToReadableUnits(FDelay, ReadableDelay, MeasurementUnit);
+    Result := 'delay: ' + IntToStr(ReadableDelay) + ' ' + TimeMeasurementUnitToStr(MeasurementUnit);
+  end
+  else
+    Result := 'delay: ' + IntToStr(FDelay);
+end;
+
 {$Q+}
-class function TWpcDelayStatementProperty.ConvertToMilliseconds(PDelay: LongWord; PMeasurementUnit: TWpcTimeMeasurementUnits) : LongWord;
+class function TWpcDelayStatementProperty.ConvertToMilliseconds(PDelay : LongWord; PMeasurementUnit : TWpcTimeMeasurementUnits) : LongWord;
 begin
   try
     case (PMeasurementUnit) of
@@ -120,27 +141,27 @@ begin
 end;
 {$Q-}
 
-class procedure TWpcDelayStatementProperty.ConvertToReadableUnits(PMilliseconds : LongWord; var MsDelay : LongWord; var MeasurementUnit : TWpcTimeMeasurementUnits);
+class procedure TWpcDelayStatementProperty.ConvertToReadableUnits(PMilliseconds : LongWord; var ReadableDelay : LongWord; var MeasurementUnit : TWpcTimeMeasurementUnits);
 begin
   if ((PMilliseconds div MS_IN_DAY > 0) and (PMilliseconds mod MS_IN_DAY = 0)) then begin
     MeasurementUnit := DAYS;
-    MsDelay := PMilliseconds div MS_IN_DAY;
+    ReadableDelay := PMilliseconds div MS_IN_DAY;
   end
   else if ((PMilliseconds div MS_IN_HOUR > 0) and (PMilliseconds mod MS_IN_HOUR = 0)) then begin
     MeasurementUnit := HOURS;
-    MsDelay := PMilliseconds div MS_IN_HOUR;
+    ReadableDelay := PMilliseconds div MS_IN_HOUR;
   end
   else if ((PMilliseconds div MS_IN_MINUTE > 0) and (PMilliseconds mod MS_IN_MINUTE = 0)) then begin
     MeasurementUnit := MINUTES;
-    MsDelay := PMilliseconds div MS_IN_MINUTE;
+    ReadableDelay := PMilliseconds div MS_IN_MINUTE;
   end
   else if ((PMilliseconds div MS_IN_SECOND > 0) and (PMilliseconds mod MS_IN_SECOND = 0)) then begin
     MeasurementUnit := SECONDS;
-    MsDelay := PMilliseconds div MS_IN_SECOND;
+    ReadableDelay := PMilliseconds div MS_IN_SECOND;
   end
   else begin
     MeasurementUnit := MILLISECONDS;
-    MsDelay := PMilliseconds;
+    ReadableDelay := PMilliseconds;
   end;
 end;
 
@@ -153,23 +174,39 @@ begin
   FProbability := Probability;
 end;
 
+function TWpcProbabilityStatementProperty.ToString() : String;
+begin
+  Result := 'probability: ' + IntToStr(FProbability) + '%';
+end;
+
 { TWpcTimesStatementProperty }
 
-procedure TWpcTimesStatementProperty.SetTimes(Times: LongWord);
+procedure TWpcTimesStatementProperty.SetTimes(Times : LongWord);
 begin
   if (Times < 1 ) then
     raise TWpcIllegalArgumentException.Create('Times should be positive number.');
-  FTimes:=Times;
+  FTimes := Times;
+end;
+
+function TWpcTimesStatementProperty.ToString() : String;
+begin
+  Result := 'times: ' + IntToStr(FTimes);
 end;
 
 { TWpcWeightStatementProperty }
 
-procedure TWpcWeightStatementProperty.SetWeight(Weight: LongWord);
+procedure TWpcWeightStatementProperty.SetWeight(Weight : LongWord);
 begin
   if (Weight < 1) then
     raise TWpcIllegalArgumentException.Create('Weight value should be positive.');
   FWeight := Weight;
 end;
+
+function TWpcWeightStatementProperty.ToString() : String;
+begin
+  Result := 'weight: ' + IntToStr(FWeight);
+end;
+
 
 end.
 

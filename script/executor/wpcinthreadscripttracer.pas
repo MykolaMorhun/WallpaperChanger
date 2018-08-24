@@ -7,17 +7,19 @@ interface
 uses
   Classes, SysUtils,
   WpcInThreadScriptExecutor,
+  WpcScript,
   WpcBaseStatement,
+  WpcBranchActionsStatements,
   WpcImage,
   WpcWallpaperStyles;
 
 type
 
-  TWpcScriptLifeCycleTraceEvent = procedure() of Object;
-  TWpcScriptBranchTraceEvent = procedure(BranchName : String) of Object;
-  TWpcScriptStatementTraceEvent = procedure(Statement : IWpcBaseScriptStatement) of Object;
-  TWpcScriptWaitTraceEvent = procedure(Milliseconds : LongWord) of Object;
-  TWpcScriptSetWallpaperTraceEvent = procedure(Image : TWpcImage; Style : TWallpaperStyle) of Object;
+  TWpcScriptLifeCycleTraceEvent = procedure(var Script : TWpcScript) of Object;
+  TWpcScriptBranchTraceEvent = procedure(var BranchName : String) of Object;
+  TWpcScriptStatementTraceEvent = procedure(var Statement : IWpcBaseScriptStatement) of Object;
+  TWpcScriptWaitTraceEvent = procedure(var Milliseconds : LongWord) of Object;
+  TWpcScriptSetWallpaperTraceEvent = procedure(var Image : TWpcImage; var Style : TWallpaperStyle) of Object;
 
   { TWpcInThreadScriptTracer }
 
@@ -57,7 +59,7 @@ implementation
 procedure TWpcInThreadScriptTracer.RunScript(Script : TWpcScript);
 begin
   if (Assigned(FOnScriptStart)) then
-    FOnScriptStart();
+    FOnScriptStart(Script);
 
   inherited RunScript(Script);
 end;
@@ -65,7 +67,7 @@ end;
 procedure TWpcInThreadScriptTracer.Terminate();
 begin
   if (Assigned(FOnScriptStop)) then
-    FOnScriptStop();
+    FOnScriptStop(FScript);
 
   inherited Terminate();
 end;
@@ -79,9 +81,13 @@ begin
 end;
 
 procedure TWpcInThreadScriptTracer.ExecuteSwitchBranchStatement(Statement : TWpcSwitchBranchStatement);
+var
+  BranchName : String;
 begin
-  if (Assigned(FOnBranchExit)) then
+  if (Assigned(FOnBranchExit)) then begin
+     BranchName := Statement.GetBranchName();
      FOnBranchExit(BranchName);
+  end;
 
   inherited ExecuteSwitchBranchStatement(Statement);
 end;
@@ -89,7 +95,7 @@ end;
 procedure TWpcInThreadScriptTracer.ExitCurrentBranch();
 begin
   if (Assigned(FOnBranchExit)) then
-     FOnBranchExit(BranchName);
+     FOnBranchExit(FStack.Top().Branch);
 
   inherited ExitCurrentBranch();
 end;

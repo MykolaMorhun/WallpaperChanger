@@ -15,9 +15,25 @@ uses
   WpcScriptParser,
   WpcScript,
   WpcWallpaperStyles,
+  WpcScriptExecutor,
+  WpcInThreadScriptExecutorLogger,
+  WpcInThreadScriptFakeExecutionTracer,
+  WpcLogger,
   WpcExceptions;
 
 type
+
+  { TWpcScriptEditorLogger }
+
+  TWpcScriptEditorLogger = class(IWpcLogger)
+  private
+    FLogsConsumer : TMemo;
+  public
+    constructor Create(LogsConsumer : TMemo);
+
+    procedure LogMessage(Message : String; AddLineBreak : Boolean = true); override;
+  end;
+
 
   { TScriptEditorForm }
 
@@ -144,6 +160,7 @@ type
     procedure FileSaveScriptActionExecute(Sender: TObject);
     procedure FileSaveScriptAsActionExecute(Sender: TObject);
     procedure FileToggleReadOnlyActionExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure HelpAboutActionExecute(Sender: TObject);
     procedure HelpDocumentationActionExecute(Sender: TObject);
@@ -200,11 +217,20 @@ type
     FInteractiveInsertion : Boolean;
 
     FAutocompleteManager : TWpcScriptAutocompletionManager;
+
+    FScript : TWpcScript;
+    FScriptTracer : IWpcScriptExecutor;
+    FScriptExecutionLogsConsumer : TWpcScriptEditorLogger;
   public
     constructor Create(TheOwner : TComponent); override;
     destructor Destroy(); override;
   private
+    procedure SetupTracer(); inline;
+    procedure SetupUI(); inline;
+
+  private
     function AskSave(Sender : TObject = nil) : Boolean;
+    function QuoteIfContainsSpaces(Arg : String) : String; inline;
 
     procedure ShowBottomPanel(Sender : TObject = nil); inline;
   private
@@ -214,6 +240,8 @@ type
     function IsEmptyOrWhitespace(Arg : String) : Boolean;
 
     procedure CheckScript(CheckResources : Boolean);
+    procedure TraceScript();
+    procedure OnTraceScriptStopCallback();
   end;
 
 implementation
@@ -222,39 +250,79 @@ uses
 
 {$R *.lfm}
 
+{ TWpcScriptEditorLogger }
+
+constructor TWpcScriptEditorLogger.Create(LogsConsumer : TMemo);
+begin
+  FLogsConsumer := LogsConsumer;
+end;
+
+procedure TWpcScriptEditorLogger.LogMessage(Message : String; AddLineBreak : Boolean);
+begin
+  FLogsConsumer.Append(Message);
+end;
+
 { TScriptEditorForm }
 
-constructor TScriptEditorForm.Create(TheOwner: TComponent);
+constructor TScriptEditorForm.Create(TheOwner : TComponent);
 begin
   inherited Create(TheOwner);
   FCurrentScript := ScriptSynEdit;
   FScriptPath := '';
   FInteractiveInsertion := False;
 
+  SetupTracer();
+
   // Create autocomplete resolver
   FAutocompleteManager := TWpcScriptAutocompletionManager.Create(SACM_BASIC);
 
-  // Hide bottom panel
-  EditorBottomPanelSplitter.Visible := False;
-  BottomPanel.Visible := False;
-
-  if ((Screen.Width >= 1024) and (Screen.Height >= 768)) then begin
-    Width := 850;
-    Height := 620;
-  end;
-
-  // Set highlighter
+   // Set highlighter
   ScriptSynEdit.Highlighter := CreateWallpaperChangerScriptHighlighter(ScriptSynEdit);
 
-  // Fill editor with basic script template
-  FileNewBaseScriptActionExecute(Self);
+  SetupUI();
 end;
 
 destructor TScriptEditorForm.Destroy();
 begin
   FAutocompleteManager.Free();
+  FScriptTracer.Free();
+  FScriptExecutionLogsConsumer.Free();
 
   inherited Destroy();
+end;
+
+procedure TScriptEditorForm.SetupTracer();
+var
+  ScriptTracer : TWpcInThreadScriptFakeExecutionTracer;
+begin
+  FScriptExecutionLogsConsumer := TWpcScriptEditorLogger.Create(BottomPanelMemo);
+
+  ScriptTracer := TWpcInThreadScriptFakeExecutionTracer.Create(FScriptExecutionLogsConsumer);
+  ScriptTracer.SetOnStopCallback(@OnTraceScriptStopCallback);
+  ScriptTracer.LogDateTime := False;
+  ScriptTracer.IndentSymbol := ' ';
+  ScriptTracer.TraceLevel := TWpcScriptTraceLevel.STL_STATEMENT;
+
+  FScriptTracer := ScriptTracer;
+end;
+
+procedure TScriptEditorForm.SetupUI();
+begin
+  // Hide bottom panel
+  EditorBottomPanelSplitter.Visible := False;
+  BottomPanel.Visible := False;
+
+  // Adapt window size to screen resolution
+  if ((Screen.Width >= 1024) and (Screen.Height >= 768)) then begin
+    Width := 850;
+    Height := 620;
+  end;
+
+  // Disable some actions
+  ScriptStopAction.Enabled := False;
+
+  // Fill editor with basic script template
+  FileNewBaseScriptActionExecute(Self);
 end;
 
 (* Actions *)
@@ -386,9 +454,9 @@ end;
 
 procedure TScriptEditorForm.ViewToggleBottomPanelActionExecute(Sender: TObject);
 begin
+  BottomPanel.Visible := not BottomPanel.Visible;
   ViewToggleBottomPanelAction.Checked := not ViewToggleBottomPanelAction.Checked;
   EditorBottomPanelSplitter.Visible := not EditorBottomPanelSplitter.Visible;
-  BottomPanel.Visible := not BottomPanel.Visible;
 end;
 
 procedure TScriptEditorForm.ViewFontSizeIncreaseActionExecute(Sender: TObject);
@@ -424,12 +492,13 @@ end;
 
 procedure TScriptEditorForm.ScriptRunLogActionExecute(Sender : TObject);
 begin
-
+  ShowBottomPanel(Sender);
+  TraceScript();
 end;
 
 procedure TScriptEditorForm.ScriptStopActionExecute(Sender : TObject);
 begin
-
+   FScriptTracer.Terminate();
 end;
 
 // Branch
@@ -647,17 +716,17 @@ end;
 
 procedure TScriptEditorForm.StatementInsertInteractiveActionExecute(Sender : TObject);
 begin
-
+  // TODO
 end;
 
 procedure TScriptEditorForm.StatementInsertPropertyInteractiveActionExecute(Sender : TObject);
 begin
-
+  // TODO
 end;
 
 procedure TScriptEditorForm.StatementEditActionExecute(Sender : TObject);
 begin
-
+  // TODO
 end;
 
 // Resource
@@ -665,13 +734,13 @@ end;
 procedure TScriptEditorForm.ResourceInsertImageActionExecute(Sender : TObject);
 begin
   if (ResourceOpenPictureDialog.Execute()) then
-    FCurrentScript.InsertTextAtCaret(ResourceOpenPictureDialog.FileName);
+    FCurrentScript.InsertTextAtCaret(QuoteIfContainsSpaces(ResourceOpenPictureDialog.FileName));
 end;
 
 procedure TScriptEditorForm.ResourceInsertDirectoryActionExecute(Sender : TObject);
 begin
   if (ResourceSelectDirectoryDialog.Execute()) then
-    FCurrentScript.InsertTextAtCaret(ResourceSelectDirectoryDialog.FileName);
+    FCurrentScript.InsertTextAtCaret(QuoteIfContainsSpaces(ResourceSelectDirectoryDialog.FileName));
 end;
 
 // Help
@@ -693,6 +762,11 @@ begin
   CanClose := not AskSave(Sender);
 end;
 
+procedure TScriptEditorForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  CloseAction := caFree;
+end;
+
 (* Autocomplete *)
 
 procedure TScriptEditorForm.ScriptSynCompletionExecute(Sender : TObject);
@@ -709,7 +783,8 @@ begin
   ScriptSynCompletion.Position := 0;
 end;
 
-procedure TScriptEditorForm.ScriptSynCompletionSearchPosition(var APosition : Integer);
+procedure TScriptEditorForm.ScriptSynCompletionSearchPosition(
+  var APosition: integer);
 var
   CompletionWords : TStrings;
 begin
@@ -724,17 +799,8 @@ begin
 end;
 
 procedure TScriptEditorForm.ScriptSynCompletionCodeCompletion(
-  var Value: String; SourceValue: String;
-  var SourceStart, SourceEnd: TPoint;
+  var Value: string; SourceValue: string; var SourceStart, SourceEnd: TPoint;
   KeyChar: TUTF8Char; Shift: TShiftState);
-
-  function QuoteIfContainsSpaces(Arg : String) : String; inline;
-  begin
-    if (Arg.IndexOf(' ') <> -1) then
-      Result := QUOTE_SYMBOL + Arg + QUOTE_SYMBOL
-    else
-      Result := Arg;
-  end;
 
   function ShowInsertPictureDialog() : String; inline;
   begin
@@ -742,7 +808,7 @@ procedure TScriptEditorForm.ScriptSynCompletionCodeCompletion(
       Result := QuoteIfContainsSpaces(ResourceOpenPictureDialog.FileName)
     else
       Result := '';
-  end;
+   end;
 
   function ShowInsertDirectoryDialog() : String; inline;
   begin
@@ -794,6 +860,14 @@ begin
   else
     Result := False;
 end;
+
+function TScriptEditorForm.QuoteIfContainsSpaces(Arg : String) : String; inline;
+ begin
+   if (Arg.IndexOf(' ') <> -1) then
+     Result := QUOTE_SYMBOL + Arg + QUOTE_SYMBOL
+   else
+     Result := Arg;
+ end;
 
 procedure TScriptEditorForm.ShowBottomPanel(Sender : TObject = nil);
 begin
@@ -901,6 +975,39 @@ begin
     ScriptParser.Free();
     ScriptLines.Free();
   end;
+end;
+
+procedure TScriptEditorForm.TraceScript();
+var
+  ScriptLines   : TStringList;
+  ScriptParser  : TWpcScriptParser;
+begin
+  ScriptRunLogAction.Enabled := False;
+  ScriptStopAction.Enabled := True;
+
+  CheckScript(False);
+
+  ScriptLines := TStringList.Create();
+  ScriptLines.Assign(FCurrentScript.Lines);
+  ScriptParser := TWpcScriptParser.Create(ScriptLines);
+  ScriptParser.CheckScriptResources := False;
+  try
+    // Safe because script syntax has already been checked.
+    FScript := ScriptParser.Parse();
+  finally
+    ScriptParser.Free();
+    ScriptLines.Free();
+  end;
+
+  FScriptTracer.RunScript(FScript);
+end;
+
+procedure TScriptEditorForm.OnTraceScriptStopCallback();
+begin
+  if (FScript <> nil) then FreeAndNil(FScript);
+
+  ScriptRunLogAction.Enabled := True;
+  ScriptStopAction.Enabled := False;
 end;
 
 

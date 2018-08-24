@@ -30,7 +30,7 @@ type
 
   {
     Eexecutes Wallpaper Changer Script.
-    This class is designed to be invoked from main thread, so
+    This class is designed to be invoked from the main thread, so
     it applies needed action and release control fast.
   }
   TWpcInThreadScriptExecutor = class(IWpcScriptExecutor)
@@ -74,32 +74,32 @@ type
 
     procedure SetOnStopCallback(Callback : TWpcScriptExecutorStopCallback); override;
   protected
-    procedure ExecuteBranch(BranchName : String);
-    procedure ExecuteStatement(Statement : IWpcBaseScriptStatement);
+    procedure ExecuteBranch(BranchName : String); virtual;
+    procedure ExecuteStatement(Statement : IWpcBaseScriptStatement); virtual;
 
     procedure ExecuteWaitStatement(Statement : TWpcWaitStatement);
     procedure ExecuteWallpaperStatement(Statement : TWpcWallpaperStatement);
     procedure ExecuteDirectoryStatement(Statement : TWpcDirectoryStatement);
     procedure ExecuteStopStatement(Statement : TWpcStopStatement);
-    procedure ExecuteSwitchBranchStatement(Statement : TWpcSwitchBranchStatement);
+    procedure ExecuteSwitchBranchStatement(Statement : TWpcSwitchBranchStatement); virtual;
     procedure ExecuteUseBtranchStatement(Statement : TWpcUseBranchStatement);
     procedure ExecuteWallpaperChooserStatement(Statement : TWpcWallpaperChooserStatement);
     procedure ExecuteBranchToUseChooserStatement(Statement : TWpcUseBranchChooserStatement);
     procedure ExecuteBranchToSwitchChooserStatement(Statement : TWpcSwitchBranchChooserStatement);
 
     function IsTriggered(Probability : Byte) : Boolean;
-    procedure SetWallpaper(Image : TWpcImage; Style : TWallpaperStyle);
+    procedure SetWallpaper(Image : TWpcImage; Style : TWallpaperStyle); virtual;
 
     procedure ContunueExecution();
     function Next() : Boolean;
-    procedure ExitCurrentBranch();
+    procedure ExitCurrentBranch(); virtual;
     procedure IncStatementPointer(); inline;
     procedure DecStatementTimesCounter(); inline;
     procedure SetStatementTimesCounter(Value : Integer); inline;
     function GetCurrentStatement() : IWpcBaseScriptStatement; inline;
     function GetTimes(Statement : IWpcBaseScriptStatement) : LongWord;
 
-    procedure TimerSleep(Milliseconds : LongWord);
+    procedure TimerSleep(Milliseconds : LongWord); virtual;
     procedure TimerCallback(Sender: TObject);
   end;
 

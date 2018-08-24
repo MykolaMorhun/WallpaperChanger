@@ -35,7 +35,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="49">
+    <Units Count="52">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -289,6 +289,21 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcInThreadScriptTracer"/>
       </Unit48>
+      <Unit49>
+        <Filename Value="script/executor/wpcinthreadscriptexecutorlogger.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcInThreadScriptExecutorLogger"/>
+      </Unit49>
+      <Unit50>
+        <Filename Value="os/wpsetters/wpcnullwallpapersetter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcNullWallpaperSetter"/>
+      </Unit50>
+      <Unit51>
+        <Filename Value="scripteditor/wpcinthreadscriptfakeexecutiontracer.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcInThreadScriptFakeExecutionTracer"/>
+      </Unit51>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -1,4 +1,4 @@
-unit WpcCustomWallpaperSetter;
+unit WpcNullWallpaperSetter;
 
 {$mode objfpc}{$H+}
 
@@ -13,13 +13,11 @@ uses
 
 type
 
-  { TWpcCustomWallpaperSetter }
+  { TWpcNullWallpaperSetter }
 
-  TWpcCustomWallpaperSetter = class(IWallpaperSetter)
+  TWpcNullWallpaperSetter = class(IWallpaperSetter)
   private
     SupportedStyles : TWpcSetOfWallpaperStyles;
-  private
-    PathToExecutable: String;
   public
     constructor Create();
   public
@@ -32,49 +30,41 @@ type
 
 implementation
 
-uses
-  WpcApplication;
+{ TWpcNullWallpaperSetter }
 
-{ TWpcCustomWallpaperSetter }
-
-constructor TWpcCustomWallpaperSetter.Create();
+constructor TWpcNullWallpaperSetter.Create();
 var
   WallpaperStyle : TWallpaperStyle;
 begin
-  PathToExecutable := ApplicationManager.CurrentSettings.CustomSetter;
-
   for WallpaperStyle in TWallpaperStyle do
     Include(SupportedStyles, WallpaperStyle);
 end;
 
-procedure TWpcCustomWallpaperSetter.SetDesktopWallpaper(Path : String; Style : TWallpaperStyle);
-var
-  output : String;
+procedure TWpcNullWallpaperSetter.SetDesktopWallpaper(Path : String; Style : TWallpaperStyle);
 begin
-  RunCommand(PathToExecutable, [ Path, WallpaperStyleToStr(Style) ],
-             output,
-             [ poWaitOnExit ]);
+  // Do nothing.
 end;
 
-function TWpcCustomWallpaperSetter.GetWallpaperStylesSupported() : TWpcSetOfWallpaperStyles;
+function TWpcNullWallpaperSetter.GetWallpaperStylesSupported() : TWpcSetOfWallpaperStyles;
 begin
   Result := SupportedStyles;
 end;
 
-function TWpcCustomWallpaperSetter.IsWallpaperStyleSupported(Style : TWallpaperStyle) : Boolean;
+function TWpcNullWallpaperSetter.IsWallpaperStyleSupported(Style : TWallpaperStyle) : Boolean;
 begin
   Result := true;
 end;
 
-function TWpcCustomWallpaperSetter.IsWallpaperTypeSupported(Image : String) : Boolean;
+function TWpcNullWallpaperSetter.IsWallpaperTypeSupported(Image : String) : Boolean;
 begin
   Result := true;
 end;
 
-function TWpcCustomWallpaperSetter.GetEnvironmet() : TDesktopEnvironment;
+function TWpcNullWallpaperSetter.GetEnvironmet() : TDesktopEnvironment;
 begin
   Result := DE_CUSTOM;
 end;
+
 
 
 end.
