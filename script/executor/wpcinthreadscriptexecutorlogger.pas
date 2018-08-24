@@ -6,9 +6,9 @@ interface
 
 uses
   Classes, SysUtils,
+  WpcScriptExecutor,
   WpcInThreadScriptTracer,
   WpcWallpaperSetter,
-  WpcNullWallpaperSetter,
   WpcWallpaperStyles,
   WpcScriptCommons,
   WpcBaseStatement,
@@ -71,12 +71,14 @@ type
     property IndentSymbol : Char read FIndentSymbol write SetIndentSymbol;
   protected
     procedure OnScriptStartCallback(var Script : TWpcScript);
-    procedure OnScriptStopCallback(var Script : TWpcScript);
+    procedure OnScriptStopCallback(ExitStatus : TWpcScriptExecutionExitStatus);
     procedure OnBranchEnterCallback(var BranchName : String);
     procedure OnBranchExitCallback(var BranchName : String);
     procedure OnStatementExecutionCallback(var Statement : IWpcBaseScriptStatement);
     procedure OnWaitCallback(var Milliseconds : LongWord);
     procedure OnSetWallpaperCallback(var Image : TWpcImage; var Style : TWallpaperStyle);
+  protected
+
   protected
     procedure LogMessage(Message : String; NoIndent : Boolean = false);
     function AddIndent(Message : String) : String; inline;
@@ -143,10 +145,16 @@ begin
     LogMessage('Starting script execution', true);
 end;
 
-procedure TWpcInThreadScriptExecutorLogger.OnScriptStopCallback(var Script : TWpcScript);
+procedure TWpcInThreadScriptExecutorLogger.OnScriptStopCallback(ExitStatus : TWpcScriptExecutionExitStatus);
 begin
-  if (ShouldPrint(STL_START_STOP)) then
+  if (ShouldPrint(STL_START_STOP)) then begin
     LogMessage('Script execution finished', true);
+    case (ExitStatus) of
+      SES_FINISHED: LogMessage('End of script execution reached.', true);
+      SES_TERMINATED: LogMessage('Execution terminated.', true);
+      SES_ERROR_STACK_OVERFLOW: LogMessage('Error: Stack overflow', true);
+    end;
+  end;
 end;
 
 procedure TWpcInThreadScriptExecutorLogger.OnBranchEnterCallback(var BranchName : String);

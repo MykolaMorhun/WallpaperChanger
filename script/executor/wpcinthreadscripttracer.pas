@@ -6,6 +6,7 @@ interface
 
 uses
   Classes, SysUtils,
+  WpcScriptExecutor,
   WpcInThreadScriptExecutor,
   WpcScript,
   WpcBaseStatement,
@@ -15,7 +16,8 @@ uses
 
 type
 
-  TWpcScriptLifeCycleTraceEvent = procedure(var Script : TWpcScript) of Object;
+  TWpcScriptRunTraceEvent = procedure(var Script : TWpcScript) of Object;
+  TWpcScriptTerminateTraceEvent = procedure(ExitStatus : TWpcScriptExecutionExitStatus) of Object;
   TWpcScriptBranchTraceEvent = procedure(var BranchName : String) of Object;
   TWpcScriptStatementTraceEvent = procedure(var Statement : IWpcBaseScriptStatement) of Object;
   TWpcScriptWaitTraceEvent = procedure(var Milliseconds : LongWord) of Object;
@@ -25,16 +27,16 @@ type
 
   TWpcInThreadScriptTracer = class(TWpcInThreadScriptExecutor)
   protected
-    FOnScriptStart : TWpcScriptLifeCycleTraceEvent;
-    FOnScriptStop  : TWpcScriptLifeCycleTraceEvent;
+    FOnScriptStart : TWpcScriptRunTraceEvent;
+    FOnScriptStop  : TWpcScriptTerminateTraceEvent;
     FOnBranchEnter : TWpcScriptBranchTraceEvent;
     FOnBranchExit  : TWpcScriptBranchTraceEvent;
     FOnStatementExecution : TWpcScriptStatementTraceEvent;
     FOnWait : TWpcScriptWaitTraceEvent;
     FOnSetWallpaper : TWpcScriptSetWallpaperTraceEvent;
   public
-    property OnScriptStart : TWpcScriptLifeCycleTraceEvent read FOnScriptStart write FOnScriptStart;
-    property OnScriptStop : TWpcScriptLifeCycleTraceEvent read FOnScriptStop write FOnScriptStop;
+    property OnScriptStart : TWpcScriptRunTraceEvent read FOnScriptStart write FOnScriptStart;
+    property OnScriptStop : TWpcScriptTerminateTraceEvent read FOnScriptStop write FOnScriptStop;
     property OnBranchEnter : TWpcScriptBranchTraceEvent read FOnBranchEnter write FOnBranchEnter;
     property OnBranchExit : TWpcScriptBranchTraceEvent read FOnBranchExit write FOnBranchExit;
     property OnStatementExecution : TWpcScriptStatementTraceEvent read FOnStatementExecution write FOnStatementExecution;
@@ -42,7 +44,7 @@ type
     property OnSetWallpaper : TWpcScriptSetWallpaperTraceEvent read FOnSetWallpaper write FOnSetWallpaper;
   public
     procedure RunScript(Script : TWpcScript); override;
-    procedure Terminate(); override;
+    procedure Terminate(ExitStatus : TWpcScriptExecutionExitStatus); override;
   protected
     procedure ExecuteBranch(BranchName : String); override;
     procedure ExecuteSwitchBranchStatement(Statement : TWpcSwitchBranchStatement); override;
@@ -64,12 +66,12 @@ begin
   inherited RunScript(Script);
 end;
 
-procedure TWpcInThreadScriptTracer.Terminate();
+procedure TWpcInThreadScriptTracer.Terminate(ExitStatus : TWpcScriptExecutionExitStatus);
 begin
   if (Assigned(FOnScriptStop)) then
-    FOnScriptStop(FScript);
+    FOnScriptStop(ExitStatus);
 
-  inherited Terminate();
+  inherited Terminate(ExitStatus);
 end;
 
 procedure TWpcInThreadScriptTracer.ExecuteBranch(BranchName : String);

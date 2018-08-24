@@ -10,7 +10,13 @@ uses
 
 type
 
-  TWpcScriptExecutorStopCallback = procedure() of Object;
+  TWpcScriptExecutionExitStatus = (
+    SES_FINISHED,
+    SES_TERMINATED,
+    SES_ERROR_STACK_OVERFLOW
+  );
+
+  TWpcScriptExecutorStopCallback = procedure(ExitStatus : TWpcScriptExecutionExitStatus) of Object;
 
   {
     Defines script executor capabilities.

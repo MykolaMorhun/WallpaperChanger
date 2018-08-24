@@ -79,7 +79,7 @@ type
     procedure OpenOptionsForm(ForceSetEnvironment : Boolean = False);
     procedure OpenScriptEditorForm();
   private
-    procedure OnScriptStoppedCallback();
+    procedure OnScriptStoppedCallback(ExitStatus : TWpcScriptExecutionExitStatus);
   private
     procedure ReadSettings();
   end;
@@ -250,7 +250,7 @@ begin
   FScriptEditorWindow.Show();
 end;
 
-procedure TWpcApplicationManager.OnScriptStoppedCallback();
+procedure TWpcApplicationManager.OnScriptStoppedCallback(ExitStatus : TWpcScriptExecutionExitStatus);
 begin
   if (FScript <> nil) then FreeAndNil(FScript);
   if (FScriptParser <> nil) then FreeAndNil(FScriptParser);

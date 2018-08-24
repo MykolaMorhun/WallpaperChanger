@@ -58,6 +58,7 @@ type
     FScript : TWpcScript;
     // Script stack
     FStack : TWpcInThreadScriptExecutorStack;
+    FStackMaxDepth : Integer;
     FIsRunning : Boolean;
     // Used to invoke callbacks after waits
     FTimer : TFPTimer;
@@ -74,6 +75,8 @@ type
 
     procedure SetOnStopCallback(Callback : TWpcScriptExecutorStopCallback); override;
   protected
+    procedure Terminate(ExitStatus : TWpcScriptExecutionExitStatus); virtual;
+
     procedure ExecuteBranch(BranchName : String); virtual;
     procedure ExecuteStatement(Statement : IWpcBaseScriptStatement); virtual;
 
@@ -116,6 +119,8 @@ begin
   FTimer := TFPTimer.Create(nil);
   FTimer.OnTimer := @TimerCallback;
   FOnStopCallback := nil;
+
+  FStackMaxDepth := 255;
 end;
 
 destructor TWpcInThreadScriptExecutor.Destroy();
@@ -152,11 +157,7 @@ begin
   if (not FIsRunning) then
     raise TWpcUseErrorException.Create('Script is not running');
 
-  FIsRunning := False;
-  FTimer.Enabled := False;
-
-  if (FOnStopCallback <> nil) then
-    FOnStopCallback();
+  Terminate(SES_TERMINATED);
 end;
 
 {
@@ -178,10 +179,24 @@ begin
   FOnStopCallback := Callback;
 end;
 
+procedure TWpcInThreadScriptExecutor.Terminate(ExitStatus : TWpcScriptExecutionExitStatus);
+begin
+  FIsRunning := False;
+  FTimer.Enabled := False;
+
+  if (FOnStopCallback <> nil) then
+    FOnStopCallback(ExitStatus);
+end;
+
 procedure TWpcInThreadScriptExecutor.ExecuteBranch(BranchName : String);
 var
   StackFrame : TWpcInThreadScriptExecutorStackEntry;
 begin
+  if (FStack.Size() >= FStackMaxDepth) then begin
+    Terminate(SES_ERROR_STACK_OVERFLOW);
+    exit;
+  end;
+
   StackFrame.Branch := BranchName;
   StackFrame.Statement := -1; // point before first statement
   StackFrame.FrameInfo.Counter := 0;
@@ -269,7 +284,7 @@ end;
 procedure TWpcInThreadScriptExecutor.ExecuteStopStatement(Statement : TWpcStopStatement);
 begin
   if (IsTriggered(Statement.GetProbability())) then
-    Terminate()
+    Terminate(SES_FINISHED)
   else
     ContunueExecution();
 end;
@@ -337,7 +352,7 @@ begin
       ExitCurrentBranch(); // return from this branch
       if (FStack.IsEmpty()) then begin
         // We just returned from the top (main) branch. End of execution is reached.
-        Terminate();
+        Terminate(SES_FINISHED);
         exit;
       end;
       // Here this method should be invoked recursively (with brach on top of the stack we just returned to).

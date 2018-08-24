@@ -241,7 +241,7 @@ type
 
     procedure CheckScript(CheckResources : Boolean);
     procedure TraceScript();
-    procedure OnTraceScriptStopCallback();
+    procedure OnTraceScriptStopCallback(ExitStatus : TWpcScriptExecutionExitStatus);
   end;
 
 implementation
@@ -1002,7 +1002,7 @@ begin
   FScriptTracer.RunScript(FScript);
 end;
 
-procedure TScriptEditorForm.OnTraceScriptStopCallback();
+procedure TScriptEditorForm.OnTraceScriptStopCallback(ExitStatus : TWpcScriptExecutionExitStatus);
 begin
   if (FScript <> nil) then FreeAndNil(FScript);
 
