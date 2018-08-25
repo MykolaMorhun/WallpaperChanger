@@ -12,6 +12,7 @@ object OptionsForm: TOptionsForm
   ClientWidth = 540
   Constraints.MinHeight = 100
   Constraints.MinWidth = 500
+  OnClose = FormClose
   Position = poDefault
   LCLVersion = '1.6.4.0'
   object OptionsPageControl: TPageControl

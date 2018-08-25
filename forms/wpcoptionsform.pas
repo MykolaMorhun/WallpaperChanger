@@ -1,4 +1,4 @@
-unit OptionsWindow;
+unit WpcOptionsForm;
 
 {$mode objfpc}{$H+}
 
@@ -67,6 +67,7 @@ type
     procedure CancelButtonClick(Sender: TObject);
     procedure ConstantDelayRadioButtonChange(Sender: TObject);
     procedure DefaultsButtonClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure OkButtonClick(Sender: TObject);
     procedure SaveButtonClick(Sender: TObject);
     procedure VariableDelayRadioButtonChange(Sender: TObject);
@@ -83,7 +84,8 @@ type
     procedure ShowOptinsForm(ForceSetEnvironment : Boolean = false);
 
     procedure FillSettingsOnForm();
-    procedure ReadSettingsFromForm();
+    function ReadSettingsFromForm() : Boolean;
+    procedure ShowInvalidSettingsMessage(); inline;
   private
     procedure InitConstantUI(); inline;
     procedure OneTimeChnageUI(); inline;
@@ -139,6 +141,18 @@ begin
   VariableDelayValuePanel.Enabled := False;
 end;
 
+procedure TOptionsForm.FormClose(Sender : TObject; var CloseAction : TCloseAction);
+begin
+  CloseAction := caFree;
+  if (not CancelButton.Enabled) then begin
+    // User should configure environment, otherwise future execution has no sense.
+    // If user refuses to configure environment - close program.
+    Application.MessageBox('Environment should be set for correct work of the program.',
+                           'Program will be terminated', MB_ICONEXCLAMATION);
+    Application.Terminate();
+  end;
+end;
+
 {
   Shows options form and fills current settings.
   If ForceSetEnvironment is true, then user will be forced to set desktop environment different from AUTODETECT.
@@ -153,9 +167,12 @@ begin
     OptionsPageControl.ActivePageIndex := 0; // set Engine tab active
     WallpaperSetterAutodetectRadioButton.Enabled := False;
     WallpaperSetterManualRadioButton.Checked := True;
+
+    CancelButton.Enabled := False;
   end
   else begin
     WallpaperSetterAutodetectRadioButton.Enabled := True;
+    CancelButton.Enabled := True;
   end;
 
   Show();
@@ -222,7 +239,10 @@ begin
   RecursiveSearchCheckBox.Checked := Settings.SearchInSubdirectories;
 end;
 
-procedure TOptionsForm.ReadSettingsFromForm();
+{
+  Returns true if all settings are valid, felse otherwise.
+}
+function TOptionsForm.ReadSettingsFromForm() : Boolean;
 var
   Settings : TWpcPersistentSettings;
   VariableDelayMeasurementUnit : TWpcTimeMeasurementUnits;
@@ -235,8 +255,15 @@ begin
   else if (WallpaperSetterCustomRadioButton.Checked) then
     Settings.DesktopEnvironment := DE_CUSTOM
   else
-    Settings.DesktopEnvironment := StrToDesktopEnvironment(
-      WallpaperSetterManualValueComboBox.Items[WallpaperSetterManualValueComboBox.ItemIndex]);
+    // Manual configuration of environment
+    if (WallpaperSetterManualValueComboBox.ItemIndex = -1) then begin
+      // Save button clicked but environment is not set.
+      Result := False;
+      exit;
+    end
+    else
+      Settings.DesktopEnvironment := StrToDesktopEnvironment(
+        WallpaperSetterManualValueComboBox.Items[WallpaperSetterManualValueComboBox.ItemIndex]);
 
   Settings.CustomSetter := WallpaperSetterCustomValueEdit.Text;
 
@@ -259,6 +286,14 @@ begin
 
   Settings.KeepOrder := KeepOrderCheckBox.Checked;
   Settings.SearchInSubdirectories := RecursiveSearchCheckBox.Checked;
+
+  Result := True;
+end;
+
+procedure TOptionsForm.ShowInvalidSettingsMessage();
+begin
+  Application.MessageBox('Some settings have invalid or empty value. Please set correct value.',
+                         'Invalid setting value detected', MB_ICONWARNING);
 end;
 
 (* Buttons handlers *)
@@ -271,8 +306,10 @@ end;
 
 procedure TOptionsForm.SaveButtonClick(Sender: TObject);
 begin
-  ReadSettingsFromForm();
-  ApplicationManager.CurrentSettings.SaveIntoFile();
+  if (ReadSettingsFromForm()) then
+    ApplicationManager.CurrentSettings.SaveIntoFile()
+  else
+    ShowInvalidSettingsMessage();
 end;
 
 procedure TOptionsForm.CancelButtonClick(Sender: TObject);
@@ -282,9 +319,12 @@ end;
 
 procedure TOptionsForm.OkButtonClick(Sender: TObject);
 begin
-  ReadSettingsFromForm();
-  ApplicationManager.ApplySettings();
-  Hide();
+  if (ReadSettingsFromForm()) then begin
+    ApplicationManager.ApplySettings();
+    Hide();
+  end
+  else
+    ShowInvalidSettingsMessage();
 end;
 
 (* UI auto updating handlers *)

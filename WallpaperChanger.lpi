@@ -219,90 +219,88 @@
         <UnitName Value="WpcScriptsGenerator"/>
       </Unit35>
       <Unit36>
-        <Filename Value="forms/optionswindow.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="OptionsForm"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="OptionsWindow"/>
-      </Unit36>
-      <Unit37>
         <Filename Value="scripteditor/wpcscripteditorform.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="ScriptEditorForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="WpcScriptEditorForm"/>
-      </Unit37>
-      <Unit38>
+      </Unit36>
+      <Unit37>
         <Filename Value="scripteditor/wpcscriptsyntaxhighlighterconfigurrer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScriptSyntaxHighlighterConfigurrer"/>
-      </Unit38>
-      <Unit39>
+      </Unit37>
+      <Unit38>
         <Filename Value="scripteditor/wpcscripteditorconstantslist.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScriptEditorConstantsList"/>
-      </Unit39>
-      <Unit40>
+      </Unit38>
+      <Unit39>
         <Filename Value="scripteditor/autocomplete/wpcstaticscriptautocompletion.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcStaticScriptAutocompletion"/>
-      </Unit40>
-      <Unit41>
+      </Unit39>
+      <Unit40>
         <Filename Value="scripteditor/autocomplete/wpcabstractscriptautocompletion.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcAbstractScriptAutocompletion"/>
-      </Unit41>
-      <Unit42>
+      </Unit40>
+      <Unit41>
         <Filename Value="scripteditor/autocomplete/wpcscriptautocompletion.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScriptAutocompletion"/>
-      </Unit42>
-      <Unit43>
+      </Unit41>
+      <Unit42>
         <Filename Value="scripteditor/autocomplete/wpcbasicscriptautocompletion.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcBasicScriptAutocompletion"/>
-      </Unit43>
-      <Unit44>
+      </Unit42>
+      <Unit43>
         <Filename Value="scripteditor/autocomplete/wpcabstractdynamicscriptautocompletion.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcAbstractDynamicScriptAutocompletion"/>
-      </Unit44>
-      <Unit45>
+      </Unit43>
+      <Unit44>
         <Filename Value="scripteditor/autocomplete/wpcadvancedscriptautocompletion.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcAdvancedScriptAutocompletion"/>
-      </Unit45>
-      <Unit46>
+      </Unit44>
+      <Unit45>
         <Filename Value="scripteditor/autocomplete/wpcscriptautocompletionmanager.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcScriptAutocompletionManager"/>
-      </Unit46>
-      <Unit47>
+      </Unit45>
+      <Unit46>
         <Filename Value="common/interfaces/wpclogger.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcLogger"/>
-      </Unit47>
-      <Unit48>
+      </Unit46>
+      <Unit47>
         <Filename Value="script/executor/wpcinthreadscripttracer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcInThreadScriptTracer"/>
-      </Unit48>
-      <Unit49>
+      </Unit47>
+      <Unit48>
         <Filename Value="script/executor/wpcinthreadscriptexecutorlogger.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcInThreadScriptExecutorLogger"/>
-      </Unit49>
-      <Unit50>
+      </Unit48>
+      <Unit49>
         <Filename Value="os/wpsetters/wpcnullwallpapersetter.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcNullWallpaperSetter"/>
-      </Unit50>
-      <Unit51>
+      </Unit49>
+      <Unit50>
         <Filename Value="scripteditor/wpcinthreadscriptfakeexecutiontracer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcInThreadScriptFakeExecutionTracer"/>
+      </Unit50>
+      <Unit51>
+        <Filename Value="forms/wpcoptionsform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <HasResources Value="True"/>
+        <UnitName Value="WpcOptionsForm"/>
       </Unit51>
     </Units>
   </ProjectOptions>

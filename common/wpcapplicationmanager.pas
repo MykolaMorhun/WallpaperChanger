@@ -22,7 +22,7 @@ uses
   WpcImage, WpcDirectory,
   WpcExceptions,
 
-  OptionsWindow,
+  WpcOptionsForm,
   WpcScriptEditorForm;
 
 const
