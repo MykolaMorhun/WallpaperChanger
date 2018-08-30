@@ -242,6 +242,7 @@ type
     procedure CheckScript(CheckResources : Boolean);
     procedure TraceScript();
     procedure OnTraceScriptStopCallback(ExitStatus : TWpcScriptExecutionExitStatus);
+    procedure HandleScriptParseError(ParseException : TWpcScriptParseException);
   end;
 
 implementation
@@ -931,7 +932,6 @@ var
   ScriptLines   : TStringList;
   ScriptParser  : TWpcScriptParser;
   Script        : TWpcScript;
-  i             : Integer;
 begin
   Script := nil;
   ScriptLines := TStringList.Create();
@@ -945,28 +945,8 @@ begin
       if (CheckResources) then
          BottomPanelMemo.Append('Script resources is OK');
     except
-      on ParseException : TWpcScriptParseException do begin
-        BottomPanelMemo.Append('Failed to parse script: ');
-        BottomPanelMemo.Append('  ' + ParseException.Message);
-        if (ParseException.Line <> TWpcScriptParseException.UNKNOWN_LINE) then
-          if (ParseException.WordNumer <> TWpcScriptParseException.UNKNOWN_WORD_NUMBER) then
-            BottomPanelMemo.Append('  At: line ' + IntToStr(ParseException.Line + 1) +
-                                       ', word ' + IntToStr(ParseException.WordNumer + 1))
-          else
-            BottomPanelMemo.Append('  At line: ' + IntToStr(ParseException.Line + 1));
-        BottomPanelMemo.Append('');
-
-        if (ParseException.Line <> TWpcScriptParseException.UNKNOWN_LINE) then begin
-          FCurrentScript.CaretXY := Point(1, ParseException.Line + 1);
-          if (ParseException.WordNumer <> TWpcScriptParseException.UNKNOWN_WORD_NUMBER) then begin
-            for i:=1 to (ParseException.WordNumer + 1) do
-              FCurrentScript.CaretXY := FCurrentScript.NextWordPos();
-            FCurrentScript.SelectWord();
-          end
-          else
-            FCurrentScript.SelectLine();
-        end;
-      end;
+      on ParseException : TWpcScriptParseException do
+        HandleScriptParseError(ParseException);
       on E : Exception do
         BottomPanelMemo.Append('Unxpected error: ' + E.Message);
     end;
@@ -985,15 +965,25 @@ begin
   ScriptRunLogAction.Enabled := False;
   ScriptStopAction.Enabled := True;
 
-  CheckScript(False);
-
   ScriptLines := TStringList.Create();
   ScriptLines.Assign(FCurrentScript.Lines);
   ScriptParser := TWpcScriptParser.Create(ScriptLines);
   ScriptParser.CheckScriptResources := False;
   try
-    // Safe because script syntax has already been checked.
-    FScript := ScriptParser.Parse();
+    try
+      FScript := ScriptParser.Parse();
+    except
+      on ParseException : TWpcScriptParseException do begin
+        HandleScriptParseError(ParseException);
+        OnTraceScriptStopCallback(SES_TERMINATED);
+        exit;
+      end;
+      on E : Exception do begin
+        BottomPanelMemo.Append('Unxpected error: ' + E.Message);
+        OnTraceScriptStopCallback(SES_TERMINATED);
+        exit;
+      end;
+    end;
   finally
     ScriptParser.Free();
     ScriptLines.Free();
@@ -1008,6 +998,32 @@ begin
 
   ScriptRunLogAction.Enabled := True;
   ScriptStopAction.Enabled := False;
+end;
+
+procedure TScriptEditorForm.HandleScriptParseError(ParseException : TWpcScriptParseException);
+var
+  i : Integer;
+begin
+  BottomPanelMemo.Append('Failed to parse script: ');
+  BottomPanelMemo.Append('  ' + ParseException.Message);
+  if (ParseException.Line <> TWpcScriptParseException.UNKNOWN_LINE) then
+    if (ParseException.WordNumer <> TWpcScriptParseException.UNKNOWN_WORD_NUMBER) then
+      BottomPanelMemo.Append('  At: line ' + IntToStr(ParseException.Line + 1) +
+                                 ', word ' + IntToStr(ParseException.WordNumer + 1))
+    else
+      BottomPanelMemo.Append('  At line: ' + IntToStr(ParseException.Line + 1));
+  BottomPanelMemo.Append('');
+
+  if (ParseException.Line <> TWpcScriptParseException.UNKNOWN_LINE) then begin
+    FCurrentScript.CaretXY := Point(1, ParseException.Line + 1);
+    if (ParseException.WordNumer <> TWpcScriptParseException.UNKNOWN_WORD_NUMBER) then begin
+      for i:=1 to (ParseException.WordNumer + 1) do
+        FCurrentScript.CaretXY := FCurrentScript.NextWordPos();
+      FCurrentScript.SelectWord();
+    end
+    else
+      FCurrentScript.SelectLine();
+  end;
 end;
 
 
