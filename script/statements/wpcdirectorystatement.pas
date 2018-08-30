@@ -24,7 +24,7 @@ type
   TWpcDirectoryStatement = class(IWpcBaseScriptStatement)
   private
       FDirectory   : TWpcDirectory;
-      FStyle       : TWallpaperStyle;
+      FStyle       : TWpcWallpaperStyle;
       FDelay       : TWpcDelayStatementProperty;
       FRandomDelay : TWpcDelayStatementProperty;
       FTimes       : TWpcTimesStatementProperty;
@@ -49,8 +49,8 @@ type
       function IsRecurcive() : Boolean;
       function CountImages() : Integer;
 
-      procedure SetStyle(Style : TWallpaperStyle);
-      function GetStyle() : TWallpaperStyle;
+      procedure SetStyle(Style : TWpcWallpaperStyle);
+      function GetStyle() : TWpcWallpaperStyle;
       procedure SetDelay(Delay : LongWord);
       function GetDelay() : LongWord;
       procedure SetRamdomDelay(Delay : LongWord);
@@ -132,12 +132,12 @@ begin
   Result := FImagesList.Count;
 end;
 
-procedure TWpcDirectoryStatement.SetStyle(Style : TWallpaperStyle);
+procedure TWpcDirectoryStatement.SetStyle(Style : TWpcWallpaperStyle);
 begin
   FStyle := Style;
 end;
 
-function TWpcDirectoryStatement.GetStyle(): TWallpaperStyle;
+function TWpcDirectoryStatement.GetStyle(): TWpcWallpaperStyle;
 begin
   Result := FStyle;
 end;

@@ -20,7 +20,7 @@ type
   TWpcWallpaperStatement = class(IWpcBaseScriptStatement)
   private
     FImage       : TWpcImage;
-    FStyle       : TWallpaperStyle;
+    FStyle       : TWpcWallpaperStyle;
     FDelay       : TWpcDelayStatementProperty;
     FProbability : TWpcProbabilityStatementProperty;
   public
@@ -29,8 +29,8 @@ type
   public
     procedure SetImage(Image : TWpcImage);
     function GetImage() : TWpcImage;
-    procedure SetStyle(Style : TWallpaperStyle);
-    function GetStyle() : TWallpaperStyle;
+    procedure SetStyle(Style : TWpcWallpaperStyle);
+    function GetStyle() : TWpcWallpaperStyle;
     procedure SetDelay(Delay : LongWord);
     function GetDelay() : LongWord;
     procedure SetProbability(Probability : Byte);
@@ -77,12 +77,12 @@ begin
   Result := FImage;
 end;
 
-procedure TWpcWallpaperStatement.SetStyle(Style : TWallpaperStyle);
+procedure TWpcWallpaperStatement.SetStyle(Style : TWpcWallpaperStyle);
 begin
   FStyle := Style;
 end;
 
-function TWpcWallpaperStatement.GetStyle() : TWallpaperStyle;
+function TWpcWallpaperStatement.GetStyle() : TWpcWallpaperStyle;
 begin
   Result := FStyle;
 end;

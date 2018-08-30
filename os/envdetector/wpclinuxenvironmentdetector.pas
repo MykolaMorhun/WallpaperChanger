@@ -21,13 +21,13 @@ type
       DE_CINNAMON,
       DE_KDE,
       DE_XFCE,
-      DE_LXDE,
-      DE_LXQT,
-      DE_UNITY,
-      DE_PANTHEON,
-      DE_ENLIGHTENMENT,
-      DE_BUDGIE,
-      DE_DEEPIN
+      DE_LXDE
+      // DE_LXQT,
+      // DE_UNITY,
+      // DE_PANTHEON,
+      // DE_ENLIGHTENMENT,
+      // DE_BUDGIE,
+      // DE_DEEPIN
     ];
   public
     function Detect() : TDesktopEnvironment; override;
@@ -42,7 +42,7 @@ implementation
 function TWpcLinuxEnvironmentDetector.Detect(): TDesktopEnvironment;
 begin
   // TODO implement
-  // Result := DE_UNKNOWN;
+  //Result := DE_UNKNOWN;
   Result := DE_CUSTOM;
 end;
 
@@ -50,6 +50,7 @@ function TWpcLinuxEnvironmentDetector.GetSupportedEnvironments(): TDesktopEnviro
 begin
   Result := SUPPORTED_ENVIRONMETS;
 end;
+
 
 end.
 

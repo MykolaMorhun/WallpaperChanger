@@ -21,7 +21,7 @@ type
   TWpcScriptBranchTraceEvent = procedure(var BranchName : String) of Object;
   TWpcScriptStatementTraceEvent = procedure(var Statement : IWpcBaseScriptStatement) of Object;
   TWpcScriptWaitTraceEvent = procedure(var Milliseconds : LongWord) of Object;
-  TWpcScriptSetWallpaperTraceEvent = procedure(var Image : TWpcImage; var Style : TWallpaperStyle) of Object;
+  TWpcScriptSetWallpaperTraceEvent = procedure(var Image : TWpcImage; var Style : TWpcWallpaperStyle) of Object;
 
   { TWpcInThreadScriptTracer }
 
@@ -50,7 +50,7 @@ type
     procedure ExecuteSwitchBranchStatement(Statement : TWpcSwitchBranchStatement); override;
     procedure ExitCurrentBranch(); override;
     procedure ExecuteStatement(Statement : IWpcBaseScriptStatement); override;
-    procedure SetWallpaper(Image : TWpcImage; Style : TWallpaperStyle); override;
+    procedure SetWallpaper(Image : TWpcImage; Style : TWpcWallpaperStyle); override;
     procedure TimerSleep(Milliseconds : LongWord); override;
   end;
 
@@ -110,7 +110,7 @@ begin
   inherited ExecuteStatement(Statement);
 end;
 
-procedure TWpcInThreadScriptTracer.SetWallpaper(Image : TWpcImage; Style : TWallpaperStyle);
+procedure TWpcInThreadScriptTracer.SetWallpaper(Image : TWpcImage; Style : TWpcWallpaperStyle);
 begin
   if (Assigned(FOnSetWallpaper)) then
     FOnSetWallpaper(Image, Style);

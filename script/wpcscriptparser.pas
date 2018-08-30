@@ -98,7 +98,7 @@ type
         Times : LongWord;
         Probability : Byte;
         Delay : LongWord;
-        Style : TWallpaperStyle;
+        Style : TWpcWallpaperStyle;
       end;
 
   private
@@ -114,7 +114,7 @@ type
 
     FDefaultDelay           : LongWord;
     FDefaultDelayUnits      : TWpcTimeMeasurementUnits;
-    FDefaultWallpaperStyle  : TWallpaperStyle;
+    FDefaultWallpaperStyle  : TWpcWallpaperStyle;
     FDefaultImagesDirectory : TWpcDirectory;
 
     FComputedDefaultDelay : LongWord;
@@ -132,7 +132,7 @@ type
 
     function GetDefaultDelay() : LongWord;
     function GetDefaultDelayUnits() : TWpcTimeMeasurementUnits;
-    function GetDefaultWallpaperStyle() : TWallpaperStyle;
+    function GetDefaultWallpaperStyle() : TWpcWallpaperStyle;
     function GetDefaultImagesDirectory() : TWpcDirectory;
   private
     procedure ParseHeaders();
@@ -175,7 +175,7 @@ type
     function ParseDelayProperty(LineWords : TStringList; WordIndex : Integer) : Integer;
     function ParseTimesProperty(LineWords : TStringList; WordIndex : Integer) : Integer;
     function ParseProbabilityProperty(LineWords : TStringList; WordIndex : Integer) : Byte;
-    function ParseWallpaperStyleProperty(LineWords : TStringList; WordIndex : Integer) : TWallpaperStyle;
+    function ParseWallpaperStyleProperty(LineWords : TStringList; WordIndex : Integer) : TWpcWallpaperStyle;
 
     function ParseAndRemoveSelector(LineWords : TStringList; Selector : TWpcSelector) : TWpcSelectorValueHolder;
     function ParseSequentialNumberWithAlias(Value : String; Aliases : Array of String) : Integer;
@@ -184,7 +184,7 @@ type
     function ParseDelayMeasurmentUnitsValue(MeasurementUnits : String) : TWpcTimeMeasurementUnits;
     function ParseProbabilityValue(Probability : String) : Byte;
     function ParseTimesValue(Times : String) : LongWord;
-    function ParseWallpaperStyleValue(Style : String) : TWallpaperStyle;
+    function ParseWallpaperStyleValue(Style : String) : TWpcWallpaperStyle;
     function ParseSelectorValue(Selector : String) : TWpcSelector;
     function ParseWeightValue(Weight : String) : LongWord;
     function ParseSeasonValue(Season : String) : Integer;
@@ -231,7 +231,7 @@ begin
 
   FDefaultDelay := 5;
   FDefaultDelayUnits := MINUTES;
-  FDefaultWallpaperStyle := CENTER;
+  FDefaultWallpaperStyle := CENTERED;
   FDefaultImagesDirectory := nil; // TODO implement respecting of this value.
 
   FComputedDefaultDelay := TWpcDelayStatementProperty.ConvertToMilliseconds(FDefaultDelay, FDefaultDelayUnits);
@@ -361,7 +361,7 @@ begin
   Result := FDefaultDelayUnits;
 end;
 
-function TWpcScriptParser.GetDefaultWallpaperStyle() : TWallpaperStyle;
+function TWpcScriptParser.GetDefaultWallpaperStyle() : TWpcWallpaperStyle;
 begin
   Result := FDefaultWallpaperStyle;
 end;
@@ -535,7 +535,7 @@ end;
   Where:
    - Time: <n[Time unit]>
    - Time unit: <ms|s|m|h|d>
-   - Style: one of styles from TWallpaperStyle
+   - Style: one of styles from TWpcWallpaperStyle
      Note, that each system has support for some subset of the styles.
      In case when a style is not supported by system, default style should be used.
    - Images directory: absolute or ralative path to base images dir, e.g. C:\Wallpapers
@@ -932,7 +932,7 @@ end;
        * absolute or relative path to an image
        * $DirVariable/path/image.ext
        * $ImageVariable
-    - Style: a value from TWallpaperStyle
+    - Style: a value from TWpcWallpaperStyle
   When Time property is not set, then no delay.
 }
 function TWpcScriptParser.ParseWallpaperStatement(LineWords : TStringList) : IWpcBaseScriptStatement;
@@ -961,7 +961,7 @@ end;
     - Ordered: flag. If is set a list from images within the directory will be built
                and next wallpaper will be chosen as next item in the list;
                if not set then any wallpaper form the directory could be chosen including the same one.
-    - Style: a value from TWallpaperStyle
+    - Style: a value from TWpcWallpaperStyle
     - Time: specifies delay between wallpaper changes.
             When the property is not set, minimal delay will be used.
             It is recomended to always specify this property.
@@ -1713,9 +1713,9 @@ end;
   Syntax:
   STYLE <Style>
   Where:
-   - Style: one of TWallpaperStyle
+   - Style: one of TWpcWallpaperStyle
 }
-function TWpcScriptParser.ParseWallpaperStyleProperty(LineWords : TStringList; WordIndex : Integer) : TWallpaperStyle;
+function TWpcScriptParser.ParseWallpaperStyleProperty(LineWords : TStringList; WordIndex : Integer) : TWpcWallpaperStyle;
 var
   WallpaperStyleString : String;
 begin
@@ -1952,11 +1952,11 @@ end;
 {
   Syntax:
   <Style>
-  Where Style is string from TWallpaperStyle.
+  Where Style is string from TWpcWallpaperStyle.
 }
-function TWpcScriptParser.ParseWallpaperStyleValue(Style : String) : TWallpaperStyle;
+function TWpcScriptParser.ParseWallpaperStyleValue(Style : String) : TWpcWallpaperStyle;
 var
-  WallpaperStyle : TWallpaperStyle;
+  WallpaperStyle : TWpcWallpaperStyle;
 begin
   WallpaperStyle := StrToWallpaperStyle(Style);
   if (WallpaperStyle = UNKNOWN) then

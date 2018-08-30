@@ -143,9 +143,9 @@ end;
 
 procedure TWpcAbstractDynamicScriptAutocompletion.AddToCacheAllWallpaperStyles();
 var
-  WallpaperStyle : TWallpaperStyle;
+  WallpaperStyle : TWpcWallpaperStyle;
 begin
-  for WallpaperStyle in TWallpaperStyle do
+  for WallpaperStyle in TWpcWallpaperStyle do
     CacheOption(WallpaperStyleToStr(WallpaperStyle));
 end;
 

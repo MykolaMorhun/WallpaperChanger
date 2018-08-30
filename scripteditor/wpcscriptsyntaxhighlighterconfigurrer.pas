@@ -61,9 +61,9 @@ end;
 
 procedure ConfigureObjects(Highlighter : TSynAnySyn); inline;
 var
-  WallpaperStyle : TWallpaperStyle;
+  WallpaperStyle : TWpcWallpaperStyle;
 begin
-  for WallpaperStyle in TWallpaperStyle do
+  for WallpaperStyle in TWpcWallpaperStyle do
     Highlighter.Objects.Add(WallpaperStyleToStr(WallpaperStyle));
 
   Highlighter.Objects.AddStrings(SEASONS);

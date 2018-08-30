@@ -52,7 +52,7 @@ type
 
     DEFAULT_DESKTOP_ENVIRONMENT = DE_UNKNOWN;
 
-    DEFAULT_WALLPAPER_STYLE = CENTER;
+    DEFAULT_WALLPAPER_STYLE = CENTERED;
 
     DEFAULT_USE_CONSTANT_DELAY = true;
     DEFAULT_CONSTANT_DELAY = 60 * 60 * 1000;
@@ -66,7 +66,7 @@ type
 
     FDesktopEnvironment : TDesktopEnvironment;
 
-    FWallpaperStyle : TWallpaperStyle;
+    FWallpaperStyle : TWpcWallpaperStyle;
 
     FUseConstantDelay       : Boolean;
     FConstantDelay          : Integer;
@@ -90,7 +90,7 @@ type
     property DesktopEnvironment : TDesktopEnvironment read FDesktopEnvironment write FDesktopEnvironment;
 
     // Default style of the wallapaper, e.g. TILE
-    property WallpaperStyle : TWallpaperStyle read FWallpaperStyle write FWallpaperStyle;
+    property WallpaperStyle : TWpcWallpaperStyle read FWallpaperStyle write FWallpaperStyle;
 
     // Determines whether constant delay should be used between current and next wallpaper set up.
     property UseConstantDelay : Boolean read FUseConstantDelay write FUseConstantDelay;
@@ -172,7 +172,7 @@ begin
 
     FDesktopEnvironment := StrToDesktopEnvironment(SettingsFile.ReadString(ENVIRONMENT_SECTION, DESKTOP_ENVIRONMENT_KEY, DE_UNKNOWN_ID));
 
-    FWallpaperStyle := StrToWallpaperStyle(SettingsFile.ReadString(WALLAPAPER_SECTION, WALLPAPER_STYLE_KEY, WPST_CENTER));
+    FWallpaperStyle := StrToWallpaperStyle(SettingsFile.ReadString(WALLAPAPER_SECTION, WALLPAPER_STYLE_KEY, WPST_CENTERED));
 
     FUseConstantDelay := SettingsFile.ReadBool(SIMPLE_CHANGER_SECTION, SIMPLE_CHANGER_USE_CONSTANT_DELAY_KEY, DEFAULT_USE_CONSTANT_DELAY);
     FConstantDelay := SettingsFile.ReadInteger(SIMPLE_CHANGER_SECTION, SIMPLE_CHANGER_CONSTANT_DELAY_VALUE_KEY, DEFAULT_CONSTANT_DELAY);

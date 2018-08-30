@@ -184,7 +184,7 @@ end;
 procedure TOptionsForm.FillSettingsOnForm();
 var
   Settings : TWpcPersistentSettings;
-  WallpaperStyle : TWallpaperStyle;
+  WallpaperStyle : TWpcWallpaperStyle;
 begin
   Settings := ApplicationManager.CurrentSettings;
 
@@ -367,11 +367,11 @@ end;
 procedure TOptionsForm.WallpaperSetterCustomRadioButtonChange(Sender : TObject);
   procedure AllowAllWallpaperStyles();
   var
-    WallpaperStyle : TWallpaperStyle;
+    WallpaperStyle : TWpcWallpaperStyle;
     AllStyles : TWpcSetOfWallpaperStyles;
   begin
     AllStyles := [];
-    for WallpaperStyle in TWallpaperStyle do
+    for WallpaperStyle in TWpcWallpaperStyle do
       Include(AllStyles, WallpaperStyle);
 
     UpdateAllowedWallpaperStylesList(AllStyles);
@@ -418,7 +418,7 @@ end;
 
 procedure TOptionsForm.UpdateAllowedWallpaperStylesList(Styles : TWpcSetOfWallpaperStyles);
 var
-  WallpaperStyle : TWallpaperStyle;
+  WallpaperStyle : TWpcWallpaperStyle;
   PreviousStyleString : String;
 begin
   if (WallpaperStyleComboBox.ItemIndex <> -1) then

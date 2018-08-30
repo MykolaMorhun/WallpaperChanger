@@ -91,7 +91,7 @@ type
     procedure ExecuteBranchToSwitchChooserStatement(Statement : TWpcSwitchBranchChooserStatement);
 
     function IsTriggered(Probability : Byte) : Boolean;
-    procedure SetWallpaper(Image : TWpcImage; Style : TWallpaperStyle); virtual;
+    procedure SetWallpaper(Image : TWpcImage; Style : TWpcWallpaperStyle); virtual;
 
     procedure ContunueExecution();
     function Next() : Boolean;
@@ -331,7 +331,7 @@ begin
   else Result := (Random(101) < Probability);
 end;
 
-procedure TWpcInThreadScriptExecutor.SetWallpaper(Image : TWpcImage; Style : TWallpaperStyle);
+procedure TWpcInThreadScriptExecutor.SetWallpaper(Image : TWpcImage; Style : TWpcWallpaperStyle);
 begin
   FWallpaperSetter.SetDesktopWallpaper(Image.GetPath(), Style);
 end;

@@ -23,9 +23,9 @@ type
   public
     constructor Create();
   public
-    procedure SetDesktopWallpaper(Path : String; Style : TWallpaperStyle); override;
+    procedure SetDesktopWallpaper(Path : String; Style : TWpcWallpaperStyle); override;
     function GetWallpaperStylesSupported() : TWpcSetOfWallpaperStyles; override;
-    function IsWallpaperStyleSupported(Style : TWallpaperStyle) : Boolean; override;
+    function IsWallpaperStyleSupported(Style : TWpcWallpaperStyle) : Boolean; override;
     function IsWallpaperTypeSupported(Image : String) : Boolean; override;
     function GetEnvironmet() : TDesktopEnvironment; override;
   end;
@@ -39,15 +39,16 @@ uses
 
 constructor TWpcCustomWallpaperSetter.Create();
 var
-  WallpaperStyle : TWallpaperStyle;
+  WallpaperStyle : TWpcWallpaperStyle;
 begin
   PathToExecutable := ApplicationManager.CurrentSettings.CustomSetter;
 
-  for WallpaperStyle in TWallpaperStyle do
+  for WallpaperStyle in TWpcWallpaperStyle do
     Include(SupportedStyles, WallpaperStyle);
+  Exclude(SupportedStyles, TWpcWallpaperStyle.UNKNOWN);
 end;
 
-procedure TWpcCustomWallpaperSetter.SetDesktopWallpaper(Path : String; Style : TWallpaperStyle);
+procedure TWpcCustomWallpaperSetter.SetDesktopWallpaper(Path : String; Style : TWpcWallpaperStyle);
 var
   output : String;
 begin
@@ -61,7 +62,7 @@ begin
   Result := SupportedStyles;
 end;
 
-function TWpcCustomWallpaperSetter.IsWallpaperStyleSupported(Style : TWallpaperStyle) : Boolean;
+function TWpcCustomWallpaperSetter.IsWallpaperStyleSupported(Style : TWpcWallpaperStyle) : Boolean;
 begin
   Result := true;
 end;

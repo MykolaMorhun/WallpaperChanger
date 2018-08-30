@@ -21,9 +21,9 @@ type
   public
     constructor Create();
   public
-    procedure SetDesktopWallpaper(Path : String; Style : TWallpaperStyle); override;
+    procedure SetDesktopWallpaper(Path : String; Style : TWpcWallpaperStyle); override;
     function GetWallpaperStylesSupported() : TWpcSetOfWallpaperStyles; override;
-    function IsWallpaperStyleSupported(Style : TWallpaperStyle) : Boolean; override;
+    function IsWallpaperStyleSupported(Style : TWpcWallpaperStyle) : Boolean; override;
     function IsWallpaperTypeSupported(Image : String) : Boolean; override;
     function GetEnvironmet() : TDesktopEnvironment; override;
   end;
@@ -34,13 +34,13 @@ implementation
 
 constructor TWpcNullWallpaperSetter.Create();
 var
-  WallpaperStyle : TWallpaperStyle;
+  WallpaperStyle : TWpcWallpaperStyle;
 begin
-  for WallpaperStyle in TWallpaperStyle do
+  for WallpaperStyle in TWpcWallpaperStyle do
     Include(SupportedStyles, WallpaperStyle);
 end;
 
-procedure TWpcNullWallpaperSetter.SetDesktopWallpaper(Path : String; Style : TWallpaperStyle);
+procedure TWpcNullWallpaperSetter.SetDesktopWallpaper(Path : String; Style : TWpcWallpaperStyle);
 begin
   // Do nothing.
 end;
@@ -50,7 +50,7 @@ begin
   Result := SupportedStyles;
 end;
 
-function TWpcNullWallpaperSetter.IsWallpaperStyleSupported(Style : TWallpaperStyle) : Boolean;
+function TWpcNullWallpaperSetter.IsWallpaperStyleSupported(Style : TWpcWallpaperStyle) : Boolean;
 begin
   Result := true;
 end;

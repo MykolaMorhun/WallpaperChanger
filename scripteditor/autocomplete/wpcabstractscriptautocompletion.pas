@@ -51,7 +51,7 @@ end;
 
 procedure TWpcAbstractScriptAutocompletion.InitStaticPart();
 var
-  WallpaperStyle : TWallpaperStyle;
+  WallpaperStyle : TWpcWallpaperStyle;
 begin
   FStaticOptions.AddStrings(KEYWORDS);
   FStaticOptions.AddStrings(SELECTORS);
@@ -61,7 +61,7 @@ begin
 
   // Put all wallpaper styles as static here
   // because one could write script for another desktop environment.
-  for WallpaperStyle in TWallpaperStyle do
+  for WallpaperStyle in TWpcWallpaperStyle do
     FStaticOptions.Add(WallpaperStyleToStr(WallpaperStyle));
 end;
 

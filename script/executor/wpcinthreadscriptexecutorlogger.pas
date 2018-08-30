@@ -76,7 +76,7 @@ type
     procedure OnBranchExitCallback(var BranchName : String);
     procedure OnStatementExecutionCallback(var Statement : IWpcBaseScriptStatement);
     procedure OnWaitCallback(var Milliseconds : LongWord);
-    procedure OnSetWallpaperCallback(var Image : TWpcImage; var Style : TWallpaperStyle);
+    procedure OnSetWallpaperCallback(var Image : TWpcImage; var Style : TWpcWallpaperStyle);
   protected
 
   protected
@@ -189,7 +189,7 @@ begin
   end;
 end;
 
-procedure TWpcInThreadScriptExecutorLogger.OnSetWallpaperCallback(var Image : TWpcImage; var Style : TWallpaperStyle);
+procedure TWpcInThreadScriptExecutorLogger.OnSetWallpaperCallback(var Image : TWpcImage; var Style : TWpcWallpaperStyle);
 begin
   if (ShouldPrint(STL_SET)) then
     LogMessage('Setting wallpaper: ' + Image.GetPath() + ' ' + WallpaperStyleToStr(Style));
