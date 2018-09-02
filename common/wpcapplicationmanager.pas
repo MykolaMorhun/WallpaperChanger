@@ -40,7 +40,7 @@ type
     FApplicationStateSettings : TWpcStateSettings;
 
     FEnvironmentDetector    : IWpcEnvironmentDetector;
-    FWallpaperSetter        : IWallpaperSetter;
+    FWallpaperSetter        : IWpcWallpaperSetter;
     FWallpaperSetterFactory : IWpcWallpaperSetterFactory;
 
     FScriptsGenerator : TWpcScriptsGenerator;
@@ -62,7 +62,7 @@ type
     property CurrentState : TWpcStateSettings read FApplicationStateSettings;
 
     property EnvironmentDetector : IWpcEnvironmentDetector read FEnvironmentDetector;
-    property WallpaperSetter : IWallpaperSetter read FWallpaperSetter;
+    property WallpaperSetter : IWpcWallpaperSetter read FWallpaperSetter;
     property WallpaperSetterFactory : IWpcWallpaperSetterFactory read FWallpaperSetterFactory;
   public
     procedure ApplySettings();

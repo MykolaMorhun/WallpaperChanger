@@ -333,7 +333,7 @@ procedure TOptionsForm.WallpaperSetterAutodetectRadioButtonChange(Sender : TObje
   procedure TryDetectDesktopEnvironment();
   var
     DesktopEnvironment : TDesktopEnvironment;
-    WallpaperSetter : IWallpaperSetter;
+    WallpaperSetter : IWpcWallpaperSetter;
   begin
     DesktopEnvironment := ApplicationManager.EnvironmentDetector.Detect();
     if (DesktopEnvironment = DE_UNKNOWN) then
@@ -407,7 +407,7 @@ end;
 
 procedure TOptionsForm.WallpaperSetterManualValueComboBoxChange(Sender : TObject);
 var
-  WallpaperSetter : IWallpaperSetter;
+  WallpaperSetter : IWpcWallpaperSetter;
 begin
   WallpaperSetter := ApplicationManager.WallpaperSetterFactory.GetWallpaperSetter(
     StrToDesktopEnvironment(WallpaperSetterManualValueComboBox.Items[WallpaperSetterManualValueComboBox.ItemIndex]));

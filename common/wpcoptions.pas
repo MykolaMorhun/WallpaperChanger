@@ -170,7 +170,7 @@ begin
     FCustomSetter := SettingsFile.ReadString(ENGINE_SECTION, CUSTOM_SETTER_KEY, DEFAULT_CUSTOM_SETTER);
     FRunOnStart := SettingsFile.ReadBool(ENGINE_SECTION, RUN_LAST_SCRIPT_ON_START_KEY, DEFAULT_RUN_ON_START);
 
-    FDesktopEnvironment := StrToDesktopEnvironment(SettingsFile.ReadString(ENVIRONMENT_SECTION, DESKTOP_ENVIRONMENT_KEY, DE_UNKNOWN_ID));
+    FDesktopEnvironment := StrToDesktopEnvironment(SettingsFile.ReadString(ENVIRONMENT_SECTION, DESKTOP_ENVIRONMENT_KEY, DE_AUTODETECT_ID));
 
     FWallpaperStyle := StrToWallpaperStyle(SettingsFile.ReadString(WALLAPAPER_SECTION, WALLPAPER_STYLE_KEY, WPST_CENTERED));
 

@@ -11,7 +11,7 @@ uses
 
 type
 
-  IWallpaperSetter = class abstract(TObject)
+  IWpcWallpaperSetter = class abstract(TObject)
     // Sets given image as desktop wallpaper with given style.
     procedure SetDesktopWallpaper(Path : String; Style : TWpcWallpaperStyle); virtual; abstract;
     // Returns set of all supported in this setter wallpepar styles.

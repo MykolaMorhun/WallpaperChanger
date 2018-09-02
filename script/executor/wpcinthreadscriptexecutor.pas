@@ -53,7 +53,7 @@ type
       TWpcInThreadScriptExecutorStack = specialize TStack<TWpcInThreadScriptExecutorStackEntry>;
 
   protected
-    FWallpaperSetter : IWallpaperSetter;
+    FWallpaperSetter : IWpcWallpaperSetter;
     // Stores current script
     FScript : TWpcScript;
     // Script stack
@@ -65,7 +65,7 @@ type
 
     FOnStopCallback : TWpcScriptExecutorStopCallback;
   public
-    constructor Create(WallpaperSetter : IWallpaperSetter);
+    constructor Create(WallpaperSetter : IWpcWallpaperSetter);
     destructor Destroy(); override;
   public
     procedure RunScript(Script : TWpcScript); override;
@@ -111,7 +111,7 @@ implementation
 
 { TWpcInThreadScriptExecutor }
 
-constructor TWpcInThreadScriptExecutor.Create(WallpaperSetter : IWallpaperSetter);
+constructor TWpcInThreadScriptExecutor.Create(WallpaperSetter : IWpcWallpaperSetter);
 begin
   FWallpaperSetter := WallpaperSetter;
 

@@ -13,7 +13,7 @@ type
 
   IWpcWallpaperSetterFactory = class abstract(TObject)
   public
-    function GetWallpaperSetter(DesktopEnvironment: TDesktopEnvironment) : IWallpaperSetter; virtual; abstract;
+    function GetWallpaperSetter(DesktopEnvironment: TDesktopEnvironment) : IWpcWallpaperSetter; virtual; abstract;
     function GetSupportedEnvironments() : TDesktopEnvironmentsSet; virtual; abstract;
   end;
 

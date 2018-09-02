@@ -29,6 +29,19 @@ type
       // DE_BUDGIE,
       // DE_DEEPIN
     ];
+  private const
+    XDG_CURRENT_DESKTOP_ENV_VARIABLE_KEY = 'XDG_CURRENT_DESKTOP';
+
+    XDG_DESKTOP_GNOME = 'GNOME';
+    XDG_DESKTOP_MATE = 'MATE';
+    XDG_DESKTOP_CINNAMON = 'X-CINNAMON';
+    XDG_DESKTOP_KDE = 'KDE';
+    XDG_DESKTOP_XFCE = 'XFCE';
+    XDG_DESKTOP_LXDE = 'LXDE';
+  private
+    FXDGCurrentDesktop : String;
+  public
+    constructor Create();
   public
     function Detect() : TDesktopEnvironment; override;
     function GetSupportedEnvironments() : TDesktopEnvironmentsSet; override;
@@ -39,11 +52,29 @@ implementation
 
 { TWpcLinuxEnvironmentDetector }
 
+constructor TWpcLinuxEnvironmentDetector.Create();
+begin
+  FXDGCurrentDesktop := UpperCase(GetEnvironmentVariable(XDG_CURRENT_DESKTOP_ENV_VARIABLE_KEY));
+end;
+
 function TWpcLinuxEnvironmentDetector.Detect(): TDesktopEnvironment;
 begin
-  // TODO implement
-  //Result := DE_UNKNOWN;
-  Result := DE_CUSTOM;
+  case (FXDGCurrentDesktop) of
+    XDG_DESKTOP_GNOME:
+      Result := DE_GNOME;
+    XDG_DESKTOP_MATE:
+      Result := DE_MATE;
+    XDG_DESKTOP_CINNAMON:
+      Result := DE_CINNAMON;
+    XDG_DESKTOP_KDE:
+      Result := DE_KDE;
+    XDG_DESKTOP_XFCE:
+      Result := DE_XFCE;
+    XDG_DESKTOP_LXDE:
+      Result := DE_LXDE;
+    else
+      Result := DE_UNKNOWN;
+  end;
 end;
 
 function TWpcLinuxEnvironmentDetector.GetSupportedEnvironments(): TDesktopEnvironmentsSet;

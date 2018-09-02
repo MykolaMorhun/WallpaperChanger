@@ -35,7 +35,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="52">
+    <Units Count="57">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -302,6 +302,31 @@
         <HasResources Value="True"/>
         <UnitName Value="WpcOptionsForm"/>
       </Unit51>
+      <Unit52>
+        <Filename Value="os/wpsetters/Linux/wpcgnome3wallpapersetter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcGnome3WallpaperSetter"/>
+      </Unit52>
+      <Unit53>
+        <Filename Value="os/wpsetters/Linux/wpcabstractlinuxwallpapersetter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcAbstractLinuxWallpaperSetter"/>
+      </Unit53>
+      <Unit54>
+        <Filename Value="os/providers/wpcwallpapersetterfactoryprovider.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcWallpaperSetterFactoryProvider"/>
+      </Unit54>
+      <Unit55>
+        <Filename Value="os/wpsetters/Linux/wpccinnamonwallpapersetter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcCinnamonWallpaperSetter"/>
+      </Unit55>
+      <Unit56>
+        <Filename Value="os/wpsetters/Linux/wpcmatewallpapersetter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcMateWallpaperSetter"/>
+      </Unit56>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -311,7 +336,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="forms;common;script;os;common/types;os/envdetector;common/interfaces;os/providers;os/wpsetters;script/statements;script/statements/properties;script/executor;scripteditor;scripteditor/forms;scripteditor/autocomplete"/>
+      <OtherUnitFiles Value="forms;common;script;os;common/types;os/envdetector;common/interfaces;os/providers;os/wpsetters;script/statements;script/statements/properties;script/executor;scripteditor;scripteditor/forms;scripteditor/autocomplete;os/wpsetters/Linux"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

@@ -29,7 +29,7 @@ implementation
 
 constructor TWpcInThreadScriptFakeExecutionTracer.Create(Logger : IWpcLogger);
 var
-  NullWallpaperSetter : IWallpaperSetter;
+  NullWallpaperSetter : IWpcWallpaperSetter;
 begin
   FLogDateTime := False;
   FTraceLevel := TWpcScriptTraceLevel.STL_STATEMENT;

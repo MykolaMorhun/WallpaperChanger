@@ -58,7 +58,7 @@ type
     SIndentString : String;
   public
     // Logger should be released separately from this instance.
-    constructor Create(WallpaperSetter : IWallpaperSetter; Logger : IWpcLogger);
+    constructor Create(WallpaperSetter : IWpcWallpaperSetter; Logger : IWpcLogger);
     destructor Destroy(); override;
   private
     procedure SetIndentSize(NewIndentSize : Integer);
@@ -91,7 +91,7 @@ implementation
 
 { TWpcScriptTraceLogger }
 
-constructor TWpcInThreadScriptExecutorLogger.Create(WallpaperSetter : IWallpaperSetter; Logger: IWpcLogger);
+constructor TWpcInThreadScriptExecutorLogger.Create(WallpaperSetter : IWpcWallpaperSetter; Logger: IWpcLogger);
 begin
   if (Logger = nil) then
     raise TWpcUseErrorException.Create('Logger should be specified.');

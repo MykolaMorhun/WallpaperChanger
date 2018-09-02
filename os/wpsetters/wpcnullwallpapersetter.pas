@@ -15,7 +15,7 @@ type
 
   { TWpcNullWallpaperSetter }
 
-  TWpcNullWallpaperSetter = class(IWallpaperSetter)
+  TWpcNullWallpaperSetter = class(IWpcWallpaperSetter)
   private
     SupportedStyles : TWpcSetOfWallpaperStyles;
   public

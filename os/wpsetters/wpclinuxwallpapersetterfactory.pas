@@ -8,6 +8,9 @@ uses
   Classes, SysUtils,
   WpcWallpaperSetter,
   WpcWallpaperSetterFactory,
+  WpcGnome3WallpaperSetter,
+  WpcMateWallpaperSetter,
+  WpcCinnamonWallpaperSetter,
   WpcDesktopEnvironments,
   WpcCustomWallpaperSetter,
   WpcExceptions;
@@ -17,8 +20,8 @@ type
   { TWpcLinuxWallpaperSetterFactory }
 
   TWpcLinuxWallpaperSetterFactory = class(IWpcWallpaperSetterFactory)
-  private
-    const SupportedEnvironments = [
+  private const
+    SUPPORTED_ENVIRONMENTS = [
       DE_GNOME,
       DE_MATE,
       DE_CINNAMON,
@@ -33,7 +36,7 @@ type
       DE_DEEPIN
     ];
   public
-    function GetWallpaperSetter(DesktopEnvironment: TDesktopEnvironment) : IWallpaperSetter; override;
+    function GetWallpaperSetter(DesktopEnvironment: TDesktopEnvironment) : IWpcWallpaperSetter; override;
     function GetSupportedEnvironments() : TDesktopEnvironmentsSet; override;
   end;
 
@@ -42,12 +45,12 @@ implementation
 
 { TWpcLinuxWallpaperSetterFactory }
 
-function TWpcLinuxWallpaperSetterFactory.GetWallpaperSetter(DesktopEnvironment : TDesktopEnvironment): IWallpaperSetter;
+function TWpcLinuxWallpaperSetterFactory.GetWallpaperSetter(DesktopEnvironment : TDesktopEnvironment): IWpcWallpaperSetter;
 begin
   case (DesktopEnvironment) of
-    DE_GNOME:         Result := nil;
-    DE_MATE:          Result := nil;
-    DE_CINNAMON:      Result := nil;
+    DE_GNOME:         Result := TWpcGnome3WallpaperSetter.Create();
+    DE_MATE:          Result := TWpcMateWallpaperSetter.Create();
+    DE_CINNAMON:      Result := TWpcCinnamonWallpaperSetter.Create();
     DE_KDE:           Result := nil;
     DE_XFCE:          Result := nil;
     DE_LXDE:          Result := nil;
@@ -66,7 +69,7 @@ end;
 
 function TWpcLinuxWallpaperSetterFactory.GetSupportedEnvironments() : TDesktopEnvironmentsSet;
 begin
-  Result := SupportedEnvironments;
+  Result := SUPPORTED_ENVIRONMENTS;
 end;
 
 

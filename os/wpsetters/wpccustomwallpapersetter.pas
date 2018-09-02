@@ -15,7 +15,7 @@ type
 
   { TWpcCustomWallpaperSetter }
 
-  TWpcCustomWallpaperSetter = class(IWallpaperSetter)
+  TWpcCustomWallpaperSetter = class(IWpcWallpaperSetter)
   private
     SupportedStyles : TWpcSetOfWallpaperStyles;
   private
@@ -50,10 +50,10 @@ end;
 
 procedure TWpcCustomWallpaperSetter.SetDesktopWallpaper(Path : String; Style : TWpcWallpaperStyle);
 var
-  output : String;
+  Output : String;
 begin
   RunCommand(PathToExecutable, [ Path, WallpaperStyleToStr(Style) ],
-             output,
+             Output,
              [ poWaitOnExit ]);
 end;
 
