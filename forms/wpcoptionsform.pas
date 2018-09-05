@@ -373,6 +373,7 @@ procedure TOptionsForm.WallpaperSetterCustomRadioButtonChange(Sender : TObject);
     AllStyles := [];
     for WallpaperStyle in TWpcWallpaperStyle do
       Include(AllStyles, WallpaperStyle);
+    Exclude(AllStyles, UNKNOWN);
 
     UpdateAllowedWallpaperStylesList(AllStyles);
   end;
