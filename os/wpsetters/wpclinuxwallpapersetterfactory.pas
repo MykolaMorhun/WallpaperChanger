@@ -11,6 +11,7 @@ uses
   WpcGnome3WallpaperSetter,
   WpcMateWallpaperSetter,
   WpcCinnamonWallpaperSetter,
+  WpcXfceWallpaperSetter,
   WpcDesktopEnvironments,
   WpcCustomWallpaperSetter,
   WpcExceptions;
@@ -52,7 +53,7 @@ begin
     DE_MATE:          Result := TWpcMateWallpaperSetter.Create();
     DE_CINNAMON:      Result := TWpcCinnamonWallpaperSetter.Create();
     DE_KDE:           Result := nil;
-    DE_XFCE:          Result := nil;
+    DE_XFCE:          Result := TWpcXfceWallpaperSetter.Create();
     DE_LXDE:          Result := nil;
     DE_LXQT:          Result := nil;
     DE_UNITY:         Result := nil;
