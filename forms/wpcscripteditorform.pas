@@ -19,6 +19,7 @@ uses
   WpcInThreadScriptExecutorLogger,
   WpcInThreadScriptFakeExecutionTracer,
   WpcLogger,
+  OSUtils,
   WpcExceptions;
 
 type
@@ -196,8 +197,8 @@ type
     procedure ViewFontSizeIncreaseActionExecute(Sender: TObject);
     procedure ViewToggleBottomPanelActionExecute(Sender: TObject);
   const
-    LINE_BREAK = #10#13;
-
+    SYNEDIT_LINE_BREAK = #10#13;
+  const
     DEFAULT_WALLPAPER = 'path';
     DEFAULT_DIRECTORY = 'path';
     DEFAULT_BARNCH_NAME = 'BranchName';
@@ -596,7 +597,7 @@ begin
     InsertNewLineIfCurrentNotEmpty();
     FCurrentScript.TextBetweenPoints[FCurrentScript.CaretXY, FCurrentScript.CaretXY] :=
       CHOOSE_KEYWORD + ' ' + WALLPAPER_KEYWORD + ' ' + BY_KEYWORD + ' ' + DEFAULT_SELECTOR + ' ' + FROM_KEYWORD +
-      LINE_BREAK +
+      SYNEDIT_LINE_BREAK +
       Indent + END_KEYWORD + ' ' + CHOOSE_KEYWORD;
 
     for i:=1 to 3 do
@@ -618,7 +619,7 @@ begin
     InsertNewLineIfCurrentNotEmpty();
     FCurrentScript.TextBetweenPoints[FCurrentScript.CaretXY, FCurrentScript.CaretXY] :=
       CHOOSE_KEYWORD + ' ' + BRANCH_KEYWORD + ' ' + TO_KEYWORD + ' ' + USE_KEYWORD + ' ' + BY_KEYWORD + ' ' + DEFAULT_SELECTOR + ' ' + FROM_KEYWORD +
-      LINE_BREAK +
+      SYNEDIT_LINE_BREAK +
       Indent + END_KEYWORD + ' ' + CHOOSE_KEYWORD;
 
     for i:=1 to 5 do
@@ -640,7 +641,7 @@ begin
     InsertNewLineIfCurrentNotEmpty();
     FCurrentScript.TextBetweenPoints[FCurrentScript.CaretXY, FCurrentScript.CaretXY] :=
       CHOOSE_KEYWORD + ' ' + BRANCH_KEYWORD + ' ' + TO_KEYWORD + ' ' + SWITCH_KEYWORD + ' ' + BY_KEYWORD + ' ' + DEFAULT_SELECTOR + ' ' + FROM_KEYWORD +
-      LINE_BREAK +
+      SYNEDIT_LINE_BREAK +
       Indent + END_KEYWORD + ' ' + CHOOSE_KEYWORD;
 
     for i:=1 to 5 do
@@ -748,7 +749,7 @@ end;
 
 procedure TScriptEditorForm.HelpAboutActionExecute(Sender : TObject);
 begin
-  Application.MessageBox('Wallpaper Changer Script Editor' + sLineBreak +
+  Application.MessageBox('Wallpaper Changer Script Editor' + LINE_BREAK +
                          'Version 1.0.0',
                          'About Script Editor',
                          MB_ICONINFORMATION + MB_OK);
@@ -890,7 +891,7 @@ begin
   if (not IsEmptyOrWhitespace(FCurrentScript.LineText)) then begin
     Indent := CountLeadSpaces(FCurrentScript.LineText);
     FCurrentScript.TextBetweenPoints[Point(FCurrentScript.LineText.Length + 1, FCurrentScript.CaretY),
-                                     Point(0, FCurrentScript.CaretY + 1)] := LINE_BREAK;
+                                     Point(0, FCurrentScript.CaretY + 1)] := SYNEDIT_LINE_BREAK;
     FCurrentScript.CaretX := Indent + 1;
     FCurrentScript.CaretY := FCurrentScript.CaretY + 1;
   end;

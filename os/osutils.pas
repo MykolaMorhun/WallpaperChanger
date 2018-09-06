@@ -11,9 +11,10 @@ type
   TOSFamily = (F_WINDOWS, F_LINUX, F_MAC, F_UNKNOWN);
 
 const
-  // TODO add preprocessor
-  PATH_SEPARATOR = '/';
-  OS_FAMILY = F_LINUX;
+  LINE_BREAK = LineEnding;
+  PATH_SEPARATOR = PathDelim;
+  OS_FAMILY = {$IFDEF LINUX} F_LINUX {$ENDIF} {$IFDEF WINDOWS} F_WINDOWS {$ENDIF};
+
 
 function IsAbsolutePath(Path : String) : Boolean;
 function GetAbsolutePath(Path : String) : String;
