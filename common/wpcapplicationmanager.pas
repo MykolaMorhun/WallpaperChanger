@@ -23,7 +23,8 @@ uses
   WpcExceptions,
 
   WpcOptionsForm,
-  WpcScriptEditorForm;
+  WpcScriptEditorForm,
+  WpcAboutForm;
 
 const
   SETTINGS_FILE = 'WPCSettings.ini';
@@ -78,6 +79,7 @@ type
   public
     procedure OpenOptionsForm(ForceSetEnvironment : Boolean = False);
     procedure OpenScriptEditorForm();
+    procedure OpenAboutForm();
   private
     procedure OnScriptStoppedCallback(ExitStatus : TWpcScriptExecutionExitStatus);
   private
@@ -248,6 +250,18 @@ begin
   // Create new from each time. It will destroy itself on close.
   FScriptEditorWindow := TScriptEditorForm.Create(nil);
   FScriptEditorWindow.Show();
+end;
+
+procedure TWpcApplicationManager.OpenAboutForm();
+var
+  AboutForm : TWpcAboutForm;
+begin
+  AboutForm := TWpcAboutForm.Create(nil);
+  try
+    AboutForm.ShowModal();
+  finally
+    AboutForm.Free();
+  end;
 end;
 
 procedure TWpcApplicationManager.OnScriptStoppedCallback(ExitStatus : TWpcScriptExecutionExitStatus);

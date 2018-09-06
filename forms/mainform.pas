@@ -176,7 +176,7 @@ end;
 
 procedure TBannerForm.AboutMenuItemClick(Sender : TObject);
 begin
-
+  ApplicationManager.OpenAboutForm();
 end;
 
 procedure TBannerForm.ExitMenuItemClick(Sender : TObject);

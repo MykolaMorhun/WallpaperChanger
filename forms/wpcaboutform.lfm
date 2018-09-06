@@ -1,0 +1,60 @@
+object WpcAboutForm: TWpcAboutForm
+  Left = 449
+  Height = 150
+  Top = 193
+  Width = 300
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'About Wallpaper Changer'
+  ClientHeight = 150
+  ClientWidth = 300
+  OnClose = FormClose
+  Position = poDefaultPosOnly
+  LCLVersion = '1.6.4.0'
+  object WallpaperChangerLabel: TLabel
+    Left = 10
+    Height = 22
+    Top = 10
+    Width = 280
+    Align = alTop
+    Alignment = taCenter
+    BorderSpacing.Around = 10
+    Caption = 'Wallpaper Changer'
+    Font.Height = -19
+    ParentColor = False
+    ParentFont = False
+  end
+  object VersionLabel: TLabel
+    Left = 10
+    Height = 15
+    Top = 42
+    Width = 280
+    Align = alTop
+    Alignment = taCenter
+    BorderSpacing.Around = 10
+    Caption = 'Version 1.0.0'
+    ParentColor = False
+  end
+  object AuthorsLabel: TLabel
+    Left = 10
+    Height = 15
+    Top = 67
+    Width = 280
+    Align = alTop
+    Alignment = taCenter
+    BorderSpacing.Around = 10
+    Caption = '(c) 2017 - 2018 Mykola Morhun'
+    ParentColor = False
+  end
+  object CloseButton: TButton
+    Left = 10
+    Height = 25
+    Top = 115
+    Width = 280
+    Align = alBottom
+    BorderSpacing.Around = 10
+    Caption = 'Close'
+    OnClick = CloseButtonClick
+    TabOrder = 0
+  end
+end
