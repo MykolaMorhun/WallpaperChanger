@@ -337,7 +337,10 @@
       <Unit58>
         <Filename Value="forms/wpcscripteditorform.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="ScriptEditorForm"/>
         <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="WpcScriptEditorForm"/>
       </Unit58>
     </Units>
   </ProjectOptions>

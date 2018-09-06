@@ -748,7 +748,10 @@ end;
 
 procedure TScriptEditorForm.HelpAboutActionExecute(Sender : TObject);
 begin
-  // TODO use app manager
+  Application.MessageBox('Wallpaper Changer Script Editor' + sLineBreak +
+                         'Version 1.0.0',
+                         'About Script Editor',
+                         MB_ICONINFORMATION + MB_OK);
 end;
 
 procedure TScriptEditorForm.HelpDocumentationActionExecute(Sender : TObject);
