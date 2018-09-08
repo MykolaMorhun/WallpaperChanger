@@ -208,6 +208,7 @@ begin
   CacheOption(DEFAULTS_KEYWORD);    // defaults section geader
   CacheOption(DELAY_KEYWORD);       // defaults section, delay / delay units
   CacheOption(WALLPAPER_KEYWORD);   // defaults section, wallpaper style
+  CacheOption(DIRECTORY_KEYWORD);   // defaults section, base path
 end;
 
 

@@ -165,13 +165,14 @@ end;
 
 (* Engine *)
 
-procedure TWpcApplicationManager.RunScript(PathToScript: String);
+procedure TWpcApplicationManager.RunScript(PathToScript : String);
 begin
   try
     FScriptContent := TStringList.Create();
     // TODO check file type
     FScriptContent.LoadFromFile(PathToScript);
     FScriptParser := TWpcScriptParser.Create(FScriptContent);
+    FScriptParser.BasePath := ExtractFilePath(PathToScript);
     FScript := FScriptParser.Parse();
     FScriptExecutor.RunScript(FScript);
 

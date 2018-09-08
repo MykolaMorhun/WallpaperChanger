@@ -69,7 +69,7 @@ begin
   AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, DirectoryStatement.GetDirectory().GetPath().EndsWith(DIRECTORY_WITH_WALLPAPERS));
   AssertFalse(WRONG_STATEMENT_PROPRTY_VALUE, DirectoryStatement.IsOrdered()); // false should be default value
   AssertFalse(WRONG_STATEMENT_PROPRTY_VALUE, DirectoryStatement.IsRecurcive()); // false should be default value
-  AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, CENTER = DirectoryStatement.GetStyle()); // CENTER should be default value
+  AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, CENTERED = DirectoryStatement.GetStyle()); // CENTER should be default value
   AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, 0, DirectoryStatement.GetDelay());
   AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, DEFAULT_PROBABILITY, DirectoryStatement.GetProbability());
   AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, DEFAULT_TIMES, DirectoryStatement.GetTimes());

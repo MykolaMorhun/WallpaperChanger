@@ -103,6 +103,7 @@ type
 
   private
     FScript : TWpcScript;
+
     FLines : TStringList;
     FCurrentLine : Integer;
 
@@ -115,11 +116,14 @@ type
     FDefaultDelay           : LongWord;
     FDefaultDelayUnits      : TWpcTimeMeasurementUnits;
     FDefaultWallpaperStyle  : TWpcWallpaperStyle;
-    FDefaultImagesDirectory : TWpcDirectory;
+    FBasePath               : String; // used to resolve relative paths
 
     FComputedDefaultDelay : LongWord;
+  private
+    procedure SetBasePath(Path : String);
   public
     property CheckScriptResources : Boolean read FCheckScriptResources write FCheckScriptResources;
+    property BasePath : String read FBasePath write SetBasePath;
   public
     constructor Create(ScriptLines : TStringList);
     destructor Destroy(); override;
@@ -133,7 +137,6 @@ type
     function GetDefaultDelay() : LongWord;
     function GetDefaultDelayUnits() : TWpcTimeMeasurementUnits;
     function GetDefaultWallpaperStyle() : TWpcWallpaperStyle;
-    function GetDefaultImagesDirectory() : TWpcDirectory;
   private
     procedure ParseHeaders();
     procedure ParseDirsVariables();
@@ -165,7 +168,7 @@ type
     function ParseSwitchBranchStatementData(LineWords : TStringList; Index : Integer) : TWpcSwitchBranchStatement;
     function ParseUseBranchStatementData(LineWords : TStringList; Index : Integer) : TWpcUseBranchStatement;
 
-    function ParseDirectory(LineWords : TStringList; var Index : Integer) : TWpcDirectory;
+    function ParseDirectory(LineWords : TStringList; var Index : Integer) : String;
     function ParseImage(LineWords : TStringList; var Index : Integer) : TWpcImage;
 
     function GetDefaultStatementProperties() : TStatementProperties;
@@ -214,6 +217,8 @@ type
     function SafeGet(LineWords : TStringList; Index : Integer) : String;
 
     procedure SearchWordInScript(TheWord : String; CaseSensitive : Boolean; var Line : Integer; var Index : Integer);
+
+    function ToAbsolutePath(Path : String) : String;
   end;
 
 implementation
@@ -232,7 +237,7 @@ begin
   FDefaultDelay := 5;
   FDefaultDelayUnits := MINUTES;
   FDefaultWallpaperStyle := CENTERED;
-  FDefaultImagesDirectory := nil; // TODO implement respecting of this value.
+  FBasePath := '';
 
   FComputedDefaultDelay := TWpcDelayStatementProperty.ConvertToMilliseconds(FDefaultDelay, FDefaultDelayUnits);
 
@@ -244,7 +249,6 @@ begin
   FDirsVariables.Free();
   FImagesVariables.Free();
   FDelaysVariables.Free();
-  if (FDefaultImagesDirectory <> nil) then FDefaultImagesDirectory.Free();
 
   inherited Destroy();
 end;
@@ -263,6 +267,11 @@ end;
   # Headers section
   # Each part of headers section isn't mandatory.
 
+  DEFAULTS
+    [<key> <value>]
+    ...
+  END DEFAULTS
+
   DIRECTORIES
     [<key> <value>]
     ...
@@ -277,11 +286,6 @@ end;
     [<key> <value>]
     ...
   END DELAYS
-
-  DEFAULTS
-    [<key> <value>]
-    ...
-  END DEFAULTS
 
   # Branches section
 
@@ -367,14 +371,6 @@ begin
 end;
 
 {
-  Returns nil if no value is set.
-}
-function TWpcScriptParser.GetDefaultImagesDirectory() : TWpcDirectory;
-begin
-  Result := FDefaultImagesDirectory;
-end;
-
-{
   Parses script headers i.e. directories, images, delays, default settings.
 }
 procedure TWpcScriptParser.ParseHeaders();
@@ -433,7 +429,7 @@ begin
       if (not CheckKeyWord(SafeGet(LineWords, 0), END_KEYWORD)) then begin
         ParseVariableDefinition(Line, Key, Value);
         Value := ApplyParsedDirectoriesVariables(Value);
-        Value := GetAbsolutePath(Value);
+        Value := ToAbsolutePath(Value);
         FDirsVariables.Add(Key, Value);
       end
       else begin
@@ -473,7 +469,7 @@ begin
       if (not CheckKeyWord(SafeGet(LineWords, 0), END_KEYWORD)) then begin
         ParseVariableDefinition(Line, Key, Value);
         Value := ApplyParsedDirectoriesVariables(Value);
-        Value := GetAbsolutePath(Value);
+        Value := ToAbsolutePath(Value);
         FImagesVariables.Add(Key, Value);
       end
       else begin
@@ -530,7 +526,7 @@ end;
     [DELAY <Time>]
     [DELAY UNITS <Time unit>]
     [WALLPAPER STYLE <Style>]
-    [IMAGES DIRECTORY <Path>]
+    [DIRECTORY <Path>]
   END DEFAULTS
   Where:
    - Time: <n[Time unit]>
@@ -538,7 +534,7 @@ end;
    - Style: one of styles from TWpcWallpaperStyle
      Note, that each system has support for some subset of the styles.
      In case when a style is not supported by system, default style should be used.
-   - Images directory: absolute or ralative path to base images dir, e.g. C:\Wallpapers
+   - directory: absolute or ralative path to base images dir, e.g. C:\Wallpapers
      Note, this prefix path is added only for relative paths.
      If relative value given, base path is the path to the executable.
    Note, that:
@@ -600,18 +596,14 @@ begin
             Inc(CurrentWordIndex);
             EnsureEndOfLine(LineWords, CurrentWordIndex);
           end;
-        IMAGES_KEYWORD:
+        DIRECTORY_KEYWORD:
           begin
-            Inc(CurrentWordIndex);
-            if (CheckKeyWord(SafeGet(LineWords, CurrentWordIndex), DIRECTORY_KEYWORD)) then
-              raise TWpcScriptParseException.Create(DIRECTORY_KEYWORD + ' keyword expected, but got "' + SafeGet(LineWords, CurrentWordIndex) + '".', FCurrentLine, CurrentWordIndex);
-
             Inc(CurrentWordIndex);
             AWord := SafeGet(LineWords, CurrentWordIndex);
             if (AWord = '') then
-              raise TWpcScriptParseException.Create('Path to images directory is expected, but nothing found.', FCurrentLine, CurrentWordIndex);
+              raise TWpcScriptParseException.Create('Path to base directory is expected, but nothing found.', FCurrentLine, CurrentWordIndex);
 
-            FDefaultImagesDirectory := ParseDirectory(LineWords, CurrentWordIndex);
+            SetBasePath(ParseDirectory(LineWords, CurrentWordIndex));
 
             Inc(CurrentWordIndex);
             EnsureEndOfLine(LineWords, CurrentWordIndex);
@@ -755,7 +747,7 @@ begin
 
   Delete(Image, 1, Length(VARIABLE_START_SYMBOL));
   ResolvedImage := GetImage(Image);
-  if (Image = '') then
+  if (ResolvedImage = '') then
     raise TWpcScriptParseException.Create('Unknown image variable "' + Image + '".', FCurrentLine);
 
   Result := ResolvedImage;
@@ -1392,7 +1384,7 @@ end;
 function TWpcScriptParser.ParseDirectoryStatementData(LineWords : TStringList; Index : Integer): TWpcDirectoryStatement;
 var
   DirectoryStatement  : TWpcDirectoryStatement;
-  Directory           : TWpcDirectory;
+  DirectoryPath       : String;
   StatementProperties : TStatementProperties;
   IsOrdered           : Boolean;
   IsRecursive         : Boolean;
@@ -1400,7 +1392,7 @@ var
 begin
   CurrentWordIndex := Index;
 
-  Directory := ParseDirectory(LineWords, CurrentWordIndex);
+  DirectoryPath := ParseDirectory(LineWords, CurrentWordIndex);
 
   if (CheckKeyWord(SafeGet(LineWords, CurrentWordIndex), ORDERED_KEYWORD)) then begin
     Inc(CurrentWordIndex);
@@ -1416,16 +1408,11 @@ begin
   else
     IsRecursive := False;
 
-  try
-    StatementProperties := ParseStatementPropertiesAndEnsureEndOfLine(
-      [WPC_WALLPAPER_STYLE_PROPERTY_ID, WPC_DELAY_STATEMENT_PROPERY_ID, WPC_PROBABILITY_STATEMENT_PROPERY_ID, WPC_TIMES_STATEMENT_PROPERY_ID],
-      LineWords, CurrentWordIndex);
-  except
-    Directory.Free();
-    raise;
-  end;
+  StatementProperties := ParseStatementPropertiesAndEnsureEndOfLine(
+    [WPC_WALLPAPER_STYLE_PROPERTY_ID, WPC_DELAY_STATEMENT_PROPERY_ID, WPC_PROBABILITY_STATEMENT_PROPERY_ID, WPC_TIMES_STATEMENT_PROPERY_ID],
+    LineWords, CurrentWordIndex);
 
-  DirectoryStatement := TWpcDirectoryStatement.Create(Directory, IsOrdered, IsRecursive);
+  DirectoryStatement := TWpcDirectoryStatement.Create(TWpcDirectory.Create(DirectoryPath), IsOrdered, IsRecursive);
   DirectoryStatement.SetStyle(StatementProperties.Style);
   DirectoryStatement.SetDelay(StatementProperties.Delay);
   DirectoryStatement.SetProbability(StatementProperties.Probability);
@@ -1499,7 +1486,7 @@ end;
   Where Path is absolute or relative path to a directory.
   Note, that, Path could contain spaces, but in that case it should be contained into double quotes.
 }
-function TWpcScriptParser.ParseDirectory(LineWords : TStringList; var Index : Integer): TWpcDirectory;
+function TWpcScriptParser.ParseDirectory(LineWords : TStringList; var Index : Integer) : String;
 var
   PathReference : String;
 begin
@@ -1524,7 +1511,7 @@ begin
   if (PathReference.EndsWith(PATH_SEPARATOR)) then
     Delete(PathReference, Length(PathReference), 1);
 
-  Result := TWpcDirectory.Create(PathReference);
+  Result := PathReference;
 end;
 
 {
@@ -1538,8 +1525,8 @@ end;
   Note, that:
    - Path could contain spaces, but in that case it should be contained into double quotes.
      Example:
-     "$Mywallpapers/some dir/"
-   - After function execution Index is set to the next word after path (could be out of range).
+     "$Mywallpapers/some dir/image.jpg"
+   - After function execution Index is set to the next word after path (might be out of range).
 }
 function TWpcScriptParser.ParseImage(LineWords : TStringList; var Index : Integer) : TWpcImage;
 var
@@ -1569,7 +1556,7 @@ begin
       ImageReference := ApplyParsedDirectoriesVariables(ImageReference);
   end
   else
-    ImageReference := GetAbsolutePath(ImageReference);
+    ImageReference := ToAbsolutePath(ImageReference);
 
   if (FCheckScriptResources and (not FileExists(ImageReference))) then
     raise TWpcScriptParseException.Create('Image with "' + ImageReference + '" path does not exist.', FCurrentLine);
@@ -2435,6 +2422,38 @@ begin
   // End of script is reached, given word not found.
   Line := -1;
   Index := -1;
+end;
+
+{
+  Sets base path for paths in script.
+  If given path is empty path to executable will be used.
+}
+procedure TWpcScriptParser.SetBasePath(Path : String);
+begin
+  Path := GetAbsolutePath(Path);
+
+  if (Path.EndsWith(PATH_SEPARATOR)) then
+    FBasePath := Path
+  else
+    FBasePath := Path + PATH_SEPARATOR;
+end;
+
+{
+  Converts given relative path to absolute relatively to script location.
+  If script location is not specified then path to executable will be used as base path.
+  If given path is already absolute it will be returned without changes.
+}
+function TWpcScriptParser.ToAbsolutePath(Path : String) : String;
+begin
+  if (IsAbsolutePath(Path)) then begin
+    Result := Path;
+    exit;
+  end;
+
+  if (FBasePath = '') then
+    Result := GetAbsolutePath(Path)
+  else
+    Result := FBasePath + Path;
 end;
 
 

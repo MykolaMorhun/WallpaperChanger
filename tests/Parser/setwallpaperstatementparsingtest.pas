@@ -54,7 +54,7 @@ begin
   AssertTrue(WRONG_STATEMENT, WPC_WALLPAPER_STATEMENT_ID = MainBranchStatements[0].GetId());
   WallpaperStatement := TWpcWallpaperStatement(MainBranchStatements[0]);
   AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, WallpaperStatement.GetImage().GetPath().EndsWith(WALLPAPER_IMAGE_FILE));
-  AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, CENTER = WallpaperStatement.GetStyle()); // CENTER should be default value
+  AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, CENTERED = WallpaperStatement.GetStyle()); // CENTER should be default value
   AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, 0, WallpaperStatement.GetDelay());
   AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, DEFAULT_PROBABILITY, WallpaperStatement.GetProbability());
 end;

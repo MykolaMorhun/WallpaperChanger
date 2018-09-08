@@ -941,6 +941,7 @@ begin
   ScriptLines := TStringList.Create();
   ScriptLines.Assign(FCurrentScript.Lines);
   ScriptParser := TWpcScriptParser.Create(ScriptLines);
+  ScriptParser.BasePath := ExtractFilePath(FScriptPath);
   ScriptParser.CheckScriptResources := CheckResources;
   try
     try
@@ -972,6 +973,7 @@ begin
   ScriptLines := TStringList.Create();
   ScriptLines.Assign(FCurrentScript.Lines);
   ScriptParser := TWpcScriptParser.Create(ScriptLines);
+  ScriptParser.BasePath := ExtractFilePath(FScriptPath);
   ScriptParser.CheckScriptResources := False;
   try
     try

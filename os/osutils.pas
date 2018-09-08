@@ -13,18 +13,27 @@ type
 const
   LINE_BREAK = LineEnding;
   PATH_SEPARATOR = PathDelim;
-  OS_FAMILY = {$IFDEF LINUX} F_LINUX {$ENDIF} {$IFDEF WINDOWS} F_WINDOWS {$ENDIF};
+  OS_FAMILY =
+    {$IFDEF LINUX} F_LINUX; {$ENDIF}
+    {$IFDEF WINDOWS} F_WINDOWS; {$ENDIF}
 
 
 function IsAbsolutePath(Path : String) : Boolean;
 function GetAbsolutePath(Path : String) : String;
 
+
 implementation
 
-function IsAbsolutePath(Path: String): Boolean;
+
+function IsAbsolutePath(Path : String): Boolean;
 const
   ALPHA_CHARS = ['A'..'Z', 'a'..'z'];
 begin
+  if (Path = '') then begin
+    Result := False;
+    exit;
+  end;
+
   case OS_FAMILY of
     F_LINUX,
     F_MAC:
@@ -41,13 +50,18 @@ begin
   end;
 end;
 
-function GetAbsolutePath(Path: String): String;
+{
+  Resolves relative path against executable location.
+  Does not modifies path if it is already absolute.
+}
+function GetAbsolutePath(Path : String) : String;
 begin
   if (not IsAbsolutePath(Path)) then
-    Result := GetCurrentDir() + PATH_SEPARATOR + Path
-  else
-    Result := Path;
+    Path := GetCurrentDir() + PATH_SEPARATOR + Path;
+
+  Result := Path;
 end;
+
 
 end.
 

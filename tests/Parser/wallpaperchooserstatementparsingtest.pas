@@ -37,7 +37,7 @@ begin
 
   ChooserType := ' ' + WALLPAPER_KEYWORD + ' ';
   ChooserItem1 := '  ' + TEST_FILE1 + STYLE_PROPERTY;
-  ChooserItem2 := '  ' + TEST_FILE2 + ' ' + STYLE_KEYWORD + ' TILE ';
+  ChooserItem2 := '  ' + TEST_FILE2 + ' ' + STYLE_KEYWORD + ' TILED ';
 end;
 
 procedure TWallpaperChooserStatementParsingTest.AddRequiredObjectsIntoScript();
