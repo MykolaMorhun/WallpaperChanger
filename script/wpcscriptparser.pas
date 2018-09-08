@@ -583,7 +583,7 @@ begin
         WALLPAPER_KEYWORD:
           begin
             Inc(CurrentWordIndex);
-            if (CheckKeyWord(SafeGet(LineWords, CurrentWordIndex), STYLE_KEYWORD)) then
+            if (not CheckKeyWord(SafeGet(LineWords, CurrentWordIndex), STYLE_KEYWORD)) then
               raise TWpcScriptParseException.Create(STYLE_KEYWORD + ' keyword expected, but got "' + SafeGet(LineWords, CurrentWordIndex) + '".', FCurrentLine, CurrentWordIndex);
 
             Inc(CurrentWordIndex);
