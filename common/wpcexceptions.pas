@@ -5,7 +5,8 @@ unit WpcExceptions;
 interface
 
 uses
-  Classes, SysUtils;
+  Classes, SysUtils,
+  OSUtils;
 
 type
 
@@ -69,9 +70,9 @@ end;
 
 function TWpcScriptParseException.GetPrettyMessage(): String;
 begin
-  Result := Concat('Failed to parse script: ', FMessage);
+  Result := Concat('Failed to parse script: ', LINE_BREAK, FMessage);
   if (FLine <> UNKNOWN_LINE) then
-    Result := Concat(Result, 'Line: ', IntToStr(FLine + 1));
+    Result := Concat(Result, LINE_BREAK, 'Line: ', IntToStr(FLine + 1));
   if (FWordNumber <> UNKNOWN_WORD_NUMBER) then
     Result := Concat(Result, ' word: ', IntToStr(FWordNumber + 1));
 end;

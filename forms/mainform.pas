@@ -9,6 +9,7 @@ uses
   Forms, Controls, Graphics, Dialogs, ExtCtrls, Menus, ExtDlgs, LCLType,
   WpcApplication, WpcApplicationManager,
   WpcImage, WpcDirectory,
+  WpcScriptExecutor,
   WpcExceptions;
 
 type
@@ -56,6 +57,7 @@ type
   private
     function GetTargetFile(Dialog : TFileDialog) : String;
     function WarnScriptIsRunning() : Boolean; inline;
+    procedure OnScriptStoppedCallback(ExitStatus : TWpcScriptExecutionExitStatus);
     procedure MenuOnScriptStop(); inline;
     procedure MenuOnScriptStart(); inline;
   end;
@@ -78,6 +80,7 @@ begin
 
   ApplicationManager := TWpcApplicationManager.Create();
   ApplicationManager.ApplySettings(); // init app with settings from config file
+  ApplicationManager.SetOnScriptStopCallback(@OnScriptStoppedCallback);
 
   MenuOnScriptStop();
   BannerForm.Hide();
@@ -102,9 +105,13 @@ begin
       MenuOnScriptStart();
     except
       on ParseExcepton : TWpcScriptParseException do
-       ShowMessage(ParseExcepton.PrettyMessage);
+        Application.MessageBox(PChar(ParseExcepton.PrettyMessage),
+                               'Error running script',
+                               MB_ICONEXCLAMATION + MB_OK);
       on WpcException : TWpcException do
-        ShowMessage(Concat('Error: ', WpcException.Message));
+        Application.MessageBox(PChar(Concat('Error: ', WpcException.Message)),
+                               'Unknown error',
+                               MB_ICONERROR + MB_OK);
     end;
   end;
 end;
@@ -231,6 +238,11 @@ begin
     Application.MessageBox('Another script is already running. Would you like to replace it?',
                            'Conflict',
                            MB_ICONQUESTION + MB_YESNO);
+end;
+
+procedure TBannerForm.OnScriptStoppedCallback(ExitStatus : TWpcScriptExecutionExitStatus);
+begin
+  MenuOnScriptStop();
 end;
 
 procedure TBannerForm.MenuOnScriptStop();

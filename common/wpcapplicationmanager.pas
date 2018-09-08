@@ -51,6 +51,8 @@ type
     FScriptContent : TStringList;
     FScriptParser  : TWpcScriptParser;
     FScript        : TWpcScript;
+
+    FOnScriptStopCallback : TWpcScriptExecutorStopCallback;
   private
     FOptionsWindow : TOptionsForm;
     FScriptEditorWindow : TScriptEditorForm;
@@ -80,6 +82,8 @@ type
     procedure OpenOptionsForm(ForceSetEnvironment : Boolean = False);
     procedure OpenScriptEditorForm();
     procedure OpenAboutForm();
+  public
+    procedure SetOnScriptStopCallback(Callback : TWpcScriptExecutorStopCallback);
   private
     procedure OnScriptStoppedCallback(ExitStatus : TWpcScriptExecutionExitStatus);
   private
@@ -265,11 +269,19 @@ begin
   end;
 end;
 
+procedure TWpcApplicationManager.SetOnScriptStopCallback(Callback : TWpcScriptExecutorStopCallback);
+begin
+  FOnScriptStopCallback := Callback;
+end;
+
 procedure TWpcApplicationManager.OnScriptStoppedCallback(ExitStatus : TWpcScriptExecutionExitStatus);
 begin
   if (FScript <> nil) then FreeAndNil(FScript);
   if (FScriptParser <> nil) then FreeAndNil(FScriptParser);
   if (FScriptContent <> nil) then FreeAndNil(FScriptContent);
+
+  if (Assigned(FOnScriptStopCallback)) then
+    FOnScriptStopCallback(ExitStatus);
 end;
 
 
