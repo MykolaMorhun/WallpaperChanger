@@ -35,7 +35,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="59">
+    <Units Count="60">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -342,6 +342,11 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="WpcScriptEditorForm"/>
       </Unit58>
+      <Unit59>
+        <Filename Value="os/wpsetters/Linux/wpckdeplasmawallpapersetter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcKdePlasmaWallpaperSetter"/>
+      </Unit59>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

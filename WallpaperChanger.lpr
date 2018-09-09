@@ -7,7 +7,7 @@ uses
   cthreads, cmem,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, MainForm, WpcAboutForm;
+  Forms, MainForm, WpcAboutForm, WpcKdePlasmaWallpaperSetter;
 
 {$R *.res}
 
