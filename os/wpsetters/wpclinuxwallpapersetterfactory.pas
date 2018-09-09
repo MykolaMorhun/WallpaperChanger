@@ -9,6 +9,7 @@ uses
   WpcWallpaperSetter,
   WpcWallpaperSetterFactory,
   WpcGnome3WallpaperSetter,
+  WpcGnomeClassicWallpaperSetter,
   WpcMateWallpaperSetter,
   WpcCinnamonWallpaperSetter,
   WpcKdePlasmaWallpaperSetter,
@@ -26,6 +27,7 @@ type
   private const
     SUPPORTED_ENVIRONMENTS = [
       DE_GNOME,
+      DE_GNOME_CLASSIC,
       DE_MATE,
       DE_CINNAMON,
       DE_KDE,
@@ -52,6 +54,7 @@ function TWpcLinuxWallpaperSetterFactory.GetWallpaperSetter(DesktopEnvironment :
 begin
   case (DesktopEnvironment) of
     DE_GNOME:         Result := TWpcGnome3WallpaperSetter.Create();
+    DE_GNOME_CLASSIC: Result := TWpcGnomeClassicWallpaperSetter.Create();
     DE_MATE:          Result := TWpcMateWallpaperSetter.Create();
     DE_CINNAMON:      Result := TWpcCinnamonWallpaperSetter.Create();
     DE_KDE:           Result := TWpcKdePlasmaWallpaperSetter.Create();

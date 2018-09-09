@@ -16,6 +16,7 @@ const
   DE_REACTOS_ID = 'REACTOS';
 
   DE_GNOME_ID = 'GNOME';
+  DE_GNOME_CLASSIC_ID = 'GNOME-CLASSIC';
   DE_MATE_ID = 'MATE';
   DE_CINNAMON_ID = 'CINNAMON';
   DE_KDE_ID = 'KDE';
@@ -43,6 +44,7 @@ type
     DE_REACTOS,
 
     DE_GNOME,
+    DE_GNOME_CLASSIC,
     DE_MATE,
     DE_CINNAMON,
     DE_KDE,
@@ -78,6 +80,7 @@ begin
     DE_REACTOS:          Result := DE_REACTOS_ID;
 
     DE_GNOME:            Result := DE_GNOME_ID;
+    DE_GNOME_CLASSIC:    Result := DE_GNOME_CLASSIC_ID;
     DE_MATE:             Result := DE_MATE_ID;
     DE_CINNAMON:         Result := DE_CINNAMON_ID;
     DE_KDE:              Result := DE_KDE_ID;
@@ -108,6 +111,7 @@ begin
     DE_REACTOS_ID:          Result := DE_REACTOS;
 
     DE_GNOME_ID:            Result := DE_GNOME;
+    DE_GNOME_CLASSIC_ID:    Result := DE_GNOME_CLASSIC;
     DE_MATE_ID:             Result := DE_MATE;
     DE_CINNAMON_ID:         Result := DE_CINNAMON;
     DE_KDE_ID:              Result := DE_KDE;
