@@ -13,8 +13,9 @@ uses
   WpcCinnamonWallpaperSetter,
   WpcKdePlasmaWallpaperSetter,
   WpcXfceWallpaperSetter,
-  WpcDesktopEnvironments,
+  WpcLxdeWallpaperSetter,
   WpcCustomWallpaperSetter,
+  WpcDesktopEnvironments,
   WpcExceptions;
 
 type
@@ -55,7 +56,7 @@ begin
     DE_CINNAMON:      Result := TWpcCinnamonWallpaperSetter.Create();
     DE_KDE:           Result := TWpcKdePlasmaWallpaperSetter.Create();
     DE_XFCE:          Result := TWpcXfceWallpaperSetter.Create();
-    DE_LXDE:          Result := nil;
+    DE_LXDE:          Result := TWpcLxdeWallpaperSetter.Create();
     DE_LXQT:          Result := nil;
     DE_UNITY:         Result := nil;
     DE_PANTHEON:      Result := nil;
