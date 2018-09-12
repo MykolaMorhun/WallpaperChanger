@@ -52,6 +52,7 @@ type
       KDE (Plasma): Scaled-and-Cropped (Zoomed), Scaled (Stretched), Scaled-keep-proportions (Scaled), Centered, Tiled.
       CINNAMON: Mosaic (Tiled), Centered, Scaled, Stretched, Zoom, Spanned.
       LXDE (ids only): Stretched, Scaled, Centered, Tiled, Zoomed, Spanned.
+      UNITY: Tile, Zoom, Center, Scale, Fill (Stretched), Span.
 
     Windows family:
       Windows 10: Fill (Zoomed), Fit (Scaled), Stretch, Tile, Center, Span.

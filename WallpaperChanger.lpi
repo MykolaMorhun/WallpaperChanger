@@ -35,7 +35,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="62">
+    <Units Count="63">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -357,6 +357,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcGnomeClassicWallpaperSetter"/>
       </Unit61>
+      <Unit62>
+        <Filename Value="os/wpsetters/Linux/wpcunitywallpapersetter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcUnityWallpaperSetter"/>
+      </Unit62>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
