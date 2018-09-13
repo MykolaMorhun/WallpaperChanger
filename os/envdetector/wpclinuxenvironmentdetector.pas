@@ -24,8 +24,8 @@ type
       DE_XFCE,
       DE_LXDE,
       // DE_LXQT,
-      DE_UNITY
-      // DE_PANTHEON,
+      DE_UNITY,
+      DE_PANTHEON
       // DE_ENLIGHTENMENT,
       // DE_BUDGIE,
       // DE_DEEPIN
@@ -40,6 +40,7 @@ type
     XDG_DESKTOP_KDE = 'KDE';
     XDG_DESKTOP_XFCE = 'XFCE';
     XDG_DESKTOP_LXDE = 'LXDE';
+    XDG_DESKTOP_PANTHEON = 'PANTHEON';
 
     XDG_DESKTOP_PREFIX_UNITY = 'UNITY';
   private
@@ -78,6 +79,8 @@ begin
       Result := DE_XFCE;
     XDG_DESKTOP_LXDE:
       Result := DE_LXDE;
+    XDG_DESKTOP_PANTHEON:
+      Result := DE_PANTHEON;
     else begin
       if (FXDGCurrentDesktop.StartsWith(XDG_DESKTOP_PREFIX_UNITY)) then
         Result := DE_UNITY

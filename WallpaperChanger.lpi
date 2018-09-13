@@ -13,9 +13,6 @@
     <i18n>
       <EnableI18N LFM="False"/>
     </i18n>
-    <VersionInfo>
-      <StringTable ProductVersion=""/>
-    </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>
     </BuildModes>
@@ -35,7 +32,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="63">
+    <Units Count="64">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -362,6 +359,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcUnityWallpaperSetter"/>
       </Unit62>
+      <Unit63>
+        <Filename Value="os/wpsetters/Linux/wpcpantheonwallpapersetter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcPantheonWallpaperSetter"/>
+      </Unit63>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

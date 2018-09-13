@@ -16,6 +16,7 @@ uses
   WpcXfceWallpaperSetter,
   WpcLxdeWallpaperSetter,
   WpcUnityWallpaperSetter,
+  WpcPantheonWallpaperSetter,
   WpcCustomWallpaperSetter,
   WpcDesktopEnvironments,
   WpcExceptions;
@@ -63,7 +64,7 @@ begin
     DE_LXDE:          Result := TWpcLxdeWallpaperSetter.Create();
     DE_LXQT:          Result := nil;
     DE_UNITY:         Result := TWpcUnityWallpaperSetter.Create();
-    DE_PANTHEON:      Result := nil;
+    DE_PANTHEON:      Result := TWpcPantheonWallpaperSetter.Create();
     DE_ENLIGHTENMENT: Result := nil;
     DE_BUDGIE:        Result := nil;
     DE_DEEPIN:        Result := nil;
