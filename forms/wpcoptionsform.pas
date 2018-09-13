@@ -215,6 +215,7 @@ begin
   RunLastScriptCheckBox.Checked := Settings.RunOnStart;
 
   // Simple Changer tab
+   WallpaperStyleComboBox.Items.Clear();
   if (ApplicationManager.WallpaperSetter <> nil) then
     for WallpaperStyle in ApplicationManager.WallpaperSetter.GetWallpaperStylesSupported() do
       WallpaperStyleComboBox.Items.Add(WallpaperStyleToStr(WallpaperStyle));
