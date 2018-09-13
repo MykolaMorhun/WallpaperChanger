@@ -1,4 +1,4 @@
-unit WpcPantheonWallpaperSetter;
+unit WpcBudgieWallpaperSetter;
 
 {$mode objfpc}{$H+}
 
@@ -12,9 +12,9 @@ uses
 
 type
 
-  { TWpcPantheonWallpaperSetter }
+  { TWpcBudgieWallpaperSetter }
 
-  TWpcPantheonWallpaperSetter = class(TWpcGnome3WallpaperSetter)
+  TWpcBudgieWallpaperSetter = class(TWpcGnome3WallpaperSetter)
   public
     constructor Create();
   end;
@@ -22,15 +22,14 @@ type
 
 implementation
 
-{ TWpcPantheonWallpaperSetter }
+{ TWpcBudgieWallpaperSetter }
 
-constructor TWpcPantheonWallpaperSetter.Create();
+constructor TWpcBudgieWallpaperSetter.Create();
 begin
-  TargetDesktopEnvironment := DE_PANTHEON;
+  TargetDesktopEnvironment := DE_BUDGIE;
   SupportedStyles := [ TILED, CENTERED, SCALED, STRETCHED, ZOOMED, SPANNED ];
   DefaultWallpaperStyle := ZOOMED;
 end;
 
 
 end.
-

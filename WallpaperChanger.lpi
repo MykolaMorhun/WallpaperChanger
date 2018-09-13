@@ -32,7 +32,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="64">
+    <Units Count="65">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -364,6 +364,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcPantheonWallpaperSetter"/>
       </Unit63>
+      <Unit64>
+        <Filename Value="os/wpsetters/Linux/wpcbudgiewallpapersetter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcBudgieWallpaperSetter"/>
+      </Unit64>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
