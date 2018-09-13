@@ -1,6 +1,7 @@
 *.lps
 
 *.bak
+backup/
 /lib/
 
 /WallpaperChanger*
