@@ -42,15 +42,25 @@ type
     XDG_DESKTOP_LXDE = 'LXDE';
     XDG_DESKTOP_PANTHEON = 'PANTHEON';
     XDG_DESKTOP_BUDGIE = 'BUDGIE:GNOME';
-
-    XDG_DESKTOP_PREFIX_UNITY = 'UNITY';
+    XDG_DESKTOP_UNITY = 'UNITY';
   private
+    {
+      Some examples of XDG_CURRENT_DESKTOP values:
+        XFCE
+        X-Cinnamon
+        ubuntu:GNOME
+        Budgie:GNOME
+        GNOME-Classic:GNOME
+        Unity:Unity7:ubuntu
+    }
     FXDGCurrentDesktop : String;
   public
     constructor Create();
   public
     function Detect() : TDesktopEnvironment; override;
     function GetSupportedEnvironments() : TDesktopEnvironmentsSet; override;
+  private
+    function GetEnvironmentByPartialMatch(DesktopEnvironmentData : String) : TDesktopEnvironment;
   end;
 
 
@@ -63,7 +73,7 @@ begin
   FXDGCurrentDesktop := UpperCase(GetEnvironmentVariable(XDG_CURRENT_DESKTOP_ENV_VARIABLE_KEY));
 end;
 
-function TWpcLinuxEnvironmentDetector.Detect(): TDesktopEnvironment;
+function TWpcLinuxEnvironmentDetector.Detect() : TDesktopEnvironment;
 begin
   case (FXDGCurrentDesktop) of
     XDG_DESKTOP_GNOME:
@@ -84,18 +94,53 @@ begin
       Result := DE_PANTHEON;
     XDG_DESKTOP_BUDGIE:
       Result := DE_BUDGIE;
+    XDG_DESKTOP_UNITY:
+      Result := DE_UNITY;
     else begin
-      if (FXDGCurrentDesktop.StartsWith(XDG_DESKTOP_PREFIX_UNITY)) then
-        Result := DE_UNITY
-      else
-        Result := DE_UNKNOWN;
+      Result := GetEnvironmentByPartialMatch(FXDGCurrentDesktop);
     end;
   end;
 end;
 
-function TWpcLinuxEnvironmentDetector.GetSupportedEnvironments(): TDesktopEnvironmentsSet;
+function TWpcLinuxEnvironmentDetector.GetSupportedEnvironments() : TDesktopEnvironmentsSet;
 begin
   Result := SUPPORTED_ENVIRONMETS;
+end;
+
+{
+  Searches for desktop environment name in given string.
+  If nothing matches DE_UNKNOWN will be returned.
+}
+function TWpcLinuxEnvironmentDetector.GetEnvironmentByPartialMatch(DesktopEnvironmentData : String): TDesktopEnvironment;
+var
+  s : String;
+begin
+  s := UpperCase(DesktopEnvironmentData);
+
+  if (Pos(XDG_DESKTOP_GNOME, s) <> 0) then begin
+    if (Pos(XDG_DESKTOP_GNOME_CLASSIC, s) <> 0) then
+      Result := DE_GNOME_CLASSIC
+    else
+      Result := DE_GNOME;
+  end
+  else if (Pos(XDG_DESKTOP_MATE, s) <> 0) then
+    Result := DE_MATE
+  else if (Pos(XDG_DESKTOP_CINNAMON, s) <> 0) then
+    Result := DE_CINNAMON
+  else if (Pos(XDG_DESKTOP_KDE, s) <> 0) then
+    Result := DE_KDE
+  else if (Pos(XDG_DESKTOP_XFCE, s) <> 0) then
+    Result := DE_XFCE
+  else if (Pos(XDG_DESKTOP_LXDE, s) <> 0) then
+    Result := DE_LXDE
+  else if (Pos(XDG_DESKTOP_PANTHEON, s) <> 0) then
+    Result := DE_PANTHEON
+  else if (Pos(XDG_DESKTOP_BUDGIE, s) <> 0) then
+    Result := DE_BUDGIE
+  else if (Pos(XDG_DESKTOP_UNITY, s) <> 0) then
+    Result := DE_UNITY
+  else
+    Result := DE_UNKNOWN;
 end;
 
 
