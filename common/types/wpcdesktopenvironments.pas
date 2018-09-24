@@ -8,10 +8,12 @@ uses
   Classes, SysUtils;
 
 const
+  DE_WINDOWS_2000_ID = 'WINDOWS_2000';
   DE_WINDOWS_XP_ID = 'WINDOWS_XP';
   DE_WINDOWS_VISTA_ID = 'WINDOWS_VISTA';
   DE_WINDOWS_7_ID = 'WINDOWS_7';
   DE_WINDOWS_8_ID = 'WINDOWS_8';
+  DE_WINDOWS_8_1_ID = 'WINDOWS_8.1';
   DE_WINDOWS_10_ID = 'WINDOWS_10';
   DE_REACTOS_ID = 'REACTOS';
 
@@ -36,10 +38,12 @@ const
 type
 
   TDesktopEnvironment = (
+    DE_WINDOWS_2000,
     DE_WINDOWS_XP,
     DE_WINDOWS_VISTA,
     DE_WINDOWS_7,
     DE_WINDOWS_8,
+    DE_WINDOWS_8_1,
     DE_WINDOWS_10,
     DE_REACTOS,
 
@@ -72,10 +76,12 @@ implementation
 function DesktopEnvironmentToStr(DesktopEnvironment : TDesktopEnvironment) : String;
 begin
   case (DesktopEnvironment) of
+    DE_WINDOWS_2000:     Result := DE_WINDOWS_2000_ID;
     DE_WINDOWS_XP:       Result := DE_WINDOWS_XP_ID;
     DE_WINDOWS_VISTA:    Result := DE_WINDOWS_VISTA_ID;
     DE_WINDOWS_7:        Result := DE_WINDOWS_7_ID;
     DE_WINDOWS_8:        Result := DE_WINDOWS_8_ID;
+    DE_WINDOWS_8_1:      Result := DE_WINDOWS_8_1_ID;
     DE_WINDOWS_10:       Result := DE_WINDOWS_10_ID;
     DE_REACTOS:          Result := DE_REACTOS_ID;
 
@@ -103,10 +109,12 @@ end;
 function StrToDesktopEnvironment(DesktopEnvironment : String): TDesktopEnvironment;
 begin
   case (UpperCase(DesktopEnvironment)) of
+    DE_WINDOWS_2000_ID:     Result := DE_WINDOWS_2000;
     DE_WINDOWS_XP_ID:       Result := DE_WINDOWS_XP;
     DE_WINDOWS_VISTA_ID:    Result := DE_WINDOWS_VISTA;
     DE_WINDOWS_7_ID:        Result := DE_WINDOWS_7;
     DE_WINDOWS_8_ID:        Result := DE_WINDOWS_8;
+    DE_WINDOWS_8_1_ID:      Result := DE_WINDOWS_8_1;
     DE_WINDOWS_10_ID:       Result := DE_WINDOWS_10;
     DE_REACTOS_ID:          Result := DE_REACTOS;
 

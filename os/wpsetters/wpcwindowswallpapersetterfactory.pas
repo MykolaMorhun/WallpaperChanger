@@ -38,10 +38,12 @@ function TWpcWindowsWallpaperSetterFactory.GetWallpaperSetter(DesktopEnvironment
 begin
   case (DesktopEnvironment) of
     DE_WINDOWS_10:    Result := nil;
+    DE_WINDOWS_8_1:   Result := nil;
     DE_WINDOWS_8:     Result := nil;
     DE_WINDOWS_7:     Result := nil;
     DE_WINDOWS_VISTA: Result := nil;
     DE_WINDOWS_XP:    Result := nil;
+    DE_WINDOWS_2000:  Result := nil;
 
     DE_REACTOS:       Result := nil;
   end;
