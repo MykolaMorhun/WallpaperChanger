@@ -7,6 +7,7 @@ interface
 uses
   Classes, SysUtils,
   WpcWallpaperSetter,
+  WpcWindows7WallpaperSetter,
   WpcWallpaperSetterFactory,
   WpcDesktopEnvironments;
 
@@ -18,10 +19,12 @@ type
   private const
     SUPPORTED_ENVIRONMENTS = [
       DE_WINDOWS_10,
+      DE_WINDOWS_8_1,
       DE_WINDOWS_8,
       DE_WINDOWS_7,
       // DE_WINDOWS_VISTA,
       DE_WINDOWS_XP,
+      // DE_WINDOWS_2000,
       DE_REACTOS
     ];
   public
@@ -40,7 +43,7 @@ begin
     DE_WINDOWS_10:    Result := nil;
     DE_WINDOWS_8_1:   Result := nil;
     DE_WINDOWS_8:     Result := nil;
-    DE_WINDOWS_7:     Result := nil;
+    DE_WINDOWS_7:     Result := TWpcWindows7WallpaperSetter.Create();
     DE_WINDOWS_VISTA: Result := nil;
     DE_WINDOWS_XP:    Result := nil;
     DE_WINDOWS_2000:  Result := nil;

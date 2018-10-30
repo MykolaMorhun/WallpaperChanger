@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils,
-  WpcAbstractLinuxWallpaperSetter,
+  WpcAbstractWallpaperSetter,
   WpcWallpaperStyles,
   WpcDesktopEnvironments,
   Unix;
@@ -45,7 +45,7 @@ type
     or via dbus:
       dbus-send --session --dest=org.kde.plasmashell --type=method_call /PlasmaShell org.kde.PlasmaShell.evaluateScript 'string: SCRIPT_HERE'
   *)
-  TWpcKdePlasmaWallpaperSetter = class(TWpcAbstractLinuxWallpaperSetter)
+  TWpcKdePlasmaWallpaperSetter = class(TWpcAbstractWallpaperSetter)
   private const
     SET_WALLPAPER_SCRIPT_TEMPLATE =
       'qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript ''' +

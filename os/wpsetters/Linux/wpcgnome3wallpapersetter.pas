@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils,
-  WpcAbstractLinuxWallpaperSetter,
+  WpcAbstractWallpaperSetter,
   WpcWallpaperStyles,
   WpcDesktopEnvironments,
   Unix;
@@ -15,7 +15,7 @@ type
 
   { TWpcGnome3WallpaperSetter }
 
-  TWpcGnome3WallpaperSetter = class(TWpcAbstractLinuxWallpaperSetter)
+  TWpcGnome3WallpaperSetter = class(TWpcAbstractWallpaperSetter)
   private const
     SET_WALLPAPER_COMMAND_TEMPLATE = 'gsettings set org.gnome.desktop.background picture-uri ';
     SET_WALLPAPER_STYLE_COMMAND_TEMPLATE = 'gsettings set org.gnome.desktop.background picture-options ';

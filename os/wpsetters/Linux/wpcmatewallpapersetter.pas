@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils,
-  WpcAbstractLinuxWallpaperSetter,
+  WpcAbstractWallpaperSetter,
   WpcWallpaperStyles,
   WpcDesktopEnvironments,
   Process,
@@ -16,7 +16,7 @@ type
 
   { TWpcMateWallpaperSetter }
 
-  TWpcMateWallpaperSetter = class(TWpcAbstractLinuxWallpaperSetter)
+  TWpcMateWallpaperSetter = class(TWpcAbstractWallpaperSetter)
   private const
     // Newer versions
     SET_WALLPAPER_COMMAND_TEMPLATE = 'gsettings set org.mate.desktop.background picture-filename ';

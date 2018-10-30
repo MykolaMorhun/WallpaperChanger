@@ -1,4 +1,4 @@
-unit WpcAbstractLinuxWallpaperSetter;
+unit WpcAbstractWallpaperSetter;
 
 {$mode objfpc}{$H+}
 
@@ -13,9 +13,9 @@ uses
 
 type
 
-  { TWpcAbstractLinuxWallpaperSetter }
+  { TWpcAbstractWallpaperSetter }
 
-  TWpcAbstractLinuxWallpaperSetter = class abstract(IWpcWallpaperSetter)
+  TWpcAbstractWallpaperSetter = class abstract(IWpcWallpaperSetter)
   protected
     // Following values should be set in descendant class.
 
@@ -39,19 +39,19 @@ type
 
 implementation
 
-{ TWpcAbstractLinuxWallpaperSetter }
+{ TWpcAbstractWallpaperSetter }
 
-function TWpcAbstractLinuxWallpaperSetter.GetWallpaperStylesSupported() : TWpcSetOfWallpaperStyles;
+function TWpcAbstractWallpaperSetter.GetWallpaperStylesSupported() : TWpcSetOfWallpaperStyles;
 begin
   Result := SupportedStyles;
 end;
 
-function TWpcAbstractLinuxWallpaperSetter.IsWallpaperStyleSupported(Style : TWpcWallpaperStyle) : Boolean;
+function TWpcAbstractWallpaperSetter.IsWallpaperStyleSupported(Style : TWpcWallpaperStyle) : Boolean;
 begin
   Result := Style in SupportedStyles;
 end;
 
-function TWpcAbstractLinuxWallpaperSetter.IsWallpaperTypeSupported(Image : String) : Boolean;
+function TWpcAbstractWallpaperSetter.IsWallpaperTypeSupported(Image : String) : Boolean;
 begin
   if (Assigned(SupportedImageTypes)) then
     Result := SupportedImageTypes.IndexOf(LowerCase(ExtractFileExt(Image))) <> -1
@@ -59,12 +59,12 @@ begin
     Result := True;
 end;
 
-function TWpcAbstractLinuxWallpaperSetter.GetEnvironmet() : TDesktopEnvironment;
+function TWpcAbstractWallpaperSetter.GetEnvironmet() : TDesktopEnvironment;
 begin
   Result := TargetDesktopEnvironment;
 end;
 
-procedure TWpcAbstractLinuxWallpaperSetter.Validate(Path : String; var Style : TWpcWallpaperStyle);
+procedure TWpcAbstractWallpaperSetter.Validate(Path : String; var Style : TWpcWallpaperStyle);
 begin
   if (not FileExists(Path)) then
     raise TWpcUseErrorException.Create('Cannot set unexisting image "' + Path + '" as a wallpaper.');

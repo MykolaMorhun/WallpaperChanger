@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils,
-  WpcAbstractLinuxWallpaperSetter,
+  WpcAbstractWallpaperSetter,
   WpcWallpaperStyles,
   WpcDesktopEnvironments,
   Unix;
@@ -15,7 +15,7 @@ type
 
   { TWpcCinnamonWallpaperSetter }
 
-  TWpcCinnamonWallpaperSetter = class(TWpcAbstractLinuxWallpaperSetter)
+  TWpcCinnamonWallpaperSetter = class(TWpcAbstractWallpaperSetter)
   private const
     SET_WALLPAPER_COMMAND_TEMPLATE = 'gsettings set org.cinnamon.desktop.background picture-uri ';
     SET_WALLPAPER_STYLE_COMMAND_TEMPLATE = 'gsettings set org.cinnamon.desktop.background picture-options ';

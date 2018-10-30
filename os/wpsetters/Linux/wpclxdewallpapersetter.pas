@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils,
-  WpcAbstractLinuxWallpaperSetter,
+  WpcAbstractWallpaperSetter,
   WpcWallpaperStyles,
   WpcDesktopEnvironments,
   Unix;
@@ -15,7 +15,7 @@ type
 
   { TWpcLxdeWallpaperSetter }
 
-  TWpcLxdeWallpaperSetter = class(TWpcAbstractLinuxWallpaperSetter)
+  TWpcLxdeWallpaperSetter = class(TWpcAbstractWallpaperSetter)
   private const
     COMMAND = 'pcmanfm';
     SET_WALLPAPER_KEY = '--set-wallpaper';

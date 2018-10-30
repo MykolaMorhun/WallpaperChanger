@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils,
-  WpcAbstractLinuxWallpaperSetter,
+  WpcAbstractWallpaperSetter,
   WpcWallpaperStyles,
   WpcDesktopEnvironments,
   Unix;
@@ -26,7 +26,7 @@ type
     This setter doesn't handle multiple monitors or workspaces.
     // TODO add support for several monitors.
   }
-  TWpcXfceWallpaperSetter = class(TWpcAbstractLinuxWallpaperSetter)
+  TWpcXfceWallpaperSetter = class(TWpcAbstractWallpaperSetter)
   private const
     DESKTOP_QUERY = 'xfconf-query --channel xfce4-desktop';
     PROPRTY_TEMPLATE = '--property /backdrop/screen%d/monitor%d/workspace%d/';
