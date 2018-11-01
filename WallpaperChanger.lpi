@@ -32,7 +32,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="68">
+    <Units Count="70">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -384,6 +384,16 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcWindows7WallpaperSetter"/>
       </Unit67>
+      <Unit68>
+        <Filename Value="os/wpsetters/Windows/wpcwindowsxpwallpapersetter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcWindowsXPWallpaperSetter"/>
+      </Unit68>
+      <Unit69>
+        <Filename Value="common/utils/wpcimagesutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcImagesUtils"/>
+      </Unit69>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -393,7 +403,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="forms;common;script;os;common/types;os/envdetector;common/interfaces;os/providers;os/wpsetters;script/statements;script/statements/properties;script/executor;scripteditor;scripteditor/forms;scripteditor/autocomplete;os/wpsetters/Linux;os/wpsetters/Windows"/>
+      <OtherUnitFiles Value="forms;common;script;os;common/types;os/envdetector;common/interfaces;os/providers;os/wpsetters;script/statements;script/statements/properties;script/executor;scripteditor;scripteditor/forms;scripteditor/autocomplete;os/wpsetters/Linux;os/wpsetters/Windows;common/utils"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

@@ -164,6 +164,8 @@ begin
       except
         on E : TWpcUseErrorException do
           ShowMessage(E.Message);
+        on E : Exception do
+          ShowMessage(E.Message);
       end;
     finally
       Image.Free();

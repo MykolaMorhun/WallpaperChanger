@@ -8,6 +8,7 @@ uses
   Classes, SysUtils,
   WpcWallpaperSetter,
   WpcWindows7WallpaperSetter,
+  WpcWindowsXPWallpaperSetter,
   WpcWallpaperSetterFactory,
   WpcDesktopEnvironments;
 
@@ -45,7 +46,7 @@ begin
     DE_WINDOWS_8:     Result := nil;
     DE_WINDOWS_7:     Result := TWpcWindows7WallpaperSetter.Create();
     DE_WINDOWS_VISTA: Result := nil;
-    DE_WINDOWS_XP:    Result := nil;
+    DE_WINDOWS_XP:    Result := TWpcWindowsXPWallpaperSetter.Create();
     DE_WINDOWS_2000:  Result := nil;
 
     DE_REACTOS:       Result := nil;
