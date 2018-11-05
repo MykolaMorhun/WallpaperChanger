@@ -106,6 +106,8 @@ type
     // If false only images from specified folder will be added to the list.
     property SearchInSubdirectories : Boolean read FSearchInSubDirectories write FSearchInSubDirectories;
   public
+    procedure SetMinMaxDelay(MinDelay : Integer; MaxDelay : Integer);
+  public
     procedure ReadFromFile(); override;
     procedure SaveIntoFile(); override;
 
@@ -257,6 +259,15 @@ procedure TWpcPersistentSettings.ValidateDelay(Delay : Integer);
 begin
   if (Delay < 0) then
     raise TWpcIllegalArgumentException.Create('Delay sholud be positive.');
+end;
+
+procedure TWpcPersistentSettings.SetMinMaxDelay(MinDelay : Integer; MaxDelay : Integer);
+begin
+  if (MinDelay > MaxDelay) then
+    raise TWpcIllegalArgumentException.Create('Minimal delay should be less then maximal.');
+
+  FMinimalDelay := MinDelay;
+  FMaximalDelay := MaxDelay;
 end;
 
 { TWpcStateSettings }

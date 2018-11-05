@@ -32,7 +32,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="70">
+    <Units Count="71">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -394,6 +394,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcImagesUtils"/>
       </Unit69>
+      <Unit70>
+        <Filename Value="common/utils/wpctimeutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcTimeUtils"/>
+      </Unit70>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

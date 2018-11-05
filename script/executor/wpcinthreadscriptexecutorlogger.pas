@@ -12,8 +12,8 @@ uses
   WpcWallpaperStyles,
   WpcScriptCommons,
   WpcBaseStatement,
-  WpcStatementProperties,
   WpcTimeMeasurementUnits,
+  WpcTimeUtils,
   WpcScript,
   WpcImage,
   WpcLogger,
@@ -184,7 +184,7 @@ var
   MeasurementUnit : TWpcTimeMeasurementUnits;
 begin
   if (ShouldPrint(STL_SET_AND_DELAY)) then begin
-    TWpcDelayStatementProperty.ConvertToReadableUnits(Milliseconds, Delay, MeasurementUnit);
+    ConvertToReadableUnits(Milliseconds, Delay, MeasurementUnit);
     LogMessage('Idling: ' + IntToStr(Delay) + ' ' + TimeMeasurementUnitToStr(MeasurementUnit));
   end;
 end;

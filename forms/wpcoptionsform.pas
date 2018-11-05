@@ -12,7 +12,7 @@ uses
   WpcDesktopEnvironments,
   WpcWallpaperStyles,
   WpcTimeMeasurementUnits,
-  WpcStatementProperties,
+  WpcTimeUtils,
   WpcOptions,
   FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls, Buttons, ExtCtrls,
   StdCtrls, Spin;
@@ -185,6 +185,9 @@ procedure TOptionsForm.FillSettingsOnForm();
 var
   Settings : TWpcPersistentSettings;
   WallpaperStyle : TWpcWallpaperStyle;
+
+  TimeUnit      : TWpcTimeMeasurementUnits;
+  ReadableDelay : LongWord;
 begin
   Settings := ApplicationManager.CurrentSettings;
 
@@ -215,7 +218,7 @@ begin
   RunLastScriptCheckBox.Checked := Settings.RunOnStart;
 
   // Simple Changer tab
-   WallpaperStyleComboBox.Items.Clear();
+  WallpaperStyleComboBox.Items.Clear();
   if (ApplicationManager.WallpaperSetter <> nil) then
     for WallpaperStyle in ApplicationManager.WallpaperSetter.GetWallpaperStylesSupported() do
       WallpaperStyleComboBox.Items.Add(WallpaperStyleToStr(WallpaperStyle));
@@ -227,14 +230,20 @@ begin
   else
     VariableDelayRadioButton.Checked := True;
 
-  ConstantDelayValueSpinEdit.Value := Settings.ConstantDelay;
-   // TODO adjast values to more readable: choose proper units.
-  ConstantDelayValueUnitsComboBox.ItemIndex := 0;
+  // Static delay
+  ConvertToReadableUnits(Settings.ConstantDelay, ReadableDelay, TimeUnit);
+  ConstantDelayValueSpinEdit.Value := ReadableDelay;
+  ConstantDelayValueUnitsComboBox.ItemIndex := ConstantDelayValueUnitsComboBox.Items.IndexOf(TimeMeasurementUnitToStr(TimeUnit));
 
-  VariableDelayValueFromSpinEdit.Value := Settings.MinimalDelay;
-  VariableDelayValueToSpinEdit.Value := Settings.MaximalDelay;
-  // TODO adjast values to more readable: choose proper units.
-  VariableDelayValueUnitsComboBox.ItemIndex := 0; // ms
+  // Variable delay
+  TimeUnit := GetCommonTimeUnit([Settings.MinimalDelay, Settings.MaximalDelay]);
+  VariableDelayValueFromSpinEdit.MinValue := 0;
+  VariableDelayValueFromSpinEdit.MaxValue := MAXLONG;
+  VariableDelayValueFromSpinEdit.Value := ConvertToUnit(Settings.MinimalDelay, TimeUnit);
+  VariableDelayValueToSpinEdit.MinValue := 0;
+  VariableDelayValueToSpinEdit.MaxValue := MAXLONG;
+  VariableDelayValueToSpinEdit.Value := ConvertToUnit(Settings.MaximalDelay, TimeUnit);
+  VariableDelayValueUnitsComboBox.ItemIndex := VariableDelayValueUnitsComboBox.Items.IndexOf(TimeMeasurementUnitToStr(TimeUnit));
 
   KeepOrderCheckBox.Checked := Settings.KeepOrder;
   RecursiveSearchCheckBox.Checked := Settings.SearchInSubdirectories;
@@ -275,15 +284,15 @@ begin
     Settings.WallpaperStyle := StrToWallpaperStyle(WallpaperStyleComboBox.Items[WallpaperStyleComboBox.ItemIndex]);
 
   Settings.UseConstantDelay := ConstantDelayRadioButton.Checked;
-  Settings.ConstantDelay := TWpcDelayStatementProperty.ConvertToMilliseconds(
+  Settings.ConstantDelay := ConvertToMilliseconds(
     ConstantDelayValueSpinEdit.Value,
     StrToTimeMeasurementUnit(ConstantDelayValueUnitsComboBox.Items[ConstantDelayValueUnitsComboBox.ItemIndex])
   );
   VariableDelayMeasurementUnit := StrToTimeMeasurementUnit(variableDelayValueUnitsComboBox.Items[VariableDelayValueUnitsComboBox.ItemIndex]);
-  Settings.MinimalDelay := TWpcDelayStatementProperty.ConvertToMilliseconds(
-    VariableDelayValueFromSpinEdit.Value, VariableDelayMeasurementUnit);
-  Settings.MaximalDelay := TWpcDelayStatementProperty.ConvertToMilliseconds(
-    VariableDelayValueToSpinEdit.Value, VariableDelayMeasurementUnit);
+  Settings.SetMinMaxDelay(
+    ConvertToMilliseconds(VariableDelayValueFromSpinEdit.Value, VariableDelayMeasurementUnit),
+    ConvertToMilliseconds(VariableDelayValueToSpinEdit.Value, VariableDelayMeasurementUnit)
+  );
 
   Settings.KeepOrder := KeepOrderCheckBox.Checked;
   Settings.SearchInSubdirectories := RecursiveSearchCheckBox.Checked;

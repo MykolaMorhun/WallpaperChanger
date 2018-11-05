@@ -20,6 +20,7 @@ uses
   WpcScriptCommons,
   WpcWallpaperStyles,
   WpcTimeMeasurementUnits,
+  WpcTimeUtils,
   WpcImage,
   WpcDirectory,
   WpcExceptions,
@@ -239,7 +240,7 @@ begin
   FDefaultWallpaperStyle := CENTERED;
   FBasePath := '';
 
-  FComputedDefaultDelay := TWpcDelayStatementProperty.ConvertToMilliseconds(FDefaultDelay, FDefaultDelayUnits);
+  FComputedDefaultDelay := ConvertToMilliseconds(FDefaultDelay, FDefaultDelayUnits);
 
   FCheckScriptResources := True;
 end;
@@ -1879,7 +1880,7 @@ begin
   else
     ParsedDelayUnits := GetDefaultDelayUnits();
 
-  ParsedDelayValueMilliseconds := TWpcDelayStatementProperty.ConvertToMilliseconds(ParsedDelayValue, ParsedDelayUnits);
+  ParsedDelayValueMilliseconds := ConvertToMilliseconds(ParsedDelayValue, ParsedDelayUnits);
   if (ParsedDelayValueMilliseconds > TWpcDelayStatementProperty.MAX_DELAY_VALUE) then
     raise TWpcScriptParseException.Create('Too big delay: ' + Delay, FCurrentLine);
 

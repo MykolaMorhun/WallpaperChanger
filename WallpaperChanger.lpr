@@ -6,7 +6,7 @@ uses
   {$IFDEF UNIX}
   cthreads, cmem,
   {$ENDIF}
-  Interfaces, // this includes the LCL widgetset
+  Interfaces,
   Forms, MainForm;
 
 {$R *.res}

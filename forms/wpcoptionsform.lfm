@@ -3,8 +3,8 @@ object OptionsForm: TOptionsForm
   Height = 250
   Top = 146
   Width = 500
-  HorzScrollBar.Page = 336
-  VertScrollBar.Page = 191
+  HorzScrollBar.Page = 478
+  VertScrollBar.Page = 212
   ActiveControl = OptionsPageControl
   AutoScroll = True
   Caption = 'Wallpaper Changer Options'
@@ -20,9 +20,9 @@ object OptionsForm: TOptionsForm
     Height = 218
     Top = 0
     Width = 500
-    ActivePage = EngineTabSheet
+    ActivePage = SimpleChangerTabSheet
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     object EngineTabSheet: TTabSheet
       Caption = 'Engine'
