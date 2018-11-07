@@ -1,4 +1,4 @@
-unit WpcWindowsXPWallpaperSetter;
+unit WpcReactOSWallpaperSetter;
 
 {$mode objfpc}{$H+}
 
@@ -13,9 +13,9 @@ uses
 
 type
 
-  { TWpcWindowsXPWallpaperSetter }
+  { TWpcReactOSWallpaperSetter }
 
-  TWpcWindowsXPWallpaperSetter = class(TWpcWindowsAbstractWallpaperSetter)
+  TWpcReactOSWallpaperSetter = class(TWpcWindowsAbstractWallpaperSetter)
   private
     BmpWallpaperPath : String;
   public
@@ -27,20 +27,20 @@ type
 
 implementation
 
-{ TWpcWindowsXPWallpaperSetter }
+{ TWpcReactOSWallpaperSetter }
 
-constructor TWpcWindowsXPWallpaperSetter.Create();
+constructor TWpcReactOSWallpaperSetter.Create();
 begin
   inherited Create();
 
-  TargetDesktopEnvironment := DE_WINDOWS_XP;
-  SupportedStyles := [ CENTERED, TILED, STRETCHED ];
-  DefaultWallpaperStyle := CENTERED;
+  TargetDesktopEnvironment := DE_REACTOS;
+  SupportedStyles := [ CENTERED, STRETCHED, TILED, SCALED, ZOOMED ];
+  DefaultWallpaperStyle := ZOOMED;
 
   BmpWallpaperPath := GetTempDir(False) + 'wpc_wallpaper.bmp';
 end;
 
-procedure TWpcWindowsXPWallpaperSetter.SetDesktopWallpaper(Path : String; Style : TWpcWallpaperStyle);
+procedure TWpcReactOSWallpaperSetter.SetDesktopWallpaper(Path : String; Style : TWpcWallpaperStyle);
 begin
   Validate(Path, Style);
 

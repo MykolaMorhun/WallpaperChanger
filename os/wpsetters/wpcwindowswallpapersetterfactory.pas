@@ -9,6 +9,7 @@ uses
   WpcWallpaperSetter,
   WpcWindows7WallpaperSetter,
   WpcWindowsXPWallpaperSetter,
+  WpcReactOSWallpaperSetter,
   WpcWallpaperSetterFactory,
   WpcDesktopEnvironments;
 
@@ -49,7 +50,7 @@ begin
     DE_WINDOWS_XP:    Result := TWpcWindowsXPWallpaperSetter.Create();
     DE_WINDOWS_2000:  Result := nil;
 
-    DE_REACTOS:       Result := nil;
+    DE_REACTOS:       Result := TWpcReactOSWallpaperSetter.Create();
   end;
 end;
 
