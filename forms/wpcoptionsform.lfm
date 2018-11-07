@@ -3,8 +3,8 @@ object OptionsForm: TOptionsForm
   Height = 250
   Top = 146
   Width = 500
-  HorzScrollBar.Page = 478
-  VertScrollBar.Page = 212
+  HorzScrollBar.Page = 476
+  VertScrollBar.Page = 211
   ActiveControl = OptionsPageControl
   AutoScroll = True
   Caption = 'Wallpaper Changer Options'
@@ -28,92 +28,47 @@ object OptionsForm: TOptionsForm
       Caption = 'Engine'
       ChildSizing.LeftRightSpacing = 5
       ChildSizing.TopBottomSpacing = 5
-      ClientHeight = 185
-      ClientWidth = 494
+      ClientHeight = 190
+      ClientWidth = 492
       object WallpaperSetterGroupBox: TGroupBox
         Left = 5
-        Height = 95
+        Height = 108
         Top = 5
-        Width = 484
+        Width = 482
         Align = alTop
         Caption = 'Wallpaper Setter'
         ChildSizing.TopBottomSpacing = 2
-        ClientHeight = 78
-        ClientWidth = 480
+        ClientHeight = 88
+        ClientWidth = 478
         TabOrder = 0
-        object WallpaperSetterModeRadioGroup: TRadioGroup
-          Left = 0
-          Height = 74
-          Top = 2
-          Width = 160
-          Align = alLeft
-          AutoFill = True
-          ChildSizing.LeftRightSpacing = 6
-          ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
-          ChildSizing.EnlargeVertical = crsHomogenousChildResize
-          ChildSizing.ShrinkHorizontal = crsScaleChilds
-          ChildSizing.ShrinkVertical = crsScaleChilds
-          ChildSizing.Layout = cclLeftToRightThenTopToBottom
-          ChildSizing.ControlsPerLine = 1
-          ClientHeight = 70
-          ClientWidth = 156
-          TabOrder = 0
-          object WallpaperSetterAutodetectRadioButton: TRadioButton
-            Left = 6
-            Height = 24
-            Top = 0
-            Width = 144
-            Caption = 'Autodetect'
-            Checked = True
-            OnChange = WallpaperSetterAutodetectRadioButtonChange
-            TabOrder = 0
-            TabStop = True
-          end
-          object WallpaperSetterManualRadioButton: TRadioButton
-            Left = 6
-            Height = 24
-            Top = 24
-            Width = 144
-            Caption = 'Manual'
-            OnChange = WallpaperSetterManualRadioButtonChange
-            TabOrder = 1
-          end
-          object WallpaperSetterCustomRadioButton: TRadioButton
-            Left = 6
-            Height = 22
-            Top = 48
-            Width = 144
-            Caption = 'Custom'
-            OnChange = WallpaperSetterCustomRadioButtonChange
-            TabOrder = 2
-          end
-        end
         object WallpaperSetterValuesPanel: TPanel
           Left = 160
-          Height = 74
+          Height = 84
           Top = 2
-          Width = 320
+          Width = 318
           Align = alClient
           BevelOuter = bvNone
-          ClientHeight = 74
-          ClientWidth = 320
-          TabOrder = 1
+          ChildSizing.TopBottomSpacing = 1
+          ChildSizing.VerticalSpacing = 2
+          ClientHeight = 84
+          ClientWidth = 318
+          TabOrder = 0
           object WallpaperSetterAutodetectValuePanel: TPanel
             Left = 0
             Height = 25
-            Top = 0
-            Width = 320
+            Top = 1
+            Width = 318
             Align = alTop
             BevelOuter = bvNone
             ChildSizing.LeftRightSpacing = 5
             ClientHeight = 25
-            ClientWidth = 320
+            ClientWidth = 318
             TabOrder = 0
             object WallpaperSetterAutodetectValueLabel: TLabel
               Left = 5
               Height = 25
               Top = 0
-              Width = 310
+              Width = 308
               Align = alClient
               Alignment = taRightJustify
               Caption = 'Detected Environment'
@@ -124,20 +79,20 @@ object OptionsForm: TOptionsForm
           object WallpaperSetterManualValuePanel: TPanel
             Left = 0
             Height = 25
-            Top = 25
-            Width = 320
+            Top = 28
+            Width = 318
             Align = alTop
             BevelOuter = bvNone
             ClientHeight = 25
-            ClientWidth = 320
+            ClientWidth = 318
             TabOrder = 1
             object WallpaperSetterManualValueComboBox: TComboBox
               Left = 0
-              Height = 25
+              Height = 23
               Top = 0
-              Width = 320
+              Width = 318
               Align = alClient
-              ItemHeight = 0
+              ItemHeight = 15
               OnChange = WallpaperSetterManualValueComboBoxChange
               Style = csDropDownList
               TabOrder = 0
@@ -146,18 +101,18 @@ object OptionsForm: TOptionsForm
           object WallpaperSetterCustomValuePanel: TPanel
             Left = 0
             Height = 25
-            Top = 50
-            Width = 320
+            Top = 55
+            Width = 318
             Align = alTop
             BevelOuter = bvNone
             ClientHeight = 25
-            ClientWidth = 320
+            ClientWidth = 318
             TabOrder = 2
             object WallpaperSetterCustomValueEdit: TEdit
               Left = 0
               Height = 25
               Top = 0
-              Width = 295
+              Width = 293
               Align = alClient
               OnChange = WallpaperSetterCustomValueEditChange
               ParentShowHint = False
@@ -166,7 +121,7 @@ object OptionsForm: TOptionsForm
               Text = 'path-to-wallpaper-setter'
             end
             object WallpaperSetterCustomValueOpenDialogButton: TButton
-              Left = 295
+              Left = 293
               Height = 25
               Top = 0
               Width = 25
@@ -177,12 +132,59 @@ object OptionsForm: TOptionsForm
             end
           end
         end
+        object WallpaperSetterModeRadioGroupPanel: TPanel
+          Left = 0
+          Height = 84
+          Top = 2
+          Width = 160
+          Align = alLeft
+          BevelOuter = bvNone
+          ChildSizing.LeftRightSpacing = 6
+          ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+          ChildSizing.EnlargeVertical = crsHomogenousChildResize
+          ChildSizing.ShrinkHorizontal = crsScaleChilds
+          ChildSizing.ShrinkVertical = crsScaleChilds
+          ChildSizing.Layout = cclLeftToRightThenTopToBottom
+          ChildSizing.ControlsPerLine = 1
+          ClientHeight = 84
+          ClientWidth = 160
+          TabOrder = 1
+          object WallpaperSetterAutodetectRadioButton: TRadioButton
+            Left = 6
+            Height = 28
+            Top = 0
+            Width = 148
+            Caption = 'Autodetect'
+            Checked = True
+            OnChange = WallpaperSetterAutodetectRadioButtonChange
+            TabOrder = 0
+            TabStop = True
+          end
+          object WallpaperSetterManualRadioButton: TRadioButton
+            Left = 6
+            Height = 28
+            Top = 28
+            Width = 148
+            Caption = 'Manual'
+            OnChange = WallpaperSetterManualRadioButtonChange
+            TabOrder = 1
+          end
+          object WallpaperSetterCustomRadioButton: TRadioButton
+            Left = 6
+            Height = 28
+            Top = 56
+            Width = 148
+            Caption = 'Custom'
+            OnChange = WallpaperSetterCustomRadioButtonChange
+            TabOrder = 2
+          end
+        end
       end
       object RunLastScriptCheckBox: TCheckBox
         Left = 5
-        Height = 21
-        Top = 100
-        Width = 484
+        Height = 19
+        Top = 113
+        Width = 482
         Align = alTop
         Caption = 'Run last script on application start'
         TabOrder = 1
@@ -192,122 +194,86 @@ object OptionsForm: TOptionsForm
       Caption = 'Simple Wallpaper Changer'
       ChildSizing.LeftRightSpacing = 5
       ChildSizing.TopBottomSpacing = 5
-      ClientHeight = 185
-      ClientWidth = 494
+      ClientHeight = 190
+      ClientWidth = 492
       object WallpaperStylePanel: TPanel
         Left = 5
         Height = 25
         Top = 5
-        Width = 484
+        Width = 482
         Align = alTop
         BevelOuter = bvNone
         ChildSizing.HorizontalSpacing = 5
         ClientHeight = 25
-        ClientWidth = 484
+        ClientWidth = 482
         TabOrder = 0
         object WallpaperStyleLabel: TLabel
           Left = 0
           Height = 25
           Top = 0
-          Width = 102
+          Width = 81
           Align = alLeft
           Caption = 'Wallpaper Style'
           Layout = tlCenter
           ParentColor = False
         end
         object WallpaperStyleComboBox: TComboBox
-          Left = 192
-          Height = 25
+          Left = 190
+          Height = 23
           Top = 0
           Width = 292
           Align = alRight
-          ItemHeight = 0
+          ItemHeight = 15
           Style = csDropDownList
           TabOrder = 0
         end
       end
       object DelaysGroupBox: TGroupBox
         Left = 5
-        Height = 70
+        Height = 78
         Top = 30
-        Width = 484
+        Width = 482
         Align = alTop
         Caption = 'Delays'
         ChildSizing.TopBottomSpacing = 2
-        ClientHeight = 53
-        ClientWidth = 480
+        ClientHeight = 58
+        ClientWidth = 478
         TabOrder = 1
-        object DelayRadioGroup: TRadioGroup
-          Left = 0
-          Height = 49
-          Top = 2
-          Width = 137
-          Align = alLeft
-          AutoFill = True
-          ChildSizing.LeftRightSpacing = 6
-          ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
-          ChildSizing.EnlargeVertical = crsHomogenousChildResize
-          ChildSizing.ShrinkHorizontal = crsScaleChilds
-          ChildSizing.ShrinkVertical = crsScaleChilds
-          ChildSizing.Layout = cclLeftToRightThenTopToBottom
-          ChildSizing.ControlsPerLine = 1
-          ClientHeight = 45
-          ClientWidth = 133
-          TabOrder = 0
-          object ConstantDelayRadioButton: TRadioButton
-            Left = 6
-            Height = 23
-            Top = 0
-            Width = 121
-            Caption = 'Constant'
-            Checked = True
-            OnChange = ConstantDelayRadioButtonChange
-            TabOrder = 0
-            TabStop = True
-          end
-          object VariableDelayRadioButton: TRadioButton
-            Left = 6
-            Height = 22
-            Top = 23
-            Width = 121
-            Caption = 'Variable'
-            OnChange = VariableDelayRadioButtonChange
-            TabOrder = 1
-          end
-        end
         object DelaysValuesPanel: TPanel
           Left = 137
-          Height = 49
+          Height = 54
           Top = 2
-          Width = 343
+          Width = 341
           Align = alClient
           BevelOuter = bvNone
-          ClientHeight = 49
-          ClientWidth = 343
-          TabOrder = 1
+          ChildSizing.TopBottomSpacing = 1
+          ChildSizing.VerticalSpacing = 2
+          ClientHeight = 54
+          ClientWidth = 341
+          TabOrder = 0
           object ConstantDelayValuePanel: TPanel
             Left = 0
             Height = 25
-            Top = 0
-            Width = 343
+            Top = 1
+            Width = 341
             Align = alTop
             BevelOuter = bvNone
             ChildSizing.HorizontalSpacing = 5
             ClientHeight = 25
-            ClientWidth = 343
+            ClientWidth = 341
             TabOrder = 0
             object ConstantDelayValueUnitsComboBox: TComboBox
-              Left = 268
-              Height = 25
+              Left = 266
+              Height = 23
               Top = 0
               Width = 75
               Align = alRight
-              ItemHeight = 0
+              ItemHeight = 15
               Style = csDropDownList
               TabOrder = 0
             end
             object ConstantDelayValueSpinEdit: TSpinEdit
-              Left = 163
+              Left = 161
               Height = 25
               Top = 0
               Width = 100
@@ -320,26 +286,26 @@ object OptionsForm: TOptionsForm
           object VariableDelayValuePanel: TPanel
             Left = 0
             Height = 25
-            Top = 25
-            Width = 343
+            Top = 28
+            Width = 341
             Align = alTop
             BevelOuter = bvNone
             ChildSizing.HorizontalSpacing = 5
             ClientHeight = 25
-            ClientWidth = 343
+            ClientWidth = 341
             TabOrder = 1
             object VariableDelayValueUnitsComboBox: TComboBox
-              Left = 268
-              Height = 25
+              Left = 266
+              Height = 23
               Top = 0
               Width = 75
               Align = alRight
-              ItemHeight = 0
+              ItemHeight = 15
               Style = csDropDownList
               TabOrder = 0
             end
             object VariableDelayValueToSpinEdit: TSpinEdit
-              Left = 163
+              Left = 161
               Height = 25
               Top = 0
               Width = 100
@@ -350,7 +316,7 @@ object OptionsForm: TOptionsForm
               TabOrder = 1
             end
             object VariableDelayValueToLabel: TLabel
-              Left = 144
+              Left = 142
               Height = 25
               Top = 0
               Width = 14
@@ -360,7 +326,7 @@ object OptionsForm: TOptionsForm
               ParentColor = False
             end
             object VariableDelayValueFromSpinEdit: TSpinEdit
-              Left = 39
+              Left = 37
               Height = 25
               Top = 0
               Width = 100
@@ -371,10 +337,10 @@ object OptionsForm: TOptionsForm
               TabOrder = 2
             end
             object VariableDelayValueFromLabel: TLabel
-              Left = 2
+              Left = 4
               Height = 25
               Top = 0
-              Width = 32
+              Width = 28
               Align = alRight
               Caption = 'From'
               Layout = tlCenter
@@ -382,21 +348,59 @@ object OptionsForm: TOptionsForm
             end
           end
         end
+        object DelayRadioGroupPanel: TPanel
+          Left = 0
+          Height = 54
+          Top = 2
+          Width = 137
+          Align = alLeft
+          BevelOuter = bvNone
+          ChildSizing.LeftRightSpacing = 6
+          ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+          ChildSizing.EnlargeVertical = crsHomogenousChildResize
+          ChildSizing.ShrinkHorizontal = crsScaleChilds
+          ChildSizing.ShrinkVertical = crsScaleChilds
+          ChildSizing.Layout = cclLeftToRightThenTopToBottom
+          ChildSizing.ControlsPerLine = 1
+          ClientHeight = 54
+          ClientWidth = 137
+          TabOrder = 1
+          object ConstantDelayRadioButton: TRadioButton
+            Left = 6
+            Height = 27
+            Top = 0
+            Width = 125
+            Caption = 'Constant'
+            Checked = True
+            OnChange = ConstantDelayRadioButtonChange
+            TabOrder = 0
+            TabStop = True
+          end
+          object VariableDelayRadioButton: TRadioButton
+            Left = 6
+            Height = 27
+            Top = 27
+            Width = 125
+            Caption = 'Variable'
+            OnChange = VariableDelayRadioButtonChange
+            TabOrder = 1
+          end
+        end
       end
       object KeepOrderCheckBox: TCheckBox
         Left = 5
-        Height = 21
-        Top = 100
-        Width = 484
+        Height = 19
+        Top = 108
+        Width = 482
         Align = alTop
         Caption = 'Keep Order'
         TabOrder = 2
       end
       object RecursiveSearchCheckBox: TCheckBox
         Left = 5
-        Height = 21
-        Top = 121
-        Width = 484
+        Height = 19
+        Top = 127
+        Width = 482
         Align = alTop
         Caption = 'Search in subdirectories'
         TabOrder = 3

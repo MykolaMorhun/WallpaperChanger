@@ -23,15 +23,22 @@ type
 
   TOptionsForm = class(TForm)
     CancelButton: TButton;
+    ConstantDelayRadioButton: TRadioButton;
     DefaultsButton: TButton;
+    DelayRadioGroupPanel: TPanel;
     OkButton: TButton;
     SaveButton: TButton;
+    VariableDelayRadioButton: TRadioButton;
+    WallpaperSetterAutodetectRadioButton: TRadioButton;
     WallpaperSetterAutodetectValueLabel: TLabel;
+    WallpaperSetterCustomRadioButton: TRadioButton;
     WallpaperSetterCustomValueOpenDialogButton: TButton;
     ConstantDelayValueUnitsComboBox: TComboBox;
     WallpaperSetterCustomValueEdit: TEdit;
+    WallpaperSetterManualRadioButton: TRadioButton;
     WallpaperSetterManualValuePanel: TPanel;
     WallpaperSetterCustomValuePanel: TPanel;
+    WallpaperSetterModeRadioGroupPanel: TPanel;
     WallpaperSetterValuesPanel: TPanel;
     WallpaperSetterAutodetectValuePanel: TPanel;
     VariableDelayValueToLabel: TLabel;
@@ -45,20 +52,13 @@ type
     ConstantDelayValuePanel: TPanel;
     VariableDelayValuePanel: TPanel;
     RecursiveSearchCheckBox: TCheckBox;
-    VariableDelayRadioButton: TRadioButton;
     WallpaperStyleComboBox: TComboBox;
     CustomSetterOpenDialog: TOpenDialog;
     DelaysGroupBox: TGroupBox;
     WallpaperStyleLabel: TLabel;
     WallpaperStylePanel: TPanel;
-    ConstantDelayRadioButton: TRadioButton;
-    DelayRadioGroup: TRadioGroup;
     RunLastScriptCheckBox: TCheckBox;
     WallpaperSetterManualValueComboBox: TComboBox;
-    WallpaperSetterAutodetectRadioButton: TRadioButton;
-    WallpaperSetterManualRadioButton: TRadioButton;
-    WallpaperSetterCustomRadioButton: TRadioButton;
-    WallpaperSetterModeRadioGroup: TRadioGroup;
     WallpaperSetterGroupBox: TGroupBox;
     OptionsPageControl: TPageControl;
     ButtonsPanel: TPanel;
