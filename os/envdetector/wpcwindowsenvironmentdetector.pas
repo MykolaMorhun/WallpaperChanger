@@ -22,9 +22,9 @@ type
       DE_WINDOWS_8,
       DE_WINDOWS_7,
       // DE_WINDOWS_VISTA,
-      DE_WINDOWS_XP
+      DE_WINDOWS_XP,
       // DE_WINDOWS_2000,
-      // DE_REACTOS
+      DE_REACTOS
     ];
   public
     function Detect() : TDesktopEnvironment; override;
