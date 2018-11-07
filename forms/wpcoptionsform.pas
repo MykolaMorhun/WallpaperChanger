@@ -81,7 +81,7 @@ type
     procedure WallpaperSetterManualValueComboBoxChange(Sender: TObject);
   public
     constructor Create(TheOwner: TComponent); override;
-    procedure ShowOptinsForm(ForceSetEnvironment : Boolean = false);
+    procedure ShowModalOptionsForm(ForceSetEnvironment : Boolean = false);
 
     procedure FillSettingsOnForm();
     function ReadSettingsFromForm() : Boolean;
@@ -143,7 +143,7 @@ end;
 
 procedure TOptionsForm.FormClose(Sender : TObject; var CloseAction : TCloseAction);
 begin
-  CloseAction := caFree;
+  CloseAction := caHide;
   if (not CancelButton.Enabled) then begin
     // User should configure environment, otherwise future execution has no sense.
     // If user refuses to configure environment - close program.
@@ -157,7 +157,7 @@ end;
   Shows options form and fills current settings.
   If ForceSetEnvironment is true, then user will be forced to set desktop environment different from AUTODETECT.
 }
-procedure TOptionsForm.ShowOptinsForm(ForceSetEnvironment : Boolean);
+procedure TOptionsForm.ShowModalOptionsForm(ForceSetEnvironment : Boolean);
 begin
   FillSettingsOnForm();
   if (ForceSetEnvironment) then begin
@@ -175,7 +175,7 @@ begin
     CancelButton.Enabled := True;
   end;
 
-  Show();
+  ShowModal();
 end;
 
 {
@@ -324,14 +324,14 @@ end;
 
 procedure TOptionsForm.CancelButtonClick(Sender: TObject);
 begin
-  Hide();
+  Close();
 end;
 
 procedure TOptionsForm.OkButtonClick(Sender: TObject);
 begin
   if (ReadSettingsFromForm()) then begin
     ApplicationManager.ApplySettings();
-    Hide();
+    Close();
   end
   else
     ShowInvalidSettingsMessage();

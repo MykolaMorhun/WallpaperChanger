@@ -335,7 +335,7 @@ procedure TScriptEditorForm.CloseEditorWindowActionExecute(Sender : TObject);
 begin
   if (AskSave(Sender)) then exit;
 
-  Hide();
+  Close();
 end;
 
 procedure TScriptEditorForm.FileNewBlankScriptActionExecute(Sender : TObject);

@@ -54,7 +54,6 @@ type
 
     FOnScriptStopCallback : TWpcScriptExecutorStopCallback;
   private
-    FOptionsWindow : TOptionsForm;
     FScriptEditorWindow : TScriptEditorForm;
   public
     constructor Create();
@@ -79,8 +78,8 @@ type
 
     procedure SetNextWallpaper();
   public
-    procedure OpenOptionsForm(ForceSetEnvironment : Boolean = False);
     procedure OpenScriptEditorForm();
+    procedure OpenOptionsForm(ForceSetEnvironment : Boolean = False);
     procedure OpenAboutForm();
   public
     procedure SetOnScriptStopCallback(Callback : TWpcScriptExecutorStopCallback);
@@ -104,14 +103,12 @@ begin
 
   FScriptsGenerator := TWpcScriptsGenerator.Create();
 
-  FOptionsWindow := nil;
   FScriptEditorWindow := nil;
 end;
 
 destructor TWpcApplicationManager.Destroy();
 begin
-  if (FOptionsWindow <> nil) then FOptionsWindow.Free();
-  if (FScriptEditorWindow <> nil) then FScriptEditorWindow.Free();
+  if (Assigned(FScriptEditorWindow)) then FScriptEditorWindow.Free();
 
   // Stop script execution if any
   if (FScriptExecutor.IsRunning()) then
@@ -155,7 +152,7 @@ begin
     DesktopEnvironment := FEnvironmentDetector.Detect();
   end;
   if (DesktopEnvironment = DE_UNKNOWN) then begin
-    OpenOptionsForm(true);
+    OpenOptionsForm(True);
     exit;
   end;
   FWallpaperSetter := FWallpaperSetterFactory.GetWallpaperSetter(DesktopEnvironment);
@@ -242,19 +239,23 @@ end;
 
 (* UI *)
 
-procedure TWpcApplicationManager.OpenOptionsForm(ForceSetEnvironment : Boolean = False);
-begin
-  if (FOptionsWindow = nil) then
-    FOptionsWindow := TOptionsForm.Create(nil);
-
-  FOptionsWindow.ShowOptinsForm(ForceSetEnvironment);
-end;
-
 procedure TWpcApplicationManager.OpenScriptEditorForm();
 begin
   // Create new from each time. It will destroy itself on close.
   FScriptEditorWindow := TScriptEditorForm.Create(nil);
   FScriptEditorWindow.Show();
+end;
+
+procedure TWpcApplicationManager.OpenOptionsForm(ForceSetEnvironment : Boolean = False);
+var
+  OptionsWindow : TOptionsForm;
+begin
+  OptionsWindow := TOptionsForm.Create(nil);
+  try
+    OptionsWindow.ShowModalOptionsForm(ForceSetEnvironment);
+  finally
+    OptionsWindow.Free();
+  end;
 end;
 
 procedure TWpcApplicationManager.OpenAboutForm();
