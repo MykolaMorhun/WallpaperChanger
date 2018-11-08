@@ -87,6 +87,7 @@ end;
 function TWpcWindowsAbstractWallpaperSetter.WpcWallpaperStyleToWindowsWallpaperStyle(Style : TWpcWallpaperStyle) : String;
 begin
   case (Style) of
+     SPANNED:   Result := '22';
      ZOOMED:    Result := '10';
      SCALED:    Result := '6';
      STRETCHED: Result := '2';

@@ -7,6 +7,7 @@ interface
 uses
   Classes, SysUtils,
   WpcWallpaperSetter,
+  WpcWindows10WallpaperSetter,
   WpcWindows7WallpaperSetter,
   WpcWindowsXPWallpaperSetter,
   WpcReactOSWallpaperSetter,
@@ -42,7 +43,7 @@ implementation
 function TWpcWindowsWallpaperSetterFactory.GetWallpaperSetter(DesktopEnvironment : TDesktopEnvironment) : IWpcWallpaperSetter;
 begin
   case (DesktopEnvironment) of
-    DE_WINDOWS_10:    Result := nil;
+    DE_WINDOWS_10:    Result := TWpcWindows10WallpaperSetter.Create();
     DE_WINDOWS_8_1:   Result := nil;
     DE_WINDOWS_8:     Result := nil;
     DE_WINDOWS_7:     Result := TWpcWindows7WallpaperSetter.Create();
