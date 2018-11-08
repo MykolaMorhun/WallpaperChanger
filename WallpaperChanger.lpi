@@ -32,7 +32,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="73">
+    <Units Count="74">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -409,6 +409,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcWindows10WallpaperSetter"/>
       </Unit72>
+      <Unit73>
+        <Filename Value="os/wpsetters/Windows/wpcwindows8wallpapersetter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcWindows8WallpaperSetter"/>
+      </Unit73>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -8,6 +8,7 @@ uses
   Classes, SysUtils,
   WpcWallpaperSetter,
   WpcWindows10WallpaperSetter,
+  WpcWindows8WallpaperSetter,
   WpcWindows7WallpaperSetter,
   WpcWindowsXPWallpaperSetter,
   WpcReactOSWallpaperSetter,
@@ -44,8 +45,8 @@ function TWpcWindowsWallpaperSetterFactory.GetWallpaperSetter(DesktopEnvironment
 begin
   case (DesktopEnvironment) of
     DE_WINDOWS_10:    Result := TWpcWindows10WallpaperSetter.Create();
-    DE_WINDOWS_8_1:   Result := nil;
-    DE_WINDOWS_8:     Result := nil;
+    DE_WINDOWS_8_1:   Result := TWpcWindows8_1WallpaperSetter.Create();
+    DE_WINDOWS_8:     Result := TWpcWindows8WallpaperSetter.Create();
     DE_WINDOWS_7:     Result := TWpcWindows7WallpaperSetter.Create();
     DE_WINDOWS_VISTA: Result := nil;
     DE_WINDOWS_XP:    Result := TWpcWindowsXPWallpaperSetter.Create();
