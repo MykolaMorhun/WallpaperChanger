@@ -393,7 +393,7 @@ object OptionsForm: TOptionsForm
         Top = 108
         Width = 482
         Align = alTop
-        Caption = 'Keep Order'
+        Caption = 'Keep order'
         TabOrder = 2
       end
       object RecursiveSearchCheckBox: TCheckBox
@@ -460,7 +460,6 @@ object OptionsForm: TOptionsForm
       Width = 100
       Align = alRight
       Caption = 'Save'
-      ModalResult = 4
       OnClick = SaveButtonClick
       TabOrder = 3
     end

@@ -38,7 +38,7 @@ var
   Branch : TWpcBranchStatement;
   DirectoryStatement : TWpcDirectoryStatement;
 begin
-  DirectoryStatement := TWpcDirectoryStatement.Create(Dirctory, Settings.KeepOrder, true);
+  DirectoryStatement := TWpcDirectoryStatement.Create(Dirctory, Settings.KeepOrder, Settings.SearchInSubdirectories);
   if (DirectoryStatement.CountImages() = 0) then begin
     DirectoryStatement.Free();
     raise TWpcRuntimeException.Create('Specified directory doesn''t contain images');

@@ -87,7 +87,8 @@ begin
 
   FImagesList := TWpcImagesList.Create();
   ReadImages(IsRecursive);
-  if (not FIsOrdered) then
+  // TODO add shuffle flag and change condition to FIsOrdered and FShuffle
+  if (FIsOrdered) then
     ShuffleImages();
   FCurrentImageIndex := -1;
 end;
@@ -196,7 +197,7 @@ begin
 end;
 
 {
-  Selects previoous image.
+  Selects previous image.
 }
 function TWpcDirectoryStatement.GetPrevImage(): TWpcImage;
 begin
