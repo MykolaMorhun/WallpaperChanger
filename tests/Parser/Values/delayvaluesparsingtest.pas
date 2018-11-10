@@ -10,8 +10,8 @@ uses
   ValuesParsingBaseTest,
   WpcScriptCommons,
   WpcWaitStatement,
-  WpcStatementProperties,
   WpcTimeMeasurementUnits,
+  WpcTimeUtils,
   WpcScriptParser;
 
 type
@@ -94,7 +94,7 @@ end;
 procedure TDelayValuesParsingTest.ShouldParseDelayValueWithDefaultTimeunit();
 begin
   AssertEquals(FAILED_TO_PARSE + IntToStr(REGULAR_DELAY) + ' with default measurement units.',
-               TWpcDelayStatementProperty.ConvertToMilliseconds(REGULAR_DELAY, MINUTES),
+               ConvertToMilliseconds(REGULAR_DELAY, MINUTES),
                ParseAndGetWaitValue(IntToStr(REGULAR_DELAY))); // minutes is default units
 end;
 
@@ -115,7 +115,7 @@ var
 begin
   for i:=1 to Length(DELAY_MEASUREMENT_UNITS_STRINGS) do begin
      AssertEquals(FAILED_TO_PARSE + IntToStr(MINIMAL_DELAY) + DELAY_MEASUREMENT_UNITS_STRINGS[i],
-                  TWpcDelayStatementProperty.ConvertToMilliseconds(MINIMAL_DELAY, DELAY_MEASUREMENT_UNITS[i]),
+                  ConvertToMilliseconds(MINIMAL_DELAY, DELAY_MEASUREMENT_UNITS[i]),
                   ParseAndGetWaitValue(IntToStr(MINIMAL_DELAY) + DELAY_MEASUREMENT_UNITS_STRINGS[i]));
   end;
 end;
@@ -126,7 +126,7 @@ var
 begin
   for i:=1 to Length(DELAY_MEASUREMENT_UNITS_STRINGS) do begin
      AssertEquals(FAILED_TO_PARSE + IntToStr(REGULAR_DELAY) + DELAY_MEASUREMENT_UNITS_STRINGS[i],
-                  TWpcDelayStatementProperty.ConvertToMilliseconds(REGULAR_DELAY, DELAY_MEASUREMENT_UNITS[i]),
+                  ConvertToMilliseconds(REGULAR_DELAY, DELAY_MEASUREMENT_UNITS[i]),
                   ParseAndGetWaitValue(IntToStr(REGULAR_DELAY) + DELAY_MEASUREMENT_UNITS_STRINGS[i]));
   end;
 end;
@@ -139,7 +139,7 @@ var
 begin
   for i:=1 to Length(DELAY_MEASUREMENT_UNITS_STRINGS) do begin
      AssertEquals(FAILED_TO_PARSE + IntToStr(BIG_DELAY_VALUES[i]) + DELAY_MEASUREMENT_UNITS_STRINGS[i],
-                  TWpcDelayStatementProperty.ConvertToMilliseconds(BIG_DELAY_VALUES[i], DELAY_MEASUREMENT_UNITS[i]),
+                  ConvertToMilliseconds(BIG_DELAY_VALUES[i], DELAY_MEASUREMENT_UNITS[i]),
                   ParseAndGetWaitValue(IntToStr(BIG_DELAY_VALUES[i]) + DELAY_MEASUREMENT_UNITS_STRINGS[i]));
   end;
 end;
