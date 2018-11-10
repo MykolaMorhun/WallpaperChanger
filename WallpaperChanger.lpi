@@ -32,7 +32,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="74">
+    <Units Count="76">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -414,6 +414,16 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcWindows8WallpaperSetter"/>
       </Unit73>
+      <Unit74>
+        <Filename Value="os/wpsetters/Windows/wpcwindows2000wallpapersetter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcWindows2000WallpaperSetter"/>
+      </Unit74>
+      <Unit75>
+        <Filename Value="os/wpsetters/Windows/wpcwindowsvistawallpapersetter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcWindowsVistaWallpaperSetter"/>
+      </Unit75>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
