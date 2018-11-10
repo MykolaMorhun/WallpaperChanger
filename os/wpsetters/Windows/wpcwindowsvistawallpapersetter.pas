@@ -29,7 +29,7 @@ begin
   inherited Create();
 
   TargetDesktopEnvironment := DE_WINDOWS_VISTA;
-  SupportedStyles := [ ZOOMED, SCALED, STRETCHED, TILED, CENTERED ];
+  SupportedStyles := [ STRETCHED, TILED, CENTERED ];
   DefaultWallpaperStyle := ZOOMED;
 end;
 
