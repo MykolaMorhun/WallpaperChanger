@@ -11,6 +11,7 @@ uses
   WpcWindows8WallpaperSetter,
   WpcWindows7WallpaperSetter,
   WpcWindowsXPWallpaperSetter,
+  WpcWindows2000WallpaperSetter,
   WpcReactOSWallpaperSetter,
   WpcWallpaperSetterFactory,
   WpcDesktopEnvironments;
@@ -28,7 +29,7 @@ type
       DE_WINDOWS_7,
       // DE_WINDOWS_VISTA,
       DE_WINDOWS_XP,
-      // DE_WINDOWS_2000,
+      DE_WINDOWS_2000,
       DE_REACTOS
     ];
   public
@@ -50,7 +51,7 @@ begin
     DE_WINDOWS_7:     Result := TWpcWindows7WallpaperSetter.Create();
     DE_WINDOWS_VISTA: Result := nil;
     DE_WINDOWS_XP:    Result := TWpcWindowsXPWallpaperSetter.Create();
-    DE_WINDOWS_2000:  Result := nil;
+    DE_WINDOWS_2000:  Result := TWpcWindows2000WallpaperSetter.Create();
 
     DE_REACTOS:       Result := TWpcReactOSWallpaperSetter.Create();
   end;
