@@ -20,12 +20,14 @@ type
   private
     FDelay: LongWord; // milliseconds
   public
+    constructor Create();
+
     procedure SetDelay(PDelay : LongWord);
     procedure SetDelay(PDelay : LongWord; MeasurementUnit : TWpcTimeMeasurementUnits);
 
     function ToString(Readable : Boolean = false) : String;
   public
-    property Delay : LongWord read FDelay write SetDelay default 0;
+    property Delay : LongWord read FDelay write SetDelay;
   end;
 
   { TWpcProbabilityStatementProperty }
@@ -35,9 +37,11 @@ type
     FProbability: Byte; // percents
     procedure SetProbability(Probability : Byte);
   public
+    constructor Create();
+
     function ToString() : String; override;
   public
-    property Probability : Byte read FProbability write SetProbability default 100;
+    property Probability : Byte read FProbability write SetProbability;
   end;
 
   { TWpcTimesStatementProperty }
@@ -49,9 +53,11 @@ type
     FTimes: LongWord;
     procedure SetTimes(Times : LongWord);
   public
+    constructor Create();
+
     function ToString() : String; override;
   public
-    property Times : LongWord read FTimes write SetTimes default 1;
+    property Times : LongWord read FTimes write SetTimes;
   end;
 
   { TWpcWeightStatementProperty }
@@ -61,9 +67,11 @@ type
     FWeight: LongWord;
     procedure SetWeight(Weight : LongWord);
   public
+    constructor Create();
+
     function ToString() : String; override;
   public
-    property Weight : LongWord read FWeight write SetWeight default 1;
+    property Weight : LongWord read FWeight write SetWeight;
   end;
 
 
@@ -71,6 +79,11 @@ implementation
 
 
 { TWpcDelayStatementProperty }
+
+constructor TWpcDelayStatementProperty.Create();
+begin
+  FDelay := 0;
+end;
 
 procedure TWpcDelayStatementProperty.SetDelay(PDelay : LongWord);
 begin
@@ -99,6 +112,11 @@ end;
 
 { TWpcProbabilityStatementProperty }
 
+constructor TWpcProbabilityStatementProperty.Create();
+begin
+  FProbability := 100;
+end;
+
 procedure TWpcProbabilityStatementProperty.SetProbability(Probability: Byte);
 begin
   if ((Probability < 0) or (Probability > 100)) then
@@ -113,6 +131,11 @@ end;
 
 { TWpcTimesStatementProperty }
 
+constructor TWpcTimesStatementProperty.Create();
+begin
+  FTimes := 1;
+end;
+
 procedure TWpcTimesStatementProperty.SetTimes(Times : LongWord);
 begin
   if (Times < 1 ) then
@@ -126,6 +149,11 @@ begin
 end;
 
 { TWpcWeightStatementProperty }
+
+constructor TWpcWeightStatementProperty.Create();
+begin
+  FWeight := 1;
+end;
 
 procedure TWpcWeightStatementProperty.SetWeight(Weight : LongWord);
 begin
