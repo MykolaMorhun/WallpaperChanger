@@ -11,6 +11,7 @@ uses
   WpcScript,
   WpcBranchStatement,
   WpcDirectoryStatement,
+  WpcBranchActionsStatements,
   WpcStatementProperties,
   WpcExceptions;
 
@@ -36,7 +37,8 @@ function TWpcScriptsGenerator.GenerateDirectoryStatementScript(Dirctory : TWpcDi
 var
   Script : TWpcScript;
   Branch : TWpcBranchStatement;
-  DirectoryStatement : TWpcDirectoryStatement;
+  DirectoryStatement    : TWpcDirectoryStatement;
+  SwitchBranchStatement : TWpcSwitchBranchStatement;
 begin
   DirectoryStatement := TWpcDirectoryStatement.Create(Dirctory, Settings.KeepOrder, Settings.SearchInSubdirectories);
   if (DirectoryStatement.CountImages() = 0) then begin
@@ -53,11 +55,16 @@ begin
     DirectoryStatement.SetDelay(Settings.MinimalDelay);
     DirectoryStatement.SetRamdomDelay(Settings.MaximalDelay - Settings.MinimalDelay);
   end;
-  DirectoryStatement.SetTimes(TWpcTimesStatementProperty.MAX_TIMES); // TODO add FOREVER flag
+  // TODO add FOREVER flag and remove switch branch statement
+  DirectoryStatement.SetTimes(TWpcTimesStatementProperty.MAX_TIMES);
   DirectoryStatement.SetProbability(100);
+
+  SwitchBranchStatement := TWpcSwitchBranchStatement.Create(MAIN_BARNCH);
+  SwitchBranchStatement.SetProbability(100);
 
   Branch := TWpcBranchStatement.Create(MAIN_BARNCH);
   Branch.AddStatement(DirectoryStatement);
+  Branch.AddStatement(SwitchBranchStatement);
 
   Script := TWpcScript.Create();
   Script.AddBranch(MAIN_BARNCH, Branch);
