@@ -6,6 +6,7 @@ interface
 
 uses
   Classes, SysUtils,
+  fgl,
   WpcOptions,
   WpcWallpaperChangerAlgorithms,
   WpcDesktopEnvironments,
@@ -32,6 +33,8 @@ const
 
 type
 
+  TWpcScriptEditorsList = specialize TFPGList<TScriptEditorForm>;
+
   { TWpcApplicationManager }
 
   // Singleton. Holds application state and modules objects.
@@ -54,7 +57,9 @@ type
 
     FOnScriptStopCallback : TWpcScriptExecutorStopCallback;
   private
-    FScriptEditorWindow : TScriptEditorForm;
+    // Holds opened script editors and is used for closing them on application exit if any.
+    // When an editor is closed during runtime then callback will remove the editor form the list.
+    FOpenedScriptEditors : TWpcScriptEditorsList;
   public
     constructor Create();
     destructor Destroy(); override;
@@ -85,6 +90,7 @@ type
     procedure SetOnScriptStopCallback(Callback : TWpcScriptExecutorStopCallback);
   private
     procedure OnScriptStoppedCallback(ExitStatus : TWpcScriptExecutionExitStatus);
+    procedure OnScriptEditorWindowClosedCallback(ScriptEditorWindow : TScriptEditorForm);
   private
     procedure ReadSettings();
   end;
@@ -103,12 +109,17 @@ begin
 
   FScriptsGenerator := TWpcScriptsGenerator.Create();
 
-  FScriptEditorWindow := nil;
+  FOpenedScriptEditors := TWpcScriptEditorsList.Create();
 end;
 
 destructor TWpcApplicationManager.Destroy();
+var
+  ScriptEditorWindow : TScriptEditorForm;
 begin
-  if (Assigned(FScriptEditorWindow)) then FScriptEditorWindow.Free();
+  // Close all opened script editors if any
+  for ScriptEditorWindow in FOpenedScriptEditors do
+    ScriptEditorWindow.Free();
+  FOpenedScriptEditors.Free();
 
   // Stop script execution if any
   if (FScriptExecutor.IsRunning()) then
@@ -240,10 +251,15 @@ end;
 (* UI *)
 
 procedure TWpcApplicationManager.OpenScriptEditorForm();
+var
+  ScriptEditorWindow : TScriptEditorForm;
 begin
-  // Create new from each time. It will destroy itself on close.
-  FScriptEditorWindow := TScriptEditorForm.Create(nil);
-  FScriptEditorWindow.Show();
+  // Create new from each time.
+  // It will destroy itself on close or Application Manager will destroy it on exit.
+  ScriptEditorWindow := TScriptEditorForm.Create(nil);
+  ScriptEditorWindow.SetOnCloseCallback(@OnScriptEditorWindowClosedCallback);
+  FOpenedScriptEditors.Add(ScriptEditorWindow);
+  ScriptEditorWindow.Show();
 end;
 
 procedure TWpcApplicationManager.OpenOptionsForm(ForceSetEnvironment : Boolean = False);
@@ -283,6 +299,11 @@ begin
 
   if (Assigned(FOnScriptStopCallback)) then
     FOnScriptStopCallback(ExitStatus);
+end;
+
+procedure TWpcApplicationManager.OnScriptEditorWindowClosedCallback(ScriptEditorWindow : TScriptEditorForm);
+begin
+  FOpenedScriptEditors.Remove(ScriptEditorWindow);
 end;
 
 

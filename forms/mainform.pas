@@ -194,6 +194,7 @@ begin
     ApplicationManager.StopScript();
   end;
 
+  ApplicationManager.Free();
   BannerForm.Close();
 end;
 

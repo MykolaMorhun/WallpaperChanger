@@ -35,6 +35,9 @@ type
     procedure LogMessage(Message : String; AddLineBreak : Boolean = true); override;
   end;
 
+  TScriptEditorForm = class;
+
+  TWpcScriptEditorClosedCallback = procedure(ScriptEditorForm : TScriptEditorForm) of Object;
 
   { TScriptEditorForm }
 
@@ -214,7 +217,7 @@ type
     FScriptPath : String;
     // Script under editing
     FCurrentScript : TSynEdit;
-    // Determinas if insertion of script components shows UI
+    // Whether insertion of script components should be done via UI
     FInteractiveInsertion : Boolean;
 
     FAutocompleteManager : TWpcScriptAutocompletionManager;
@@ -222,9 +225,13 @@ type
     FScript : TWpcScript;
     FScriptTracer : IWpcScriptExecutor;
     FScriptExecutionLogsConsumer : TWpcScriptEditorLogger;
+
+    FOnCloseCallback : TWpcScriptEditorClosedCallback;
   public
     constructor Create(TheOwner : TComponent); override;
     destructor Destroy(); override;
+  public
+    procedure SetOnCloseCallback(Callback : TWpcScriptEditorClosedCallback);
   private
     procedure SetupTracer(); inline;
     procedure SetupUI(); inline;
@@ -245,6 +252,7 @@ type
     procedure OnTraceScriptStopCallback(ExitStatus : TWpcScriptExecutionExitStatus);
     procedure HandleScriptParseError(ParseException : TWpcScriptParseException);
   end;
+
 
 implementation
 uses
@@ -269,6 +277,9 @@ end;
 constructor TScriptEditorForm.Create(TheOwner : TComponent);
 begin
   inherited Create(TheOwner);
+
+  FOnCloseCallback := nil;
+
   FCurrentScript := ScriptSynEdit;
   FScriptPath := '';
   FInteractiveInsertion := False;
@@ -291,6 +302,11 @@ begin
   FScriptExecutionLogsConsumer.Free();
 
   inherited Destroy();
+end;
+
+procedure TScriptEditorForm.SetOnCloseCallback(Callback : TWpcScriptEditorClosedCallback);
+begin
+  FOnCloseCallback := Callback;
 end;
 
 procedure TScriptEditorForm.SetupTracer();
@@ -769,6 +785,9 @@ end;
 
 procedure TScriptEditorForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
+  if (Assigned(FOnCloseCallback)) then
+    FOnCloseCallback(Self);
+
   CloseAction := caFree;
 end;
 
