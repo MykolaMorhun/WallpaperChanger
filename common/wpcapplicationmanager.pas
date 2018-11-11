@@ -23,6 +23,7 @@ uses
   WpcImage, WpcDirectory,
   WpcExceptions,
 
+  MainForm,
   WpcOptionsForm,
   WpcScriptEditorForm,
   WpcAboutForm;
@@ -54,14 +55,14 @@ type
     FScriptContent : TStringList;
     FScriptParser  : TWpcScriptParser;
     FScript        : TWpcScript;
-
-    FOnScriptStopCallback : TWpcScriptExecutorStopCallback;
   private
+    FMainForm : TBannerForm;
+
     // Holds opened script editors and is used for closing them on application exit if any.
     // When an editor is closed during runtime then callback will remove the editor form the list.
     FOpenedScriptEditors : TWpcScriptEditorsList;
   public
-    constructor Create();
+    constructor Create(MainForm : TBannerForm);
     destructor Destroy(); override;
   public
     // Supposed to be changed only from options window or ApplicationManager.
@@ -82,12 +83,12 @@ type
     procedure SetWallpapersFromDirectory(Directory : TWpcDirectory);
 
     procedure SetNextWallpaper();
+
+    procedure ReRunLastTask();
   public
     procedure OpenScriptEditorForm();
     procedure OpenOptionsForm(ForceSetEnvironment : Boolean = False);
     procedure OpenAboutForm();
-  public
-    procedure SetOnScriptStopCallback(Callback : TWpcScriptExecutorStopCallback);
   private
     procedure OnScriptStoppedCallback(ExitStatus : TWpcScriptExecutionExitStatus);
     procedure OnScriptEditorWindowClosedCallback(ScriptEditorWindow : TScriptEditorForm);
@@ -100,8 +101,10 @@ implementation
 
 { TWpcApplicationManager }
 
-constructor TWpcApplicationManager.Create();
+constructor TWpcApplicationManager.Create(MainForm : TBannerForm);
 begin
+  FMainForm := MainForm;
+
   ReadSettings();
 
   FEnvironmentDetector := GetEnvironmentDetector();
@@ -110,6 +113,11 @@ begin
   FScriptsGenerator := TWpcScriptsGenerator.Create();
 
   FOpenedScriptEditors := TWpcScriptEditorsList.Create();
+
+  ApplySettings(); // complete initialization
+
+  if (FApplicationSettings.RunLastTaskOnStart and FApplicationStateSettings.TaskWasRunningOnExit) then
+    ReRunLastTask();
 end;
 
 destructor TWpcApplicationManager.Destroy();
@@ -121,10 +129,23 @@ begin
     ScriptEditorWindow.Free();
   FOpenedScriptEditors.Free();
 
+  // Save state
+  if (IsScriptRunning()) then
+    CurrentState.TaskWasRunningOnExit := True
+  else
+    CurrentState.TaskWasRunningOnExit := False;
+
+  try
+    FApplicationStateSettings.SaveIntoFile();
+  finally
+    // Do nothing if failed to save application state.
+  end;
+
   // Stop script execution if any
   if (FScriptExecutor.IsRunning()) then
     FScriptExecutor.Terminate();
 
+  // Clean up resources
   FApplicationSettings.Free();
   FApplicationStateSettings.Free();
 
@@ -154,7 +175,16 @@ end;
 procedure TWpcApplicationManager.ApplySettings();
 var
   DesktopEnvironment : TDesktopEnvironment;
+
+  ReRunTusk : Boolean;
 begin
+  // If options are changed when a task is running then rerun it with new options.
+  ReRunTusk := False;
+  if ((FScriptExecutor <> nil) and IsScriptRunning()) then begin
+    ReRunTusk := True;
+    StopScript();
+  end;
+
   // Update wallpaper setter
   if (FWallpaperSetter <> nil) then FreeAndNil(FWallpaperSetter);
 
@@ -173,6 +203,9 @@ begin
 
   FScriptExecutor := TWpcInThreadScriptExecutor.Create(FWallpaperSetter);
   FScriptExecutor.SetOnStopCallback(@OnScriptStoppedCallback);
+
+  if (ReRunTusk) then
+    ReRunLastTask();
 end;
 
 (* Engine *)
@@ -248,7 +281,45 @@ begin
   FScriptExecutor.SkipCurrentDelay();
 end;
 
-(* UI *)
+procedure TWpcApplicationManager.ReRunLastTask();
+var
+  Directory : TWpcDirectory;
+  Image     : TWpcImage;
+begin
+  try
+    case (FApplicationStateSettings.LastType) of
+      WPCA_SCRIPT:
+        if (FApplicationStateSettings.LastScript <> '') then begin
+          RunScript(FApplicationStateSettings.LastScript);
+          FMainForm.UpdateUIOnScriptStart();
+        end;
+      WPCA_DIRECTORY:
+        if (FApplicationStateSettings.LastDirectory <> '') then begin
+          Directory := TWpcDirectory.Create(FApplicationStateSettings.LastDirectory);
+          try
+            SetWallpapersFromDirectory(Directory);
+            FMainForm.UpdateUIOnScriptStart();
+          finally
+            Directory.Free();
+          end;
+        end;
+      WPCA_IMAGE:
+        if (FApplicationStateSettings.LastWallpaper <> '') then begin
+          Image := TWpcImage.Create(FApplicationStateSettings.LastWallpaper);
+          try
+            SetWallpaper(Image);
+          finally
+            Image.Free();
+          end;
+        end;
+    end;
+  except
+    on E : Exception do
+      FMainForm.ShowBalloonMessage(E.Message, 'Failed to rerun last tusk');
+  end;
+end;
+
+(* Windows managment *)
 
 procedure TWpcApplicationManager.OpenScriptEditorForm();
 var
@@ -286,10 +357,7 @@ begin
   end;
 end;
 
-procedure TWpcApplicationManager.SetOnScriptStopCallback(Callback : TWpcScriptExecutorStopCallback);
-begin
-  FOnScriptStopCallback := Callback;
-end;
+(* Callbacks *)
 
 procedure TWpcApplicationManager.OnScriptStoppedCallback(ExitStatus : TWpcScriptExecutionExitStatus);
 begin
@@ -297,8 +365,7 @@ begin
   if (FScriptParser <> nil) then FreeAndNil(FScriptParser);
   if (FScriptContent <> nil) then FreeAndNil(FScriptContent);
 
-  if (Assigned(FOnScriptStopCallback)) then
-    FOnScriptStopCallback(ExitStatus);
+  FMainForm.OnScriptStoppedCallback(ExitStatus);
 end;
 
 procedure TWpcApplicationManager.OnScriptEditorWindowClosedCallback(ScriptEditorWindow : TScriptEditorForm);

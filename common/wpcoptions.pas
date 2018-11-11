@@ -34,7 +34,7 @@ type
     SIMPLE_CHANGER_SECTION = 'SimpleChanger';
 
     CUSTOM_SETTER_KEY = 'ExternalSetter';
-    RUN_LAST_SCRIPT_ON_START_KEY = 'RunOnStart';
+    RUN_LAST_TASK_ON_START_KEY = 'RunLastTaskOnStart';
 
     DESKTOP_ENVIRONMENT_KEY = 'DesktopEnvironment';
 
@@ -62,7 +62,7 @@ type
     DEFAULT_SEARCH_IN_SUBDIRECTORIES = false;
   private
     FCustomSetter : String;
-    FRunOnStart   : Boolean;
+    FRunLastTaskOnStart : Boolean;
 
     FDesktopEnvironment : TDesktopEnvironment;
 
@@ -84,7 +84,7 @@ type
     // External (provided by user) utility for setting wallpaper
     property CustomSetter : String read FCustomSetter write FCustomSetter;
     // Whether last script should be run on application start
-    property RunOnStart : Boolean read FRunOnStart write FRunOnStart;
+    property RunLastTaskOnStart : Boolean read FRunLastTaskOnStart write FRunLastTaskOnStart;
 
     // Graphical desktop environment, e.g. XFCE
     property DesktopEnvironment : TDesktopEnvironment read FDesktopEnvironment write FDesktopEnvironment;
@@ -123,11 +123,13 @@ type
     SIMPLE_CHANGER_SECTION = 'SimpleChanger';
     WALLPAPER_SECTION = 'Wallpaper';
 
+    TASK_WAS_RUNNING_ON_EXIT_KEY = 'TaskWasRunningOnApplicationExit';
     LAST_SET_TYPE_KEY = 'LastType';
     LAST_RUN_SCRIPT_KEY = 'LastScript';
     LAST_SET_DIR_KEY = 'LastDir';
     LAST_WALLPAPER_KEY = 'LastWallpaper';
   private
+    FTaskWasRunningOnExit : Boolean;
     FLastType : TWpcWallpaperChangerAlgorithm;
     FLastScript : String;
     FLastDirectory : String;
@@ -135,6 +137,8 @@ type
   public
     constructor Create(IniFile : String; IsFullPath : Boolean = false);
   public
+    // Shows whether a task was terminated on last application exit
+    property TaskWasRunningOnExit : Boolean read FTaskWasRunningOnExit write FTaskWasRunningOnExit;
     // Determines last action (script or directory was set)
     property LastType : TWpcWallpaperChangerAlgorithm read FLastType write FLastType;
     // Path to the last run script
@@ -170,7 +174,7 @@ begin
   SettingsFile := TIniFile.Create(PathToIniFile);
   try
     FCustomSetter := SettingsFile.ReadString(ENGINE_SECTION, CUSTOM_SETTER_KEY, DEFAULT_CUSTOM_SETTER);
-    FRunOnStart := SettingsFile.ReadBool(ENGINE_SECTION, RUN_LAST_SCRIPT_ON_START_KEY, DEFAULT_RUN_ON_START);
+    FRunLastTaskOnStart := SettingsFile.ReadBool(ENGINE_SECTION, RUN_LAST_TASK_ON_START_KEY, DEFAULT_RUN_ON_START);
 
     FDesktopEnvironment := StrToDesktopEnvironment(SettingsFile.ReadString(ENVIRONMENT_SECTION, DESKTOP_ENVIRONMENT_KEY, DE_AUTODETECT_ID));
 
@@ -197,7 +201,7 @@ begin
   SettingsFile.CacheUpdates := true;
   try
     SettingsFile.WriteString(ENGINE_SECTION, CUSTOM_SETTER_KEY, FCustomSetter);
-    SettingsFile.WriteBool(ENGINE_SECTION, RUN_LAST_SCRIPT_ON_START_KEY, FRunOnStart);
+    SettingsFile.WriteBool(ENGINE_SECTION, RUN_LAST_TASK_ON_START_KEY, FRunLastTaskOnStart);
 
     SettingsFile.WriteString(ENVIRONMENT_SECTION, DESKTOP_ENVIRONMENT_KEY, DesktopEnvironmentToStr(FDesktopEnvironment));
 
@@ -219,7 +223,7 @@ end;
 procedure TWpcPersistentSettings.ResetToDefault();
 begin
   FCustomSetter := DEFAULT_CUSTOM_SETTER;
-  FRunOnStart := DEFAULT_RUN_ON_START;
+  FRunLastTaskOnStart := DEFAULT_RUN_ON_START;
 
   FDesktopEnvironment := DEFAULT_DESKTOP_ENVIRONMENT;
 
@@ -276,6 +280,7 @@ constructor TWpcStateSettings.Create(IniFile: String; IsFullPath: Boolean);
 begin
   inherited Create(IniFile, IsFullPath);
 
+  FTaskWasRunningOnExit := False;
   FLastType := WPCA_SCRIPT;
   FLastDirectory := '';
   FLastScript := '';
@@ -288,6 +293,7 @@ var
 begin
   SettingsFile := TIniFile.Create(PathToIniFile);
   try
+    FTaskWasRunningOnExit := SettingsFile.ReadBool(ENGINE_SECTION, TASK_WAS_RUNNING_ON_EXIT_KEY, False);
     FLastType := StrToWallpaperChangerAlgorithm(SettingsFile.ReadString(ENGINE_SECTION, LAST_SET_TYPE_KEY, WPCA_SCRIPT_ID));
     FLastScript := SettingsFile.ReadString(SCRIPT_SECTION, LAST_RUN_SCRIPT_KEY, '');
     FLastDirectory := SettingsFile.ReadString(SIMPLE_CHANGER_SECTION, LAST_SET_DIR_KEY, '');
@@ -304,6 +310,7 @@ begin
   SettingsFile := TIniFile.Create(PathToIniFile);
   SettingsFile.CacheUpdates := true;
   try
+    SettingsFile.WriteBool(ENGINE_SECTION, TASK_WAS_RUNNING_ON_EXIT_KEY, FTaskWasRunningOnExit);
     SettingsFile.WriteString(ENGINE_SECTION, LAST_SET_TYPE_KEY, WallpaperChangerAlgorithmToStr(FLastType));
     SettingsFile.WriteString(SCRIPT_SECTION, LAST_RUN_SCRIPT_KEY, FLastScript);
     SettingsFile.WriteString(SIMPLE_CHANGER_SECTION, LAST_SET_DIR_KEY, FLastDirectory);

@@ -15,7 +15,7 @@ begin
   // TODO check application uniqueness.
   RequireDerivedFormResource := True;
   Application.Initialize;
-  Application.CreateForm(TBannerForm, BannerForm);
+  Application.CreateForm(TBannerForm, WPCBannerForm);
   Application.Run;
 end.
 

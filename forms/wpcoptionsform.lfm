@@ -14,7 +14,7 @@ object OptionsForm: TOptionsForm
   Constraints.MinWidth = 500
   OnClose = FormClose
   Position = poDefaultPosOnly
-  LCLVersion = '1.6.4.0'
+  LCLVersion = '1.8.4.0'
   object OptionsPageControl: TPageControl
     Left = 0
     Height = 218
@@ -152,41 +152,53 @@ object OptionsForm: TOptionsForm
           object WallpaperSetterAutodetectRadioButton: TRadioButton
             Left = 6
             Height = 28
+            Hint = 'Try to automatically detect which wallpaper setter should be used'
             Top = 0
             Width = 148
             Caption = 'Autodetect'
             Checked = True
             OnChange = WallpaperSetterAutodetectRadioButtonChange
+            ParentShowHint = False
+            ShowHint = True
             TabOrder = 0
             TabStop = True
           end
           object WallpaperSetterManualRadioButton: TRadioButton
             Left = 6
             Height = 28
+            Hint = 'Set environment manually'
             Top = 28
             Width = 148
             Caption = 'Manual'
             OnChange = WallpaperSetterManualRadioButtonChange
+            ParentShowHint = False
+            ShowHint = True
             TabOrder = 1
           end
           object WallpaperSetterCustomRadioButton: TRadioButton
             Left = 6
             Height = 28
+            Hint = 'Use user provided wallpaper setter'
             Top = 56
             Width = 148
             Caption = 'Custom'
             OnChange = WallpaperSetterCustomRadioButtonChange
+            ParentShowHint = False
+            ShowHint = True
             TabOrder = 2
           end
         end
       end
-      object RunLastScriptCheckBox: TCheckBox
+      object RunLastTaskCheckBox: TCheckBox
         Left = 5
         Height = 19
+        Hint = 'Run task which was terminated due to application exit on next start'
         Top = 113
         Width = 482
         Align = alTop
-        Caption = 'Run last script on application start'
+        Caption = 'Run last task on application start'
+        ParentShowHint = False
+        ShowHint = True
         TabOrder = 1
       end
     end
@@ -210,12 +222,15 @@ object OptionsForm: TOptionsForm
         object WallpaperStyleLabel: TLabel
           Left = 0
           Height = 25
+          Hint = 'Wallpaper style for simple changer'
           Top = 0
           Width = 81
           Align = alLeft
           Caption = 'Wallpaper Style'
           Layout = tlCenter
           ParentColor = False
+          ParentShowHint = False
+          ShowHint = True
         end
         object WallpaperStyleComboBox: TComboBox
           Left = 190
@@ -368,21 +383,27 @@ object OptionsForm: TOptionsForm
           object ConstantDelayRadioButton: TRadioButton
             Left = 6
             Height = 27
+            Hint = 'Use static delay between wallpaper changing'
             Top = 0
             Width = 125
             Caption = 'Constant'
             Checked = True
             OnChange = ConstantDelayRadioButtonChange
+            ParentShowHint = False
+            ShowHint = True
             TabOrder = 0
             TabStop = True
           end
           object VariableDelayRadioButton: TRadioButton
             Left = 6
             Height = 27
+            Hint = 'Use variable delay between wallpaper changing'
             Top = 27
             Width = 125
             Caption = 'Variable'
             OnChange = VariableDelayRadioButtonChange
+            ParentShowHint = False
+            ShowHint = True
             TabOrder = 1
           end
         end
@@ -390,19 +411,25 @@ object OptionsForm: TOptionsForm
       object KeepOrderCheckBox: TCheckBox
         Left = 5
         Height = 19
+        Hint = 'Build a random list from found images and use them in cycle'
         Top = 108
         Width = 482
         Align = alTop
         Caption = 'Keep order'
+        ParentShowHint = False
+        ShowHint = True
         TabOrder = 2
       end
       object RecursiveSearchCheckBox: TCheckBox
         Left = 5
         Height = 19
+        Hint = 'Search for wallpapers recursively in derectory tree '
         Top = 127
         Width = 482
         Align = alTop
         Caption = 'Search in subdirectories'
+        ParentShowHint = False
+        ShowHint = True
         TabOrder = 3
       end
     end
@@ -421,46 +448,55 @@ object OptionsForm: TOptionsForm
     object DefaultsButton: TButton
       Left = 2
       Height = 30
+      Hint = 'Fill all fields with default values'
       Top = 1
       Width = 100
       Align = alLeft
       Caption = 'Default'
       OnClick = DefaultsButtonClick
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 0
     end
     object CancelButton: TButton
       Left = 297
       Height = 30
-      Hint = 'Close options window'
+      Hint = 'Close window without changes'
       Top = 1
       Width = 100
       Align = alRight
       Caption = 'Cancel'
       ModalResult = 2
       OnClick = CancelButtonClick
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 1
     end
     object OkButton: TButton
       Left = 398
       Height = 30
-      Hint = 'Apply options without changing config'
+      Hint = 'Apply options for current session'#13#10'Running task will be restarted if any'
       Top = 1
       Width = 100
       Align = alRight
       Caption = 'OK'
       ModalResult = 1
       OnClick = OkButtonClick
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 2
     end
     object SaveButton: TButton
       Left = 196
       Height = 30
-      Hint = 'Persist options into config file'
+      Hint = 'Make this options permanent'
       Top = 1
       Width = 100
       Align = alRight
       Caption = 'Save'
       OnClick = SaveButtonClick
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 3
     end
   end

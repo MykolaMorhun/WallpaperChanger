@@ -7,7 +7,6 @@ interface
 uses
   Classes, SysUtils, FileUtil,
   Forms, Controls, Graphics, Dialogs, ExtCtrls, Menus, ExtDlgs, LCLType,
-  WpcApplication, WpcApplicationManager,
   WpcImage, WpcDirectory,
   WpcScriptExecutor,
   WpcExceptions;
@@ -57,15 +56,24 @@ type
   private
     function GetTargetFile(Dialog : TFileDialog) : String;
     function WarnScriptIsRunning() : Boolean; inline;
+  public
+    procedure ShutdownApplication();
+    procedure ShowBalloonMessage(Message : String; Title : String = '');
+
     procedure OnScriptStoppedCallback(ExitStatus : TWpcScriptExecutionExitStatus);
-    procedure MenuOnScriptStop(); inline;
-    procedure MenuOnScriptStart(); inline;
+
+    procedure UpdateUIOnScriptStop(); inline;
+    procedure UpdateUIOnScriptStart(); inline;
   end;
 
 var
-  BannerForm : TBannerForm;
+  WPCBannerForm : TBannerForm;
+
 
 implementation
+
+uses
+  WpcApplication, WpcApplicationManager;
 
 {$R *.lfm}
 
@@ -75,23 +83,22 @@ implementation
 
 procedure TBannerForm.FormCreate(Sender : TObject);
 begin
-  BannerForm.ShowInTaskBar := stNever;
+  WPCBannerForm.ShowInTaskBar := stNever;
+  WPCTrayIcon.Hint := 'Wallpaper Changer';
   WPCTrayIcon.Show();
+  UpdateUIOnScriptStop();
 
-  ApplicationManager := TWpcApplicationManager.Create();
-  ApplicationManager.ApplySettings(); // init app with settings from config file
-  ApplicationManager.SetOnScriptStopCallback(@OnScriptStoppedCallback);
+  ApplicationManager := TWpcApplicationManager.Create(Self);
 
-  MenuOnScriptStop();
-  BannerForm.Hide();
+  WPCBannerForm.Hide();
 end;
 
-(* ApplicationManager menu handlers *)
+(* Main menu handlers *)
 
 procedure TBannerForm.StopMenuItemClick(Sender : TObject);
 begin
   ApplicationManager.StopScript();
-  MenuOnScriptStop();
+  UpdateUIOnScriptStop();
 end;
 
 procedure TBannerForm.RunScriptMenuItemClick(Sender : TObject);
@@ -102,7 +109,7 @@ begin
   if (ScriptPath <> '') then begin
     try
       ApplicationManager.RunScript(SelectScriptDialog.FileName);
-      MenuOnScriptStart();
+      UpdateUIOnScriptStart();
     except
       on ParseExcepton : TWpcScriptParseException do
         Application.MessageBox(PChar(ParseExcepton.PrettyMessage),
@@ -138,7 +145,7 @@ begin
       end;
     end;
 
-    MenuOnScriptStart();
+    UpdateUIOnScriptStart();
   end;
 end;
 
@@ -190,12 +197,7 @@ end;
 
 procedure TBannerForm.ExitMenuItemClick(Sender : TObject);
 begin
-  if (ApplicationManager.IsScriptRunning()) then begin
-    ApplicationManager.StopScript();
-  end;
-
-  ApplicationManager.Free();
-  BannerForm.Close();
+  ShutdownApplication();
 end;
 
 (* Helpers *)
@@ -223,7 +225,7 @@ begin
   if (Dialog.Execute()) then begin
     if (ShouldTerminateCurrentScript) then begin
       ApplicationManager.StopScript();
-      MenuOnScriptStop();
+      UpdateUIOnScriptStop();
     end;
     Result := Dialog.FileName;
   end
@@ -243,18 +245,33 @@ begin
                            MB_ICONQUESTION + MB_YESNO);
 end;
 
-procedure TBannerForm.OnScriptStoppedCallback(ExitStatus : TWpcScriptExecutionExitStatus);
+(* Callbacks and UI updaters *)
+
+procedure TBannerForm.ShutdownApplication();
 begin
-  MenuOnScriptStop();
+  ApplicationManager.Free();
+  WPCBannerForm.Close();
 end;
 
-procedure TBannerForm.MenuOnScriptStop();
+procedure TBannerForm.ShowBalloonMessage(Message : String; Title : String = '');
+begin
+  WPCTrayIcon.BalloonTitle := Title;
+  WPCTrayIcon.BalloonHint := Message;
+  WPCTrayIcon.ShowBalloonHint();
+end;
+
+procedure TBannerForm.OnScriptStoppedCallback(ExitStatus : TWpcScriptExecutionExitStatus);
+begin
+  UpdateUIOnScriptStop();
+end;
+
+procedure TBannerForm.UpdateUIOnScriptStop();
 begin
   StopMenuItem.Enabled := False;
   NextWallpaperMenuItem.Enabled := False;
 end;
 
-procedure TBannerForm.MenuOnScriptStart();
+procedure TBannerForm.UpdateUIOnScriptStart();
 begin
   StopMenuItem.Enabled := True;
   NextWallpaperMenuItem.Enabled := True;

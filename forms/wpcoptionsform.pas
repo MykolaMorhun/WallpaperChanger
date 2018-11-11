@@ -57,7 +57,7 @@ type
     DelaysGroupBox: TGroupBox;
     WallpaperStyleLabel: TLabel;
     WallpaperStylePanel: TPanel;
-    RunLastScriptCheckBox: TCheckBox;
+    RunLastTaskCheckBox: TCheckBox;
     WallpaperSetterManualValueComboBox: TComboBox;
     WallpaperSetterGroupBox: TGroupBox;
     OptionsPageControl: TPageControl;
@@ -215,7 +215,7 @@ begin
 
   WallpaperSetterCustomValueEdit.Text := Settings.CustomSetter;
 
-  RunLastScriptCheckBox.Checked := Settings.RunOnStart;
+  RunLastTaskCheckBox.Checked := Settings.RunLastTaskOnStart;
 
   // Simple Changer tab
   WallpaperStyleComboBox.Items.Clear();
@@ -277,7 +277,7 @@ begin
 
   Settings.CustomSetter := WallpaperSetterCustomValueEdit.Text;
 
-  Settings.RunOnStart := RunLastScriptCheckBox.Checked;
+  Settings.RunLastTaskOnStart := RunLastTaskCheckBox.Checked;
 
   // Simple Changer tab
   if (WallpaperStyleComboBox.ItemIndex <> -1) then
