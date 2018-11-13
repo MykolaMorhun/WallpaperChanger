@@ -97,8 +97,15 @@ end;
 
 procedure TBannerForm.StopMenuItemClick(Sender : TObject);
 begin
-  ApplicationManager.StopScript();
-  UpdateUIOnScriptStop();
+  if (ApplicationManager.IsScriptRunning()) then begin
+    // Stop task
+    ApplicationManager.StopScript();
+    UpdateUIOnScriptStop();
+  end
+  else begin
+    // Rerun last task if any
+    ApplicationManager.ReRunLastTask();
+  end;
 end;
 
 procedure TBannerForm.RunScriptMenuItemClick(Sender : TObject);
@@ -267,13 +274,13 @@ end;
 
 procedure TBannerForm.UpdateUIOnScriptStop();
 begin
-  StopMenuItem.Enabled := False;
+  StopMenuItem.Caption := 'Rerun';
   NextWallpaperMenuItem.Enabled := False;
 end;
 
 procedure TBannerForm.UpdateUIOnScriptStart();
 begin
-  StopMenuItem.Enabled := True;
+  StopMenuItem.Caption := 'Stop';
   NextWallpaperMenuItem.Enabled := True;
 end;
 
