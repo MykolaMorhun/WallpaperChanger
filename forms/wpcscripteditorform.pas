@@ -58,6 +58,7 @@ type
     ScriptOpenDialog: TOpenDialog;
     ScriptSaveDialog: TSaveDialog;
     ResourceSelectDirectoryDialog: TSelectDirectoryDialog;
+    SelectScriptEditorFontFontDialog: TFontDialog;
 
     StatementInsertPropertyInteractiveAction: TAction;
     StatementInsertInteractiveAction: TAction;
@@ -93,6 +94,7 @@ type
     ScriptSynCompletion: TSynCompletion;
     ViewFontSizeDecreaseAction: TAction;
     ViewFontSizeIncreaseAction: TAction;
+    ViewFontSelectAction: TAction;
     ViewToggleBottomPanelAction: TAction;
     CleanBottomPanelOutputAction: TAction;
     ScriptStopAction: TAction;
@@ -114,9 +116,11 @@ type
     FileSeparator2MenuItem: TMenuItem;
     ViewMenuItem: TMenuItem;
     ViewSeparator1MenuItem: TMenuItem;
+    ViewFontMenuItem: TMenuItem;
     ViewFontSizeDecreaseMenuItem: TMenuItem;
     ViewFontSizeIncreaseMenuItem: TMenuItem;
-    ViewFontSizeMenuItem: TMenuItem;
+    ViewFontSeparator1: TMenuItem;
+    ViewFontSelectScriptEditorFontMenuItem: TMenuItem;
     ViewToggleBottomPanelMenuItem: TMenuItem;
     ScriptMenuItem: TMenuItem;
     ScriptStopMenuItem: TMenuItem;
@@ -198,6 +202,7 @@ type
     procedure StatementToggleInsertInteractiveActionExecute(Sender: TObject);
     procedure ViewFontSizeDecreaseActionExecute(Sender: TObject);
     procedure ViewFontSizeIncreaseActionExecute(Sender: TObject);
+    procedure ViewFontSelectActionExecute(Sender: TObject);
     procedure ViewToggleBottomPanelActionExecute(Sender: TObject);
   const
     SYNEDIT_LINE_BREAK = #10#13;
@@ -235,6 +240,7 @@ type
   private
     procedure SetupTracer(); inline;
     procedure SetupUI(); inline;
+    procedure ApplyFont(); inline;
 
   private
     function AskSave(Sender : TObject = nil) : Boolean;
@@ -330,17 +336,33 @@ begin
   EditorBottomPanelSplitter.Visible := False;
   BottomPanel.Visible := False;
 
-  // Adapt window size to screen resolution
-  if ((Screen.Width >= 1024) and (Screen.Height >= 768)) then begin
-    Width := 850;
-    Height := 620;
-  end;
+  // Set editor font from settings
+  ApplyFont();
+
+  // Set window size and position
+  Self.Width := ApplicationManager.ScriptEditorState.WindowWidth;
+  Self.Height := ApplicationManager.ScriptEditorState.WindowHeight;
+  Self.Left := ApplicationManager.ScriptEditorState.WindowPositionLeft;
+  Self.Top := ApplicationManager.ScriptEditorState.WindowPositionTop;
 
   // Disable some actions
   ScriptStopAction.Enabled := False;
 
   // Fill editor with basic script template
   FileNewBaseScriptActionExecute(Self);
+end;
+
+procedure TScriptEditorForm.ApplyFont();
+begin
+  with ScriptSynEdit.Font do begin
+    Name := ApplicationManager.ScriptEditorState.FontName;
+    Size := ApplicationManager.ScriptEditorState.FontSize;
+  end;
+
+  with BottomPanelMemo.Font do begin
+    Name := ApplicationManager.ScriptEditorState.FontName;
+    Size := ApplicationManager.ScriptEditorState.FontSize;
+  end;
 end;
 
 (* Actions *)
@@ -479,14 +501,32 @@ end;
 
 procedure TScriptEditorForm.ViewFontSizeIncreaseActionExecute(Sender: TObject);
 begin
-  if (FCurrentScript.Font.Size < MAXIMAL_FONT_SIZE) then
-      FCurrentScript.Font.Size := FCurrentScript.Font.Size + 1;
+  if (FCurrentScript.Font.Size < MAXIMAL_FONT_SIZE) then begin
+    ApplicationManager.ScriptEditorState.FontSize := ApplicationManager.ScriptEditorState.FontSize + 1;
+
+    FCurrentScript.Font.Size := FCurrentScript.Font.Size + 1;
+    BottomPanelMemo.Font.Size := BottomPanelMemo.Font.Size + 1;
+  end;
 end;
 
 procedure TScriptEditorForm.ViewFontSizeDecreaseActionExecute(Sender: TObject);
 begin
-  if (FCurrentScript.Font.Size > MINIMAL_FONT_SIZE) then
+  if (FCurrentScript.Font.Size > MINIMAL_FONT_SIZE) then begin
+    ApplicationManager.ScriptEditorState.FontSize := ApplicationManager.ScriptEditorState.FontSize -1;
+
     FCurrentScript.Font.Size := FCurrentScript.Font.Size - 1;
+    BottomPanelMemo.Font.Size := BottomPanelMemo.Font.Size - 1;
+  end;
+end;
+
+procedure TScriptEditorForm.ViewFontSelectActionExecute(Sender : TObject);
+begin
+  if (SelectScriptEditorFontFontDialog.Execute()) then begin
+    ApplicationManager.ScriptEditorState.FontName := SelectScriptEditorFontFontDialog.Font.Name;
+    ApplicationManager.ScriptEditorState.FontSize := SelectScriptEditorFontFontDialog.Font.Size;
+
+    ApplyFont();
+  end;
 end;
 
 procedure TScriptEditorForm.CleanBottomPanelOutputActionExecute(Sender : TObject);
@@ -785,6 +825,11 @@ end;
 
 procedure TScriptEditorForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
+  ApplicationManager.ScriptEditorState.WindowWidth := Self.Width;
+  ApplicationManager.ScriptEditorState.WindowHeight := Self.Height;
+  ApplicationManager.ScriptEditorState.WindowPositionLeft := Self.Left;
+  ApplicationManager.ScriptEditorState.WindowPositionTop := Self.Top;
+
   if (Assigned(FOnCloseCallback)) then
     FOnCloseCallback(Self);
 

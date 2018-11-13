@@ -31,6 +31,7 @@ uses
 const
   SETTINGS_FILE = 'WPCSettings.ini';
   STATE_FILE = 'WPCState.ini';
+  SCRIPT_EDITOR_SETTINGS_FILE = 'WPCScriptEditorSettings.ini';
 
 type
 
@@ -43,6 +44,7 @@ type
   private
     FApplicationSettings      : TWpcPersistentSettings;
     FApplicationStateSettings : TWpcStateSettings;
+    FScriptEditorSettings     : TWpcScriptEditorSettings;
 
     FEnvironmentDetector    : IWpcEnvironmentDetector;
     FWallpaperSetter        : IWpcWallpaperSetter;
@@ -68,6 +70,7 @@ type
     // Supposed to be changed only from options window or ApplicationManager.
     property CurrentSettings : TWpcPersistentSettings read FApplicationSettings;
     property CurrentState : TWpcStateSettings read FApplicationStateSettings;
+    property ScriptEditorState : TWpcScriptEditorSettings read FScriptEditorSettings;
 
     property EnvironmentDetector : IWpcEnvironmentDetector read FEnvironmentDetector;
     property WallpaperSetter : IWpcWallpaperSetter read FWallpaperSetter;
@@ -137,9 +140,16 @@ begin
 
   try
     FApplicationStateSettings.SaveIntoFile();
-  finally
+  except
     // Do nothing if failed to save application state.
   end;
+
+  if (FScriptEditorSettings <> nil) then
+    try
+      FScriptEditorSettings.SaveIntoFile();
+    except
+      // Do nothing if failed to save script editor settings.
+    end;
 
   // Stop script execution if any
   if (FScriptExecutor.IsRunning()) then
@@ -148,6 +158,7 @@ begin
   // Clean up resources
   FApplicationSettings.Free();
   FApplicationStateSettings.Free();
+  if (FScriptEditorSettings <> nil) then FScriptEditorSettings.Free();
 
   FScriptsGenerator.Free();
 
@@ -166,6 +177,9 @@ begin
 
   FApplicationStateSettings := TWpcStateSettings.Create(STATE_FILE);
   FApplicationStateSettings.ReadFromFile();
+
+  // Read file if requested.
+  FScriptEditorSettings := nil;
 end;
 
 {
@@ -325,6 +339,11 @@ procedure TWpcApplicationManager.OpenScriptEditorForm();
 var
   ScriptEditorWindow : TScriptEditorForm;
 begin
+  if (FScriptEditorSettings = nil) then begin
+    FScriptEditorSettings := TWpcScriptEditorSettings.Create(SCRIPT_EDITOR_SETTINGS_FILE);
+    FScriptEditorSettings.ReadFromFile();
+  end;
+
   // Create new from each time.
   // It will destroy itself on close or Application Manager will destroy it on exit.
   ScriptEditorWindow := TScriptEditorForm.Create(nil);

@@ -152,8 +152,61 @@ type
     procedure SaveIntoFile(); override;
   end;
 
+  { TWpcScriptEditorSettings }
+
+  TWpcScriptEditorSettings = class(TWpcAbstractSettings)
+  private const
+    EDITOR_SECTION = 'Editor';
+    STATE_SECTION = 'State';
+
+    EDITOR_FONT_FAMILY_KEY = 'FontName';
+    EDITOR_FONT_SIZE_KEY = 'FontSize';
+
+    WINDOW_WIDTH_KEY = 'WindowWidth';
+    WINDOW_HEIGHT_KEY = 'WindowHeight';
+    WINDOW_POSITION_LEFT_KEY = 'WindowPositionLeft';
+    WINDOW_POSITION_TOP_KEY = 'WindowPositionTop';
+
+    DEFAULT_EDITOR_FONT_FAMILY = 'DejaVu Sans Mono';
+    DEFAULT_EDITOR_FONT_SIZE = 11;
+
+    DEFAULT_WINDOW_WIDTH = 600;
+    DEFAULT_WINDOW_HEIGHT = 400;
+    DEFAULT_WINDOW_POSITION_LEFT = 100;
+    DEFAULT_WINDOW_POSITION_TOP = 100;
+  private
+    FFontName  : String;
+    FFontSize  : Integer;
+    FFontStyle : Integer;
+
+    FWindowWidth  : Integer;
+    FWindowHeight : Integer;
+    FWindowPositionLeft : Integer;
+    FWindowPositionTop  : Integer;
+  public
+    // Script editor font family, e.g. Arial, Liberation Serif
+    property FontName : String read FFontName write FFontName;
+    // Size of font in script editor
+    property FontSize : Integer read FFontSize write FFontSize;
+    // Attributes of script editor font, e.g. bold, italic
+    property FontStyle : Integer read FFontStyle write FFontStyle;
+
+    // Last script editor window width (pixels)
+    property WindowWidth : Integer read FWindowWidth write FWindowWidth;
+    // Last script editor window height (pixels)
+    property WindowHeight : Integer read FWindowHeight write FWindowHeight;
+    // Last position of script editor window from the screen left (pixels)
+    property WindowPositionLeft : Integer read FWindowPositionLeft write FWindowPositionLeft;
+    // Last position of script editor window from the screen top (pixels)
+    property WindowPositionTop : Integer read FWindowPositionTop write FWindowPositionTop;
+  public
+    procedure ReadFromFile(); override;
+    procedure SaveIntoFile(); override;
+  end;
+
 
 implementation
+
 
 { TWpcAbstractSettings }
 
@@ -319,6 +372,45 @@ begin
     SettingsFile.UpdateFile();
   finally
     SettingsFile.Free();
+  end;
+end;
+
+{ TWpcScriptEditorSettings }
+
+procedure TWpcScriptEditorSettings.ReadFromFile();
+var
+  ScriptEditorSettingsFile : TIniFile;
+begin
+  ScriptEditorSettingsFile := TIniFile.Create(PathToIniFile);
+  try
+    FFontName := ScriptEditorSettingsFile.ReadString(EDITOR_SECTION, EDITOR_FONT_FAMILY_KEY, DEFAULT_EDITOR_FONT_FAMILY);
+    FFontSize := ScriptEditorSettingsFile.ReadInteger(EDITOR_SECTION, EDITOR_FONT_SIZE_KEY, DEFAULT_EDITOR_FONT_SIZE);
+
+    FWindowWidth := ScriptEditorSettingsFile.ReadInteger(STATE_SECTION, WINDOW_WIDTH_KEY, DEFAULT_WINDOW_WIDTH);
+    FWindowHeight := ScriptEditorSettingsFile.ReadInteger(STATE_SECTION, WINDOW_HEIGHT_KEY, DEFAULT_WINDOW_HEIGHT);
+    FWindowPositionLeft := ScriptEditorSettingsFile.ReadInteger(STATE_SECTION, WINDOW_POSITION_LEFT_KEY, DEFAULT_WINDOW_POSITION_LEFT);
+    FWindowPositionTop := ScriptEditorSettingsFile.ReadInteger(STATE_SECTION, WINDOW_POSITION_TOP_KEY, DEFAULT_WINDOW_POSITION_TOP);
+  finally
+    ScriptEditorSettingsFile.Free();
+  end;
+end;
+
+procedure TWpcScriptEditorSettings.SaveIntoFile();
+var
+  ScriptEditorSettingsFile : TIniFile;
+begin
+  ScriptEditorSettingsFile := TIniFile.Create(PathToIniFile);
+  ScriptEditorSettingsFile.CacheUpdates := True;
+  try
+    ScriptEditorSettingsFile.WriteString(EDITOR_SECTION, EDITOR_FONT_FAMILY_KEY, FFontName);
+    ScriptEditorSettingsFile.WriteInteger(EDITOR_SECTION, EDITOR_FONT_SIZE_KEY, FFontSize);
+
+    ScriptEditorSettingsFile.WriteInteger(STATE_SECTION, WINDOW_WIDTH_KEY, FWindowWidth);
+    ScriptEditorSettingsFile.WriteInteger(STATE_SECTION, WINDOW_HEIGHT_KEY, FWindowHeight);
+    ScriptEditorSettingsFile.WriteInteger(STATE_SECTION, WINDOW_POSITION_LEFT_KEY, FWindowPositionLeft);
+    ScriptEditorSettingsFile.WriteInteger(STATE_SECTION, WINDOW_POSITION_TOP_KEY, FWindowPositionTop);
+  finally
+    ScriptEditorSettingsFile.Free();
   end;
 end;
 

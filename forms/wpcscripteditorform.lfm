@@ -4,7 +4,7 @@ object ScriptEditorForm: TScriptEditorForm
   Top = 179
   Width = 600
   Caption = 'Wallpaper Changer Script Editor'
-  ClientHeight = 370
+  ClientHeight = 381
   ClientWidth = 600
   Constraints.MinHeight = 150
   Constraints.MinWidth = 200
@@ -15,24 +15,22 @@ object ScriptEditorForm: TScriptEditorForm
   LCLVersion = '1.6.4.0'
   object EditorPanel: TPanel
     Left = 0
-    Height = 265
+    Height = 276
     Top = 0
     Width = 600
     Align = alClient
-    ClientHeight = 265
+    ClientHeight = 276
     ClientWidth = 600
     TabOrder = 0
     inline ScriptSynEdit: TSynEdit
       Cursor = crDefault
       Left = 1
-      Height = 263
+      Height = 274
       Top = 1
       Width = 598
       Align = alClient
       Font.Height = -15
       Font.Name = 'DejaVu Sans Mono'
-      Font.Pitch = fpFixed
-      Font.Quality = fqNonAntialiased
       ParentColor = False
       ParentFont = False
       TabOrder = 0
@@ -530,7 +528,7 @@ object ScriptEditorForm: TScriptEditorForm
   object BottomPanel: TPanel
     Left = 0
     Height = 100
-    Top = 270
+    Top = 281
     Width = 600
     Align = alBottom
     ClientHeight = 100
@@ -577,7 +575,7 @@ object ScriptEditorForm: TScriptEditorForm
     Cursor = crVSplit
     Left = 0
     Height = 5
-    Top = 265
+    Top = 276
     Width = 600
     Align = alBottom
     ResizeAnchor = akBottom
@@ -638,15 +636,22 @@ object ScriptEditorForm: TScriptEditorForm
       object ViewSeparator1MenuItem: TMenuItem
         Caption = '-'
       end
-      object ViewFontSizeMenuItem: TMenuItem
-        Caption = 'Font size'
+      object ViewFontMenuItem: TMenuItem
+        Caption = 'Font'
         object ViewFontSizeIncreaseMenuItem: TMenuItem
           Action = ViewFontSizeIncreaseAction
-          Caption = 'Increase'
+          Caption = 'Increase size'
         end
         object ViewFontSizeDecreaseMenuItem: TMenuItem
           Action = ViewFontSizeDecreaseAction
-          Caption = 'Decrease'
+          Caption = 'Decrease size'
+        end
+        object ViewFontSeparator1: TMenuItem
+          Caption = '-'
+        end
+        object ViewFontSelectScriptEditorFontMenuItem: TMenuItem
+          Action = ViewFontSelectAction
+          Caption = 'Choose ...'
         end
       end
     end
@@ -979,11 +984,18 @@ object ScriptEditorForm: TScriptEditorForm
       Category = 'view'
       Caption = 'Increase font size'
       OnExecute = ViewFontSizeIncreaseActionExecute
+      ShortCut = 16491
     end
     object ViewFontSizeDecreaseAction: TAction
       Category = 'view'
       Caption = 'Decrease font size'
       OnExecute = ViewFontSizeDecreaseActionExecute
+      ShortCut = 16493
+    end
+    object ViewFontSelectAction: TAction
+      Category = 'view'
+      Caption = 'ViewFontSelectAction'
+      OnExecute = ViewFontSelectActionExecute
     end
     object CleanBottomPanelOutputAction: TAction
       Category = 'view'
@@ -1033,5 +1045,11 @@ object ScriptEditorForm: TScriptEditorForm
     Editor = ScriptSynEdit
     left = 288
     top = 32
+  end
+  object SelectScriptEditorFontFontDialog: TFontDialog
+    MinFontSize = 0
+    MaxFontSize = 0
+    left = 480
+    top = 160
   end
 end
