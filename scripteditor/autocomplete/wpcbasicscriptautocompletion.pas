@@ -7,7 +7,8 @@ interface
 uses
   Classes, SysUtils,
   WpcAbstractDynamicScriptAutocompletion,
-  WpcScriptParser;
+  WpcScriptParser,
+  WpcExceptions;
 
 type
 
@@ -20,6 +21,8 @@ type
   private
     function GetPreviousWord() : String;
     function WordInArray(Word : String; Words : Array of String) : Boolean;
+
+    procedure CacheVariablesFromSection(SectionKeyWord : String);
 
     procedure SearchForAndAddToCacheBranchNames(); inline;
     procedure AddLineFirstWords(); inline;
@@ -62,6 +65,8 @@ begin
       CacheOption(FROM_KEYWORD);  // set directory, wallpaper chooser
       CacheOption(BY_KEYWORD);    // wallpaper chooser header
       CacheOption(STYLE_KEYWORD); // defaults section
+      CacheVariablesFromSection(IMAGES_KEYWORD);
+      CacheVariablesFromSection(DIRECTORIES_KEYWORD);
     end;
     BRANCH_KEYWORD: begin
       if (SafeGet(FCurrentLineWords, 0) <> BRANCH_KEYWORD) then
@@ -69,6 +74,7 @@ begin
     end;
     WAIT_KEYWORD: begin
       CacheOption(FOR_KEYWORD);
+      CacheVariablesFromSection(DELAYS_KEYWORD);
     end;
     SET_KEYWORD: begin
       CacheOption(WALLPAPER_KEYWORD);
@@ -94,6 +100,9 @@ begin
     end;
     USE_KEYWORD: begin
       CacheOption(BRANCH_KEYWORD);
+    end;
+    FOR_KEYWORD: begin
+      CacheVariablesFromSection(DELAYS_KEYWORD);
     end;
     CHOOSE_KEYWORD: begin
       CacheOption(WALLPAPER_KEYWORD); // wallpaper chooser header
@@ -131,7 +140,6 @@ begin
     DIRECTORIES_KEYWORD,
     DELAYS_KEYWORD,
     DEFAULTS_KEYWORD,
-    FOR_KEYWORD,
     PROBABILITY_KEYWORD,
     TIMES_KEYWORD:
       // no completion.
@@ -157,7 +165,7 @@ begin
     Result := '';
 end;
 
-function TWpcBasicScriptAutocompletion.WordInArray(Word : String; Words : Array of String) : Boolean;
+function TWpcBasicScriptAutocompletion.WordInArray(Word : String; Words : Array of String): Boolean;
 var
   AWord : String;
 begin
@@ -169,6 +177,47 @@ begin
   end;
 
   Result := False;
+end;
+
+{
+  Adds variables from header section into autocompletion cache.
+  The possible sections are: directories, images and delays.
+}
+procedure TWpcBasicScriptAutocompletion.CacheVariablesFromSection(SectionKeyWord : String);
+var
+  i         : Integer;
+  LineWords : TStrings;
+begin
+  if (not WordInArray(SectionKeyWord, [DIRECTORIES_KEYWORD, IMAGES_KEYWORD, DELAYS_KEYWORD])) then
+    raise TWpcIllegalArgumentException.Create('Unknown header section: ' + SectionKeyWord);
+
+  i := 0;
+  while (i < FScriptLines.Count) do begin
+    if (GetLine(i).StartsWith(SectionKeyWord)) then begin
+      Inc(i);
+      while (i < FScriptLines.Count) do begin
+        LineWords := GetLineWords(GetLine(i));
+        try
+          if (LineWords.Count = 2) then begin
+            if ((LineWords[0] = END_KEYWORD) and (LineWords[1] = SectionKeyWord)) then
+              // end of the section
+              break;
+
+            CacheOption(VARIABLE_START_SYMBOL + LineWords[0]); // cache variable name
+          end
+          else
+            // syntax error, just skip rest
+            break;
+        finally
+          LineWords.Free();
+        end;
+        Inc(i);
+      end;
+      // processing of given section is done
+      exit;
+    end;
+    Inc(i);
+  end;
 end;
 
 procedure TWpcBasicScriptAutocompletion.SearchForAndAddToCacheBranchNames();

@@ -257,18 +257,33 @@ end;
 
 procedure TWpcAbstractDynamicScriptAutocompletion.FindCurrentWordIndex();
 var
-  i : Integer;
+  Line      : String;
+  i         : Integer;
+  Len       : Integer;
+  WordIndex : Integer;
 begin
+  // If cursor is between whitespaces then an empty word is present in the current line words list.
   if (FCurrentWord = '') then begin
-    FCurrentWordIndex := FCurrentLineWords.IndexOf(FCurrentWord);
+    FCurrentWordIndex := FCurrentLineWords.IndexOf('');
     exit;
   end;
 
-  for i:=0 to (FCurrentLineWords.Count - 1) do
-    if (FCurrentLineWords[i].StartsWith(FCurrentWord)) then begin
-      FCurrentWordIndex := i;
-      break;
-    end;
+  Line := FScriptLines[FCursorPosition.Row]; // leave whitespaces
+  Len := Length(Line);
+  WordIndex := 0;
+  i := 0;
+  repeat
+    while ((i < Len) and (Line[i+1] in WHITESPACE_SET)) do
+      Inc(i);
+    while ((i < FCursorPosition.Col) and (i < Len)) do
+      if (Line[i+1] in WHITESPACE_SET) then begin
+        Inc(WordIndex);
+        break;
+      end
+      else
+        Inc(i);
+  until not ((i < FCursorPosition.Col) and (i < Len));
+  FCurrentWordIndex := WordIndex;
 end;
 
 
