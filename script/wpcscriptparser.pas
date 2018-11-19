@@ -93,7 +93,6 @@ type
   private
     type
       TMapStringString = specialize TFPGMap<String, String>;
-      TMapStringLongWord = specialize TFPGMap<String, LongWord>;
       TStatementPropertiesSet = set of TWpcStatementPropertyId;
       TStatementProperties = record
         Times : LongWord;
@@ -112,7 +111,7 @@ type
 
     FDirsVariables   : TMapStringString;
     FImagesVariables : TMapStringString;
-    FDelaysVariables : TMapStringLongWord;
+    FDelaysVariables : TMapStringString;
 
     FDefaultDelay           : LongWord;
     FDefaultDelayUnits      : TWpcTimeMeasurementUnits;
@@ -133,7 +132,7 @@ type
 
     function GetDirPath(DirVariableName : String) : String;
     function GetImage(ImageVariableName : String) : String;
-    function GetDelay(DelayVariableName : String) : LongWord;
+    function GetDelay(DelayVariableName : String) : String;
 
     function GetDefaultDelay() : LongWord;
     function GetDefaultDelayUnits() : TWpcTimeMeasurementUnits;
@@ -147,7 +146,7 @@ type
     procedure ParseBranches();
     procedure Validate();
 
-    procedure ParseVariableDefinition(Line : String; var VariableName : String; var VariableValue : String);
+    procedure ParseVariableDefinition(Line : String; out VariableName : String; out VariableValue : String);
     function ApplyParsedDirectoriesVariables(VariableValue : String) : String;
     function ApplyParsedImagesVariables(Image : String) : String;
     function ApplyParsedDelayVariables(Delay : String) : String;
@@ -233,7 +232,7 @@ begin
 
   FDirsVariables := TMapStringString.Create();
   FImagesVariables := TMapStringString.Create();
-  FDelaysVariables := TMapStringLongWord.Create();
+  FDelaysVariables := TMapStringString.Create();
 
   FDefaultDelay := 5;
   FDefaultDelayUnits := MINUTES;
@@ -343,9 +342,9 @@ begin
 end;
 
 {
-  Returns delay variable value or 0 if variable with given name doesn't exist.
+  Returns delay variable value or empty line if variable with given name doesn't exist.
 }
-function TWpcScriptParser.GetDelay(DelayVariableName : String) : LongWord;
+function TWpcScriptParser.GetDelay(DelayVariableName : String) : String;
 var
   Index : Integer;
 begin
@@ -353,7 +352,7 @@ begin
   if (Index <> -1) then
     Result := FDelaysVariables.Data[Index]
   else
-    Result := 0;
+    Result := '';
 end;
 
 function TWpcScriptParser.GetDefaultDelay() : LongWord;
@@ -509,7 +508,7 @@ begin
       LineWords := SplitLine(Line);
       if (not CheckKeyWord(SafeGet(LineWords, 0), END_KEYWORD)) then begin
         ParseVariableDefinition(Line, Key, Value);
-        FDelaysVariables.Add(Key, ParseDelayValue(Value));
+        FDelaysVariables.Add(Key, Value);
       end
       else begin
         EnsureKeyWordsLine(LineWords, [END_KEYWORD, DELAYS_KEYWORD]);
@@ -661,7 +660,7 @@ end;
    - Variable value could contain spaces.
    - Variable name and Variable value could be separated with many whitespaces.
 }
-procedure TWpcScriptParser.ParseVariableDefinition(Line : String; var VariableName : String; var VariableValue : String);
+procedure TWpcScriptParser.ParseVariableDefinition(Line : String; out VariableName : String; out VariableValue : String);
 var
   ParsedVariableName : String;
   ParsedVarialeValue : String;
@@ -758,6 +757,8 @@ end;
   Returns delay variable value or given value if no variable found.
 }
 function TWpcScriptParser.ApplyParsedDelayVariables(Delay : String) : String;
+var
+  ResolvedDelay : String;
 begin
   if (Delay[1] <> VARIABLE_START_SYMBOL) then begin
     Result := Delay;
@@ -765,11 +766,11 @@ begin
   end;
 
   Delete(Delay, 1, Length(VARIABLE_START_SYMBOL));
-  Delay := GetDirPath(Delay);
-  if (Delay = '') then
+  ResolvedDelay := GetDelay(Delay);
+  if (ResolvedDelay = '') then
     raise TWpcScriptParseException.Create('Unknown delay variable "' + Delay + '".', FCurrentLine);
 
-  Result := Delay;
+  Result := ResolvedDelay;
 end;
 
 {
