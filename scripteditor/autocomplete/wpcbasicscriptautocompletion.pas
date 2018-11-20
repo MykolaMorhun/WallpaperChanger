@@ -20,6 +20,7 @@ type
     procedure DeterminePossibleOptions(); override;
   private
     function GetPreviousWord() : String;
+    function GetFirstWord() : String; inline;
     function WordInArray(Word : String; Words : Array of String) : Boolean;
 
     procedure CacheVariablesFromSection(SectionKeyWord : String);
@@ -37,13 +38,15 @@ implementation
 procedure TWpcBasicScriptAutocompletion.DeterminePossibleOptions();
 var
   PreviousWord : String;
+  FirstWord    : String;
 begin
   if ((FCurrentLine = '') or (FCurrentLineWords.Count = 1)) then begin
     AddLineFirstWords();
     exit;
   end;
 
-  PreviousWord := GetPreviousWord();
+  PreviousWord := UpperCase(GetPreviousWord());
+  FirstWord := UpperCase(GetFirstWord());
   case (PreviousWord) of
     END_KEYWORD: begin
       CacheOption(BRANCH_KEYWORD);
@@ -61,15 +64,23 @@ begin
       AddToCacheAllMeasurementUnits(); // default measurement unit
     end;
     WALLPAPER_KEYWORD: begin
-      CacheOption(TWpcAbstractDynamicScriptAutocompletion.FILE_PATH_INSERTION);
-      CacheOption(FROM_KEYWORD);  // set directory, wallpaper chooser
-      CacheOption(BY_KEYWORD);    // wallpaper chooser header
-      CacheOption(STYLE_KEYWORD); // defaults section
-      CacheVariablesFromSection(IMAGES_KEYWORD);
-      CacheVariablesFromSection(DIRECTORIES_KEYWORD);
+      case (FirstWord) of
+        SET_KEYWORD: begin
+          CacheOption(TWpcAbstractDynamicScriptAutocompletion.FILE_PATH_INSERTION);
+          CacheOption(FROM_KEYWORD); // set directory
+          CacheVariablesFromSection(IMAGES_KEYWORD);
+          CacheVariablesFromSection(DIRECTORIES_KEYWORD);
+        end;
+        CHOOSE_KEYWORD: begin
+          CacheOption(FROM_KEYWORD);  // wallpaper chooser
+          CacheOption(BY_KEYWORD);    // wallpaper chooser header
+        end;
+        WALLPAPER_KEYWORD:
+          CacheOption(STYLE_KEYWORD); // defaults section
+      end;
     end;
     BRANCH_KEYWORD: begin
-      if (SafeGet(FCurrentLineWords, 0) <> BRANCH_KEYWORD) then
+      if (FirstWord <> BRANCH_KEYWORD) then
         SearchForAndAddToCacheBranchNames();
     end;
     WAIT_KEYWORD: begin
@@ -80,33 +91,54 @@ begin
       CacheOption(WALLPAPER_KEYWORD);
     end;
     FROM_KEYWORD: begin
-      CacheOption(DIRECTORY_KEYWORD);
+      if (FirstWord = SET_KEYWORD) then
+        CacheOption(DIRECTORY_KEYWORD); // set directory
     end;
     DIRECTORY_KEYWORD: begin
       CacheOption(TWpcAbstractDynamicScriptAutocompletion.DIR_PATH_INSERTION);
+      CacheVariablesFromSection(DIRECTORIES_KEYWORD);
     end;
     STOP_KEYWORD: begin
       CacheOption(WITH_KEYWORD);
     end;
     SWITCH_KEYWORD: begin
-      CacheOption(TO_KEYWORD);   // switch to branch
-      CacheOption(BY_KEYWORD);   // branch to switch chooser header
-      CacheOption(FROM_KEYWORD); // branch to switch chooser header (default selector)
+      case (FirstWord) of
+        SWITCH_KEYWORD:
+          CacheOption(TO_KEYWORD);   // switch to branch
+        CHOOSE_KEYWORD: begin
+          CacheOption(BY_KEYWORD);   // branch to switch chooser header
+          CacheOption(FROM_KEYWORD); // branch to switch chooser header (default selector)
+        end;
+      end;
     end;
     TO_KEYWORD: begin
-      CacheOption(BRANCH_KEYWORD); // switch to branch
-      CacheOption(USE_KEYWORD);    // branch to use chooser header
-      CacheOption(SWITCH_KEYWORD); // branch to switch chooser header
+      case (FirstWord) of
+        SWITCH_KEYWORD:
+          CacheOption(BRANCH_KEYWORD); // switch to branch
+        CHOOSE_KEYWORD: begin
+          CacheOption(USE_KEYWORD);    // branch to use chooser header
+          CacheOption(SWITCH_KEYWORD); // branch to switch chooser header
+        end;
+      end;
     end;
     USE_KEYWORD: begin
-      CacheOption(BRANCH_KEYWORD);
+      case (FirstWord) of
+        USE_KEYWORD:
+          CacheOption(BRANCH_KEYWORD); // use branch
+        CHOOSE_KEYWORD: begin
+          CacheOption(BY_KEYWORD);     // branch to switch chooser header
+          CacheOption(FROM_KEYWORD);   // branch to use chooser header
+        end;
+      end;
     end;
     FOR_KEYWORD: begin
       CacheVariablesFromSection(DELAYS_KEYWORD);
     end;
     CHOOSE_KEYWORD: begin
-      CacheOption(WALLPAPER_KEYWORD); // wallpaper chooser header
-      CacheOption(BRANCH_KEYWORD);    // branch to use / brnch to switch chooser header
+      if (FirstWord = CHOOSE_KEYWORD) then begin
+        CacheOption(WALLPAPER_KEYWORD); // wallpaper chooser header
+        CacheOption(BRANCH_KEYWORD);    // branch to use / brnch to switch chooser header
+      end;
     end;
     BY_KEYWORD: begin
       AddToCacheAllSelectors();
@@ -121,19 +153,19 @@ begin
     DATE_KEYWORD,
     TIME_KEYWORD,
     DATETIME_KEYWORD: begin
-      if (SafeGet(FCurrentLineWords, 0) = CHOOSE_KEYWORD) then
+      if (FirstWord = CHOOSE_KEYWORD) then
         CacheOption(FROM_KEYWORD);
     end;
     SEASON_KEYWORD: begin
-      if (SafeGet(FCurrentLineWords, 0) <> CHOOSE_KEYWORD) then
+      if (FirstWord <> CHOOSE_KEYWORD) then
         AddToCacheSeasons();
     end;
     WEEKDAY_KEYWORD: begin
-      if (SafeGet(FCurrentLineWords, 0) <> CHOOSE_KEYWORD) then
+      if (FirstWord <> CHOOSE_KEYWORD) then
         AddToCacheWeekdays();
     end;
     MONTH_KEYWORD: begin
-      if (SafeGet(FCurrentLineWords, 0) <> CHOOSE_KEYWORD) then
+      if (FirstWord <> CHOOSE_KEYWORD) then
         AddToCacheMonths();
     end;
     IMAGES_KEYWORD,
@@ -165,7 +197,16 @@ begin
     Result := '';
 end;
 
-function TWpcBasicScriptAutocompletion.WordInArray(Word : String; Words : Array of String): Boolean;
+{
+  Returns the first word in the current line.
+}
+function TWpcBasicScriptAutocompletion.GetFirstWord() : String;
+begin
+  Result := SafeGet(FCurrentLineWords, 0);
+end;
+
+function TWpcBasicScriptAutocompletion.WordInArray(Word: String;
+  Words: array of String): Boolean;
 var
   AWord : String;
 begin

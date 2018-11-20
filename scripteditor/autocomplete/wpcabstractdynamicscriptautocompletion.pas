@@ -19,8 +19,8 @@ type
   TWpcAbstractDynamicScriptAutocompletion = class abstract(TWpcAbstractScriptAutocompletion)
   public
     const
-      FILE_PATH_INSERTION = '<file>';
-      DIR_PATH_INSERTION = '<dir>';
+      FILE_PATH_INSERTION = '<choose-file>';
+      DIR_PATH_INSERTION = '<choose-directory>';
   protected
     type
       // Zero based caret position
