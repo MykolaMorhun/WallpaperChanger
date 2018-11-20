@@ -73,7 +73,7 @@ var
   // Filter strings with already types beginning.
   procedure AddIfMatches(Option : String); inline;
   begin
-    if (Option.StartsWith(CurrentWord)) then
+    if (UpperCase(Option).StartsWith(CurrentWord)) then
       Options.Add(Option);
   end;
 
