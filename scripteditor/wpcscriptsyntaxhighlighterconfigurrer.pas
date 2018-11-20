@@ -7,28 +7,44 @@ interface
 uses
   Classes, SysUtils, Graphics,
   SynHighlighterAny,
+  SynEditTypes,
   WpcScriptEditorConstantsList,
   WpcScriptParser,
   WpcTimeMeasurementUnits,
   WpcWallpaperStyles;
 
+type
 
-function CreateWallpaperChangerScriptHighlighter(Owner : TComponent) : TSynAnySyn;
+  { TWpcScriptSynHighlight }
+
+  TWpcScriptSynHighlight = class(TSynAnySyn)
+    // This method is overriden to fix double $ after a variable insertion via autocompletion dropdown.
+    function GetIdentChars() : TSynIdentChars; override;
+  end;
+
+function CreateWallpaperChangerScriptHighlighter(Owner : TComponent) : TWpcScriptSynHighlight;
 
 
 implementation
 
+{ TWpcScriptSynHighlight }
+
+// Adds $ to ident chars
+function TWpcScriptSynHighlight.GetIdentChars() : TSynIdentChars;
+begin
+  Result := inherited GetIdentChars() + ['$'];
+end;
 
 procedure ConfigureKeyWords(Highlighter : TSynAnySyn); forward;
 procedure ConfigureConstants(Highlighter : TSynAnySyn); forward;
 procedure ConfigureObjects(Highlighter : TSynAnySyn); forward;
 procedure ConfigureMiscellaneous(Highlighter : TSynAnySyn); forward;
 
-function CreateWallpaperChangerScriptHighlighter(Owner: TComponent): TSynAnySyn;
+function CreateWallpaperChangerScriptHighlighter(Owner: TComponent): TWpcScriptSynHighlight;
 var
-  Highlighter : TSynAnySyn;
+  Highlighter : TWpcScriptSynHighlight;
 begin
-  Highlighter := TSynAnySyn.Create(Owner);
+  Highlighter := TWpcScriptSynHighlight.Create(Owner);
 
   ConfigureKeyWords(Highlighter);
   ConfigureConstants(Highlighter);
