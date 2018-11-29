@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils,
-  FpTimer,
+  CustomTimer,
   GStack,
   WpcScriptExecutor,
   WpcScriptCommons,
@@ -61,7 +61,7 @@ type
     FStackMaxDepth : Integer;
     FIsRunning : Boolean;
     // Used to invoke callbacks after waits
-    FTimer : TFPTimer;
+    FTimer : TCustomTimer;
 
     FOnStopCallback : TWpcScriptExecutorStopCallback;
   public
@@ -116,7 +116,8 @@ begin
   FWallpaperSetter := WallpaperSetter;
 
   FIsRunning := False;
-  FTimer := TFPTimer.Create(nil);
+  FTimer := TCustomTimer.Create(nil);
+  FTimer.Enabled := False;
   FTimer.OnTimer := @TimerCallback;
   FOnStopCallback := nil;
 
