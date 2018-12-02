@@ -23,10 +23,13 @@ type
 
   TOptionsForm = class(TForm)
     CancelButton: TButton;
+    OnApplicationStartComboBox: TComboBox;
     ConstantDelayRadioButton: TRadioButton;
     DefaultsButton: TButton;
     DelayRadioGroupPanel: TPanel;
+    OnApplicationStartLabel: TLabel;
     OkButton: TButton;
+    OnStartOptionsPanel: TPanel;
     SaveButton: TButton;
     VariableDelayRadioButton: TRadioButton;
     WallpaperSetterAutodetectRadioButton: TRadioButton;
@@ -57,7 +60,6 @@ type
     DelaysGroupBox: TGroupBox;
     WallpaperStyleLabel: TLabel;
     WallpaperStylePanel: TPanel;
-    RunLastTaskCheckBox: TCheckBox;
     WallpaperSetterManualValueComboBox: TComboBox;
     WallpaperSetterGroupBox: TGroupBox;
     OptionsPageControl: TPageControl;
@@ -79,6 +81,10 @@ type
     procedure WallpaperSetterCustomValueOpenDialogButtonClick(Sender: TObject);
     procedure WallpaperSetterManualRadioButtonChange(Sender: TObject);
     procedure WallpaperSetterManualValueComboBoxChange(Sender: TObject);
+  private const
+    APP_START_NONE = 'Do nothing';
+    APP_START_RUN_LAST_SCRIPT_IF_WAS_TERMINATED = 'Rerun terminated by shutdown script';
+    APP_START_ALWAYS_RUN_LAST_SCRIPT = 'Rerun last script';
   public
     constructor Create(TheOwner: TComponent); override;
     procedure ShowModalOptionsForm(ForceSetEnvironment : Boolean = false);
@@ -91,6 +97,8 @@ type
     procedure OneTimeChnageUI(); inline;
 
     procedure UpdateAllowedWallpaperStylesList(Styles : TWpcSetOfWallpaperStyles);
+  private
+    procedure SetComboBoxValue(ComboBox : TComboBox; Value : String); inline;
   end;
 
 
@@ -127,6 +135,10 @@ begin
   // Init list of avaliable desktop environments on the system.
   for Environment in ApplicationManager.EnvironmentDetector.GetSupportedEnvironments() do
     WallpaperSetterManualValueComboBox.Items.Add(DesktopEnvironmentToStr(Environment));
+
+  OnApplicationStartComboBox.Items.Add(APP_START_NONE);
+  OnApplicationStartComboBox.Items.Add(APP_START_RUN_LAST_SCRIPT_IF_WAS_TERMINATED);
+  OnApplicationStartComboBox.Items.Add(APP_START_ALWAYS_RUN_LAST_SCRIPT);
 end;
 
 {
@@ -215,7 +227,13 @@ begin
 
   WallpaperSetterCustomValueEdit.Text := Settings.CustomSetter;
 
-  RunLastTaskCheckBox.Checked := Settings.RunLastTaskOnStart;
+  // On application start drop down
+  if (Settings.RunLastTaskOnStart) then
+    SetComboBoxValue(OnApplicationStartComboBox, APP_START_ALWAYS_RUN_LAST_SCRIPT)
+  else if (Settings.RunTerminatedTaskOnStart) then
+    SetComboBoxValue(OnApplicationStartComboBox, APP_START_RUN_LAST_SCRIPT_IF_WAS_TERMINATED)
+  else
+    SetComboBoxValue(OnApplicationStartComboBox, APP_START_NONE);
 
   // Simple Changer tab
   WallpaperStyleComboBox.Items.Clear();
@@ -277,7 +295,21 @@ begin
 
   Settings.CustomSetter := WallpaperSetterCustomValueEdit.Text;
 
-  Settings.RunLastTaskOnStart := RunLastTaskCheckBox.Checked;
+  // On application start drop down
+  case (OnApplicationStartComboBox.Items[OnApplicationStartComboBox.ItemIndex]) of
+    APP_START_ALWAYS_RUN_LAST_SCRIPT: begin
+      Settings.RunTerminatedTaskOnStart:= False;
+      Settings.RunLastTaskOnStart := True;
+    end;
+    APP_START_RUN_LAST_SCRIPT_IF_WAS_TERMINATED: begin
+      Settings.RunTerminatedTaskOnStart:= True;
+      Settings.RunLastTaskOnStart := False;
+    end;
+    APP_START_NONE: begin
+      Settings.RunTerminatedTaskOnStart:= False;
+      Settings.RunLastTaskOnStart := False;
+    end;
+  end;
 
   // Simple Changer tab
   if (WallpaperStyleComboBox.ItemIndex <> -1) then
@@ -422,7 +454,6 @@ var
 begin
   WallpaperSetter := ApplicationManager.WallpaperSetterFactory.GetWallpaperSetter(
     StrToDesktopEnvironment(WallpaperSetterManualValueComboBox.Items[WallpaperSetterManualValueComboBox.ItemIndex]));
-  if (WallpaperSetter = nil) then exit; // TODO delete it, shouldn't happen
 
   UpdateAllowedWallpaperStylesList(WallpaperSetter.GetWallpaperStylesSupported());
 end;
@@ -443,6 +474,15 @@ begin
 
   if (WallpaperStyleComboBox.Items.IndexOf(PreviousStyleString) <> -1) then
     WallpaperStyleComboBox.ItemIndex := WallpaperStyleComboBox.Items.IndexOf(PreviousStyleString);
+end;
+
+procedure TOptionsForm.SetComboBoxValue(ComboBox : TComboBox; Value : String);
+var
+  Index : Integer;
+begin
+  Index := ComboBox.Items.IndexOf(Value);
+  if (Index <> -1) then
+    ComboBox.ItemIndex := Index;
 end;
 
 procedure TOptionsForm.VariableDelayValueFromSpinEditChange(Sender : TObject);

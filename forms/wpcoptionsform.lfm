@@ -3,8 +3,8 @@ object OptionsForm: TOptionsForm
   Height = 250
   Top = 146
   Width = 500
-  HorzScrollBar.Page = 476
-  VertScrollBar.Page = 211
+  HorzScrollBar.Page = 336
+  VertScrollBar.Page = 213
   ActiveControl = OptionsPageControl
   AutoScroll = True
   Caption = 'Wallpaper Changer Options'
@@ -14,61 +14,61 @@ object OptionsForm: TOptionsForm
   Constraints.MinWidth = 500
   OnClose = FormClose
   Position = poDefaultPosOnly
-  LCLVersion = '1.8.4.0'
+  LCLVersion = '1.6.4.0'
   object OptionsPageControl: TPageControl
     Left = 0
     Height = 218
     Top = 0
     Width = 500
-    ActivePage = SimpleChangerTabSheet
+    ActivePage = EngineTabSheet
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     object EngineTabSheet: TTabSheet
       Caption = 'Engine'
       ChildSizing.LeftRightSpacing = 5
       ChildSizing.TopBottomSpacing = 5
-      ClientHeight = 190
-      ClientWidth = 492
+      ClientHeight = 185
+      ClientWidth = 494
       object WallpaperSetterGroupBox: TGroupBox
         Left = 5
         Height = 108
         Top = 5
-        Width = 482
+        Width = 484
         Align = alTop
         Caption = 'Wallpaper Setter'
         ChildSizing.TopBottomSpacing = 2
-        ClientHeight = 88
-        ClientWidth = 478
+        ClientHeight = 91
+        ClientWidth = 480
         TabOrder = 0
         object WallpaperSetterValuesPanel: TPanel
           Left = 160
-          Height = 84
+          Height = 87
           Top = 2
-          Width = 318
+          Width = 320
           Align = alClient
           BevelOuter = bvNone
           ChildSizing.TopBottomSpacing = 1
           ChildSizing.VerticalSpacing = 2
-          ClientHeight = 84
-          ClientWidth = 318
+          ClientHeight = 87
+          ClientWidth = 320
           TabOrder = 0
           object WallpaperSetterAutodetectValuePanel: TPanel
             Left = 0
             Height = 25
             Top = 1
-            Width = 318
+            Width = 320
             Align = alTop
             BevelOuter = bvNone
             ChildSizing.LeftRightSpacing = 5
             ClientHeight = 25
-            ClientWidth = 318
+            ClientWidth = 320
             TabOrder = 0
             object WallpaperSetterAutodetectValueLabel: TLabel
               Left = 5
               Height = 25
               Top = 0
-              Width = 308
+              Width = 310
               Align = alClient
               Alignment = taRightJustify
               Caption = 'Detected Environment'
@@ -80,19 +80,19 @@ object OptionsForm: TOptionsForm
             Left = 0
             Height = 25
             Top = 28
-            Width = 318
+            Width = 320
             Align = alTop
             BevelOuter = bvNone
             ClientHeight = 25
-            ClientWidth = 318
+            ClientWidth = 320
             TabOrder = 1
             object WallpaperSetterManualValueComboBox: TComboBox
               Left = 0
-              Height = 23
+              Height = 25
               Top = 0
-              Width = 318
+              Width = 320
               Align = alClient
-              ItemHeight = 15
+              ItemHeight = 0
               OnChange = WallpaperSetterManualValueComboBoxChange
               Style = csDropDownList
               TabOrder = 0
@@ -102,17 +102,17 @@ object OptionsForm: TOptionsForm
             Left = 0
             Height = 25
             Top = 55
-            Width = 318
+            Width = 320
             Align = alTop
             BevelOuter = bvNone
             ClientHeight = 25
-            ClientWidth = 318
+            ClientWidth = 320
             TabOrder = 2
             object WallpaperSetterCustomValueEdit: TEdit
               Left = 0
               Height = 25
               Top = 0
-              Width = 293
+              Width = 295
               Align = alClient
               OnChange = WallpaperSetterCustomValueEditChange
               ParentShowHint = False
@@ -121,7 +121,7 @@ object OptionsForm: TOptionsForm
               Text = 'path-to-wallpaper-setter'
             end
             object WallpaperSetterCustomValueOpenDialogButton: TButton
-              Left = 293
+              Left = 295
               Height = 25
               Top = 0
               Width = 25
@@ -134,7 +134,7 @@ object OptionsForm: TOptionsForm
         end
         object WallpaperSetterModeRadioGroupPanel: TPanel
           Left = 0
-          Height = 84
+          Height = 87
           Top = 2
           Width = 160
           Align = alLeft
@@ -146,12 +146,12 @@ object OptionsForm: TOptionsForm
           ChildSizing.ShrinkVertical = crsScaleChilds
           ChildSizing.Layout = cclLeftToRightThenTopToBottom
           ChildSizing.ControlsPerLine = 1
-          ClientHeight = 84
+          ClientHeight = 87
           ClientWidth = 160
           TabOrder = 1
           object WallpaperSetterAutodetectRadioButton: TRadioButton
             Left = 6
-            Height = 28
+            Height = 29
             Hint = 'Try to automatically detect which wallpaper setter should be used'
             Top = 0
             Width = 148
@@ -165,9 +165,9 @@ object OptionsForm: TOptionsForm
           end
           object WallpaperSetterManualRadioButton: TRadioButton
             Left = 6
-            Height = 28
+            Height = 29
             Hint = 'Set environment manually'
-            Top = 28
+            Top = 29
             Width = 148
             Caption = 'Manual'
             OnChange = WallpaperSetterManualRadioButtonChange
@@ -177,9 +177,9 @@ object OptionsForm: TOptionsForm
           end
           object WallpaperSetterCustomRadioButton: TRadioButton
             Left = 6
-            Height = 28
+            Height = 29
             Hint = 'Use user provided wallpaper setter'
-            Top = 56
+            Top = 58
             Width = 148
             Caption = 'Custom'
             OnChange = WallpaperSetterCustomRadioButtonChange
@@ -189,42 +189,72 @@ object OptionsForm: TOptionsForm
           end
         end
       end
-      object RunLastTaskCheckBox: TCheckBox
+      object OnStartOptionsPanel: TPanel
         Left = 5
-        Height = 19
-        Hint = 'Run task which was terminated due to application exit on next start'
+        Height = 30
         Top = 113
-        Width = 482
+        Width = 484
         Align = alTop
-        Caption = 'Run last task on application start'
-        ParentShowHint = False
-        ShowHint = True
+        ClientHeight = 30
+        ClientWidth = 484
         TabOrder = 1
+        object OnApplicationStartLabel: TLabel
+          AnchorSideLeft.Control = OnStartOptionsPanel
+          AnchorSideTop.Control = OnStartOptionsPanel
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Control = OnApplicationStartComboBox
+          AnchorSideBottom.Side = asrBottom
+          Left = 5
+          Height = 15
+          Top = 8
+          Width = 128
+          BorderSpacing.Left = 4
+          BorderSpacing.Right = 4
+          Caption = 'On application start'
+          Layout = tlCenter
+          ParentColor = False
+        end
+        object OnApplicationStartComboBox: TComboBox
+          AnchorSideLeft.Control = OnApplicationStartLabel
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = OnStartOptionsPanel
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Control = OnStartOptionsPanel
+          AnchorSideRight.Side = asrBottom
+          Left = 137
+          Height = 27
+          Top = 2
+          Width = 346
+          Anchors = [akTop, akLeft, akRight]
+          ItemHeight = 0
+          Style = csDropDownList
+          TabOrder = 0
+        end
       end
     end
     object SimpleChangerTabSheet: TTabSheet
       Caption = 'Simple Wallpaper Changer'
       ChildSizing.LeftRightSpacing = 5
       ChildSizing.TopBottomSpacing = 5
-      ClientHeight = 190
-      ClientWidth = 492
+      ClientHeight = 185
+      ClientWidth = 494
       object WallpaperStylePanel: TPanel
         Left = 5
         Height = 25
         Top = 5
-        Width = 482
+        Width = 484
         Align = alTop
         BevelOuter = bvNone
         ChildSizing.HorizontalSpacing = 5
         ClientHeight = 25
-        ClientWidth = 482
+        ClientWidth = 484
         TabOrder = 0
         object WallpaperStyleLabel: TLabel
           Left = 0
           Height = 25
           Hint = 'Wallpaper style for simple changer'
           Top = 0
-          Width = 81
+          Width = 102
           Align = alLeft
           Caption = 'Wallpaper Style'
           Layout = tlCenter
@@ -233,12 +263,12 @@ object OptionsForm: TOptionsForm
           ShowHint = True
         end
         object WallpaperStyleComboBox: TComboBox
-          Left = 190
-          Height = 23
+          Left = 192
+          Height = 25
           Top = 0
           Width = 292
           Align = alRight
-          ItemHeight = 15
+          ItemHeight = 0
           Style = csDropDownList
           TabOrder = 0
         end
@@ -247,48 +277,48 @@ object OptionsForm: TOptionsForm
         Left = 5
         Height = 78
         Top = 30
-        Width = 482
+        Width = 484
         Align = alTop
         Caption = 'Delays'
         ChildSizing.TopBottomSpacing = 2
-        ClientHeight = 58
-        ClientWidth = 478
+        ClientHeight = 61
+        ClientWidth = 480
         TabOrder = 1
         object DelaysValuesPanel: TPanel
           Left = 137
-          Height = 54
+          Height = 57
           Top = 2
-          Width = 341
+          Width = 343
           Align = alClient
           BevelOuter = bvNone
           ChildSizing.TopBottomSpacing = 1
           ChildSizing.VerticalSpacing = 2
-          ClientHeight = 54
-          ClientWidth = 341
+          ClientHeight = 57
+          ClientWidth = 343
           TabOrder = 0
           object ConstantDelayValuePanel: TPanel
             Left = 0
             Height = 25
             Top = 1
-            Width = 341
+            Width = 343
             Align = alTop
             BevelOuter = bvNone
             ChildSizing.HorizontalSpacing = 5
             ClientHeight = 25
-            ClientWidth = 341
+            ClientWidth = 343
             TabOrder = 0
             object ConstantDelayValueUnitsComboBox: TComboBox
-              Left = 266
-              Height = 23
+              Left = 268
+              Height = 25
               Top = 0
               Width = 75
               Align = alRight
-              ItemHeight = 15
+              ItemHeight = 0
               Style = csDropDownList
               TabOrder = 0
             end
             object ConstantDelayValueSpinEdit: TSpinEdit
-              Left = 161
+              Left = 163
               Height = 25
               Top = 0
               Width = 100
@@ -302,25 +332,25 @@ object OptionsForm: TOptionsForm
             Left = 0
             Height = 25
             Top = 28
-            Width = 341
+            Width = 343
             Align = alTop
             BevelOuter = bvNone
             ChildSizing.HorizontalSpacing = 5
             ClientHeight = 25
-            ClientWidth = 341
+            ClientWidth = 343
             TabOrder = 1
             object VariableDelayValueUnitsComboBox: TComboBox
-              Left = 266
-              Height = 23
+              Left = 268
+              Height = 25
               Top = 0
               Width = 75
               Align = alRight
-              ItemHeight = 15
+              ItemHeight = 0
               Style = csDropDownList
               TabOrder = 0
             end
             object VariableDelayValueToSpinEdit: TSpinEdit
-              Left = 161
+              Left = 163
               Height = 25
               Top = 0
               Width = 100
@@ -331,7 +361,7 @@ object OptionsForm: TOptionsForm
               TabOrder = 1
             end
             object VariableDelayValueToLabel: TLabel
-              Left = 142
+              Left = 144
               Height = 25
               Top = 0
               Width = 14
@@ -341,7 +371,7 @@ object OptionsForm: TOptionsForm
               ParentColor = False
             end
             object VariableDelayValueFromSpinEdit: TSpinEdit
-              Left = 37
+              Left = 39
               Height = 25
               Top = 0
               Width = 100
@@ -352,10 +382,10 @@ object OptionsForm: TOptionsForm
               TabOrder = 2
             end
             object VariableDelayValueFromLabel: TLabel
-              Left = 4
+              Left = 2
               Height = 25
               Top = 0
-              Width = 28
+              Width = 32
               Align = alRight
               Caption = 'From'
               Layout = tlCenter
@@ -365,7 +395,7 @@ object OptionsForm: TOptionsForm
         end
         object DelayRadioGroupPanel: TPanel
           Left = 0
-          Height = 54
+          Height = 57
           Top = 2
           Width = 137
           Align = alLeft
@@ -377,12 +407,12 @@ object OptionsForm: TOptionsForm
           ChildSizing.ShrinkVertical = crsScaleChilds
           ChildSizing.Layout = cclLeftToRightThenTopToBottom
           ChildSizing.ControlsPerLine = 1
-          ClientHeight = 54
+          ClientHeight = 57
           ClientWidth = 137
           TabOrder = 1
           object ConstantDelayRadioButton: TRadioButton
             Left = 6
-            Height = 27
+            Height = 29
             Hint = 'Use static delay between wallpaper changing'
             Top = 0
             Width = 125
@@ -396,9 +426,9 @@ object OptionsForm: TOptionsForm
           end
           object VariableDelayRadioButton: TRadioButton
             Left = 6
-            Height = 27
+            Height = 28
             Hint = 'Use variable delay between wallpaper changing'
-            Top = 27
+            Top = 29
             Width = 125
             Caption = 'Variable'
             OnChange = VariableDelayRadioButtonChange
@@ -410,10 +440,10 @@ object OptionsForm: TOptionsForm
       end
       object KeepOrderCheckBox: TCheckBox
         Left = 5
-        Height = 19
+        Height = 21
         Hint = 'Build a random list from found images and use them in cycle'
         Top = 108
-        Width = 482
+        Width = 484
         Align = alTop
         Caption = 'Keep order'
         ParentShowHint = False
@@ -422,10 +452,10 @@ object OptionsForm: TOptionsForm
       end
       object RecursiveSearchCheckBox: TCheckBox
         Left = 5
-        Height = 19
+        Height = 21
         Hint = 'Search for wallpapers recursively in derectory tree '
-        Top = 127
-        Width = 482
+        Top = 129
+        Width = 484
         Align = alTop
         Caption = 'Search in subdirectories'
         ParentShowHint = False

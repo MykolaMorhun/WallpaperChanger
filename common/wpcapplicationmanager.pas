@@ -122,7 +122,9 @@ begin
 
   ApplySettings(); // complete initialization
 
-  if (FApplicationSettings.RunLastTaskOnStart and FApplicationStateSettings.TaskWasRunningOnExit) then
+  if (FApplicationSettings.RunLastTaskOnStart) then
+    ReRunLastTask()
+  else if (FApplicationSettings.RunTerminatedTaskOnStart and FApplicationStateSettings.TaskWasRunningOnExit) then
     ReRunLastTask();
 end;
 

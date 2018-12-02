@@ -34,6 +34,7 @@ type
     SIMPLE_CHANGER_SECTION = 'SimpleChanger';
 
     CUSTOM_SETTER_KEY = 'ExternalSetter';
+    RUN_TERMINATED_TASK_ON_START_KEY = 'RunTerminatedTaskOnStart';
     RUN_LAST_TASK_ON_START_KEY = 'RunLastTaskOnStart';
 
     DESKTOP_ENVIRONMENT_KEY = 'DesktopEnvironment';
@@ -48,7 +49,8 @@ type
     SIMPLE_CHANGER_SEARCH_IN_SUBDIRECTORIES_KEY = 'Subdirectories';
   private const
     DEFAULT_CUSTOM_SETTER = '';
-    DEFAULT_RUN_ON_START = true;
+    DEFAULT_RUN_TERMINATED_ON_START = true;
+    DEFAULT_RUN_ON_START = false;
 
     DEFAULT_DESKTOP_ENVIRONMENT = DE_AUTODETECT;
 
@@ -62,6 +64,7 @@ type
     DEFAULT_SEARCH_IN_SUBDIRECTORIES = false;
   private
     FCustomSetter : String;
+    FRunTerminatedTaskOnStart : Boolean;
     FRunLastTaskOnStart : Boolean;
 
     FDesktopEnvironment : TDesktopEnvironment;
@@ -83,7 +86,9 @@ type
   public
     // External (provided by user) utility for setting wallpaper
     property CustomSetter : String read FCustomSetter write FCustomSetter;
-    // Whether last script should be run on application start
+    // Whether terminated by appliction exit script should be run on application start
+    property RunTerminatedTaskOnStart : Boolean read FRunTerminatedTaskOnStart write FRunTerminatedTaskOnStart;
+    // Whether last used script should be run on application start
     property RunLastTaskOnStart : Boolean read FRunLastTaskOnStart write FRunLastTaskOnStart;
 
     // Graphical desktop environment, e.g. XFCE
@@ -227,6 +232,7 @@ begin
   SettingsFile := TIniFile.Create(PathToIniFile);
   try
     FCustomSetter := SettingsFile.ReadString(ENGINE_SECTION, CUSTOM_SETTER_KEY, DEFAULT_CUSTOM_SETTER);
+    FRunTerminatedTaskOnStart := SettingsFile.ReadBool(ENGINE_SECTION, RUN_TERMINATED_TASK_ON_START_KEY, DEFAULT_RUN_TERMINATED_ON_START);
     FRunLastTaskOnStart := SettingsFile.ReadBool(ENGINE_SECTION, RUN_LAST_TASK_ON_START_KEY, DEFAULT_RUN_ON_START);
 
     FDesktopEnvironment := StrToDesktopEnvironment(SettingsFile.ReadString(ENVIRONMENT_SECTION, DESKTOP_ENVIRONMENT_KEY, DE_AUTODETECT_ID));
@@ -254,6 +260,7 @@ begin
   SettingsFile.CacheUpdates := true;
   try
     SettingsFile.WriteString(ENGINE_SECTION, CUSTOM_SETTER_KEY, FCustomSetter);
+    SettingsFile.WriteBool(ENGINE_SECTION, RUN_TERMINATED_TASK_ON_START_KEY, FRunTerminatedTaskOnStart);
     SettingsFile.WriteBool(ENGINE_SECTION, RUN_LAST_TASK_ON_START_KEY, FRunLastTaskOnStart);
 
     SettingsFile.WriteString(ENVIRONMENT_SECTION, DESKTOP_ENVIRONMENT_KEY, DesktopEnvironmentToStr(FDesktopEnvironment));
@@ -276,6 +283,7 @@ end;
 procedure TWpcPersistentSettings.ResetToDefault();
 begin
   FCustomSetter := DEFAULT_CUSTOM_SETTER;
+  FRunTerminatedTaskOnStart := DEFAULT_RUN_TERMINATED_ON_START;
   FRunLastTaskOnStart := DEFAULT_RUN_ON_START;
 
   FDesktopEnvironment := DEFAULT_DESKTOP_ENVIRONMENT;
