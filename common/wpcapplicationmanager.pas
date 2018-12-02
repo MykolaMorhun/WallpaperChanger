@@ -110,6 +110,8 @@ begin
 
   ReadSettings();
 
+  Randomize();
+
   FEnvironmentDetector := GetEnvironmentDetector();
   FWallpaperSetterFactory := GetWallpaperSetterFactory();
 
