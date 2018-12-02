@@ -93,6 +93,7 @@ type
     procedure OpenOptionsForm(ForceSetEnvironment : Boolean = False);
     procedure OpenAboutForm();
   private
+    procedure OnScriptStartedCallback();
     procedure OnScriptStoppedCallback(ExitStatus : TWpcScriptExecutionExitStatus);
     procedure OnScriptEditorWindowClosedCallback(ScriptEditorWindow : TScriptEditorForm);
   private
@@ -218,6 +219,7 @@ begin
   if (FScriptExecutor <> nil) then FScriptExecutor.Free();
 
   FScriptExecutor := TWpcInThreadScriptExecutor.Create(FWallpaperSetter);
+  FScriptExecutor.SetOnStartCallback(@OnScriptStartedCallback);
   FScriptExecutor.SetOnStopCallback(@OnScriptStoppedCallback);
 
   if (ReRunTusk) then
@@ -228,6 +230,9 @@ end;
 
 procedure TWpcApplicationManager.RunScript(PathToScript : String);
 begin
+  FApplicationStateSettings.LastType := WPCA_SCRIPT;
+  FApplicationStateSettings.LastScript := PathToScript;
+
   try
     FScriptContent := TStringList.Create();
     // TODO check file type
@@ -236,9 +241,6 @@ begin
     FScriptParser.BasePath := ExtractFilePath(PathToScript);
     FScript := FScriptParser.Parse();
     FScriptExecutor.RunScript(FScript);
-
-    FApplicationStateSettings.LastType := WPCA_SCRIPT;
-    FApplicationStateSettings.LastScript := PathToScript;
   except
     on E: Exception do begin
       if (FScript <> nil) then FreeAndNil(FScript);
@@ -380,13 +382,18 @@ end;
 
 (* Callbacks *)
 
+procedure TWpcApplicationManager.OnScriptStartedCallback();
+begin
+  FMainForm.UpdateUIOnScriptStart();
+end;
+
 procedure TWpcApplicationManager.OnScriptStoppedCallback(ExitStatus : TWpcScriptExecutionExitStatus);
 begin
   if (FScript <> nil) then FreeAndNil(FScript);
   if (FScriptParser <> nil) then FreeAndNil(FScriptParser);
   if (FScriptContent <> nil) then FreeAndNil(FScriptContent);
 
-  FMainForm.OnScriptStoppedCallback(ExitStatus);
+  FMainForm.UpdateUIOnScriptStop();
 end;
 
 procedure TWpcApplicationManager.OnScriptEditorWindowClosedCallback(ScriptEditorWindow : TScriptEditorForm);

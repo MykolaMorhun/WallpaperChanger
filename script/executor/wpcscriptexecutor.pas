@@ -16,6 +16,7 @@ type
     SES_ERROR_STACK_OVERFLOW
   );
 
+  TWpcScriptExecutorStartCallback = procedure() of Object;
   TWpcScriptExecutorStopCallback = procedure(ExitStatus : TWpcScriptExecutionExitStatus) of Object;
 
   {
@@ -36,6 +37,7 @@ type
     function IsRunning() : Boolean; virtual; abstract;
 
     // Callback to invoke after script execution finished or terminated.
+    procedure SetOnStartCallback(Callback : TWpcScriptExecutorStartCallback); virtual; abstract;
     procedure SetOnStopCallback(Callback : TWpcScriptExecutorStopCallback); virtual; abstract;
   end;
 

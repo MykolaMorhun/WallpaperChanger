@@ -8,7 +8,6 @@ uses
   Classes, SysUtils, FileUtil,
   Forms, Controls, Graphics, Dialogs, ExtCtrls, Menus, ExtDlgs, LCLType,
   WpcImage, WpcDirectory,
-  WpcScriptExecutor,
   WpcExceptions;
 
 type
@@ -60,8 +59,6 @@ type
     procedure ShutdownApplication();
     procedure ShowBalloonMessage(Message : String; Title : String = '');
 
-    procedure OnScriptStoppedCallback(ExitStatus : TWpcScriptExecutionExitStatus);
-
     procedure UpdateUIOnScriptStop(); inline;
     procedure UpdateUIOnScriptStart(); inline;
   end;
@@ -100,7 +97,6 @@ begin
   if (ApplicationManager.IsScriptRunning()) then begin
     // Stop task
     ApplicationManager.StopScript();
-    UpdateUIOnScriptStop();
   end
   else begin
     // Rerun last task if any
@@ -116,7 +112,6 @@ begin
   if (ScriptPath <> '') then begin
     try
       ApplicationManager.RunScript(SelectScriptDialog.FileName);
-      UpdateUIOnScriptStart();
     except
       on ParseExcepton : TWpcScriptParseException do
         Application.MessageBox(PChar(ParseExcepton.PrettyMessage),
@@ -151,8 +146,6 @@ begin
         exit;
       end;
     end;
-
-    UpdateUIOnScriptStart();
   end;
 end;
 
@@ -232,10 +225,8 @@ begin
   if (DefaultPath <> '') then
     Dialog.FileName := DefaultPath;
   if (Dialog.Execute()) then begin
-    if (ShouldTerminateCurrentScript) then begin
+    if (ShouldTerminateCurrentScript) then
       ApplicationManager.StopScript();
-      UpdateUIOnScriptStop();
-    end;
     Result := Dialog.FileName;
   end
   else
@@ -267,11 +258,6 @@ begin
   WPCTrayIcon.BalloonTitle := Title;
   WPCTrayIcon.BalloonHint := Message;
   WPCTrayIcon.ShowBalloonHint();
-end;
-
-procedure TBannerForm.OnScriptStoppedCallback(ExitStatus : TWpcScriptExecutionExitStatus);
-begin
-  UpdateUIOnScriptStop();
 end;
 
 procedure TBannerForm.UpdateUIOnScriptStop();

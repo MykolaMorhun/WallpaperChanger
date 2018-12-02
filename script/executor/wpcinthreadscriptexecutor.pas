@@ -63,6 +63,7 @@ type
     // Used to invoke callbacks after waits
     FTimer : TCustomTimer;
 
+    FOnStartCallback : TWpcScriptExecutorStartCallback;
     FOnStopCallback : TWpcScriptExecutorStopCallback;
   public
     constructor Create(WallpaperSetter : IWpcWallpaperSetter);
@@ -73,6 +74,7 @@ type
     procedure SkipCurrentDelay(); override;
     function IsRunning() : Boolean; override;
 
+    procedure SetOnStartCallback(Callback : TWpcScriptExecutorStartCallback); override;
     procedure SetOnStopCallback(Callback : TWpcScriptExecutorStopCallback); override;
   protected
     procedure Terminate(ExitStatus : TWpcScriptExecutionExitStatus); virtual;
@@ -119,6 +121,7 @@ begin
   FTimer := TCustomTimer.Create(nil);
   FTimer.Enabled := False;
   FTimer.OnTimer := @TimerCallback;
+  FOnStartCallback:= nil;
   FOnStopCallback := nil;
 
   FStackMaxDepth := 255;
@@ -139,6 +142,9 @@ procedure TWpcInThreadScriptExecutor.RunScript(Script : TWpcScript);
 begin
   if (FIsRunning) then
     raise TWpcUseErrorException.Create('Another script is already running');
+
+  if (FOnStartCallback <> nil) then
+    FOnStartCallback();
 
   FIsRunning := True;
   FScript := Script;
@@ -173,6 +179,11 @@ end;
 function TWpcInThreadScriptExecutor.IsRunning() : Boolean;
 begin
   Result := FIsRunning;
+end;
+
+procedure TWpcInThreadScriptExecutor.SetOnStartCallback(Callback : TWpcScriptExecutorStartCallback);
+begin
+  FOnStartCallback := Callback;
 end;
 
 procedure TWpcInThreadScriptExecutor.SetOnStopCallback(Callback : TWpcScriptExecutorStopCallback);
