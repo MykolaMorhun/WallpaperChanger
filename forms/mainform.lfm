@@ -25,9 +25,9 @@ object BannerForm: TBannerForm
   object WPCMainPopupMenu: TPopupMenu
     left = 88
     top = 8
-    object StopMenuItem: TMenuItem
+    object StopOrRerunMenuItem: TMenuItem
       Caption = 'Stop'
-      OnClick = StopMenuItemClick
+      OnClick = StopOrRerunMenuItemClick
     end
     object NextWallpaperMenuItem: TMenuItem
       Caption = 'Next'

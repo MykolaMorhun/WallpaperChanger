@@ -24,7 +24,7 @@ type
     MainContextMenuImageList: TImageList;
 
     WPCMainPopupMenu: TPopupMenu;
-    StopMenuItem: TMenuItem;
+    StopOrRerunMenuItem: TMenuItem;
     ScriptMenuItem: TMenuItem;
     RunScriptMenuItem: TMenuItem;
     ScriptEditorMenuItem: TMenuItem;
@@ -42,7 +42,7 @@ type
 
     procedure FormCreate(Sender: TObject);
 
-    procedure StopMenuItemClick(Sender: TObject);
+    procedure StopOrRerunMenuItemClick(Sender: TObject);
     procedure RunScriptMenuItemClick(Sender: TObject);
     procedure ScriptEditorMenuItemClick(Sender: TObject);
     procedure SetWallpaperDirectoryMenuItemClick(Sender: TObject);
@@ -54,7 +54,7 @@ type
     procedure AboutMenuItemClick(Sender: TObject);
     procedure ExitMenuItemClick(Sender: TObject);
   private
-    function GetTargetFile(Dialog : TFileDialog) : String;
+    function GetTargetFile(Dialog : TFileDialog; DefaultPath : String = '') : String;
     function WarnScriptIsRunning() : Boolean; inline;
   public
     procedure ShutdownApplication();
@@ -95,7 +95,7 @@ end;
 
 (* Main menu handlers *)
 
-procedure TBannerForm.StopMenuItemClick(Sender : TObject);
+procedure TBannerForm.StopOrRerunMenuItemClick(Sender : TObject);
 begin
   if (ApplicationManager.IsScriptRunning()) then begin
     // Stop task
@@ -112,7 +112,7 @@ procedure TBannerForm.RunScriptMenuItemClick(Sender : TObject);
 var
   ScriptPath : String;
 begin
-  ScriptPath := GetTargetFile(SelectScriptDialog);
+  ScriptPath := GetTargetFile(SelectScriptDialog, ApplicationManager.CurrentState.LastScript);
   if (ScriptPath <> '') then begin
     try
       ApplicationManager.RunScript(SelectScriptDialog.FileName);
@@ -140,7 +140,7 @@ var
   DirectoryPath : String;
   Directory : TWpcDirectory;
 begin
-  DirectoryPath := GetTargetFile(SelectWallpaperDirectoryDialog);
+  DirectoryPath := GetTargetFile(SelectWallpaperDirectoryDialog, ApplicationManager.CurrentState.LastDirectory);
   if (DirectoryPath <> '') then begin
     Directory := TWpcDirectory.Create(SelectWallpaperDirectoryDialog.FileName);
     try
@@ -216,7 +216,7 @@ end;
     path to item (Dialog.FileName) - if new action should be started (and terminates current script if needed)
     empty string - if user canceled termination of current script or canceled choose dialog
 }
-function TBannerForm.GetTargetFile(Dialog: TFileDialog): String;
+function TBannerForm.GetTargetFile(Dialog: TFileDialog; DefaultPath : String = '') : String;
 var
   ShouldTerminateCurrentScript : Boolean;
 begin
@@ -229,6 +229,8 @@ begin
       exit;
     end;
 
+  if (DefaultPath <> '') then
+    Dialog.FileName := DefaultPath;
   if (Dialog.Execute()) then begin
     if (ShouldTerminateCurrentScript) then begin
       ApplicationManager.StopScript();
@@ -274,13 +276,13 @@ end;
 
 procedure TBannerForm.UpdateUIOnScriptStop();
 begin
-  StopMenuItem.Caption := 'Rerun';
+  StopOrRerunMenuItem.Caption := 'Rerun';
   NextWallpaperMenuItem.Enabled := False;
 end;
 
 procedure TBannerForm.UpdateUIOnScriptStart();
 begin
-  StopMenuItem.Caption := 'Stop';
+  StopOrRerunMenuItem.Caption := 'Stop';
   NextWallpaperMenuItem.Enabled := True;
 end;
 
