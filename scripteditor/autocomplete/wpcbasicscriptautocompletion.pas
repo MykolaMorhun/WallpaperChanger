@@ -42,8 +42,12 @@ var
 begin
   if ((FCurrentLine = '') or (FCurrentLineWords.Count = 1)) then begin
     AddLineFirstWords();
+    SearchForAndAddToCacheBranchNames();            // branch choosers item
+    CacheVariablesFromSection(IMAGES_KEYWORD);      // wallpaper chooser item
+    CacheVariablesFromSection(DIRECTORIES_KEYWORD); // wallpaper chooser item
     exit;
   end;
+
 
   PreviousWord := UpperCase(GetPreviousWord());
   FirstWord := UpperCase(GetFirstWord());
@@ -80,8 +84,10 @@ begin
       end;
     end;
     BRANCH_KEYWORD: begin
-      if (FirstWord <> BRANCH_KEYWORD) then
-        SearchForAndAddToCacheBranchNames();
+      if (FirstWord = CHOOSE_KEYWORD) then
+        CacheOption(TO_KEYWORD)              // branch choosers header
+      else if (FirstWord <> BRANCH_KEYWORD) then
+        SearchForAndAddToCacheBranchNames(); // use or swith to a branch
     end;
     WAIT_KEYWORD: begin
       CacheOption(FOR_KEYWORD);
@@ -158,22 +164,27 @@ begin
     end;
     SEASON_KEYWORD: begin
       if (FirstWord <> CHOOSE_KEYWORD) then
-        AddToCacheSeasons();
+        AddToCacheSeasons()
+      else
+        CacheOption(FROM_KEYWORD); // chooser header
     end;
     WEEKDAY_KEYWORD: begin
       if (FirstWord <> CHOOSE_KEYWORD) then
-        AddToCacheWeekdays();
+        AddToCacheWeekdays()
+      else
+        CacheOption(FROM_KEYWORD); // chooser header
     end;
     MONTH_KEYWORD: begin
       if (FirstWord <> CHOOSE_KEYWORD) then
-        AddToCacheMonths();
+        AddToCacheMonths()
+      else
+        CacheOption(FROM_KEYWORD); // chooser header
     end;
     IMAGES_KEYWORD,
     DIRECTORIES_KEYWORD,
     DELAYS_KEYWORD,
     DEFAULTS_KEYWORD,
-    PROBABILITY_KEYWORD,
-    TIMES_KEYWORD:
+    PROBABILITY_KEYWORD:
       // no completion.
     else begin
       if (WordInArray(PreviousWord, SEASONS) or WordInArray(PreviousWord, MONTHS) or WordInArray(PreviousWord, DAYS_OF_WEEK)) then
