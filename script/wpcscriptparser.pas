@@ -1818,8 +1818,7 @@ end;
   will return 2
   Note, non-empty upper-case array is mandatory.
 }
-function TWpcScriptParser.ParseSequentialNumberWithAlias(Value: String;
-  Aliases: array of String): Integer;
+function TWpcScriptParser.ParseSequentialNumberWithAlias(Value : String; Aliases : Array of String) : Integer;
 var
   AliasesNumber         : Integer;
   ParsedSequentialValue : Integer;

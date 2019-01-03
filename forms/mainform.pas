@@ -33,7 +33,7 @@ type
     NextWallpaperMenuItem: TMenuItem;
     SetWallpaperImageMenuItem: TMenuItem;
     Separator1MenuItem: TMenuItem;
-    OptionsMenuItem: TMenuItem;
+    SettingsMenuItem: TMenuItem;
     InfoMenuItem: TMenuItem;
     DocsMenuItem: TMenuItem;
     AboutMenuItem: TMenuItem;
@@ -48,7 +48,7 @@ type
     procedure NextWallpaperMenuItemClick(Sender: TObject);
     procedure PreviousWallpaperMenuItemClick(Sender: TObject);
     procedure SetWallpaperImageMenuItemClick(Sender: TObject);
-    procedure OptionsMenuItemClick(Sender: TObject);
+    procedure SettingsMenuItemClick(Sender: TObject);
     procedure DocsMenuItemClick(Sender: TObject);
     procedure AboutMenuItemClick(Sender: TObject);
     procedure ExitMenuItemClick(Sender: TObject);
@@ -180,7 +180,7 @@ begin
   end;
 end;
 
-procedure TBannerForm.OptionsMenuItemClick(Sender : TObject);
+procedure TBannerForm.SettingsMenuItemClick(Sender : TObject);
 begin
   ApplicationManager.OpenOptionsForm();
 end;
@@ -263,12 +263,14 @@ end;
 procedure TBannerForm.UpdateUIOnScriptStop();
 begin
   StopOrRerunMenuItem.Caption := 'Rerun';
+  StopOrRerunMenuItem.ImageIndex := 0;
   NextWallpaperMenuItem.Enabled := False;
 end;
 
 procedure TBannerForm.UpdateUIOnScriptStart();
 begin
   StopOrRerunMenuItem.Caption := 'Stop';
+  StopOrRerunMenuItem.ImageIndex := 1;
   NextWallpaperMenuItem.Enabled := True;
 end;
 

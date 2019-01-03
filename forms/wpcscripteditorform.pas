@@ -172,6 +172,7 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure HelpAboutActionExecute(Sender: TObject);
     procedure HelpDocumentationActionExecute(Sender: TObject);
+    procedure HideBottomPanelToolButtonClick(Sender: TObject);
     procedure ResourceInsertDirectoryActionExecute(Sender: TObject);
     procedure ResourceInsertImageActionExecute(Sender: TObject);
     procedure ScriptCheckResourcesActionExecute(Sender: TObject);
@@ -902,6 +903,12 @@ begin
     FCurrentScript.InsertTextAtCaret(' ');
     FCurrentScript.CaretX := FCurrentScript.CaretX + 1;
   end;
+end;
+
+// To avoid checked state in toolbar handler is not taken from action list directly.
+procedure TScriptEditorForm.HideBottomPanelToolButtonClick(Sender : TObject);
+begin
+  ViewToggleBottomPanelAction.Execute();
 end;
 
 (* Helpers *)

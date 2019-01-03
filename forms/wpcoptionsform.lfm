@@ -7,7 +7,7 @@ object OptionsForm: TOptionsForm
   VertScrollBar.Page = 213
   ActiveControl = OptionsPageControl
   AutoScroll = True
-  Caption = 'Wallpaper Changer Options'
+  Caption = 'Wallpaper Changer Settings'
   ClientHeight = 250
   ClientWidth = 500
   Constraints.MinHeight = 100
