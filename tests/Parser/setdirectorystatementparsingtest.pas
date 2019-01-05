@@ -30,6 +30,7 @@ type
     procedure ShouldParseDirectoryStatementWithAllFlags();
     procedure ShouldParseDirectoryStatementWithStyleProperty();
     procedure ShouldParseDirectoryStatementWithDelayProperty();
+    procedure ShouldParseDirectoryStatementWithDelayPropertyUsingDelayVariable();
     procedure ShouldParseDirectoryStatementWithProbabilityProperty();
     procedure ShouldParseDirectoryStatementWithTimesProperty();
     procedure ShouldParseDirectoryStatementWithAllProperties();
@@ -151,6 +152,30 @@ procedure TSetDirectoryStatementParsingTest.ShouldParseDirectoryStatementWithDel
 begin
   ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + DELAY_FOR_PROPERTY);
   WrapInMainBranch(ScriptLines);
+
+  ParseScriptLines();
+  ReadMainBranchStatementsList();
+
+  AssertEquals(WRONG_NUMBER_OF_SATEMENTS, 1, MainBranchStatements.Count);
+
+  AssertTrue(WRONG_STATEMENT, WPC_DIRECTORY_STATEMENT_ID = MainBranchStatements[0].GetId());
+  DirectoryStatement := TWpcDirectoryStatement(MainBranchStatements[0]);
+  AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, DirectoryStatement.GetDirectory().GetPath().EndsWith(DIRECTORY_WITH_WALLPAPERS));
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_DELAY_VALUE, DirectoryStatement.GetDelay());
+end;
+
+// SET WALLPAPER FROM DIRECTORY path/wallpaper FOR $fiveMinutes
+procedure TSetDirectoryStatementParsingTest.ShouldParseDirectoryStatementWithDelayPropertyUsingDelayVariable();
+const
+  DelayVariableName = 'fiveMinutes';
+
+  Delays : Array[1..1] of VariableDefinition = (
+    (DelayVariableName, TEST_DEFAULT_DELAY_STRING)
+  );
+begin
+  ScriptLines.Add(SET_DIRECTORY + DIRECTORY_WITH_WALLPAPERS + ' ' + FOR_KEYWORD + ' ' + VARIABLE_START_SYMBOL + DelayVariableName);
+  WrapInMainBranch(ScriptLines);
+  AddVariables(ScriptLines, DELAYS_KEYWORD, Delays);
 
   ParseScriptLines();
   ReadMainBranchStatementsList();

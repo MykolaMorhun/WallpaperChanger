@@ -42,6 +42,8 @@ const
   WRONG_SELECTOR_VALUE = 'Wrong selector value';
 
 type
+  // variable name , variable value
+  VariableDefinition = Array[1..2] of String;
 
   { TParserBaseTestCase }
 
@@ -57,6 +59,7 @@ type
   protected
     procedure WrapInMainBranch(Statements : TStringList);
     procedure AddEmptyBranch(Statements : TStringList; BranchName : String);
+    procedure AddVariables(Statements : TStringList; HeaderSectionKeyWord: String; Variables : Array of VariableDefinition);
     procedure ParseScriptLines();
     function GetBranchStatemntsList(BranchName : String) : TListOfBranchStatements;
     procedure ReadMainBranchStatementsList();
@@ -97,6 +100,24 @@ procedure TParserBaseTestCase.AddEmptyBranch(Statements: TStringList; BranchName
 begin
   Statements.Add(BRANCH_KEYWORD + ' ' + BranchName);
   Statements.Add(END_KEYWORD + ' ' + BRANCH_KEYWORD);
+end;
+
+{
+  Adds header section at the beginning of the given script.
+  Parameters:
+   - Statements: the script into which section should be added
+   - HeaderSectionKeyWord: defines which section should be added
+   - Variables: pairs of variable name and variable value
+}
+procedure TParserBaseTestCase.AddVariables(Statements : TStringList; HeaderSectionKeyWord : String; Variables : Array of VariableDefinition);
+var
+  i : Integer;
+begin
+  Statements.Insert(0, END_KEYWORD + ' ' + HeaderSectionKeyWord);
+  for i := (Length(Variables) - 1) downto 0 do begin
+    Statements.Insert(0, Variables[i, 1] + ' ' + Variables[i, 2]);
+  end;
+  Statements.Insert(0, HeaderSectionKeyWord);
 end;
 
 procedure TParserBaseTestCase.ParseScriptLines();

@@ -509,6 +509,8 @@ begin
       LineWords := SplitLine(Line);
       if (not CheckKeyWord(SafeGet(LineWords, 0), END_KEYWORD)) then begin
         ParseVariableDefinition(Line, Key, Value);
+        // Parse just to validate value
+        ParseDelayValue(Value);
         FDelaysVariables.Add(Key, Value);
       end
       else begin
@@ -877,7 +879,10 @@ function TWpcScriptParser.ParseWaitStatement(LineWords : TStringList) : IWpcBase
     if (AWord = '') then
       raise TWpcScriptParseException.Create('Delay value is expected.', FCurrentLine, Index);
 
-    Result := ParseDelayValue(ApplyParsedDelayVariables(AWord));
+    if (AWord.StartsWith(VARIABLE_START_SYMBOL)) then
+      AWord := ApplyParsedDelayVariables(AWord);
+
+    Result := ParseDelayValue(AWord);
   end;
 
 var
@@ -1661,6 +1666,7 @@ end;
 {
   Syntax:
   FOR <Time>
+  Note, Time could be a delay variable.
 }
 function TWpcScriptParser.ParseDelayProperty(LineWords : TStringList; WordIndex : Integer) : Integer;
 var
@@ -1672,6 +1678,9 @@ begin
   DelayString := SafeGet(LineWords, WordIndex);
   if (DelayString = '') then
     raise TWpcScriptParseException.Create('Valid delay expected, but nothing found.', FCurrentLine, WordIndex);
+
+  if (DelayString.StartsWith(VARIABLE_START_SYMBOL)) then
+    DelayString := ApplyParsedDelayVariables(DelayString);
 
   Result := ParseDelayValue(DelayString);
 end;

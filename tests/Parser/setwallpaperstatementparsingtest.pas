@@ -28,6 +28,7 @@ type
     procedure ShouldParseWallpaperStatementWithStyleProperty();
     procedure ShouldParseWallpaperStatementWithProbabilityProperty();
     procedure ShouldParseWallpaperStatementWithDelayProperty();
+    procedure ShouldParseWallpaperStatementWithDelayPropertyUsingDelayVariable();
     procedure ShouldParseWallpaperStatementWithAllProperties();
 
     procedure SholudRaiseScriptParseExceptionWhenNoWallpaperImageSpecified();
@@ -96,8 +97,32 @@ end;
 // SET WALLPAER File.ext FOR 5m
 procedure TSetWallpaperStatementParsingTest.ShouldParseWallpaperStatementWithDelayProperty();
 begin
-    ScriptLines.Add(SET_WALLPAPER + WALLPAPER_IMAGE_FILE + DELAY_FOR_PROPERTY);
+  ScriptLines.Add(SET_WALLPAPER + WALLPAPER_IMAGE_FILE + DELAY_FOR_PROPERTY);
   WrapInMainBranch(ScriptLines);
+
+  ParseScriptLines();
+  ReadMainBranchStatementsList();
+
+  AssertEquals(WRONG_NUMBER_OF_SATEMENTS, 1, MainBranchStatements.Count);
+
+  AssertTrue(WRONG_STATEMENT, WPC_WALLPAPER_STATEMENT_ID = MainBranchStatements[0].GetId());
+  WallpaperStatement := TWpcWallpaperStatement(MainBranchStatements[0]);
+  AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, WallpaperStatement.GetImage().GetPath().EndsWith(WALLPAPER_IMAGE_FILE));
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_DELAY_VALUE, WallpaperStatement.GetDelay());
+end;
+
+// SET WALLPAER File.ext FOR $fiveMinutes
+procedure TSetWallpaperStatementParsingTest.ShouldParseWallpaperStatementWithDelayPropertyUsingDelayVariable();
+const
+  DelayVariableName = 'fiveMinutes';
+
+  Delays : Array[1..1] of VariableDefinition = (
+    (DelayVariableName, TEST_DEFAULT_DELAY_STRING)
+  );
+begin
+  ScriptLines.Add(SET_WALLPAPER + WALLPAPER_IMAGE_FILE + ' ' + FOR_KEYWORD + ' ' + VARIABLE_START_SYMBOL + DelayVariableName);
+  WrapInMainBranch(ScriptLines);
+  AddVariables(ScriptLines, DELAYS_KEYWORD, Delays);
 
   ParseScriptLines();
   ReadMainBranchStatementsList();
