@@ -17,6 +17,8 @@ const
     {$IFDEF LINUX} F_LINUX; {$ENDIF}
     {$IFDEF WINDOWS} F_WINDOWS; {$ENDIF}
 
+  // All known path separators from all supported OS-es
+  ALL_PATH_SEPARATORS = [ '/', '\' ];
 
 function IsAbsolutePath(Path : String) : Boolean;
 function GetAbsolutePath(Path : String) : String;

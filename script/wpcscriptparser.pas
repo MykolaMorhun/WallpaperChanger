@@ -218,6 +218,7 @@ type
 
     procedure SearchWordInScript(TheWord : String; CaseSensitive : Boolean; var Line : Integer; var Index : Integer);
 
+    function IsEndsWithPathSeparator(Path : String) : Boolean;
     function ToAbsolutePath(Path : String) : String;
   end;
 
@@ -718,7 +719,7 @@ begin
     raise TWpcScriptParseException.Create('Variable name is expected.', FCurrentLine);
 
   VariableNameStartPos := i;
-  while ((i <= Len) and (VariableValue[i] <> PATH_SEPARATOR)) do begin
+  while ((i <= Len) and (not (VariableValue[i] in ALL_PATH_SEPARATORS))) do begin
     Inc(i);
   end;
   DirectoryVariableName := copy(VariableValue, VariableNameStartPos, i - VariableNameStartPos);
@@ -1497,7 +1498,7 @@ begin
   if (PathReference = '') then
     raise TWpcScriptParseException.Create('Path to a directory is expected.', FCurrentLine, Index);
 
-  // Split keeps quoted words as single one, but with its quotes.
+  // Split function keeps quoted words as single one, but with its quotes.
   if (PathReference[1] = QUOTE_SYMBOL) then begin
     if (PathReference[Length(PathReference)] <> QUOTE_SYMBOL) then
       raise TWpcScriptParseException.Create('End of quote is expexted, but end of line found.', FCurrentLine, Index);
@@ -1510,7 +1511,8 @@ begin
   if (FCheckScriptResources and (not DirectoryExists(PathReference))) then
     raise TWpcScriptParseException.Create('Directory "' + PathReference + '" does not exist.', FCurrentLine);
 
-  if (PathReference.EndsWith(PATH_SEPARATOR)) then
+  // Remove trailing path separator if any.
+  if (IsEndsWithPathSeparator(PathReference)) then
     Delete(PathReference, Length(PathReference), 1);
 
   Result := PathReference;
@@ -1531,6 +1533,22 @@ end;
    - After function execution Index is set to the next word after path (might be out of range).
 }
 function TWpcScriptParser.ParseImage(LineWords : TStringList; var Index : Integer) : TWpcImage;
+  // Detects if given string contains directory variable or image variable.
+  // Given string should start from VARIABLE_START_SYMBOL
+  function IsDirectoryVariable(ImageReference : String) : Boolean; inline;
+  var
+    PathSeparator : Char;
+  begin
+    for PathSeparator in ALL_PATH_SEPARATORS do begin
+      if (Pos(PathSeparator, ImageReference) <> 0) then begin
+        Result := True;
+        exit;
+      end;
+    end;
+
+    Result := False;
+  end;
+
 var
   ImageReference : String;
 begin
@@ -1550,12 +1568,12 @@ begin
   Inc(Index);
 
   if (ImageReference[1] = VARIABLE_START_SYMBOL) then begin
-    if (Pos(PATH_SEPARATOR, ImageReference) = 0) then
-      // Image variable
-      ImageReference := ApplyParsedImagesVariables(ImageReference)
-    else
+    if (IsDirectoryVariable(ImageReference)) then
       // Directory variable and path
-      ImageReference := ApplyParsedDirectoriesVariables(ImageReference);
+      ImageReference := ApplyParsedDirectoriesVariables(ImageReference)
+    else
+      // Image variable
+      ImageReference := ApplyParsedImagesVariables(ImageReference);
   end
   else
     ImageReference := ToAbsolutePath(ImageReference);
@@ -2437,6 +2455,22 @@ begin
     FBasePath := Path
   else
     FBasePath := Path + PATH_SEPARATOR;
+end;
+
+{
+  Checks if given path ends with any known path separator.
+}
+function TWpcScriptParser.IsEndsWithPathSeparator(Path : String) : Boolean;
+var
+  PathSeparator : Char;
+begin
+  for PathSeparator in ALL_PATH_SEPARATORS do
+    if (Path.EndsWith(PathSeparator)) then begin
+      Result := True;
+      exit;
+    end;
+
+  Result := False;
 end;
 
 {
