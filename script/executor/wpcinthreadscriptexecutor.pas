@@ -275,6 +275,13 @@ procedure TWpcInThreadScriptExecutor.ExecuteDirectoryStatement(Statement : TWpcD
 var
   TotalDelay : LongWord;
 begin
+  if (Statement.CountImages() = 0) then begin
+    // No images, skip statement execution
+    SetStatementTimesCounter(0);
+    TimerSleep(1);
+    exit;
+  end;
+
   if (IsTriggered(Statement.GetProbability())) then begin
     SetWallpaper(Statement.GetNextImage(), Statement.GetStyle());
 
@@ -454,11 +461,7 @@ begin
     WPC_USE_BRANCH_STATEMENT_ID:
       Result := TWpcUseBranchStatement(Statement).GetTimes();
     WPC_DIRECTORY_STATEMENT_ID:
-      if (TWpcDirectoryStatement(Statement).CountImages() = 0) then
-        // Skip this statement because specified directory doesn't contain any image
-        Result := 0
-      else
-        Result := TWpcDirectoryStatement(Statement).GetTimes();
+      Result := TWpcDirectoryStatement(Statement).GetTimes();
   else
     Result := 1;
   end;

@@ -126,7 +126,7 @@ begin
 end;
 
 {
-  Returns number of images in given directory.
+  Returns number of images in this directory statement.
 }
 function TWpcDirectoryStatement.CountImages(): Integer;
 begin

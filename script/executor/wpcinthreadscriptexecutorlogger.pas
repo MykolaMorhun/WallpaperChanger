@@ -78,8 +78,6 @@ type
     procedure OnWaitCallback(var Milliseconds : LongWord);
     procedure OnSetWallpaperCallback(var Image : TWpcImage; var Style : TWpcWallpaperStyle);
   protected
-
-  protected
     procedure LogMessage(Message : String; NoIndent : Boolean = false);
     function AddIndent(Message : String) : String; inline;
 
