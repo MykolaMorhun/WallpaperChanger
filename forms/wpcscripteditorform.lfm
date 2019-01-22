@@ -3,6 +3,7 @@ object ScriptEditorForm: TScriptEditorForm
   Height = 400
   Top = 179
   Width = 600
+  ActiveControl = ScriptSynEdit
   Caption = 'Wallpaper Changer Script Editor'
   ClientHeight = 381
   ClientWidth = 600
@@ -15,17 +16,17 @@ object ScriptEditorForm: TScriptEditorForm
   LCLVersion = '1.6.4.0'
   object EditorPanel: TPanel
     Left = 0
-    Height = 276
-    Top = 0
+    Height = 250
+    Top = 26
     Width = 600
     Align = alClient
-    ClientHeight = 276
+    ClientHeight = 250
     ClientWidth = 600
     TabOrder = 0
     inline ScriptSynEdit: TSynEdit
       Cursor = crDefault
       Left = 1
-      Height = 274
+      Height = 248
       Top = 1
       Width = 598
       Align = alClient
@@ -587,6 +588,199 @@ object ScriptEditorForm: TScriptEditorForm
     Align = alBottom
     ResizeAnchor = akBottom
   end
+  object ScriptEditorToolBar: TToolBar
+    Left = 0
+    Height = 26
+    Top = 0
+    Width = 600
+    Caption = 'ScriptEditorToolBar'
+    Images = ScriptEditorImageList
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 3
+    object NewScriptToolButton: TToolButton
+      Left = 1
+      Top = 2
+      Caption = 'New'
+      ImageIndex = 0
+      MenuItem = FileNewMenuItem
+      OnClick = NewScriptToolButtonClick
+      Style = tbsDropDown
+    end
+    object OpenScriptToolButton: TToolButton
+      Left = 36
+      Hint = 'Open Script'
+      Top = 2
+      Action = FileOpenScriptAction
+    end
+    object SaveToolButton: TToolButton
+      Left = 59
+      Hint = 'Save'
+      Top = 2
+      Action = FileSaveScriptAction
+      Caption = 'Save'
+    end
+    object ToolButtonSeparator1: TToolButton
+      Left = 82
+      Height = 22
+      Top = 2
+      Width = 5
+      Caption = 'ToolButtonSeparator1'
+      Style = tbsSeparator
+    end
+    object CheckScriptSyntaxToolButton: TToolButton
+      Left = 87
+      Hint = 'Check Script Syntax'
+      Top = 2
+      Action = ScriptCheckSyntaxAction
+    end
+    object CheckScriptResourcesToolButton: TToolButton
+      Left = 110
+      Hint = 'Check Script Resources'
+      Top = 2
+      Action = ScriptCheckResourcesAction
+    end
+    object RunScriptInLogModeToolButton: TToolButton
+      Left = 133
+      Hint = 'Run Script In Log Mode'
+      Top = 2
+      Action = ScriptRunLogAction
+    end
+    object ToolButtonSeparator2: TToolButton
+      Left = 156
+      Height = 22
+      Top = 2
+      Width = 5
+      Caption = 'ToolButtonSeparator2'
+      Style = tbsSeparator
+    end
+    object AddNewBranchToolButton: TToolButton
+      Left = 161
+      Hint = 'Add New Branch'
+      Top = 2
+      Action = BranchAddAction
+    end
+    object InsertWaitStatementToolButton: TToolButton
+      Left = 184
+      Hint = 'Insert Wait Statement'
+      Top = 2
+      Action = StatementInsertWaitAction
+    end
+    object InsertWallpaperStatementToolButton: TToolButton
+      Left = 207
+      Hint = 'Insert Wallpaper Statement'
+      Top = 2
+      Action = StatementInsertSetWallpaperAction
+    end
+    object InsertDirectoryStatementToolButton: TToolButton
+      Left = 230
+      Hint = 'Insert Directory Statement'
+      Top = 2
+      Action = StatementInsertSetDirectoryAction
+    end
+    object InsertUseBranchStatementToolButton: TToolButton
+      Left = 253
+      Hint = 'Insert Use Branch Statement'
+      Top = 2
+      Action = StatementInsertUseBranchAction
+    end
+    object InsertSwitchBranchStatementToolButton: TToolButton
+      Left = 276
+      Hint = 'Insert Switch Branch Statement'
+      Top = 2
+      Action = StatementInsertSwitchBranchAction
+    end
+    object InsertChooseWallpaperStatementToolButton: TToolButton
+      Left = 299
+      Hint = 'Insert Choose Wallpaper Statement'
+      Top = 2
+      Action = StatementInsertWallpaperChooserAction
+    end
+    object InsertChooseBranchToUseStatementToolButton: TToolButton
+      Left = 322
+      Hint = 'Insert Choose Branch To Use Statement'
+      Top = 2
+      Action = StatementInsertUseBranchChooserAction
+    end
+    object InsertChooseBranchToSwitchStatementToolButton: TToolButton
+      Left = 345
+      Hint = 'Insert Choose Branch To Switch Statement'
+      Top = 2
+      Action = StatementInsertSwitchBranchChooserAction
+    end
+    object InsertStopScriptStatementToolButton: TToolButton
+      Left = 368
+      Hint = 'Insert Stop Script Statement'
+      Top = 2
+      Action = StatementInsertStopAction
+    end
+    object ToolButtonSeparator4: TToolButton
+      Left = 491
+      Height = 22
+      Top = 2
+      Width = 5
+      Caption = 'ToolButtonSeparator4'
+      Style = tbsSeparator
+    end
+    object InsertImageResourceToolButton: TToolButton
+      Left = 496
+      Hint = 'Insert Image Resource'
+      Top = 2
+      Action = ResourceInsertImageAction
+    end
+    object InsertDirectoryResourceToolButton: TToolButton
+      Left = 519
+      Hint = 'Insert Directory Resource'
+      Top = 2
+      Action = ResourceInsertDirectoryAction
+    end
+    object ToolButtonSeparator5: TToolButton
+      Left = 542
+      Height = 22
+      Top = 2
+      Width = 5
+      Caption = 'ToolButtonSeparator5'
+      Style = tbsSeparator
+    end
+    object OpenDocumentationToolButton: TToolButton
+      Left = 547
+      Hint = 'Open Documentation'
+      Top = 2
+      Action = HelpDocumentationAction
+    end
+    object InsertDelayStatementPropertyToolButton: TToolButton
+      Left = 399
+      Hint = 'Insert Delay Statement Property'
+      Top = 2
+      Action = StatementInsertDelayPropertyAction
+    end
+    object ToolButtonSeparator3: TToolButton
+      Left = 391
+      Height = 22
+      Top = 2
+      Width = 8
+      Caption = 'ToolButtonSeparator3'
+      Style = tbsSeparator
+    end
+    object InsertProbabilityStatementPropertyToolButton: TToolButton
+      Left = 422
+      Hint = 'Insert Probability Statement Property'
+      Top = 2
+      Action = StatementInsertProbabilityPropertyAction
+    end
+    object InsertTimesStatementPropertyToolButton: TToolButton
+      Left = 445
+      Hint = 'Insert Times Statement Property'
+      Top = 2
+      Action = StatementInsertTimesPropertyAction
+    end
+    object InsertWallpaperStyleStatementPropertyToolButton: TToolButton
+      Left = 468
+      Hint = 'Insert Wallpaper Style Statement Property'
+      Top = 2
+      Action = StatementInsertWallpaperStylePropertyAction
+    end
+  end
   object ScriptEditorMainMenu: TMainMenu
     Images = ScriptEditorImageList
     left = 160
@@ -926,9 +1120,12 @@ object ScriptEditorForm: TScriptEditorForm
     end
     object ViewMenuItem: TMenuItem
       Caption = 'View'
+      object ViewScriptEditorToolBarMenuItem: TMenuItem
+        Action = ViewToggleScriptEditorToolbarAction
+      end
       object ViewToggleBottomPanelMenuItem: TMenuItem
         Action = ViewToggleBottomPanelAction
-        Caption = 'Bottom panel'
+        Caption = 'Bottom Panel'
       end
       object ViewSeparator1MenuItem: TMenuItem
         Caption = '-'
@@ -3536,9 +3733,15 @@ object ScriptEditorForm: TScriptEditorForm
       Caption = 'Interactive insert statement property'
       OnExecute = StatementInsertPropertyInteractiveActionExecute
     end
+    object ViewToggleScriptEditorToolbarAction: TAction
+      Category = 'view'
+      Caption = 'Script Editor Tool Bar'
+      Checked = True
+      OnExecute = ViewToggleScriptEditorToolbarActionExecute
+    end
     object ViewToggleBottomPanelAction: TAction
       Category = 'view'
-      Caption = 'Toggle bottom panel'
+      Caption = 'Toggle Bottom Panel'
       Hint = 'Toggle bottom panel'
       OnExecute = ViewToggleBottomPanelActionExecute
       ShortCut = 16450
@@ -3576,7 +3779,7 @@ object ScriptEditorForm: TScriptEditorForm
     DefaultExt = '.wcs'
     Filter = 'Wallpaper Changer Scripts|*.wcs|All files|*.*'
     left = 512
-    top = 16
+    top = 32
   end
   object ScriptOpenDialog: TOpenDialog
     Width = 1260
@@ -3585,7 +3788,7 @@ object ScriptEditorForm: TScriptEditorForm
     Filter = 'Wallpaper Changes Scripts|*.wcs|All files|*.*'
     Options = [ofFileMustExist, ofEnableSizing, ofViewDetail]
     left = 432
-    top = 16
+    top = 32
   end
   object ResourceSelectDirectoryDialog: TSelectDirectoryDialog
     Options = [ofFileMustExist, ofEnableSizing, ofViewDetail]

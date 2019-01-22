@@ -47,12 +47,10 @@ type
     ScriptEditorMainMenu: TMainMenu;
     EditorPanel: TPanel;
     ScriptSynEdit: TSynEdit;
-    BottomPanel: TPanel;
+    ScriptSynCompletion: TSynCompletion;
     EditorBottomPanelSplitter: TSplitter;
+    BottomPanel: TPanel;
     BottomPanelMemo: TMemo;
-    BottomPanelToolBar: TToolBar;
-    HideBottomPanelToolButton: TToolButton;
-    ClearBottomPanelToolButton: TToolButton;
 
     ResourceOpenPictureDialog: TOpenPictureDialog;
     ScriptOpenDialog: TOpenDialog;
@@ -91,7 +89,7 @@ type
     FileNewFullScriptAction: TAction;
     FileNewBaseScriptAction: TAction;
     FileNewBlankScriptAction: TAction;
-    ScriptSynCompletion: TSynCompletion;
+    ViewToggleScriptEditorToolbarAction: TAction;
     ViewFontSizeDecreaseAction: TAction;
     ViewFontSizeIncreaseAction: TAction;
     ViewFontSelectAction: TAction;
@@ -115,6 +113,7 @@ type
     FileReadOnlyMenuItem: TMenuItem;
     FileSeparator2MenuItem: TMenuItem;
     ViewMenuItem: TMenuItem;
+    ViewScriptEditorToolBarMenuItem: TMenuItem;
     ViewSeparator1MenuItem: TMenuItem;
     ViewFontMenuItem: TMenuItem;
     ViewFontSizeDecreaseMenuItem: TMenuItem;
@@ -157,6 +156,40 @@ type
     HelpMenuItem: TMenuItem;
     HelpDocsMenuItem: TMenuItem;
     HelpAboutMenuItem: TMenuItem;
+
+    ScriptEditorToolBar: TToolBar;
+    NewScriptToolButton: TToolButton;
+    OpenScriptToolButton: TToolButton;
+    SaveToolButton: TToolButton;
+    ToolButtonSeparator1: TToolButton;
+    CheckScriptSyntaxToolButton: TToolButton;
+    CheckScriptResourcesToolButton: TToolButton;
+    RunScriptInLogModeToolButton: TToolButton;
+    ToolButtonSeparator2: TToolButton;
+    AddNewBranchToolButton: TToolButton;
+    InsertWaitStatementToolButton: TToolButton;
+    InsertWallpaperStatementToolButton: TToolButton;
+    InsertDirectoryStatementToolButton: TToolButton;
+    InsertUseBranchStatementToolButton: TToolButton;
+    InsertSwitchBranchStatementToolButton: TToolButton;
+    InsertChooseWallpaperStatementToolButton: TToolButton;
+    InsertChooseBranchToUseStatementToolButton: TToolButton;
+    InsertChooseBranchToSwitchStatementToolButton: TToolButton;
+    InsertStopScriptStatementToolButton: TToolButton;
+    ToolButtonSeparator3: TToolButton;
+    InsertDelayStatementPropertyToolButton: TToolButton;
+    InsertProbabilityStatementPropertyToolButton: TToolButton;
+    InsertTimesStatementPropertyToolButton: TToolButton;
+    InsertWallpaperStyleStatementPropertyToolButton: TToolButton;
+    ToolButtonSeparator4: TToolButton;
+    InsertImageResourceToolButton: TToolButton;
+    InsertDirectoryResourceToolButton: TToolButton;
+    ToolButtonSeparator5: TToolButton;
+    OpenDocumentationToolButton: TToolButton;
+
+    BottomPanelToolBar: TToolBar;
+    HideBottomPanelToolButton: TToolButton;
+    ClearBottomPanelToolButton: TToolButton;
 
     procedure BranchAddActionExecute(Sender: TObject);
     procedure CleanBottomPanelOutputActionExecute(Sender: TObject);
@@ -201,10 +234,11 @@ type
     procedure StatementInsertWallpaperChooserActionExecute(Sender: TObject);
     procedure StatementInsertWallpaperStylePropertyActionExecute(Sender: TObject);
     procedure StatementToggleInsertInteractiveActionExecute(Sender: TObject);
+    procedure NewScriptToolButtonClick(Sender: TObject);
+    procedure ViewToggleBottomPanelActionExecute(Sender: TObject);
     procedure ViewFontSizeDecreaseActionExecute(Sender: TObject);
     procedure ViewFontSizeIncreaseActionExecute(Sender: TObject);
     procedure ViewFontSelectActionExecute(Sender: TObject);
-    procedure ViewToggleBottomPanelActionExecute(Sender: TObject);
   const
     SYNEDIT_LINE_BREAK = #10#13;
   const
@@ -218,6 +252,7 @@ type
 
     MINIMAL_FONT_SIZE = 6;
     MAXIMAL_FONT_SIZE = 32;
+  procedure ViewToggleScriptEditorToolbarActionExecute(Sender: TObject);
   private
     // Path to the file in which the current script is saved. Empty string if none.
     FScriptPath : String;
@@ -333,6 +368,10 @@ end;
 
 procedure TScriptEditorForm.SetupUI();
 begin
+  // Show / hide editor toolbar
+  ScriptEditorToolBar.Visible := ApplicationManager.ScriptEditorState.ShowEditorToolBar;
+  ViewToggleScriptEditorToolbarAction.Checked := ApplicationManager.ScriptEditorState.ShowEditorToolBar;
+
   // Hide bottom panel
   EditorBottomPanelSplitter.Visible := False;
   BottomPanel.Visible := False;
@@ -492,6 +531,12 @@ begin
 end;
 
 // View
+
+procedure TScriptEditorForm.ViewToggleScriptEditorToolbarActionExecute(Sender : TObject);
+begin
+  ScriptEditorToolBar.Visible := not ScriptEditorToolBar.Visible;
+  ViewToggleScriptEditorToolbarAction.Checked := not ViewToggleScriptEditorToolbarAction.Checked;
+end;
 
 procedure TScriptEditorForm.ViewToggleBottomPanelActionExecute(Sender: TObject);
 begin
@@ -826,6 +871,8 @@ end;
 
 procedure TScriptEditorForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
+  ApplicationManager.ScriptEditorState.ShowEditorToolBar := ScriptEditorToolBar.Visible;
+
   ApplicationManager.ScriptEditorState.WindowWidth := Self.Width;
   ApplicationManager.ScriptEditorState.WindowHeight := Self.Height;
   ApplicationManager.ScriptEditorState.WindowPositionLeft := Self.Left;
@@ -835,6 +882,11 @@ begin
     FOnCloseCallback(Self);
 
   CloseAction := caFree;
+end;
+
+procedure TScriptEditorForm.NewScriptToolButtonClick(Sender : TObject);
+begin
+  FileNewBaseScriptAction.Execute();
 end;
 
 (* Autocomplete *)

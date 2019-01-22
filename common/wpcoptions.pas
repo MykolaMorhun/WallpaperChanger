@@ -164,6 +164,8 @@ type
     EDITOR_SECTION = 'Editor';
     STATE_SECTION = 'State';
 
+    SHOW_EDITOR_TOOLBAR_KEY = 'ShowEditorToolBar';
+
     EDITOR_FONT_FAMILY_KEY = 'FontName';
     EDITOR_FONT_SIZE_KEY = 'FontSize';
 
@@ -171,6 +173,8 @@ type
     WINDOW_HEIGHT_KEY = 'WindowHeight';
     WINDOW_POSITION_LEFT_KEY = 'WindowPositionLeft';
     WINDOW_POSITION_TOP_KEY = 'WindowPositionTop';
+
+    DEFAULT_SHOW_EDITOR_TOOLBAR = True;
 
     DEFAULT_EDITOR_FONT_FAMILY = 'DejaVu Sans Mono';
     DEFAULT_EDITOR_FONT_SIZE = 11;
@@ -180,6 +184,8 @@ type
     DEFAULT_WINDOW_POSITION_LEFT = 100;
     DEFAULT_WINDOW_POSITION_TOP = 100;
   private
+    FShowEditorToolBar : Boolean;
+
     FFontName  : String;
     FFontSize  : Integer;
     FFontStyle : Integer;
@@ -189,6 +195,9 @@ type
     FWindowPositionLeft : Integer;
     FWindowPositionTop  : Integer;
   public
+    // Whether show toolbar for script editor
+    property ShowEditorToolBar : Boolean read FShowEditorToolBar write FShowEditorToolBar;
+
     // Script editor font family, e.g. Arial, Liberation Serif
     property FontName : String read FFontName write FFontName;
     // Size of font in script editor
@@ -391,6 +400,8 @@ var
 begin
   ScriptEditorSettingsFile := TIniFile.Create(PathToIniFile);
   try
+    FShowEditorToolBar := ScriptEditorSettingsFile.ReadBool(EDITOR_SECTION, SHOW_EDITOR_TOOLBAR_KEY, DEFAULT_SHOW_EDITOR_TOOLBAR);
+
     FFontName := ScriptEditorSettingsFile.ReadString(EDITOR_SECTION, EDITOR_FONT_FAMILY_KEY, DEFAULT_EDITOR_FONT_FAMILY);
     FFontSize := ScriptEditorSettingsFile.ReadInteger(EDITOR_SECTION, EDITOR_FONT_SIZE_KEY, DEFAULT_EDITOR_FONT_SIZE);
 
@@ -410,6 +421,8 @@ begin
   ScriptEditorSettingsFile := TIniFile.Create(PathToIniFile);
   ScriptEditorSettingsFile.CacheUpdates := True;
   try
+    ScriptEditorSettingsFile.WriteBool(EDITOR_SECTION, SHOW_EDITOR_TOOLBAR_KEY, FShowEditorToolBar);
+
     ScriptEditorSettingsFile.WriteString(EDITOR_SECTION, EDITOR_FONT_FAMILY_KEY, FFontName);
     ScriptEditorSettingsFile.WriteInteger(EDITOR_SECTION, EDITOR_FONT_SIZE_KEY, FFontSize);
 
