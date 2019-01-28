@@ -1035,11 +1035,16 @@ function TScriptEditorForm.CountLeadSpaces(Line : String) : Integer;
 var
   i : Integer;
 begin
+  if (Line = '') then begin
+    Result := 0;
+    exit;
+  end;
+
   i := 1;
   while (Line[i] = ' ') do
     Inc(i);
 
-  Result := i-1;
+  Result := i - 1;
 end;
 
 function TScriptEditorForm.IsEmptyOrWhitespace(Arg : String) : Boolean;
