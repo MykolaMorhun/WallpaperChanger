@@ -14,6 +14,7 @@ object OptionsForm: TOptionsForm
   Constraints.MinWidth = 500
   OnClose = FormClose
   Position = poDefaultPosOnly
+  ShowInTaskBar = stAlways
   LCLVersion = '1.6.4.0'
   object OptionsPageControl: TPageControl
     Left = 0
