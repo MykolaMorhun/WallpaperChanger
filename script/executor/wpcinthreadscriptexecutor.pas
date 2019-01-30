@@ -172,6 +172,11 @@ end;
 }
 procedure TWpcInThreadScriptExecutor.SkipCurrentDelay();
 begin
+  if (GetCurrentStatement().GetId() = WPC_WAIT_STATEMENT_ID) then begin
+    // Skip times property for wait statement
+    SetStatementTimesCounter(0);
+  end;
+
   FTimer.Enabled := False;
   ContunueExecution();
 end;
