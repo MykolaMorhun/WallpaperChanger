@@ -9,7 +9,7 @@ uses
   WpcScriptParser;
 
 const
-  KEYWORDS : Array[1..26] of String = (
+  KEYWORDS : Array[1..27] of String = (
     DIRECTORIES_KEYWORD,
     DIRECTORY_KEYWORD,
     IMAGES_KEYWORD,
@@ -32,6 +32,7 @@ const
     WITH_KEYWORD,
     PROBABILITY_KEYWORD,
     FOR_KEYWORD,
+    TILL_KEYWORD,
     TIMES_KEYWORD,
     TO_KEYWORD,
     ORDERED_KEYWORD,

@@ -31,8 +31,10 @@ type
     function GetImage() : TWpcImage;
     procedure SetStyle(Style : TWpcWallpaperStyle);
     function GetStyle() : TWpcWallpaperStyle;
-    procedure SetDelay(Delay : LongWord);
+    procedure SetDelay(Delay : LongWord; IsStatic : Boolean = True);
     function GetDelay() : LongWord;
+    function GetOriginalDelayValue() : LongWord;
+    function IsDelayStatic() : Boolean;
     procedure SetProbability(Probability : Byte);
     function GetProbability() : Byte;
 
@@ -87,14 +89,25 @@ begin
   Result := FStyle;
 end;
 
-procedure TWpcWallpaperStatement.SetDelay(Delay : LongWord);
+procedure TWpcWallpaperStatement.SetDelay(Delay : LongWord; IsStatic : Boolean);
 begin
   FDelay.Delay := Delay;
+  FDelay.IsStatic := IsStatic;
 end;
 
 function TWpcWallpaperStatement.GetDelay() : LongWord;
 begin
   Result := FDelay.Delay;
+end;
+
+function TWpcWallpaperStatement.GetOriginalDelayValue() : LongWord;
+begin
+  Result := FDelay.HoldingValue;
+end;
+
+function TWpcWallpaperStatement.IsDelayStatic(): Boolean;
+begin
+  Result := FDelay.IsStatic;
 end;
 
 procedure TWpcWallpaperStatement.SetProbability(Probability : Byte);

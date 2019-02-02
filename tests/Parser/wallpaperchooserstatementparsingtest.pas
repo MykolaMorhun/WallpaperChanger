@@ -9,6 +9,7 @@ uses
   ParserBaseTestCase,
   ChooserStatementBaseTestCase,
   WpcChooserStatements,
+  WpcWallpaperStatement,
   WpcScriptParser;
 
 type
@@ -25,6 +26,7 @@ type
     procedure AddRequiredObjectsIntoScript(); override;
   published
     procedure ShouldParseItemWithDefaultWeightWhichConsistsFromOneWord();
+    procedure ShouldParseItemsWithDelayAndTillProperties();
   end;
 
 implementation
@@ -68,6 +70,39 @@ begin
 
   AssertEquals(WRONG_SELECTOR_VALUE, DEFAULT_WEIGHT_SELECTOR_VALUE, ChooserItems[0].Weight);
   AssertEquals(WRONG_SELECTOR_VALUE, DEFAULT_WEIGHT_SELECTOR_VALUE, ChooserItems[1].Weight);
+end;
+
+// CHOOSE WALLAPER FROM
+//   Item1 FOR 5m
+//   Item2 TILL 11:37
+// END CHOOSE
+procedure TWallpaperChooserStatementParsingTest.ShouldParseItemsWithDelayAndTillProperties;
+begin
+  ScriptLines.Add(CHOOSE_KEYWORD + ChooserType + FROM_KEYWORD);
+  ScriptLines.Add('  ' + TEST_FILE1 + DELAY_FOR_PROPERTY);
+  ScriptLines.Add('  ' + TEST_FILE2 + TILL_PROPERTY);
+  ScriptLines.Add(END_KEYWORD + ' ' + CHOOSE_KEYWORD);
+  WrapInMainBranch(ScriptLines);
+  AddRequiredObjectsIntoScript();
+
+  ParseScriptLines();
+  ReadMainBranchStatementsList();
+
+  AssertEquals(WRONG_NUMBER_OF_SATEMENTS, 1, MainBranchStatements.Count);
+
+  ChooserItems := IWpcChooserItems(MainBranchStatements[0]).GetItems();
+  AssertEquals(WRONG_NUMBER_OF_SATEMENTS, 2, ChooserItems.Count);
+
+  AssertEquals(WRONG_SELECTOR_VALUE, DEFAULT_WEIGHT_SELECTOR_VALUE, ChooserItems[0].Weight);
+  AssertEquals(WRONG_SELECTOR_VALUE, DEFAULT_WEIGHT_SELECTOR_VALUE, ChooserItems[1].Weight);
+
+  AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, TWpcWallpaperStatement(ChooserItems[0].Statement).IsDelayStatic());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE,
+               TEST_DEFAULT_DELAY_VALUE, TWpcWallpaperStatement(ChooserItems[0].Statement).GetDelay());
+
+  AssertFalse(WRONG_STATEMENT_PROPRTY_VALUE, TWpcWallpaperStatement(ChooserItems[1].Statement).IsDelayStatic());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE,
+               TEST_DEFAULT_TILL_VALUE, TWpcWallpaperStatement(ChooserItems[1].Statement).GetOriginalDelayValue());
 end;
 
 

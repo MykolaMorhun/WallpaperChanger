@@ -6,6 +6,7 @@ interface
 
 uses
   Classes, SysUtils,
+  DateUtils,
   WpcTimeMeasurementUnits,
   WpcTimeUtils,
   WpcExceptions;
@@ -18,16 +19,26 @@ type
   public const
     MAX_DELAY_VALUE = 1000 * 60 * 60 * 24 * 32;
   private
-    FDelay: LongWord; // milliseconds
+    // Shows if delay is relative to current time
+    FIsStatic : Boolean;
+    // If delay is static holds number of milliseconds to wait
+    // If delay is relative holds time of day in milliseconds to which it should wait
+    FDelay : LongWord;
   public
     constructor Create();
+    constructor Create(IsStatic : Boolean);
 
+    function GetDelay() : LongWord;
     procedure SetDelay(PDelay : LongWord);
     procedure SetDelay(PDelay : LongWord; MeasurementUnit : TWpcTimeMeasurementUnits);
 
     function ToString(Readable : Boolean = false) : String;
   public
-    property Delay : LongWord read FDelay write SetDelay;
+    property Delay : LongWord read GetDelay write SetDelay;
+    property HoldingValue : LongWord read FDelay;
+    property IsStatic : Boolean read FIsStatic write FIsStatic;
+  private
+    function GetRelativeDelay() : LongWord;
   end;
 
   { TWpcProbabilityStatementProperty }
@@ -82,7 +93,22 @@ implementation
 
 constructor TWpcDelayStatementProperty.Create();
 begin
+  FIsStatic := True;
   FDelay := 0;
+end;
+
+constructor TWpcDelayStatementProperty.Create(IsStatic : Boolean);
+begin
+  FIsStatic := IsStatic;
+  FDelay := 0;
+end;
+
+function TWpcDelayStatementProperty.GetDelay() : LongWord;
+begin
+  if (FIsStatic) then
+    Result := FDelay
+  else
+    Result := GetRelativeDelay();
 end;
 
 procedure TWpcDelayStatementProperty.SetDelay(PDelay : LongWord);
@@ -102,12 +128,33 @@ var
   ReadableDelay   : LongWord;
   MeasurementUnit : TWpcTimeMeasurementUnits;
 begin
-  if (Readable) then begin
-    ConvertToReadableUnits(FDelay, ReadableDelay, MeasurementUnit);
-    Result := 'delay: ' + IntToStr(ReadableDelay) + ' ' + TimeMeasurementUnitToStr(MeasurementUnit);
+  if (FIsStatic) then begin
+    if (Readable) then begin
+      ConvertToReadableUnits(FDelay, ReadableDelay, MeasurementUnit);
+      Result := 'delay: ' + IntToStr(ReadableDelay) + ' ' + TimeMeasurementUnitToStr(MeasurementUnit);
+    end
+    else
+      Result := 'delay: ' + IntToStr(FDelay);
   end
   else
-    Result := 'delay: ' + IntToStr(FDelay);
+    Result := IntToStr(FDelay div MS_IN_HOUR   mod 24) + ':' +
+              IntToStr(FDelay div MS_IN_MINUTE mod 60) + ':' +
+              IntToStr(FDelay div MS_IN_SECOND mod 60);
+end;
+
+{
+  Calculates period of time to wait from now to the specified in FDelay point.
+  FDelay contains number of milliseconds from the day beginning to the point.
+}
+function TWpcDelayStatementProperty.GetRelativeDelay() : LongWord;
+var
+  CurrentPositionInTime : LongWord;
+begin
+  CurrentPositionInTime := MilliSecondOfTheDay(Now());
+  if (CurrentPositionInTime < FDelay) then
+    Result := FDelay - CurrentPositionInTime
+  else
+    Result := MS_IN_DAY + FDelay - CurrentPositionInTime;
 end;
 
 { TWpcProbabilityStatementProperty }
@@ -117,7 +164,7 @@ begin
   FProbability := 100;
 end;
 
-procedure TWpcProbabilityStatementProperty.SetProbability(Probability: Byte);
+procedure TWpcProbabilityStatementProperty.SetProbability(Probability : Byte);
 begin
   if ((Probability < 0) or (Probability > 100)) then
     raise TWpcIllegalArgumentException.Create('Probability should be in percents.');

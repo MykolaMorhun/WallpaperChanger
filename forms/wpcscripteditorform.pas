@@ -42,6 +42,8 @@ type
   { TScriptEditorForm }
 
   TScriptEditorForm = class(TForm)
+    StatementPropertyTillMenuItem: TMenuItem;
+    StatementInsertTillPropertyAction: TAction;
     ScriptEditorActionList: TActionList;
     ScriptEditorImageList: TImageList;
     ScriptEditorMainMenu: TMainMenu;
@@ -89,6 +91,7 @@ type
     FileNewFullScriptAction: TAction;
     FileNewBaseScriptAction: TAction;
     FileNewBlankScriptAction: TAction;
+    ToolButton1: TToolButton;
     ViewToggleScriptEditorToolbarAction: TAction;
     ViewFontSizeDecreaseAction: TAction;
     ViewFontSizeIncreaseAction: TAction;
@@ -227,6 +230,7 @@ type
     procedure StatementInsertStopActionExecute(Sender: TObject);
     procedure StatementInsertSwitchBranchActionExecute(Sender: TObject);
     procedure StatementInsertSwitchBranchChooserActionExecute(Sender: TObject);
+    procedure StatementInsertTillPropertyActionExecute(Sender: TObject);
     procedure StatementInsertTimesPropertyActionExecute(Sender: TObject);
     procedure StatementInsertUseBranchActionExecute(Sender: TObject);
     procedure StatementInsertUseBranchChooserActionExecute(Sender: TObject);
@@ -247,6 +251,7 @@ type
     DEFAULT_BARNCH_NAME = 'BranchName';
     DEFAULT_SELECTOR = WEIGHT_KEYWORD;
     DEFAULT_DELAY = '5m';
+    DEFAULT_WAIT_TILL = 'time';
     DEFAULT_TIMES = '5';
     DEFAULT_PROBABILITY = '50';
 
@@ -773,6 +778,18 @@ begin
     FCurrentScript.SelectWord();
   end;
 end;
+
+procedure TScriptEditorForm.StatementInsertTillPropertyActionExecute(Sender : TObject);
+begin
+  if (FInteractiveInsertion) then begin
+    // TODO
+  end
+  else begin
+    FCurrentScript.InsertTextAtCaret(' ' + TILL_KEYWORD + ' ' + DEFAULT_WAIT_TILL);
+    FCurrentScript.SelectWord();
+  end;
+end;
+
 
 procedure TScriptEditorForm.StatementInsertProbabilityPropertyActionExecute(Sender : TObject);
 begin

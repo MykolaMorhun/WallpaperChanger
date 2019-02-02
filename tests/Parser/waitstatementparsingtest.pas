@@ -25,10 +25,21 @@ type
     procedure ShouldParseWaitStatementWithProbabilityProperty();
     procedure ShouldParseWaitStatementWithTimesProperty();
     procedure ShouldParseWaitStatementWithDelayProperty();
-    procedure ShouldParseWaitStatementWithAllProperties();
+    procedure ShouldParseWaitStatementWithTillProperty();
+    procedure ShouldParseWaitStatementWithDefaultsAndAProperty();
+    procedure ShouldParseWaitStatementWithDefaultTimeUnitAndAProperty();
+    procedure ShouldParseWaitStatementWithDelayPropertyBeforeAProperty();
+    procedure ShouldParseWaitStatementWithTillPropertyBeforeAProperty();
+    procedure ShouldParseWaitStatementWithDelayPropertyAfterAProperty();
+    procedure ShouldParseWaitStatementWithTillPropertyAfterAProperty();
+    procedure ShouldParseWaitStatementWithAllPropertiesButTill();
+    procedure ShouldParseWaitStatementWithAllPropertiesButDelay();
     procedure ShouldParseWaitStatementWithAllPropertiesExceptDelayPropertyWhichIsSimplified();
 
     procedure SholudRaiseScriptParseExceptionWhenSetDelayPropertyAfterDelayValue();
+    procedure SholudRaiseScriptParseExceptionWhenSetTillPropertyAfterDelayValue();
+    procedure SholudRaiseScriptParseExceptionWhenBothDelayAndTillPropertiesAreSet();
+    procedure SholudRaiseScriptParseExceptionWhenBothTillAndDelayPropertiesAreSet();
     procedure SholudRaiseScriptParseExceptionWhenUnknownWordAddedAtTheEndOfBase();
     procedure SholudRaiseScriptParseExceptionWhenUnknownWordAddedBeforeProperties();
     procedure SholudRaiseScriptParseExceptionWhenUnknownWordAddedAfterProperties();
@@ -140,11 +151,137 @@ begin
 
   AssertTrue(WRONG_STATEMENT, WPC_WAIT_STATEMENT_ID = MainBranchStatements[0].GetId());
   WaitStatement := TWpcWaitStatement(MainBranchStatements[0]);
+  AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, WaitStatement.IsDelayStatic());
   AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_DELAY_VALUE, WaitStatement.GetDelay());
 end;
 
+// WAIT TILL 11:37
+procedure TWaitStatementParsingTestCase.ShouldParseWaitStatementWithTillProperty();
+begin
+  ScriptLines.Add(WAIT_KEYWORD + TILL_PROPERTY);
+  WrapInMainBranch(ScriptLines);
+
+  ParseScriptLines();
+  ReadMainBranchStatementsList();
+
+  AssertEquals(WRONG_NUMBER_OF_SATEMENTS, 1, MainBranchStatements.Count);
+
+  AssertTrue(WRONG_STATEMENT, WPC_WAIT_STATEMENT_ID = MainBranchStatements[0].GetId());
+  WaitStatement := TWpcWaitStatement(MainBranchStatements[0]);
+  AssertFalse(WRONG_STATEMENT_PROPRTY_VALUE, WaitStatement.IsDelayStatic());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_TILL_VALUE, WaitStatement.GetOriginalDelayValue());
+end;
+
+// WAIT WITH PROBABILITY 50
+procedure TWaitStatementParsingTestCase.ShouldParseWaitStatementWithDefaultsAndAProperty();
+begin
+  ScriptLines.Add(WAIT_KEYWORD + WITH_PROBABILITY_PROPERTY);
+  WrapInMainBranch(ScriptLines);
+
+  ParseScriptLines();
+  ReadMainBranchStatementsList();
+
+  AssertEquals(WRONG_NUMBER_OF_SATEMENTS, 1, MainBranchStatements.Count);
+
+  AssertTrue(WRONG_STATEMENT, WPC_WAIT_STATEMENT_ID = MainBranchStatements[0].GetId());
+  WaitStatement := TWpcWaitStatement(MainBranchStatements[0]);
+  AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, WaitStatement.IsDelayStatic());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_DELAY_VALUE, WaitStatement.GetDelay());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_PROBABILITY_VALUE, WaitStatement.GetProbability());
+end;
+
+// WAIT 5 WITH PROBABILITY 50
+procedure TWaitStatementParsingTestCase.ShouldParseWaitStatementWithDefaultTimeUnitAndAProperty();
+begin
+  ScriptLines.Add(WAIT_KEYWORD + ' 5 ' + WITH_PROBABILITY_PROPERTY);
+  WrapInMainBranch(ScriptLines);
+
+  ParseScriptLines();
+  ReadMainBranchStatementsList();
+
+  AssertEquals(WRONG_NUMBER_OF_SATEMENTS, 1, MainBranchStatements.Count);
+
+  AssertTrue(WRONG_STATEMENT, WPC_WAIT_STATEMENT_ID = MainBranchStatements[0].GetId());
+  WaitStatement := TWpcWaitStatement(MainBranchStatements[0]);
+  AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, WaitStatement.IsDelayStatic());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_DELAY_VALUE, WaitStatement.GetDelay());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_PROBABILITY_VALUE, WaitStatement.GetProbability());
+end;
+
+// WAIT FOR 5m 4 TIMES
+procedure TWaitStatementParsingTestCase.ShouldParseWaitStatementWithDelayPropertyBeforeAProperty();
+begin
+  ScriptLines.Add(WAIT_KEYWORD + DELAY_FOR_PROPERTY + X_TIMES_PROPERTY);
+  WrapInMainBranch(ScriptLines);
+
+  ParseScriptLines();
+  ReadMainBranchStatementsList();
+
+  AssertEquals(WRONG_NUMBER_OF_SATEMENTS, 1, MainBranchStatements.Count);
+
+  AssertTrue(WRONG_STATEMENT, WPC_WAIT_STATEMENT_ID = MainBranchStatements[0].GetId());
+  WaitStatement := TWpcWaitStatement(MainBranchStatements[0]);
+  AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, WaitStatement.IsDelayStatic());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_DELAY_VALUE, WaitStatement.GetDelay());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_TIMES_VALUE, WaitStatement.GetTimes());
+end;
+
+// WAIT TILL 11:37 WITH PROBABILITY 50
+procedure TWaitStatementParsingTestCase.ShouldParseWaitStatementWithTillPropertyBeforeAProperty();
+begin
+  ScriptLines.Add(WAIT_KEYWORD + TILL_PROPERTY + WITH_PROBABILITY_PROPERTY);
+  WrapInMainBranch(ScriptLines);
+
+  ParseScriptLines();
+  ReadMainBranchStatementsList();
+
+  AssertEquals(WRONG_NUMBER_OF_SATEMENTS, 1, MainBranchStatements.Count);
+
+  AssertTrue(WRONG_STATEMENT, WPC_WAIT_STATEMENT_ID = MainBranchStatements[0].GetId());
+  WaitStatement := TWpcWaitStatement(MainBranchStatements[0]);
+  AssertFalse(WRONG_STATEMENT_PROPRTY_VALUE, WaitStatement.IsDelayStatic());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_TILL_VALUE, WaitStatement.GetOriginalDelayValue());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_PROBABILITY_VALUE, WaitStatement.GetProbability());
+end;
+
+// WAIT 4 TIMES FOR 5m
+procedure TWaitStatementParsingTestCase.ShouldParseWaitStatementWithDelayPropertyAfterAProperty();
+begin
+  ScriptLines.Add(WAIT_KEYWORD + X_TIMES_PROPERTY + DELAY_FOR_PROPERTY);
+  WrapInMainBranch(ScriptLines);
+
+  ParseScriptLines();
+  ReadMainBranchStatementsList();
+
+  AssertEquals(WRONG_NUMBER_OF_SATEMENTS, 1, MainBranchStatements.Count);
+
+  AssertTrue(WRONG_STATEMENT, WPC_WAIT_STATEMENT_ID = MainBranchStatements[0].GetId());
+  WaitStatement := TWpcWaitStatement(MainBranchStatements[0]);
+  AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, WaitStatement.IsDelayStatic());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_DELAY_VALUE, WaitStatement.GetDelay());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_TIMES_VALUE, WaitStatement.GetTimes());
+end;
+
+// WAIT WITH PROBABILITY 50 TILL 11:37
+procedure TWaitStatementParsingTestCase.ShouldParseWaitStatementWithTillPropertyAfterAProperty();
+begin
+   ScriptLines.Add(WAIT_KEYWORD + WITH_PROBABILITY_PROPERTY + TILL_PROPERTY);
+  WrapInMainBranch(ScriptLines);
+
+  ParseScriptLines();
+  ReadMainBranchStatementsList();
+
+  AssertEquals(WRONG_NUMBER_OF_SATEMENTS, 1, MainBranchStatements.Count);
+
+  AssertTrue(WRONG_STATEMENT, WPC_WAIT_STATEMENT_ID = MainBranchStatements[0].GetId());
+  WaitStatement := TWpcWaitStatement(MainBranchStatements[0]);
+  AssertFalse(WRONG_STATEMENT_PROPRTY_VALUE, WaitStatement.IsDelayStatic());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_TILL_VALUE, WaitStatement.GetOriginalDelayValue());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_PROBABILITY_VALUE, WaitStatement.GetProbability());
+end;
+
 // WAIT FOR 5m WITH PROBABILITY 50 4 TIMES
-procedure TWaitStatementParsingTestCase.ShouldParseWaitStatementWithAllProperties();
+procedure TWaitStatementParsingTestCase.ShouldParseWaitStatementWithAllPropertiesButTill();
 begin
   ScriptLines.Add(WAIT_KEYWORD + DELAY_FOR_PROPERTY + WITH_PROBABILITY_PROPERTY + X_TIMES_PROPERTY);
   WrapInMainBranch(ScriptLines);
@@ -156,7 +293,27 @@ begin
 
   AssertTrue(WRONG_STATEMENT, WPC_WAIT_STATEMENT_ID = MainBranchStatements[0].GetId());
   WaitStatement := TWpcWaitStatement(MainBranchStatements[0]);
+  AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, WaitStatement.IsDelayStatic());
   AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_DELAY_VALUE, WaitStatement.GetDelay());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_PROBABILITY_VALUE, WaitStatement.GetProbability());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_TIMES_VALUE, WaitStatement.GetTimes());
+end;
+
+// WAIT TILL 11:37 WITH PROBABILITY 50 4 TIMES
+procedure TWaitStatementParsingTestCase.ShouldParseWaitStatementWithAllPropertiesButDelay();
+begin
+  ScriptLines.Add(WAIT_KEYWORD + TILL_PROPERTY + WITH_PROBABILITY_PROPERTY + X_TIMES_PROPERTY);
+  WrapInMainBranch(ScriptLines);
+
+  ParseScriptLines();
+  ReadMainBranchStatementsList();
+
+  AssertEquals(WRONG_NUMBER_OF_SATEMENTS, 1, MainBranchStatements.Count);
+
+  AssertTrue(WRONG_STATEMENT, WPC_WAIT_STATEMENT_ID = MainBranchStatements[0].GetId());
+  WaitStatement := TWpcWaitStatement(MainBranchStatements[0]);
+  AssertFalse(WRONG_STATEMENT_PROPRTY_VALUE, WaitStatement.IsDelayStatic());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_TILL_VALUE, WaitStatement.GetOriginalDelayValue());
   AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_PROBABILITY_VALUE, WaitStatement.GetProbability());
   AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_TIMES_VALUE, WaitStatement.GetTimes());
 end;
@@ -186,6 +343,33 @@ begin
   WrapInMainBranch(ScriptLines);
 
   AssertScriptParseExceptionOnParse(1, 2);
+end;
+
+// WAIT 5m TILL 11:37
+procedure TWaitStatementParsingTestCase.SholudRaiseScriptParseExceptionWhenSetTillPropertyAfterDelayValue();
+begin
+  ScriptLines.Add(WAIT_KEYWORD + ' ' + TEST_DEFAULT_DELAY_STRING + TILL_PROPERTY);
+  WrapInMainBranch(ScriptLines);
+
+  AssertScriptParseExceptionOnParse(1, 2);
+end;
+
+// WAIT FOR 5m TILL 11:37
+procedure TWaitStatementParsingTestCase.SholudRaiseScriptParseExceptionWhenBothDelayAndTillPropertiesAreSet();
+begin
+  ScriptLines.Add(WAIT_KEYWORD + DELAY_FOR_PROPERTY + TILL_PROPERTY);
+  WrapInMainBranch(ScriptLines);
+
+  AssertScriptParseExceptionOnParse(1);
+end;
+
+// WAIT TILL 11:37 FOR 5m
+procedure TWaitStatementParsingTestCase.SholudRaiseScriptParseExceptionWhenBothTillAndDelayPropertiesAreSet();
+begin
+  ScriptLines.Add(WAIT_KEYWORD + TILL_PROPERTY + DELAY_FOR_PROPERTY);
+  WrapInMainBranch(ScriptLines);
+
+  AssertScriptParseExceptionOnParse(1);
 end;
 
 // WAIT 5m QUICK

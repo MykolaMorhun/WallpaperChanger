@@ -35,7 +35,7 @@
         <PackageName Value="FCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="51">
+    <Units Count="55">
       <Unit0>
         <Filename Value="WpcTests.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -193,6 +193,7 @@
       <Unit31>
         <Filename Value="../script/statements/wpcwaitstatement.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcWaitStatement"/>
       </Unit31>
       <Unit32>
         <Filename Value="../script/statements/properties/wpcstatementproperties.pas"/>
@@ -231,6 +232,7 @@
       <Unit40>
         <Filename Value="../script/statements/wpcchooserstatements.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcChooserStatements"/>
       </Unit40>
       <Unit41>
         <Filename Value="../script/statements/wpcstopstatement.pas"/>
@@ -273,7 +275,26 @@
       <Unit50>
         <Filename Value="../common/utils/wpctimeutils.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcTimeUtils"/>
       </Unit50>
+      <Unit51>
+        <Filename Value="../script/executor/wpcinthreadscriptexecutorlogger.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcInThreadScriptExecutorLogger"/>
+      </Unit51>
+      <Unit52>
+        <Filename Value="../script/executor/wpcinthreadscripttracer.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit52>
+      <Unit53>
+        <Filename Value="../script/executor/wpcinthreadscriptexecutor.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcInThreadScriptExecutor"/>
+      </Unit53>
+      <Unit54>
+        <Filename Value="../common/utils/wpcimagesutils.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit54>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

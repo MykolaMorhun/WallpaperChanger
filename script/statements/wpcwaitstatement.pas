@@ -6,6 +6,7 @@ interface
 
 uses
   Classes, SysUtils,
+  DateUtils,
   WpcBaseStatement,
   WpcStatementProperties,
   WpcScriptCommons;
@@ -20,11 +21,13 @@ type
     FProbability : TWpcProbabilityStatementProperty;
     FTimes       : TWpcTimesStatementProperty;
   public
-    constructor Create(Delay : LongWord);
+    constructor Create(Delay : LongWord; IsStatic : Boolean = True);
     destructor Destroy(); override;
   public
-    procedure SetDelay(Delay : LongWord);
+    procedure SetDelay(Delay : LongWord; IsStatic : Boolean = True);
     function GetDelay() : LongWord;
+    function GetOriginalDelayValue() : LongWord;
+    function IsDelayStatic() : Boolean;
     procedure SetProbability(Probability : Byte);
     function GetProbability() : Byte;
     procedure SetTimes(Times : LongWord);
@@ -43,13 +46,14 @@ begin
   Result := WPC_WAIT_STATEMENT_ID;
 end;
 
-constructor TWpcWaitStatement.Create(Delay : LongWord);
+constructor TWpcWaitStatement.Create(Delay : LongWord; IsStatic : Boolean);
 begin
   FDelay := TWpcDelayStatementProperty.Create();
   FProbability := TWpcProbabilityStatementProperty.Create();
   FTimes := TWpcTimesStatementProperty.Create();
 
   FDelay.Delay := Delay;
+  FDelay.IsStatic := IsStatic;
 end;
 
 destructor TWpcWaitStatement.Destroy();
@@ -60,14 +64,25 @@ begin
   inherited Destroy();
 end;
 
-procedure TWpcWaitStatement.SetDelay(Delay : LongWord);
+procedure TWpcWaitStatement.SetDelay(Delay: LongWord; IsStatic : Boolean = True);
 begin
   FDelay.Delay := Delay;
+  FDelay.IsStatic := IsStatic;
 end;
 
 function TWpcWaitStatement.GetDelay() : LongWord;
 begin
-   Result := FDelay.Delay;
+  Result := FDelay.Delay;
+end;
+
+function TWpcWaitStatement.GetOriginalDelayValue() : LongWord;
+begin
+  Result := FDelay.HoldingValue;
+end;
+
+function TWpcWaitStatement.IsDelayStatic() : Boolean;
+begin
+  Result := FDelay.IsStatic;
 end;
 
 procedure TWpcWaitStatement.SetProbability(Probability : Byte);

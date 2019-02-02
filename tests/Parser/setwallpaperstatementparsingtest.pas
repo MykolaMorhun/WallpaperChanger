@@ -28,10 +28,12 @@ type
     procedure ShouldParseWallpaperStatementWithStyleProperty();
     procedure ShouldParseWallpaperStatementWithProbabilityProperty();
     procedure ShouldParseWallpaperStatementWithDelayProperty();
+    procedure ShouldParseWallpaperStatementWithTillProperty();
     procedure ShouldParseWallpaperStatementWithDelayPropertyUsingDelayVariable();
     procedure ShouldParseWallpaperStatementWithAllProperties();
 
     procedure SholudRaiseScriptParseExceptionWhenNoWallpaperImageSpecified();
+    procedure SholudRaiseScriptParseExceptionIfBothDelayAndTillPropertiesSpecified();
     procedure SholudRaiseScriptParseExceptionWhenUnknownWordAddedAtTheEndOfBase();
     procedure SholudRaiseScriptParseExceptionWhenUnknownWordAddedBeforeProperties();
     procedure SholudRaiseScriptParseExceptionWhenUnknownWordAddedAfterProperties();
@@ -108,7 +110,26 @@ begin
   AssertTrue(WRONG_STATEMENT, WPC_WALLPAPER_STATEMENT_ID = MainBranchStatements[0].GetId());
   WallpaperStatement := TWpcWallpaperStatement(MainBranchStatements[0]);
   AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, WallpaperStatement.GetImage().GetPath().EndsWith(WALLPAPER_IMAGE_FILE));
+  AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, WallpaperStatement.IsDelayStatic());
   AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_DELAY_VALUE, WallpaperStatement.GetDelay());
+end;
+
+// SET WALLPAPER File.ext TILL 11:37
+procedure TSetWallpaperStatementParsingTest.ShouldParseWallpaperStatementWithTillProperty();
+begin
+  ScriptLines.Add(SET_WALLPAPER + WALLPAPER_IMAGE_FILE + TILL_PROPERTY);
+  WrapInMainBranch(ScriptLines);
+
+  ParseScriptLines();
+  ReadMainBranchStatementsList();
+
+  AssertEquals(WRONG_NUMBER_OF_SATEMENTS, 1, MainBranchStatements.Count);
+
+  AssertTrue(WRONG_STATEMENT, WPC_WALLPAPER_STATEMENT_ID = MainBranchStatements[0].GetId());
+  WallpaperStatement := TWpcWallpaperStatement(MainBranchStatements[0]);
+  AssertTrue(WRONG_STATEMENT_PROPRTY_VALUE, WallpaperStatement.GetImage().GetPath().EndsWith(WALLPAPER_IMAGE_FILE));
+  AssertFalse(WRONG_STATEMENT_PROPRTY_VALUE, WallpaperStatement.IsDelayStatic());
+  AssertEquals(WRONG_STATEMENT_PROPRTY_VALUE, TEST_DEFAULT_TILL_VALUE, WallpaperStatement.GetOriginalDelayValue());
 end;
 
 // SET WALLPAER File.ext FOR $fiveMinutes
@@ -161,6 +182,15 @@ begin
   WrapInMainBranch(ScriptLines);
 
   AssertScriptParseExceptionOnParse(1, 2);
+end;
+
+// SET WALLPAPER File.ext FOR 5m TILL 11:37
+procedure TSetWallpaperStatementParsingTest.SholudRaiseScriptParseExceptionIfBothDelayAndTillPropertiesSpecified;
+begin
+  ScriptLines.Add(SET_WALLPAPER + WALLPAPER_IMAGE_FILE + DELAY_FOR_PROPERTY + TILL_PROPERTY);
+  WrapInMainBranch(ScriptLines);
+
+  AssertScriptParseExceptionOnParse(1);
 end;
 
 // SET WALLPAER File.ext CENTER

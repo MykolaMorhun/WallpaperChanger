@@ -91,6 +91,7 @@ begin
     end;
     WAIT_KEYWORD: begin
       CacheOption(FOR_KEYWORD);
+      CacheOption(TILL_KEYWORD);
       CacheVariablesFromSection(DELAYS_KEYWORD);
     end;
     SET_KEYWORD: begin
@@ -184,6 +185,7 @@ begin
     DIRECTORIES_KEYWORD,
     DELAYS_KEYWORD,
     DEFAULTS_KEYWORD,
+    TILL_KEYWORD,
     PROBABILITY_KEYWORD:
       // no completion.
     else begin

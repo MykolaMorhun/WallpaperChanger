@@ -6,7 +6,9 @@ interface
 
 uses
   Classes, SysUtils,
-  Fgl, StrUtils,
+  StrUtils,
+  DateUtils,
+  Fgl,
   WpcScript,
   WpcBaseStatement,
   WpcBranchStatement,
@@ -58,6 +60,7 @@ const
   WITH_KEYWORD = 'WITH';
   PROBABILITY_KEYWORD = 'PROBABILITY';
   FOR_KEYWORD = 'FOR';
+  TILL_KEYWORD = 'TILL';
   TIMES_KEYWORD = 'TIMES';
   TO_KEYWORD = 'TO';
   ORDERED_KEYWORD = 'ORDERED';
@@ -98,8 +101,15 @@ type
         Times : LongWord;
         Probability : Byte;
         Delay : LongWord;
+        Till  : Integer;
         Style : TWpcWallpaperStyle;
       end;
+  private
+    const
+      DEFAULT_DELAY_PROPERTY_VALUE = 0;
+      DEFAULT_TILL_PROPERTY_VALUE = -1;
+      DEFAULT_PROBABILITY_PROPERTY_VALUE = 100;
+      DEFAULT_TIMES_PROPERTY_VALUE = 1;
 
   private
     FScript : TWpcScript;
@@ -176,6 +186,7 @@ type
     function ParseStatementPropertiesAndEnsureEndOfLine(AllowedProperties : TStatementPropertiesSet; LineWords : TStringList; Index : Integer) : TStatementProperties;
 
     function ParseDelayProperty(LineWords : TStringList; WordIndex : Integer) : Integer;
+    function ParseTillProperty(LineWords : TStringList; WordIndex : Integer) : Integer;
     function ParseTimesProperty(LineWords : TStringList; WordIndex : Integer) : Integer;
     function ParseProbabilityProperty(LineWords : TStringList; WordIndex : Integer) : Byte;
     function ParseWallpaperStyleProperty(LineWords : TStringList; WordIndex : Integer) : TWpcWallpaperStyle;
@@ -486,10 +497,10 @@ end;
 {
   Syntax:
   DELAYS
-    <Delay name> <Time>
+    <Delay name> <Time period>
   END DELAYS
   Where:
-   - Time: <n[Time unit]>
+   - Time period: <n[Time unit]>
    - Time unit: <ms|s|m|h|d>
 }
 procedure TWpcScriptParser.ParseDaleyVariables();
@@ -526,13 +537,13 @@ end;
 {
   Syntax:
   DEFAULTS
-    [DELAY <Time>]
+    [DELAY <Time period>]
     [DELAY UNITS <Time unit>]
     [WALLPAPER STYLE <Style>]
     [DIRECTORY <Path>]
   END DEFAULTS
   Where:
-   - Time: <n[Time unit]>
+   - Time period: <n[Time unit]>
    - Time unit: <ms|s|m|h|d>
    - Style: one of styles from TWpcWallpaperStyle
      Note, that each system has support for some subset of the styles.
@@ -865,10 +876,10 @@ end;
 
 {
   Syntax:
-  WAIT [FOR <Time> | <Time>] [WITH PROBABILITY <0-100>] [<1-n> TIMES]
+  WAIT [FOR <Time period> | <Time period> | TILL <Time>] [WITH PROBABILITY <0-100>] [<1-n> TIMES]
   Note:
-   - when Time unit and/or Time isn't set, then default values should be used.
-   - Time could be a delay variable
+   - when Time period or only Time unit is omitted, then default values should be used.
+   - Time period could be a delay variable
 }
 function TWpcScriptParser.ParseWaitStatement(LineWords : TStringList) : IWpcBaseScriptStatement;
   function CheckAndParseDelayValue(LineWords : TStringList; Index : Integer) : LongWord;
@@ -886,12 +897,15 @@ function TWpcScriptParser.ParseWaitStatement(LineWords : TStringList) : IWpcBase
   end;
 
 var
-  WaitStatement       : TWpcWaitStatement;
-  Delay               : LongWord;
-  StatementProperties : TStatementProperties;
-  CurrentWordIndex    : Integer;
+  WaitStatement         : TWpcWaitStatement;
+  Delay                 : LongWord;
+  StatementProperties   : TStatementProperties;
+  CurrentWordIndex      : Integer;
+  // True if delay is set right after WAIT keyword
+  IsShortFormUsed       : Boolean;
 begin
   Delay := FComputedDefaultDelay;
+  IsShortFormUsed := True;
   StatementProperties := GetDefaultStatementProperties();
 
   CurrentWordIndex := 0;
@@ -900,25 +914,43 @@ begin
   if (LineWords.Count <> 1) then begin
     Inc(CurrentWordIndex);
 
-    if (CheckKeyWord(SafeGet(LineWords, CurrentWordIndex), FOR_KEYWORD)) then begin
-      Inc(CurrentWordIndex);
+    if (ProbePropertyType(LineWords, CurrentWordIndex) = WPC_UNKNOWN_STATEMENT_PROPERTY) then begin
+      // Handle Time period after WAIT keyword: WAIT 5m [properties]
       Delay := CheckAndParseDelayValue(LineWords, CurrentWordIndex);
+
+      Inc(CurrentWordIndex);
+      StatementProperties := ParseStatementPropertiesAndEnsureEndOfLine(
+      [
+        WPC_PROBABILITY_STATEMENT_PROPERTY_ID,
+        WPC_TIMES_STATEMENT_PROPERY_ID
+      ],
+      LineWords, CurrentWordIndex);
     end
     else begin
-      // Handle case: WAIT <A property> (default delay is supposed)
-      if (ProbePropertyType(LineWords, CurrentWordIndex) = WPC_UNKNOWN_STATEMENT_PROPERTY) then
-        Delay := CheckAndParseDelayValue(LineWords, CurrentWordIndex)
-      else
-        Dec(CurrentWordIndex); // Push back a property word
-    end;
+      IsShortFormUsed := False;
+      StatementProperties := ParseStatementPropertiesAndEnsureEndOfLine(
+        [
+          WPC_DELAY_STATEMENT_PROPERTY_ID,
+          WPC_TILL_STATEMENT_PROPERTY_ID,
+          WPC_PROBABILITY_STATEMENT_PROPERTY_ID,
+          WPC_TIMES_STATEMENT_PROPERY_ID
+        ],
+        LineWords, CurrentWordIndex);
 
-    Inc(CurrentWordIndex);
-    StatementProperties := ParseStatementPropertiesAndEnsureEndOfLine(
-      [WPC_PROBABILITY_STATEMENT_PROPERY_ID, WPC_TIMES_STATEMENT_PROPERY_ID],
-      LineWords, CurrentWordIndex);
+      // If Delay and Till properties are amitted (for example: WAIT 5 TIMES) use default delay value
+      if ((StatementProperties.Delay = DEFAULT_DELAY_PROPERTY_VALUE) and (StatementProperties.Till = DEFAULT_TILL_PROPERTY_VALUE)) then
+        StatementProperties.Delay := Delay;
+    end;
   end;
 
-  WaitStatement := TWpcWaitStatement.Create(Delay);
+  if (IsShortFormUsed) then
+    WaitStatement := TWpcWaitStatement.Create(Delay)
+  else
+    if (StatementProperties.Till <> DEFAULT_TILL_PROPERTY_VALUE) then
+      WaitStatement := TWpcWaitStatement.Create(StatementProperties.Till, False)
+    else
+      WaitStatement := TWpcWaitStatement.Create(StatementProperties.Delay);
+
   WaitStatement.SetProbability(StatementProperties.Probability);
   WaitStatement.SetTimes(StatementProperties.Times);
   Result := WaitStatement;
@@ -926,14 +958,15 @@ end;
 
 {
   Syntax:
-  SET WALLPAPER <File> [STYLE <Style>] [FOR <Time>] [WITH PROBABILITY <0-100>]
+  SET WALLPAPER <File> [STYLE <Style>] [FOR <Time period> | TILL <Time>] [WITH PROBABILITY <0-100>]
   Where:
     - File could be:
        * absolute or relative path to an image
        * $DirVariable/path/image.ext
        * $ImageVariable
     - Style: a value from TWpcWallpaperStyle
-  When Time property is not set, then no delay.
+
+  When Delay property is not set, then no delay.
 }
 function TWpcScriptParser.ParseWallpaperStatement(LineWords : TStringList) : IWpcBaseScriptStatement;
 var
@@ -951,7 +984,7 @@ end;
 
 {
   Syntax:
-  SET WALLPAPER FROM DIRECTORY <Path> [RECURSIVE] [ORDERED] [STYLE <Style>] [FOR <Time>] [WITH PROBABILITY <0-100>] [<1-n> TIMES]
+  SET WALLPAPER FROM DIRECTORY <Path> [RECURSIVE] [ORDERED] [STYLE <Style>] [FOR <Time period>] [WITH PROBABILITY <0-100>] [<1-n> TIMES]
   Where:
     - Directory could be:
        * absolute or relative path to a directory with wallpapers
@@ -962,7 +995,7 @@ end;
                and next wallpaper will be chosen as next item in the list;
                if not set then any wallpaper form the directory could be chosen including the same one.
     - Style: a value from TWpcWallpaperStyle
-    - Time: specifies delay between wallpaper changes.
+    - Time period: specifies delay between wallpaper changes.
             When the property is not set, minimal delay will be used.
             It is recomended to always specify this property.
     - Times: defines how many times new image will be set as a wallpaper.
@@ -1003,7 +1036,7 @@ begin
 
   Inc(CurrentWordIndex);
   StatementProperties := ParseStatementPropertiesAndEnsureEndOfLine(
-    [WPC_PROBABILITY_STATEMENT_PROPERY_ID],
+    [WPC_PROBABILITY_STATEMENT_PROPERTY_ID],
     LineWords, CurrentWordIndex);
 
   StopStatement := TWpcStopStatement.Create();
@@ -1356,7 +1389,7 @@ end;
 {
   Parses Wallpaper statement data.
   Syntax the same as for Wallpaper statement, but without SET WALLPAPER keywords:
-  <File> [STYLE <Style>] [FOR <Time>] [WITH PROBABILITY <0-100>]
+  <File> [STYLE <Style>] [FOR <Time period> | TILL <Time>] [WITH PROBABILITY <0-100>]
 }
 function TWpcScriptParser.ParseWallpaperStatementData(LineWords : TStringList; Index : Integer) : TWpcWallpaperStatement;
 var
@@ -1370,7 +1403,12 @@ begin
   Image := ParseImage(LineWords, CurrentWordIndex);
   try
     StatementProperties := ParseStatementPropertiesAndEnsureEndOfLine(
-      [WPC_WALLPAPER_STYLE_PROPERTY_ID, WPC_PROBABILITY_STATEMENT_PROPERY_ID, WPC_DELAY_STATEMENT_PROPERY_ID],
+      [
+        WPC_WALLPAPER_STYLE_PROPERTY_ID,
+        WPC_TILL_STATEMENT_PROPERTY_ID,
+        WPC_PROBABILITY_STATEMENT_PROPERTY_ID,
+        WPC_DELAY_STATEMENT_PROPERTY_ID
+      ],
       LineWords, CurrentWordIndex);
   except
     Image.Free();
@@ -1380,14 +1418,18 @@ begin
   WallpaperStatement := TWpcWallpaperStatement.Create(Image);
   WallpaperStatement.SetStyle(StatementProperties.Style);
   WallpaperStatement.SetProbability(StatementProperties.Probability);
-  WallpaperStatement.SetDelay(StatementProperties.Delay);
+  if (StatementProperties.Till <> -1) then
+    WallpaperStatement.SetDelay(StatementProperties.Till, False)
+  else
+    WallpaperStatement.SetDelay(StatementProperties.Delay);
+
   Result := WallpaperStatement;
 end;
 
 {
   Parses Directory statement data.
   Syntax the same as for Directory statement, but without SET WALLPAPER FROM DIRECTORY keywords:
-  <Path> [RECURSIVE] [ORDERED] [STYLE <Style>] [FOR <Time>] [WITH PROBABILITY <0-100>] [<1-n> TIMES]
+  <Path> [RECURSIVE] [ORDERED] [STYLE <Style>] [FOR <Time period>] [WITH PROBABILITY <0-100>] [<1-n> TIMES]
 }
 function TWpcScriptParser.ParseDirectoryStatementData(LineWords : TStringList; Index : Integer): TWpcDirectoryStatement;
 var
@@ -1417,7 +1459,7 @@ begin
     IsRecursive := False;
 
   StatementProperties := ParseStatementPropertiesAndEnsureEndOfLine(
-    [WPC_WALLPAPER_STYLE_PROPERTY_ID, WPC_DELAY_STATEMENT_PROPERY_ID, WPC_PROBABILITY_STATEMENT_PROPERY_ID, WPC_TIMES_STATEMENT_PROPERY_ID],
+    [WPC_WALLPAPER_STYLE_PROPERTY_ID, WPC_DELAY_STATEMENT_PROPERTY_ID, WPC_PROBABILITY_STATEMENT_PROPERTY_ID, WPC_TIMES_STATEMENT_PROPERY_ID],
     LineWords, CurrentWordIndex);
 
   DirectoryStatement := TWpcDirectoryStatement.Create(TWpcDirectory.Create(DirectoryPath), IsOrdered, IsRecursive);
@@ -1449,7 +1491,7 @@ begin
 
   Inc(CurrentWordIndex);
   StatementProperties := ParseStatementPropertiesAndEnsureEndOfLine(
-    [WPC_PROBABILITY_STATEMENT_PROPERY_ID],
+    [WPC_PROBABILITY_STATEMENT_PROPERTY_ID],
     LineWords, CurrentWordIndex);
 
   SwitchBranchStatement := TWpcSwitchBranchStatement.Create(BranchName);
@@ -1478,7 +1520,7 @@ begin
 
   Inc(CurrentWordIndex);
   StatementProperties := ParseStatementPropertiesAndEnsureEndOfLine(
-    [WPC_PROBABILITY_STATEMENT_PROPERY_ID, WPC_TIMES_STATEMENT_PROPERY_ID],
+    [WPC_PROBABILITY_STATEMENT_PROPERTY_ID, WPC_TIMES_STATEMENT_PROPERY_ID],
     LineWords, CurrentWordIndex);
 
   UseBranchStatement := TWpcUseBranchStatement.Create(BranchName);
@@ -1593,9 +1635,10 @@ function TWpcScriptParser.GetDefaultStatementProperties() : TStatementProperties
 var
   StatementProperties : TStatementProperties;
 begin
-  StatementProperties.Delay := 0;
-  StatementProperties.Probability := 100;
-  StatementProperties.Times := 1;
+  StatementProperties.Delay := DEFAULT_DELAY_PROPERTY_VALUE;
+  StatementProperties.Till := DEFAULT_TILL_PROPERTY_VALUE;
+  StatementProperties.Probability := DEFAULT_PROBABILITY_PROPERTY_VALUE;
+  StatementProperties.Times := DEFAULT_TIMES_PROPERTY_VALUE;
   StatementProperties.Style := FDefaultWallpaperStyle;
 
   Result := StatementProperties;
@@ -1620,9 +1663,14 @@ begin
       raise TWpcScriptParseException.Create('Unexpected word "' + LineWords[Index] + '".', FCurrentLine, Index);
 
     case (AssumedNextProperty) of
-      WPC_DELAY_STATEMENT_PROPERY_ID:
+      WPC_DELAY_STATEMENT_PROPERTY_ID:
         begin
           StatementProperties.Delay := ParseDelayProperty(LineWords, Index);
+          Index := Index + 2;
+        end;
+      WPC_TILL_STATEMENT_PROPERTY_ID:
+        begin
+          StatementProperties.Till := ParseTillProperty(LineWords, Index);
           Index := Index + 2;
         end;
       WPC_TIMES_STATEMENT_PROPERY_ID:
@@ -1630,7 +1678,7 @@ begin
           StatementProperties.Times := ParseTimesProperty(LineWords, Index);
           Index := Index + 2;
         end;
-      WPC_PROBABILITY_STATEMENT_PROPERY_ID:
+      WPC_PROBABILITY_STATEMENT_PROPERTY_ID:
         begin
           StatementProperties.Probability := ParseProbabilityProperty(LineWords, Index);
           Index := Index + 3;
@@ -1647,6 +1695,10 @@ begin
         raise TWpcException.Create('Cannot handle property: ' + StatementPropertyIdToStr(AssumedNextProperty));
     end;
   end;
+
+  // Check for conflicts in parsed properties
+  if ((StatementProperties.Delay <> DEFAULT_DELAY_PROPERTY_VALUE) and (StatementProperties.Till <> DEFAULT_TILL_PROPERTY_VALUE)) then
+    raise TWpcScriptParseException.Create('Combining of Delay and Till properties is not allowed', FCurrentLine);
 
   Result := StatementProperties;
 end;
@@ -1665,8 +1717,8 @@ end;
 
 {
   Syntax:
-  FOR <Time>
-  Note, Time could be a delay variable.
+  FOR <Time period>
+  Note, Time period could be a delay variable.
 }
 function TWpcScriptParser.ParseDelayProperty(LineWords : TStringList; WordIndex : Integer) : Integer;
 var
@@ -1683,6 +1735,24 @@ begin
     DelayString := ApplyParsedDelayVariables(DelayString);
 
   Result := ParseDelayValue(DelayString);
+end;
+
+{
+  Syntax:
+  TILL <Time>
+}
+function TWpcScriptParser.ParseTillProperty(LineWords : TStringList; WordIndex : Integer): Integer;
+var
+  TimeString : String;
+begin
+  EnsureKeyWord(LineWords, WordIndex, TILL_KEYWORD);
+
+  Inc(WordIndex);
+  TimeString := SafeGet(LineWords, WordIndex);
+  if (TimeString = '') then
+    raise TWpcScriptParseException.Create('Valid time expected, but nothing found.', FCurrentLine, WordIndex);
+
+  Result := MilliSecondOfTheDay(ParseTimeValue(TimeString));
 end;
 
 {
@@ -1845,7 +1915,8 @@ end;
   will return 2
   Note, non-empty upper-case array is mandatory.
 }
-function TWpcScriptParser.ParseSequentialNumberWithAlias(Value : String; Aliases : Array of String) : Integer;
+function TWpcScriptParser.ParseSequentialNumberWithAlias(Value: String;
+  Aliases: array of String): Integer;
 var
   AliasesNumber         : Integer;
   ParsedSequentialValue : Integer;
@@ -2283,9 +2354,11 @@ function TWpcScriptParser.ProbePropertyType(LineWords : TStringList; WordIndex :
 begin
   case (UpperCase(SafeGet(LineWords, WordIndex))) of
     FOR_KEYWORD:
-      Result := WPC_DELAY_STATEMENT_PROPERY_ID;
+      Result := WPC_DELAY_STATEMENT_PROPERTY_ID;
+    TILL_KEYWORD:
+      Result := WPC_TILL_STATEMENT_PROPERTY_ID;
     WITH_KEYWORD:
-      Result := WPC_PROBABILITY_STATEMENT_PROPERY_ID;
+      Result := WPC_PROBABILITY_STATEMENT_PROPERTY_ID;
     STYLE_KEYWORD:
       Result := WPC_WALLPAPER_STYLE_PROPERTY_ID;
     else begin
