@@ -63,6 +63,12 @@ type
     // Holds opened script editors and is used for closing them on application exit if any.
     // When an editor is closed during runtime then callback will remove the editor form the list.
     FOpenedScriptEditors : TWpcScriptEditorsList;
+
+    FOptionsForm : TOptionsForm;
+    FIsOptionsFormOpen : Boolean;
+
+    FAboutForm : TWpcAboutForm;
+    FIsAboutFormOpen : Boolean;
   public
     constructor Create(MainForm : TBannerForm);
     destructor Destroy(); override;
@@ -119,6 +125,8 @@ begin
   FScriptsGenerator := TWpcScriptsGenerator.Create();
 
   FOpenedScriptEditors := TWpcScriptEditorsList.Create();
+  FIsOptionsFormOpen := False;
+  FIsAboutFormOpen := False;
 
   ApplySettings(); // complete initialization
 
@@ -232,6 +240,13 @@ end;
 
 procedure TWpcApplicationManager.RunScript(PathToScript : String);
 begin
+  if (FIsOptionsFormOpen and (FWallpaperSetter = nil)) then begin
+    // User is asked to set desktop environment manually because autodetect failed.
+    // Do not allow to run scripts in this state.
+    FOptionsForm.SetFocus();
+    exit;
+  end;
+
   FApplicationStateSettings.LastType := WPCA_SCRIPT;
   FApplicationStateSettings.LastScript := PathToScript;
 
@@ -359,26 +374,36 @@ begin
 end;
 
 procedure TWpcApplicationManager.OpenOptionsForm(ForceSetEnvironment : Boolean = False);
-var
-  OptionsWindow : TOptionsForm;
 begin
-  OptionsWindow := TOptionsForm.Create(nil);
+  if (FIsOptionsFormOpen) then begin
+    FOptionsForm.SetFocus();
+    exit;
+  end;
+
+  FIsOptionsFormOpen := True;
+  FOptionsForm := TOptionsForm.Create(nil);
   try
-    OptionsWindow.ShowModalOptionsForm(ForceSetEnvironment);
+    FOptionsForm.ShowModalOptionsForm(ForceSetEnvironment);
   finally
-    OptionsWindow.Free();
+    FOptionsForm.Free();
+    FIsOptionsFormOpen := False;
   end;
 end;
 
 procedure TWpcApplicationManager.OpenAboutForm();
-var
-  AboutForm : TWpcAboutForm;
 begin
-  AboutForm := TWpcAboutForm.Create(nil);
+  if (FIsAboutFormOpen) then begin
+    FAboutForm.SetFocus();
+    exit;
+  end;
+
+  FIsAboutFormOpen := True;
+  FAboutForm := TWpcAboutForm.Create(nil);
   try
-    AboutForm.ShowModal();
+    FAboutForm.ShowModal();
   finally
-    AboutForm.Free();
+    FAboutForm.Free();
+    FIsAboutFormOpen := False;
   end;
 end;
 
