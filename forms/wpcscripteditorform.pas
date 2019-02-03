@@ -42,8 +42,6 @@ type
   { TScriptEditorForm }
 
   TScriptEditorForm = class(TForm)
-    StatementPropertyTillMenuItem: TMenuItem;
-    StatementInsertTillPropertyAction: TAction;
     ScriptEditorActionList: TActionList;
     ScriptEditorImageList: TImageList;
     ScriptEditorMainMenu: TMainMenu;
@@ -75,6 +73,7 @@ type
     StatementInsertTimesPropertyAction: TAction;
     StatementInsertProbabilityPropertyAction: TAction;
     StatementInsertDelayPropertyAction: TAction;
+    StatementInsertTillPropertyAction: TAction;
     StatementToggleInsertInteractiveAction: TAction;
     CloseEditorWindowAction: TAction;
     StatementEditAction: TAction;
@@ -142,13 +141,14 @@ type
     StatementInsertDirectoryMenuItem: TMenuItem;
     StatementInsertWallpaperMenuItem: TMenuItem;
     StatementInsertWaitMenuItem: TMenuItem;
+    StatementInsertPropertyMenuItem: TMenuItem;
+    StatementPropertyTillMenuItem: TMenuItem;
     StatementPropertyWallpaperStyleMenuItem: TMenuItem;
     StatementPropertyTimesMenuItem: TMenuItem;
     StatementPropertyProbabilityMenuItem: TMenuItem;
     StatementSeparator1: TMenuItem;
     StatementPropertyDelayMenuItem: TMenuItem;
     StatementEditMenuItem: TMenuItem;
-    StatementInsertPropertyMenuItem: TMenuItem;
     StatementToggleInteractiveInsertionMenuItem: TMenuItem;
     StatementInsertInteractivePropertyMenuItem: TMenuItem;
     StatementInsertInteractiveMenuItem: TMenuItem;
@@ -430,6 +430,7 @@ begin
   FCurrentScript.Modified := False;
 
   FScriptPath := '';
+  BottomPanelMemo.Append('Created new blank script.');
 end;
 
 procedure TScriptEditorForm.FileNewBaseScriptActionExecute(Sender : TObject);
@@ -450,6 +451,7 @@ begin
   end;
 
   FScriptPath := '';
+  BottomPanelMemo.Append('Created new script (basic scaffold).');
 end;
 
 procedure TScriptEditorForm.FileNewFullScriptActionExecute(Sender : TObject);
@@ -490,6 +492,7 @@ begin
   end;
 
   FScriptPath := '';
+  BottomPanelMemo.Append('Created new script (extended scaffold).');
 end;
 
 procedure TScriptEditorForm.FileOpenScriptActionExecute(Sender : TObject);
@@ -500,6 +503,7 @@ begin
     FScriptPath := ScriptOpenDialog.FileName;
     FCurrentScript.Lines.LoadFromFile(FScriptPath);
     FCurrentScript.Modified := False;
+    BottomPanelMemo.Append('Opened file: ' + FScriptPath);
   end;
 end;
 
@@ -508,6 +512,7 @@ begin
   if (FScriptPath <> '') then begin
     FCurrentScript.Lines.SaveToFile(FScriptPath);
     FCurrentScript.Modified := False;
+    BottomPanelMemo.Append('Changes saved.');
   end
   else
     FileSaveScriptAsActionExecute(Sender);
@@ -519,6 +524,7 @@ begin
     FScriptPath := ScriptSaveDialog.FileName;
     FCurrentScript.Lines.SaveToFile(FScriptPath);
     FCurrentScript.Modified := False;
+    BottomPanelMemo.Append('Saved current script into: ' + FScriptPath);
   end
 end;
 
