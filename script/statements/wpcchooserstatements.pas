@@ -236,11 +236,15 @@ function TWpcAbstarctChooserStatement.ChooseItemByCurrentSequentialValue(Current
 var
   i : Integer;
 begin
-  // finds next item number
-  for i:=0 to (FItems.Count - 1) do
-    if (FItems[i].Weight > CurrentValue) then break;
+  // Finds corresponding item set into i the next index
+  i := 0;
+  while (i < FItems.Count) do
+    if (FItems[i].Weight > CurrentValue) then
+      break
+    else
+      Inc(i);
 
-  // now previous item is the wanted one
+  // Now previous item is the wanted one
   if (i = 0) then
     i := FItems.Count - 1
   else
