@@ -9654,6 +9654,7 @@ object BannerForm: TBannerForm
       FFFF0000FFFF0000FFFF0000
     }
     Visible = True
+    OnClick = WPCTrayIconClick
     left = 16
     top = 8
   end

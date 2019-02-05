@@ -8,7 +8,10 @@ uses
   Classes, SysUtils,
   IniFiles,
   WpcExceptions,
-  WpcWallpaperStyles, WpcDesktopEnvironments, WpcWallpaperChangerAlgorithms;
+  WpcWallpaperStyles,
+  WpcDesktopEnvironments,
+  WpcWallpaperChangerAlgorithms,
+  WpcMainManuActions;
 
 type
 
@@ -37,6 +40,8 @@ type
     RUN_TERMINATED_TASK_ON_START_KEY = 'RunTerminatedTaskOnStart';
     RUN_LAST_TASK_ON_START_KEY = 'RunLastTaskOnStart';
 
+    TRAY_CLICK_ACTION_KEY = 'TrayClickAction';
+
     DESKTOP_ENVIRONMENT_KEY = 'DesktopEnvironment';
 
     WALLPAPER_STYLE_KEY = 'DefaultStyle';
@@ -52,6 +57,8 @@ type
     DEFAULT_RUN_TERMINATED_ON_START = true;
     DEFAULT_RUN_ON_START = false;
 
+    DEFAULT_TRAY_CLICK_ACTION = MM_SHOW_MAIN_MENU_STRING;
+
     DEFAULT_DESKTOP_ENVIRONMENT = DE_AUTODETECT;
 
     DEFAULT_WALLPAPER_STYLE = CENTERED;
@@ -66,6 +73,8 @@ type
     FCustomSetter : String;
     FRunTerminatedTaskOnStart : Boolean;
     FRunLastTaskOnStart : Boolean;
+
+    FTrayClickAction : EMainManuActions;
 
     FDesktopEnvironment : TDesktopEnvironment;
 
@@ -90,6 +99,9 @@ type
     property RunTerminatedTaskOnStart : Boolean read FRunTerminatedTaskOnStart write FRunTerminatedTaskOnStart;
     // Whether last used script should be run on application start
     property RunLastTaskOnStart : Boolean read FRunLastTaskOnStart write FRunLastTaskOnStart;
+
+    // Holds action index to be executed on click on Wallpaper Changer in tray
+    property TrayClickAction : EMainManuActions read FTrayClickAction write FTrayClickAction;
 
     // Graphical desktop environment, e.g. XFCE
     property DesktopEnvironment : TDesktopEnvironment read FDesktopEnvironment write FDesktopEnvironment;
@@ -244,6 +256,8 @@ begin
     FRunTerminatedTaskOnStart := SettingsFile.ReadBool(ENGINE_SECTION, RUN_TERMINATED_TASK_ON_START_KEY, DEFAULT_RUN_TERMINATED_ON_START);
     FRunLastTaskOnStart := SettingsFile.ReadBool(ENGINE_SECTION, RUN_LAST_TASK_ON_START_KEY, DEFAULT_RUN_ON_START);
 
+    FTrayClickAction := StrToMainMenuAction(SettingsFile.ReadString(ENGINE_SECTION, TRAY_CLICK_ACTION_KEY, DEFAULT_TRAY_CLICK_ACTION));
+
     FDesktopEnvironment := StrToDesktopEnvironment(SettingsFile.ReadString(ENVIRONMENT_SECTION, DESKTOP_ENVIRONMENT_KEY, DE_AUTODETECT_ID));
 
     FWallpaperStyle := StrToWallpaperStyle(SettingsFile.ReadString(WALLAPAPER_SECTION, WALLPAPER_STYLE_KEY, WPST_CENTERED));
@@ -271,6 +285,8 @@ begin
     SettingsFile.WriteString(ENGINE_SECTION, CUSTOM_SETTER_KEY, FCustomSetter);
     SettingsFile.WriteBool(ENGINE_SECTION, RUN_TERMINATED_TASK_ON_START_KEY, FRunTerminatedTaskOnStart);
     SettingsFile.WriteBool(ENGINE_SECTION, RUN_LAST_TASK_ON_START_KEY, FRunLastTaskOnStart);
+
+    SettingsFile.WriteString(ENGINE_SECTION, TRAY_CLICK_ACTION_KEY, MainManuActionToStr(FTrayClickAction));
 
     SettingsFile.WriteString(ENVIRONMENT_SECTION, DESKTOP_ENVIRONMENT_KEY, DesktopEnvironmentToStr(FDesktopEnvironment));
 

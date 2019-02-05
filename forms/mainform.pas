@@ -8,6 +8,7 @@ uses
   Classes, SysUtils, FileUtil,
   Forms, Controls, Graphics, Dialogs, ExtCtrls, Menus, ExtDlgs, LCLType,
   WpcImage, WpcDirectory,
+  WpcMainManuActions,
   WpcExceptions;
 
 type
@@ -52,6 +53,7 @@ type
     procedure DocsMenuItemClick(Sender: TObject);
     procedure AboutMenuItemClick(Sender: TObject);
     procedure ExitMenuItemClick(Sender: TObject);
+    procedure WPCTrayIconClick(Sender: TObject);
   private
     function GetTargetFile(Dialog : TFileDialog; DefaultPath : String = '') : String;
     function WarnScriptIsRunning() : Boolean; inline;
@@ -198,6 +200,39 @@ end;
 procedure TBannerForm.ExitMenuItemClick(Sender : TObject);
 begin
   ShutdownApplication();
+end;
+
+(* Tray *)
+
+procedure TBannerForm.WPCTrayIconClick(Sender : TObject);
+begin
+  case (ApplicationManager.CurrentSettings.TrayClickAction) of
+    MM_NO_ACTION:
+      exit;
+    MM_SHOW_MAIN_MENU:
+      WPCMainPopupMenu.PopUp();
+    MM_EXIT_ACTION:
+      ExitMenuItemClick(Sender);
+    MM_OPEN_DOCUMENTATION_ACTION:
+      DocsMenuItemClick(Sender);
+    MM_OPEN_SETTINGS_ACTION:
+      SettingsMenuItemClick(Sender);
+    MM_SET_SINGLE_WALLPAPER_ACTION:
+      SetWallpaperImageMenuItemClick(Sender);
+    MM_SET_DIRECTORY_ACTION:
+      SetWallpaperDirectoryMenuItemClick(Sender);
+    MM_RUN_SCRIPT_ACTION:
+      RunScriptMenuItemClick(Sender);
+    MM_OPEN_SCRIPT_EDITOR_ACTION:
+      ScriptEditorMenuItemClick(Sender);
+    MM_NEXT_WALLPAPER:
+      NextWallpaperMenuItemClick(Sender);
+    MM_STOP_OR_RERUN_ACTION:
+      StopOrRerunMenuItemClick(Sender);
+    MM_STOP_ONLY_ACTION:
+      if (ApplicationManager.IsScriptRunning()) then
+        ApplicationManager.StopScript();
+  end;
 end;
 
 (* Helpers *)

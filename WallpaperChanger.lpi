@@ -35,7 +35,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="76">
+    <Units Count="77">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -427,6 +427,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcWindowsVistaWallpaperSetter"/>
       </Unit75>
+      <Unit76>
+        <Filename Value="common/types/wpcmainmanuactions.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcMainManuActions"/>
+      </Unit76>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

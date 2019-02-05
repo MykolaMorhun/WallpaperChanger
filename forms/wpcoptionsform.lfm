@@ -4,7 +4,7 @@ object OptionsForm: TOptionsForm
   Top = 146
   Width = 500
   HorzScrollBar.Page = 336
-  VertScrollBar.Page = 213
+  VertScrollBar.Page = 243
   ActiveControl = OptionsPageControl
   AutoScroll = True
   Caption = 'Wallpaper Changer Settings'
@@ -32,6 +32,7 @@ object OptionsForm: TOptionsForm
       ClientHeight = 185
       ClientWidth = 494
       object WallpaperSetterGroupBox: TGroupBox
+        AnchorSideRight.Side = asrBottom
         Left = 5
         Height = 108
         Top = 5
@@ -190,15 +191,64 @@ object OptionsForm: TOptionsForm
           end
         end
       end
+      object OnTrayClickActionPanel: TPanel
+        AnchorSideLeft.Control = EngineTabSheet
+        AnchorSideTop.Control = OnStartOptionsPanel
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Side = asrBottom
+        Left = 5
+        Height = 30
+        Top = 143
+        Width = 484
+        Anchors = [akTop, akLeft, akRight]
+        ClientHeight = 30
+        ClientWidth = 484
+        TabOrder = 1
+        object OnTrayClickActionLabel: TLabel
+          AnchorSideLeft.Control = OnTrayClickActionPanel
+          AnchorSideTop.Control = OnTrayClickActionPanel
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Control = OnTrayClickActionComboBox
+          AnchorSideBottom.Side = asrBottom
+          Left = 5
+          Height = 15
+          Top = 8
+          Width = 82
+          BorderSpacing.Left = 4
+          BorderSpacing.Right = 10
+          Caption = 'On tray click'
+          Layout = tlCenter
+          ParentColor = False
+        end
+        object OnTrayClickActionComboBox: TComboBox
+          AnchorSideLeft.Control = OnTrayClickActionLabel
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = OnTrayClickActionPanel
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Control = OnTrayClickActionPanel
+          AnchorSideRight.Side = asrBottom
+          Left = 97
+          Height = 27
+          Top = 2
+          Width = 386
+          Anchors = [akTop, akLeft, akRight]
+          ItemHeight = 0
+          Style = csDropDownList
+          TabOrder = 0
+        end
+      end
       object OnStartOptionsPanel: TPanel
+        AnchorSideTop.Control = WallpaperSetterGroupBox
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Side = asrBottom
         Left = 5
         Height = 30
         Top = 113
         Width = 484
-        Align = alTop
+        Anchors = [akTop, akLeft, akRight]
         ClientHeight = 30
         ClientWidth = 484
-        TabOrder = 1
+        TabOrder = 2
         object OnApplicationStartLabel: TLabel
           AnchorSideLeft.Control = OnStartOptionsPanel
           AnchorSideTop.Control = OnStartOptionsPanel
@@ -210,7 +260,7 @@ object OptionsForm: TOptionsForm
           Top = 8
           Width = 128
           BorderSpacing.Left = 4
-          BorderSpacing.Right = 4
+          BorderSpacing.Right = 10
           Caption = 'On application start'
           Layout = tlCenter
           ParentColor = False
@@ -222,10 +272,10 @@ object OptionsForm: TOptionsForm
           AnchorSideTop.Side = asrCenter
           AnchorSideRight.Control = OnStartOptionsPanel
           AnchorSideRight.Side = asrBottom
-          Left = 137
+          Left = 143
           Height = 27
           Top = 2
-          Width = 346
+          Width = 340
           Anchors = [akTop, akLeft, akRight]
           ItemHeight = 0
           Style = csDropDownList

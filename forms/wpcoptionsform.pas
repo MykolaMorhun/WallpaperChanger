@@ -13,6 +13,7 @@ uses
   WpcWallpaperStyles,
   WpcTimeMeasurementUnits,
   WpcTimeUtils,
+  WpcMainManuActions,
   WpcOptions,
   FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls, Buttons, ExtCtrls,
   StdCtrls, Spin;
@@ -27,9 +28,12 @@ type
     ConstantDelayRadioButton: TRadioButton;
     DefaultsButton: TButton;
     DelayRadioGroupPanel: TPanel;
+    OnTrayClickActionComboBox: TComboBox;
     OnApplicationStartLabel: TLabel;
     OkButton: TButton;
+    OnTrayClickActionLabel: TLabel;
     OnStartOptionsPanel: TPanel;
+    OnTrayClickActionPanel: TPanel;
     SaveButton: TButton;
     VariableDelayRadioButton: TRadioButton;
     WallpaperSetterAutodetectRadioButton: TRadioButton;
@@ -124,6 +128,7 @@ var
   MeasurementUnit       : TWpcTimeMeasurementUnits;
   MeasurementUnitString : String;
   Environment           : TDesktopEnvironment;
+  TrayClickAction       : EMainManuActions;
 begin
   // Init timeunits list.
   for MeasurementUnit in TWpcTimeMeasurementUnits do begin
@@ -139,6 +144,9 @@ begin
   OnApplicationStartComboBox.Items.Add(APP_START_NONE);
   OnApplicationStartComboBox.Items.Add(APP_START_RUN_LAST_SCRIPT_IF_WAS_TERMINATED);
   OnApplicationStartComboBox.Items.Add(APP_START_ALWAYS_RUN_LAST_SCRIPT);
+
+  for TrayClickAction in EMainManuActions do
+    OnTrayClickActionComboBox.Items.Add(MainManuActionToStr(TrayClickAction));
 end;
 
 {
@@ -235,6 +243,9 @@ begin
   else
     SetComboBoxValue(OnApplicationStartComboBox, APP_START_NONE);
 
+  // On tray click action
+  SetComboBoxValue(OnTrayClickActionComboBox, MainManuActionToStr(Settings.TrayClickAction));
+
   // Simple Changer tab
   WallpaperStyleComboBox.Items.Clear();
   if (ApplicationManager.WallpaperSetter <> nil) then
@@ -310,6 +321,9 @@ begin
       Settings.RunLastTaskOnStart := False;
     end;
   end;
+
+  // On tray click action
+  Settings.TrayClickAction := StrToMainMenuAction(OnTrayClickActionComboBox.Items[OnTrayClickActionComboBox.ItemIndex]);
 
   // Simple Changer tab
   if (WallpaperStyleComboBox.ItemIndex <> -1) then
