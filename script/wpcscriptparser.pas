@@ -157,7 +157,7 @@ type
     procedure Validate();
 
     procedure ParseVariableDefinition(Line : String; out VariableName : String; out VariableValue : String);
-    function ApplyParsedDirectoriesVariables(VariableValue : String) : String;
+    function ApplyParsedDirectoriesVariables(ExpressionWithVariable : String) : String;
     function ApplyParsedImagesVariables(Image : String) : String;
     function ApplyParsedDelayVariables(Delay : String) : String;
 
@@ -706,14 +706,14 @@ end;
 {
   Replaces Directory variable with its value if a variable exists in the given value.
   Syntax:
-    <[$<Directory variable>]Rest of variable value>
+    <[$<Directory variable>][Rest of expression value]>
   Example:
     $WALLPAPERS/lake.png
     will be translated in
     /home/user/Pictures/Wallpapers/lake.png
   Note, that end of variable name is file separator (e.g. / or \)
 }
-function TWpcScriptParser.ApplyParsedDirectoriesVariables(VariableValue : String) : String;
+function TWpcScriptParser.ApplyParsedDirectoriesVariables(ExpressionWithVariable : String) : String;
 var
   i                     : Integer;
   VariableNameStartPos  : Integer;
@@ -721,21 +721,21 @@ var
   DirectoryVariableName : String;
   ResolvedVariableValue : String;
 begin
-  if (VariableValue[1] <> VARIABLE_START_SYMBOL) then begin
-    Result := VariableValue;
+  if (ExpressionWithVariable[1] <> VARIABLE_START_SYMBOL) then begin
+    Result := ExpressionWithVariable;
     exit;
   end;
 
   i := Length(VARIABLE_START_SYMBOL) + 1;
-  Len := Length(VariableValue);
+  Len := Length(ExpressionWithVariable);
   if (i > Len) then
     raise TWpcScriptParseException.Create('Variable name is expected.', FCurrentLine);
 
   VariableNameStartPos := i;
-  while ((i <= Len) and (not (VariableValue[i] in ALL_PATH_SEPARATORS))) do begin
+  while ((i <= Len) and (not (ExpressionWithVariable[i] in ALL_PATH_SEPARATORS))) do begin
     Inc(i);
   end;
-  DirectoryVariableName := copy(VariableValue, VariableNameStartPos, i - VariableNameStartPos);
+  DirectoryVariableName := Copy(ExpressionWithVariable, VariableNameStartPos, i - VariableNameStartPos);
 
   ResolvedVariableValue := GetDirPath(DirectoryVariableName);
   if (ResolvedVariableValue = '') then
@@ -743,8 +743,13 @@ begin
 
   if (i = Len) then
     Result := ResolvedVariableValue
-  else
-    Result := Concat(ResolvedVariableValue, copy(VariableValue, i, Len - i + 1));
+  else begin
+    if (ExpressionWithVariable[i] in ALL_PATH_SEPARATORS) then begin
+      // Remove doubled path separator
+      Delete(ResolvedVariableValue, Length(ResolvedVariableValue), 1);
+    end;
+    Result := Concat(ResolvedVariableValue, Copy(ExpressionWithVariable, i, Len - i + 1));
+  end;
 end;
 
 {
