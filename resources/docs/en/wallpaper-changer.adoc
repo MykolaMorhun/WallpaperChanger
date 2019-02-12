@@ -1,0 +1,2750 @@
+// To check correctness of all inner references use the following command (broken references will be displayed):
+// Array.from(document.getElementsByTagName("a")).filter(link => link.href.startsWith(location.origin + location.pathname) && null === document.getElementById(link.href.substring(link.href.lastIndexOf('#') + 1))).map(brokenLink => brokenLink.innerText).forEach(brokenLinkText => console.log(brokenLinkText));
+
+// :sectnums:
+:toc:
+:toc-title: Table of Contents
+:toclevels: 4
+
+= Wallpaper Changer Project Documentation
+version 1.0.0
+
+Disclaimer: Wallpaper Changer is free software but it comes as is, without warranty of any kind.
+
+== 1. General Information
+
+This chapter contains basic information about Wallpaper Changer.
+
+=== 1.1. About Wallpaper Changer
+
+==== 1.1.1. What this program is
+
+Wallpaper Changer is a program to change your desktop wallpapers.
+
+==== 1.1.2. Why yet another program
+
+Today almost all graphical environments support changing of wallpapers.
+But they are limited with basic choice algorithms.
+That's why Wallpaper Changer was created.
+
+The project goals are:
+
+ * easy way to setup user defined algorithms of wallpaper changing (see <<1.1.3.2. Scripted mode, Scripted mode>>)
+ * unified replacement for environment specific wallpaper changers
+ * cross-platform
+ * lightweight
+
+==== 1.1.3. Application modes
+
+Wallpaper changer has two modes:
+
+ * <<1.1.3.1. Simple mode, simple>>
+ * <<1.1.3.2. Scripted mode, scripted>>
+
+===== 1.1.3.1. Simple mode
+
+Simple mode is like most of the standard changers, where user selects a directory with pictures which will be used as wallpapers.
+But this mode has a few improvements:
+
+ * Recursive search: it can iterate over specified directory and its subdirectories for images.
+ * Iteration algorithm: go over created list or pick random image every time.
+ * Style option: defines how to place wallpaper images on desktop.
+ * Variable delay: time between wallpapers changing will be selected randomly each time from the user defined range.
+
+===== 1.1.3.2. Scripted mode
+
+Wallpaper Changer provides simple way to describe your own algorithm for wallpaper changing.
+It is done via scripts.
+Please, do not be scared.
+It is easy.
+Commands are made in a way to be easily readable for human.
+You don't have to be a programmer to use them, it is designed for a regular user.
+Also the application has <<2.5. Script Editor, Script editor>> with many nice <<2.5.1. Script Editor features, features>> which help in script creation.
+
+====== 1.1.3.2.1. What is Wallpaper Changer script
+
+Wallpaper Changer script is a text file, usually with `wcs` extension, which contains commands how and when change your desktop wallpaper.
+Please do not be scared by word "script"!
+
+====== 1.1.3.2.2. Advantages of using scripts
+
+Scripts are the greatest part of Wallpaper Changer project and they have a lot of useful features.
+They allow you to manipulate your desktop background in simple but powerful way.
+ +
+With help of scripts user can:
+
+ * Set wallpaper depending on season, month, date, time, weekday and combinations, etc.
+ * Control <<Appendix A: Wallpaper styles, wallpaper style>> (like zoom, tile, center, stretch, etc.) individually for each wallpaper.
+ * Define probability for setting wallpaper.
+ * Use different period of time for each wallpaper.
+ * Use stable sequences of wallpapers or images from directory(-ies) like in <<1.1.3.1. Simple mode, Simple mode>>.
+ * and other cool stuff.
+ 
+With scripts is possible to set up your own scenario!
+
+For full list of features see <<3. Script reference, script reference>>.
+Also you may read <<4. Scripting tutorial, scripting tutorial>> or look at <<5. Scripts examples, samples>>.
+
+=== 1.2. Supported platforms
+
+Wallpaper Changer is cross-platform application.
+
+Supported architectures:
+
+ * x86
+ * x64
+
+Supported OS families:
+
+ * Linux (list of <<1.2.1. Supported desktop environments for Linux, supported desktop environments>>)
+ * Windows (list of <<1.2.2. Supported Windows versions, supported versions>>)
+
+==== 1.2.1. Supported desktop environments for Linux
+
+ * Gnome 3
+ * Gnome Classic
+ * MATE
+ * Cinnamon
+ * KDE Plasma
+ * XFCE
+ * LXDE
+ * Unity
+ * Pantheon
+ * Budgie
+
+==== 1.2.2. Supported Windows versions
+
+ * Windows 10
+ * Windows 8
+ * Windows 7
+ * Windows Vista
+ * Windows XP
+ * Windows 2000
+
+Also **ReactOS** is supported, however it is detected as Windows XP, so to use its full capabilities <<, manual environment setting>> is required.
+
+==== 1.2.3. Other platforms / environments
+
+If your desktop environment is not in the supported list you can provide script or program which can set desktop wallpaper and integrate it with Wallpaper Changer engine.
+For more details see <<2.1.2. Providing custom wallpaper setter, providing custom wallpaper setter>> section.
+
+Finally it is open source and you can port/adapt it to your platform/needs.
+
+=== 1.3. System requirements
+
+The application requires graphical mode in your OS.
+
+=== 1.4. License
+
+Wallpaper Changer is licensed under GNU GENERAL PUBLIC LICENSE version 2
+ +
+The full text could be found https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html[here].
+
+=== 1.5. Project page
+
+https://github.com/MykolaMorhun/WallpaperChanger[Project github page].
+
+=== 1.6. Authors
+
+ * Mykola Morhun (2017-2018): idea, initial implementation.
+
+Disclaimer: Wallpaper changer is free software but it comes as is, without warranty of any kind.
+
+A few notes from original author:
+
+_I wanted to make it intuitive and very lightweight.
+Also I targeted to make <<1.1.3.2. Scripted mode, Scripted mode>> easy to use for a regular user.
+Hope, that I reached my goal =)_
+
+<<<
+
+== 2. Application usage
+
+=== 2.1. Installation
+
+Install the software from installation package or, in case of portable version, just extract archive into a new folder.
+ +
+You can get the latest version https://github.com/MykolaMorhun/WallpaperChanger/releases[here].
+
+==== 2.1.1. Initial setup
+
+After installation run Wallpaper Changer and if autodetection of your desktop environment failed specify it manually in settings.
+For this, open <<2.3. Main menu, Main menu>> and select `Settings`.
+Then switch to `Engine` tab, select `Manual` in `Wallpaper Setter` section and set your desktop environment manually.
+Also it is possible to provide <<2.1.2. Providing custom wallpaper setter, own wallpaper setter>>.
+
+To check correctness of the environment parameter one may use `Wallpaper` -> `Set image` from <<2.3. Main menu, Main menu>>.
+
+==== 2.1.2. Providing custom wallpaper setter
+
+If your environment is not supported or doesn't fit your needs, it is possible to provide custom wallpaper setter.
+
+Custom wallpaper setter is a program or a script which will be executed each time when algorithm needs to set desktop wallpaper.
+
+The engine passes two arguments to custom setter:
+
+ * full path to the image
+ * style identifier which should be applied to the wallpaper image (see <<Appendix A: Wallpaper styles, full list of styles>>)
+
+See <<2.4.1. Engine settings, how to integrate>> custom wallpaper setter.
+
+=== 2.2. Starting wallpaper changing
+
+Application switches to tray right after start.
+To access <<2.3. Main menu, main menu>> user should use tray icon.
+
+To start wallpaper changing one may use:
+
+ * <<1.1.3.1. Simple mode, Simple mode>>: `Wallpaper` -> `Set Directory`
+   and select a directory with wallpapers. Algorithm will start working according to <<2.4.2. Simple changer settings, its settings>>.
+ * <<1.1.3.2. Scripted mode, Scripted mode>>: `Script` -> `Run Script`
+   and select a Wallpaper Changer script which will define which images, when and how to use them.
+
+Note, only one algorithm may be running at a time.
+
+=== 2.3. Main menu
+
+To invoke Main menu use tray icon of the application.
+
+Wallpaper changer Main Menu has next items:
+
+ * `Exit`: stops changing of wallpapers and exits the program
+ * `Info`: contains information about the program
+    ** `Documentation`: opens documentation
+    ** `About`: shows information about program, version, authors, etc.
+ * `Settings`: opens options window
+ * `Wallpaper`:
+    ** `Set directory`: starts simple mode (using current preferences)
+    ** `Set image`: sets selected image as desktop wallpaper (using current preferences)
+ * `Script`:
+    ** `Run script`: asks to select and runs selected script.
+    ** `Script Editor`: opens <<2.5. Script Editor, Wallpaper Changer Script Editor>>
+ * `Next`: Skips current wallpaper and sets next one according to current algorithm.
+ * `Stop` _or_ `Restart`: stops current task (<<1.1.3.1. Simple mode, simple>> or <<1.1.3.2. Scripted mode, script>>) _or_ runs last used task.
+
+=== 2.4. Settings window
+
+To open settings window select `Settings` from <<2.3. Main menu, Main menu>>.
+The window has buttons at the bottom:
+
+ * `Ok`: apply settings for current session only.
+ * `Cancel`: change nothing and close the window.
+ * `Save`: write new setting to disk (make them persistent)
+ * `Default`: fill fields with default value.
+
+Settings window has tabs:
+
+ * <<2.4.1. Engine settings, Engine settings>>
+ * <<2.4.2. Simple changer settings, Simple changer settings>>
+
+==== 2.4.1. Engine settings
+
+Contains settings of the application engine.
+
+The main thing to set here is your desktop environment.
+By default the application tries detect it automatically.
+The result is displayed in the `Autodetect` option row.
+If autodetection failed or incorrect due to some reasons, user should set environment manually by selecting `Manual` option and the right environment from the list.
+If your environment is not supported or you want to use <<2.1.2. Providing custom wallpaper setter, custom wallpaper setter>> then select `Custom` and specify path to executable file or script which can set wallpaper in your desktop environment.
+
+Also it is possible to choose what the application should do on start.
+ +
+The possible options are:
+
+ * Do nothing
+ * Rerun terminated by shutdown script - if on application exit a task was run it will be restarted on start
+ * Rerun last script - will automatically run last used wallpaper changing task right after application start
+
+==== 2.4.2. Simple changer settings
+
+This tab contains settings for simple mode.
+Here user can specify:
+
+ * _Wallpaper style_ from the given list (<<Appendix A: Wallpaper styles, see full list of wallpaper styles>>).
+   Note, it may vary depending on your environment.
+
+ * _Delay_ between changing of desktop wallpaper.
+ +
+The delay may be constant or variable.
+In case of variable delay it will be chosen each time from the given diapason.
+
+ * _Keep order_ flag.
+ +
+If it _checked_ a list from all available images will be built and each time when wallpaper should be changed next image will be used.
+If end of list reached the program will start to use it from the beginning.
+ +
+If it is _not checked_ each time when wallpaper should be changed random image will be selected.
+There is a probability that the same image will be used, though.
+
+ * _Search into subdirectories_ flag.
+ +
+If _true_ all subdirectories of specified directory will be scanned recursively and all the images form all subdirectories will be added to the list.
+ +
+Note, if user specified root folder or folder with a lot of subdirectories and images in them then it may cause some delay before algorithm start depending on disk usage.
+ +
+If _false_ only images in the specified directory will be used, all the subdirectories will be ignored.
+
+=== 2.5. Script Editor
+
+To open Script Editor use `Script` -> `Script Editor` from the <<2.3. Main menu, Main Menu>>.
+
+Wallpaper Changer Script Editor is designed specially for creating and editing <<3. Script reference, Wallpaper Changer scripts>>.
+
+==== 2.5.1. Script Editor features
+
+ * Syntax highlight: makes statements in script more easily recognizable
+ * Autocomplete (`ctrl + space`): provides list of variants to complete part of current word/command.
+   Makes writing script much easier.
+   Note, it is not 100% accurate and sometimes may suggest wrong options.
+ * Templates (`Branch`, `Statement`, `Resource` items form `Main Menu`) are useful for writing commands.
+ * Syntax check (`Main Menu` -> `Script` -> `Check syntax`): Checks script for syntax errors.
+ * Resources check (`Main Menu` -> `Script` -> `Check resources`): Checks images and directories which is used in script for existence.
+ * Script tracing (`Main Menu` -> `Script` -> `Run in log mode`): traces script (runs it in dry mode),
+   i.e. runs without actual executing (no wallpapers will be set, no delays, resources checks, etc.) and logs each command and setting of wallpaper into bottom panel.
+   To interrupt tracing (script may runs forever) use (`Main Menu` -> `Script` -> `Stop`).
+ * And other.
+
+==== 2.5.2. Script Editor Main menu
+
+Main menu consists of:
+
+ * `File`: create new (template could be selected), open existing, save scripts. Has readonly mode option.
+ * `View`: Controls view components of the editor. Toggles some interface parts.
+ * `Script`: script related operations, like checking syntax, script resource, tracing script (dry executing without delays but with logging of each step), etc.
+
+Next group is helper group for script editing. It inserts templates into the editor:
+
+  * `Branch`: Branch related stuff. Inserts template for a new branch.
+  * `Statement`: Inserts <<3.2.5. Statements, script statements>> (commands) or <<3.2.6. Statement properties, statement properties>> (a command options).
+  * `Resource`: Inserts path to image or folder.
+
+Help part:
+
+  * `Help`: contains link for this documentation and info about Script Editor.
+
+==== 2.5.3. Script Editor Toolbar
+
+Many actions from <<2.5.2. Script Editor Main menu, Script Editor Main menu>> is present on the toolbar.
+Hover mouse over a button to see hint.
+Also the most often used actions has shortcuts (key combinations might be seen in the Main menu).
+
+==== 2.5.4. Script Editor Bottom panel
+
+Here syntax errors, help messages, script tracing, etc. will be displayed.
+To toggle the panel use from the Script Editor: `Main Menu` -> `View` -> `Bottom panel`.
+It has tool buttons for clearing, hiding, etc.
+
+=== 2.6. Q & A
+
+After running Wallpaper Changer nothing happens. Where is window?::
+  Wallpaper Changer doesn't have main window and starts into tray.
+  Look into your tray for the application picture and use its context menu.
+   +
+  _Gnome 3_ users may run into problem that their tray is hidden by default.
+  Then you need to adjust your settings to show it.
+
+After start _Wallpaper Changer Settings_ window appeared. If close it, the application will exit. What to do?::
+  This mean Wallpaper Changer failed to detect your graphical environment automatically.
+  You need to specify it manually.
+   +
+  For more details see <<2.1.1. Initial setup, initial setup>> section.
+
+Why does it work slower on Windows XP ?::
+  The reason is that Windows XP can set only _bmp_ images as wallpapers.
+  To make everything work Wallpaper Changer needs to convert each user provided image to bmp format right before setting as wallpaper.
+
+<<<
+
+== 3. Script reference
+
+Wallpaper Changer script (hereinafter script) is a text file which contains instructions how and when change desktop background.
+
+This section describes all features of scripts in more technical manner, so
+if you want to proceed with easier but less precise *quick learning* jump to <<4. Scripting tutorial, tutorial section>> and return to this reference for detailed information if needed.
+
+=== 3.1. Notational conventions
+
+In this documentation the following notation keys are used:
+
+ * `<value>` means that this value is mandatory to set.
+ * `[item]` means that the item is optional and may be omitted.
+ * `|` means exclusive _or_
+
+In listings all <<3.2.1. Keywords, keywords>> are written with CAPITAL letters, but they are case insensitive, i.e. `END`, `End`, `end` are all the same.
+
+=== 3.2. Script components
+
+Script components are:
+
+ * <<3.2.1. Keywords, Keywords>>
+ * <<3.2.2. Names, Names>>
+ * <<3.2.3. Values, Values>>
+ * <<3.2.4. Named constants, Named constants>>
+ * <<3.2.5. Statements, Statements>>
+ * <<3.2.7. Blocks, Blocks>>
+
+==== 3.2.1. Keywords
+
+Keywords are reserved words to build structures in script.
+Full list of keywords can be found <<Appendix D: List of script keywords, here>>.
+
+==== 3.2.2. Names
+
+Name is a word which reference to its value.
+Names are added for more convenient usage of some user <<3.2.3. Values, values>> and might be treated as a key-to-value or reference to some user value.
+
+===== 3.2.2.1. Names' syntax
+
+All names in script could contain letters, digits and underscore symbol, i.e. `[A-Z, a-z, 0-9, _]` but using <<3.2.1. Keywords, keywords>> as a name is not allowed.
+Names are case sensitive, i.e. `Photo` and `photo` are two different names.
+
+Examples of valid names:
+
+ * `Garden`
+ * `HOME`
+ * `zoo_Photo_5`
+ * `djkfsnoknaf` (generally it is vise to give meaningful names)
+
+Examples of invalid names:
+
+ * `My Garden` (contains space which is not allowed, right form might be `My_Garden` or `MyGarden`)
+ * `monkey@zoo` (contains not allowed symbol `@`, right form might be `monkey_in_zoo`)
+ * `BRANCH` (keyword, not allowed)
+ * `branch` (keyword, not allowed)
+
+==== 3.2.3. Values
+
+Value in script may be:
+
+ * <<3.2.3.1. Wallpaper style, Wallpaper style>>
+ * <<3.2.3.2. Image path, Image path>>
+ * <<3.2.3.3. Directory path, Directory path>>
+ * <<3.2.3.4. Time unit, Time unit>>
+ * <<3.2.3.5. Time period, Time period>>
+ * <<3.2.3.6. Probability, Probability>>
+ * <<3.2.3.7. Repeat count, Repeat count>>
+
+===== 3.2.3.1. Wallpaper style
+
+Defines how image should be applied as desktop background.
+
+Default value is `Centered` unless redefined in <<3.3.1.1.3. Default wallpaper style, defaults section>> of the script.
+
+See <<Appendix A: Wallpaper styles, this table>> for meaning of each value.
+
+===== 3.2.3.2. Image path
+
+Defines path to an picture, for example:
+
+ * `C:\Wallpapers\landscape.jpg`
+ * `/home/user/Pictures/sunrise.png`
+
+===== 3.2.3.3. Directory path
+
+Defines path to a directory, for example:
+
+ * `C:\Wallpapers\`
+ * `/home/user/Pictures/`
+
+===== 3.2.3.4. Time unit
+
+Unit for time measurement.
+There are available time units in script:
+
+ * `ms` - milliseconds
+ * `s` - seconds
+ * `m` - minutes
+ * `h` - hours
+ * `d` - days
+
+Default value is `m` unless redefined in <<3.3.1.1. Defaults section, defaults section>> of script.
+
+===== 3.2.3.5. Time period
+
+Time period has format:
+
+ <number>[time unit]
+
+When <<3.2.3.4. Time unit, time unit>> is ommited, default time unit will be used.
+
+Default value is 5 minutes unless redefined in <<3.3.1.1. Defaults section, defaults section>> of script.
+
+===== 3.2.3.6. Probability
+
+A number from `0` to `100` including, where `0` means never and `100` always.
+
+===== 3.2.3.7. Repeat count
+
+A number which defines how many times an action should be repeated.
+
+==== 3.2.4. Named constants
+
+Named constant is a <<3.2.3. Values, value>> which may be referenced by its <<3.2.2. Names, name>>.
+
+Named constants could be declared only in <<3.3.1. Headers section, header sections>>.
+
+==== 3.2.5. Statements
+
+A script statement is a command to Wallpaper Changer.
+Statements are built from <<3.2.1. Keywords, keywords>>, <<3.2.2. Names, names>>, <<3.2.3. Values, values>> and <<3.2.4. Named constants, constants>>.
+They are the basic bricks of any script scenario.
+
+There is a separate section about <<3.4. Script statements, statements>>.
+
+==== 3.2.6. Statement properties
+
+Statement property is an attribute of a <<3.2.5. Statements, statement>>.
+All properties are optional and their order of appearing doesn't matter, however some of them may play key role in some statements definition.
+Different statements have different set of properties, for more information see reference of the specific statement.
+
+List of statements properties:
+
+* <<3.2.6.1. Wallpaper style property, Wallpaper style property>>
+* <<3.2.6.2. Delay property, Delay property>>
+* <<3.2.6.3. Wait till property, Wait till property>>
+* <<3.2.6.4. Times property, Times property>>
+* <<3.2.6.5. Probability property, Probability property>>
+
+The times property is applied first, then probability property will take its turn if any.
+After this all other properties will be applied.
+
+Note, that
+
+* A statement property has no sense without statement itself, so they should be used only with statements.
+* Statement shouldn't have more then one property of a type.
+* The order of statement properties is arbitrary.
+
+===== 3.2.6.1. Wallpaper style property
+
+Specifies wallpaper style.
+
+_Syntax:_
+
+ STYLE <Wallpaper style>
+
+Full list of styles can be found <<Appendix A: Wallpaper styles, here>>.
+
+Default value is defined in <<3.3.1.1.3. Default wallpaper style, defaults header section>>.
+
+===== 3.2.6.2. Delay property
+
+Specifies delay after statement execution.
+
+_Syntax:_
+
+ FOR <Time period>
+
+Note, <<3.3.1.1.1. Default delay, default time period>> cannot be used in this property, however <<3.3.1.1.2. Default delay units, default time unit>> might be used.
+
+===== 3.2.6.3. Wait till property
+
+Specifies time to which executor should wait after completion of the statement action.
+
+_Syntax:_
+
+ TILL <Time>
+
+where `Time` has format: `<hours>:<minutes>[:seconds]`.
+Note `hours` is in range `0`-`23`.
+
+===== 3.2.6.4. Times property
+
+Specifies how many times this statement should be repeated.
+
+_Syntax:_
+
+ <number> TIMES
+
+Default value is `1`.
+
+===== 3.2.6.5. Probability property
+
+Specifies probability of statement execution in percents.
+So `0` means never, `100` means always.
+
+_Syntax:_
+
+ WITH PROBABILITY <0-100>
+
+Default value is `100`.
+
+Note, `%` sign should be omitted.
+
+==== 3.2.7. Blocks
+
+Block is a  group of <<3.2.5. Statements, statements>> or <<3.2.4. Named constants, constants>> (cannot be mixed).
+
+If block consists from <<3.2.5. Statements, statements>> it is called <<3.3.2. Branches section, branch>>. In case of <<3.2.4. Named constants, constants>> see <<3.3.1. Headers section, headers sections>>.
+
+=== 3.3. Script Structure
+
+Wallpaper Changer script consists of two sections:
+
+ * <<3.3.1. Headers section, Headers section>>
+ * <<3.3.2. Branches section, Branches section>>
+
+==== 3.3.1. Headers section
+
+Headers section consists of four subsections which are optional and so whole headers section may be omitted.
+ +
+The sections are:
+
+ * <<3.3.1.1. Defaults section, Defaults>>
+ * <<3.3.1.2. Directories section, Directories>>
+ * <<3.3.1.3. Images section, Images>>
+ * <<3.3.1.4. Delays section, Delays>>
+
+===== 3.3.1.1. Defaults section
+
+This section contains default settings for script.
+All values are optional.
+
+_Syntax:_
+
+----
+DEFAULTS
+  [DELAY <Time period>]
+  [DELAY UNITS <Time unit>]
+  [WALLPAPER STYLE <Style>]
+  [DIRECTORY <Path>]
+END DEFAULTS
+----
+
+Now let's take a closer look to each option.
+
+====== 3.3.1.1.1. Default delay
+
+Default delay defines <<3.2.3.5. Time period, delay period>> and will be used each time when delay is omitted.
+ +
+Note, that time unit is mandatory here.
+ +
+Default value is `5m`
+
+_Example:_
+
+ DELAY 5m
+
+So, the following <<3.4.3. Wait statement, wait statement>> will be treated as 5 minutes delay:
+
+ WAIT
+
+====== 3.3.1.1.2. Default delay units
+
+Default delay units defines <<3.2.3.4. Time unit, time unit>> which will be used each time when time unit is omitted.
+Default value is `m`
+
+_Example:_
+
+ DELAY UNITS h
+
+So the following <<3.4.3. Wait statement, wait statement>> will make a 1 hour delay:
+
+ WAIT 1
+
+====== 3.3.1.1.3. Default wallpaper style
+
+Default wallpaper style defines <<3.2.3.1. Wallpaper style, wallpaper style>> which will be used in <<3.4.1. Set wallpaper statement, set wallpaper statement>> if no <<3.2.6.1. Wallpaper style property, style property>> is specified.
+Default value is `CENTERED`
+
+_Example:_
+
+ WALLPAPER STYLE TILE
+
+The following example will tile desktop background with the given image:
+
+ SET WALLPAPER D:\Wallpapers\texture.jpg
+
+====== 3.3.1.1.4. Default directory
+
+Default directory defines the base path for the relative references to images and directories in current script.
+Note, the value can be relative path to the executable.
+Default value is the directory in which current script is located.
+
+_Example:_
+
+ DIRECTORY D:\Wallpapers
+
+For example, the following <<3.4.1. Set wallpaper statement, set wallpaper statement>> 
+
+ SET WALLPAPER Animals\penguin.png
+
+will use image by `D:\Wallpapers\Animals\penguin.png` path.
+
+===== 3.3.1.2. Directories section
+
+Directories section contains references to directories in format:
+
+ User-defined-directory-name Path-to-directory
+
+Note, name should satisfy <<3.2.2.1. Names' syntax, name conventions>>
+
+_Syntax:_
+
+----
+  DIRECTORIES
+    [<Directory-name> <Path-to-directory>]
+    ...
+  END DIRECTORIES
+----
+
+To use reference put `$` in front of directory name.
+ +
+This references could be used in <<3.3.1.3. Images section, images section>> or directly in place as a prefix where an image is specified.
+
+_Usage examples:_
+
+----
+IMAGES
+  sunrise $wallpapers\sunrise.jpg
+END IMAGES
+----
+
+ SET WALLPAPER $wallpapers\sunset.jpg
+
+===== 3.3.1.3. Images section
+
+Images section contains references to wallpaper pictures in format:
+
+ User-defined-image-name Path-to-image
+
+Note, name should satisfy <<3.2.2.1. Names' syntax, name conventions>>
+
+_Syntax:_
+
+----
+  IMAGES
+    [<Image-name> <Path-to-image>]
+    ...
+  END IMAGES
+----
+
+To use reference put `$` in front of image name.
+ +
+This references could be used in place where an image should be specified.
+
+Also it is possible to use <<3.3.1.2. Directories section, directory reference>> while defining image reference:
+
+----
+  IMAGES
+    sunrise $Wallpapers/sunrise.jpg
+  END IMAGES
+----
+
+===== 3.3.1.4. Delays section
+
+Delays section contains named delays in format:
+
+ User-defined-delay-name delay-time
+
+Note, name should sutisfy <<3.2.2.1. Names' syntax, name conventions>>
+
+_Syntax:_
+
+----
+  DELAYS
+    [<Delay-name> <Time-period>]
+    ...
+  END DELAYS
+----
+
+To use reference put `$` in front of its name.
+This references could be used in place where time period is expected.
+For example, see <<3.4.3. Wait statement, wait statement>>.
+
+==== 3.3.2. Branches section
+
+Branch is a list of <<3.4. Script statements, statements>> (commands).
+ +
+(it is analog of function or procedure in a programming language).
+
+This sections is mandatory and should consist at least from Main branch.
+Main branch is a branch with name `Main` and is an entry point of script, i.e. when script is run statements from this branch will be executed.
+Main branch should contan at least one statement.
+Other branches are optional and should be defined when needed.
+
+_Syntax:_
+
+----
+BRANCH Main
+  <statement 1>
+  [statement 2]
+  [...]
+END BRANCH
+
+[
+BRANCH someBranch
+  [statement a]
+  [statement b]
+  [...]
+END BRANCH
+]
+
+[...]
+----
+
+Each branch may use other branches.
+If a branch executes another, it called parent branch and the branch which was invoked called child branch.
+Note, that the same branch may u
+ +
+For more details see <<3.4.5. Use branch statement, use branch>> and <<3.4.4. Switch branch statement, switch branch>> statements.
+
+==== 3.3.3. Commentaries
+
+All lines which starts from `#` symbol are commentary lines and ignored when script is executed.
+ +
+It is not allowed to add commentary at the end of a statement, the whole line should be dedicated to commentary.
+
+_Example:_
+
+ # Such lines are dedicated for user notes in Wallpaper Changer scripts
+
+=== 3.4. Script statements
+
+Script statement is a command to manipulate with desktop wallpaper or script execution process.
+
+Each statement should be written in a separate line and may have a set of <<3.2.6. Statement properties, properties>>.
+
+List of statements:
+
+ * <<3.4.1. Set wallpaper statement, Set wallpaper statement>>
+ * <<3.4.2. Set directory statement, Set directory statement>>
+ * <<3.4.3. Wait statement, Wait statement>>
+ * <<3.4.4. Switch branch statement, Switch branch statement>>
+ * <<3.4.5. Use branch statement, Use branch statement>>
+ * <<3.4.6. Chooser statements group, Chooser statements:>>
+   ** <<3.4.6.2. Wallpaper chooser statement, Wallpaper chooser statement>>
+   ** <<3.4.6.3. Branch to switch chooser statement, Branch to switch chooser statement>>
+   ** <<3.4.6.4. Branch to use chooser statement, Branch to use chooser statement>>
+ * <<3.4.7. Stop statement, Stop statement>>
+
+==== 3.4.1. Set wallpaper statement
+
+Sets desktop wallpaper.
+
+Supported properties: `<<3.2.6.1. Wallpaper style property, wallpaper style>>`, `<<3.2.6.2. Delay property, delay>>`, `<<3.2.6.3. Wait till property, till>>`, `<<3.2.6.5. Probability property, probability>>`.
+
+_Syntax:_
+
+ SET WALLPAPER <File> [STYLE <Style>] [FOR <Time period> | TILL <Time>] [WITH PROBABILITY <0-100>]
+
+where
+
+File::
+Path to image to set as wallpaper.
+
+Style property::
+Wallpaper style.
+
+Delay property::
+A delay before executing next statement.
+
+Till property::
+Time to which executor should wait after setting specified wallpaper.
+
+Probability property::
+A probability of statement execution.
+ +
+If result is negative, then no delay will be applied.
+
+Note:
+
+ * You may use <<3.3.1.2. Directories section, directories>> and <<3.3.1.3. Images section, images>> from corresponding header sections.
+ * Combining of `Delay` and `Till` properties is not allowed.
+
+_Examples:_
+
+ SET WALLPAPER D:\Wallpapers\Landscapes\sunrise.jpg
+ SET WALLPAPER D:\Wallpapers\Landscapes\sunrise.jpg STYLE ZOOM FOR 5m WITH PROBABILITY 50
+ SET WALLPAPER $sunrise FOR $time
+ SET WALLPAPER $sunset TILL 20:45
+
+==== 3.4.2. Set directory statement
+
+Sets images from directory as wallpapers.
+
+Supported properties: `<<3.2.6.1. Wallpaper style property, wallpaper style>>`, `<<3.2.6.2. Delay property, delay>>`, `<<3.2.6.5. Probability property, probability>>`, `<<3.2.6.4. Times property, times>>`.
+ +
+Supported flags: `Recursive`, `Ordered`.
+
+_Syntax:_
+
+ SET WALLPAPER FROM DIRECTORY <Path> [RECURSIVE] [ORDERED] [STYLE <Style>] [FOR <Time>] [WITH PROBABILITY <0-100>] [<1-n> TIMES]
+
+where
+
+Path::
+Path to directory with wallpapers.
+ +
+The directory should contain at least one image.
+
+Recursive flag::
+If present, it will search for images not only in the specified directory but also inside all subdirectories too.
+ +
+Please note, usage with folders which contains a big directory tree may slow down the application and your computer itself.
+
+Ordered flag::
+If present, it will create wallpapers list and then cycle over it.
+ +
+Otherwise it will pick up an image from the list randomly.
+In that case, the same image might be used more than one time in a row.
+
+Style property::
+Wallpaper style for each image.
+
+Delay property::
+A delay before setting next image from the lsit as wallpaper.
+
+Probability property::
+A probability of setting next wallpaper from the list.
+ +
+If result is negative, then that wallpaper will be skipped.
+
+Times property::
+Number of times to use images from the list as wallpapers.
+ +
+Note, if the image is skipped due to probability it is still counts as an use.
+
+Note, you may use <<3.3.1.2. Directories section, directories>> defined in corresponding header section.
+
+Hint: always override delay property, otherwise the wallpapers will be set one by one without a delay.
+
+_Examples:_
+
+ SET WALLPAPER FROM DIRECTORY D:\Wallpapers\Landscapes\
+ SET WALLPAPER FROM DIRECTORY D:\Wallpapers\Landscapes\ RECURSIVE ORDERED STYLE ZOOM FOR 30s WITH PROBABILITY 55 100 TIMES
+
+By the way, <<1.1.3.1. Simple mode, simple mode>> just generates a script with set directory statement and runs it.
+
+==== 3.4.3. Wait statement
+
+Pauses script execution for some period of time.
+
+Supported properties: `<<3.2.6.2. Delay property, delay>>`, `<<3.2.6.3. Wait till property, till>>`, `<<3.2.6.5. Probability property, probability>>`, `<<3.2.6.4. Times property, times>>`.
+
+_Syntax:_
+
+ WAIT [FOR <Time period> | <Time period> | TILL <Time>] [WITH PROBABILITY <0-100>] [<1-n> TIMES]
+
+where
+
+Delay property::
+Is a <<3.2.3.5. Time period, time period>> for which the script should be paused.
+
+Till property::
+Defines relative delay to the specified time.
+
+Probability property::
+A probability of the delay applying.
+
+Times property::
+Number of times to perform the delay.
+ +
+Note, skipped due to <<3.2.6.5. Probability property, probability property>> attempts count.
+
+Note:
+
+ * You may use <<3.3.1.4. Delays section, delays>> defined in corresponding header section.
+ * Combining of `Delay` and `Till` properties is not allowed.
+
+_Examples:_
+
+ WAIT
+ WAIT 5
+ WAIT 5m
+ WAIT $time
+ WAIT FOR 5m
+ WAIT TILL 16:35
+ WAIT FOR $time
+ WAIT 1m WITH PROBABILITY 50 10 TIMES
+
+==== 3.4.4. Switch branch statement
+
+Replaces current branch execution with another one.
+When that branch is completed it will return to the caller branch of the current branch, if any.
+
+Supported properties: `<<3.2.6.5. Probability property, probability>>`
+
+_Syntax:_
+
+ SWITCH TO BRANCH <Name> [WITH PROBABILITY <0-100>]
+
+where
+
+Name::
+Name of branch with which current one should be replaced.
+Branch with specified name should exist.
+
+Probability property::
+Specifies probability of branch changing.
+
+_Examples:_
+
+ SWITCH TO BRANCH trip
+ SWITCH TO BRANCH trip WITH PROBABILITY 50
+
+See also <<3.4.5. Use branch statement, use branch statement>>.
+
+==== 3.4.5. Use branch statement
+
+Executes another branch. When that branch is completed will return to the next statement in the current branch.
+
+Supported properties: `<<3.2.6.5. Probability property, probability>>`, `<<3.2.6.4. Times property, times>>`
+
+_Syntax:_
+
+ USE BRANCH <Name> [WITH PROBABILITY <0-100>] [<1-n> TIMES]
+
+where
+
+Name::
+Name of branch which will be executed.
+Branch with specified name should exist.
+
+Probability property::
+Specifies probability of executing specified branch.
+
+Times property::
+Specifies number of times of the branch executing.
+
+_Examples:_
+
+ USE BRANCH trip
+ USE BRANCH trip WITH PROBABILITY 50 2 TIMES
+
+See also <<3.4.4. Switch branch statement, switch branch statement>>.
+
+==== 3.4.6. Chooser statements group
+
+Statements of this group contain a set of commands, but only one of them will be executed.
+A chooser statement defines by which condition a command from the set will be selected and executed.
+
+_Syntax:_
+
+----
+CHOOSE <Selectable statement> [BY <Selector>] FROM
+  <Selectable statement data 1> <Selector> <Selector Value 1>
+  <Selectable statement data 2> <Selector> <Selector Value 2>
+  [...]
+END CHOOSE
+----
+
+where
+
+Selectable statement::
+Is a contained command statement name.
+ +
+See a complete list below.
+
+Selector::
+Defines by what feature a command from the set should be executed.
+ +
+See <<3.4.6.1. Selectors and their values in Chooser statements, full list of selectors>> and their values.
+
+Selector value::
+A value of used Selector.
+
+Selectable statement data::
+Depend on specific chooser.
+
+In case if *Selector* in the heading line is omitted the `WEIGHT` selector will be used.
+ +
+If selector is of `WEIGHT` type it could be omitted.
+In that case weight of `1` will be used.
+
+Note, that a Chooser statement should contain at least two choices.
+
+Full list of statements in Chooser group:
+
+ * <<3.4.6.2. Wallpaper chooser statement, Wallpaper chooser>>
+ * <<3.4.6.3. Branch to switch chooser statement, Branch to use chooser>>
+ * <<3.4.6.4. Branch to use chooser statement, Branch to switch chooser>>
+
+===== 3.4.6.1. Selectors and their values in Chooser statements
+
+Below is the full list of available selectors.
+
+.Selectors and their values in Chooser statements
+[%autowidth,cols=3,options="header"]
+|==========
+| Selector | Description | Allowed values
+
+m| Weight
+a|
+Randomly selects item taking into account its weight.
+ +
+The greater the weight, the greater the chance of using item.
+a|
+Weight value is in range from `1` to `1000000`
+ +
+Examples:
+`1`, `2`, `14`, `87456`
+
+m| Season
+a|
+Selects item by season of the year.
+a|
+`Winter` _or_ `1`,
+`Spring` _or_ `2`,
+`Summer` _or_ `3`,
+`Autumn` _or_ `4`
+
+m| Month
+a|
+Selects item by month.
+a|
+`January` _or_ `1`,
+`February` _or_ `2`,
+`March` _or_ `3`,
+`April` _or_ `4`,
+`May` _or_ `5`,
+`June` _or_ `6`,
+`July` _or_ `7`,
+`August` _or_ `8`,
+`September` _or_ `9`,
+`October` _or_ `10`,
+`November` _or_ `11`,
+`December` _or_ `12`
+
+m| Weekday
+a|
+Selects item by the day of week.
+a|
+`Sunday` _or_ `1`,
+`Monday` _or_ `2`,
+`Tuesday` _or_ `3`,
+`Wednesday` _or_ `4`,
+`Thursday` _or_ `5`,
+`Friday` _or_ `6`,
+`Saturday` _or_ `7`
+
+m| Date
+a|
+Selects item by current date.
+a|
+Format: `<day>.<month>`, where `day` and `month` are sequence numbers.
+ +
+Examples:
+`5.10`, `02.04`, `31.12`, `2.2`
+
+m| Time
+a|
+Selects item by current time.
+a|
+Format: `<hours>:<minutes>[:seconds]` where `hours` is in `0-23` format.
+ +
+Examples:
+`8:12`, `23:45`, `00:15`, `10:10:30`
+
+m| DateTime
+a|
+Selects item by date and time.
+a|
+Format: `<Date>-<Time>`, i.e. `<day>.<month>-<hours>:<minutes>[:seconds]`.
+ +
+Examples:
+`20.05-12:30`, `15.06-6:29:59`
+|==========
+
+Note, that it is not mandatory to have present all values of selector in <<3.4.6. Chooser statements group, Chooser statement>>.
+Most real use cases have some (often majority) positions missed.
+For all selectors except `Weight`, all possible cases are divided into groups by existing selector values.
+A group starts from specified selector value and stretches until next specified one.
+Values are cyclic, so the last group are stretched to the beggining.
+ +
+To clarify this, let's take a look at the following example:
+
+----
+CHOOSE WALLPAPER BY WEEKDAY FROM
+  $pictA WEEKDAY Tuesday
+  $pictB WEEKDAY Thursday
+  $pictC WEEKDAY Friday
+END CHOOSE
+----
+
+Here we have 3 groups:
+
+ * `pictA` (first group) will be used on `Tuesday` and `Wednesday`
+ * `pictB` (second group) will be used on `Thursday` only
+ * `pictC` (third group) will be used on `Friday`, `Saturday`, `Sunday` and `Monday`
+
+Note, that, for example, for `Monday` (which is at the top, before `Tuesday`) the rule from the last case (`Friday`) will be applied.
+
+===== 3.4.6.2. Wallpaper chooser statement
+
+Chooses wallpaper to set from given list.
+
+_Syntax:_
+
+----
+CHOOSE WALLPAPER [BY <Selector>] FROM
+  <Wallpaper 1 properties> <Selector> <Selector Value 1>
+  <Wallpaper 2 properties> <Selector> <Selector Value 2>
+  [...]
+END CHOOSE
+----
+
+where
+
+Wallpaper properties::
+Specifies wallpaper and its properties.
+ +
+Have the same syntax as <<3.4.1. Set wallpaper statement, wallpaper statement>>, but without `SET WALLPAPER` prefix.
+
+See <<3.4.6. Chooser statements group, Chooser statements group>> for other parameters description.
+
+_Example:_
+
+----
+CHOOSE WALLPAPER BY WEIGHT FROM
+  D:\Wallpapers\Nature\sunrise.jpg WEIGHT 8
+  $sunset WEIGHT 4
+  D:\Wallpapers\Nature\lake.png STYLE ZOOM FOR 2m WITH PROBABILITY 80 WEIGHT 5
+  D:\Wallpapers\Nature\forest.jpeg
+END CHOOSE
+----
+
+===== 3.4.6.3. Branch to switch chooser statement
+
+Chooses branch to switch from given list.
+
+_Syntax:_
+
+----
+CHOOSE BARNCH TO SWITCH [BY <Selector>] FROM
+  <Switch branch 1 properties> <Selector> <Selector Value 1>
+  <Switch branch 2 properties> <Selector> <Selector Value 2>
+  [...]
+END CHOOSE
+----
+
+where
+
+Switch branch properties::
+Specifies branch and its properties.
+ +
+Have the same syntax as <<3.4.4. Switch branch statement, Switch branch statement>>, but without `SWITCH TO BRANCH` prefix.
+
+See <<3.4.6. Chooser statements group, Chooser statements group>> for other parameters description.
+
+_Example:_
+
+----
+CHOOSE BRANCH TO SWITCH BY TIME FROM
+  CityStreets TIME 8:00
+  NightLights TIME 21:45
+END CHOOSE
+----
+
+===== 3.4.6.4. Branch to use chooser statement
+
+Chooses branch to use from given list.
+
+_Syntax:_
+
+----
+CHOOSE BRANCH TO USE [BY <Selector>] FROM
+  <Use branch 1 properties> <Selector> <Selector Value 1>
+  <Use branch 2 properties> <Selector> <Selector Value 2>
+  [...]
+END CHOOSE
+----
+
+where
+
+Use branch properties::
+Specifies branch and its properties.
+ +
+Have the same syntax as <<3.4.5. Use branch statement, Use branch statement>>, but without `USE BRANCH` prefix.
+
+See <<3.4.6. Chooser statements group, Chooser statements group>> for other parameters description.
+
+_Example:_
+
+----
+CHOOSE BRANCH TO USE BY MONTH FROM
+  Snow MONTH February
+  Flowers MONTH April
+  Meadows MONTH June
+  YellowLeaves MONTH 10
+  NewYearTree MONTH December
+END CHOOSE
+----
+
+==== 3.4.7. Stop statement
+
+Stops script execution.
+
+Supported properties: `<<3.2.6.5. Probability property, probability>>`
+
+_Syntax:_
+
+ STOP [WITH PROBABILITY <0-100>]
+
+where
+
+Probability property::
+Specifies probability of script stopping.
+
+_Examples:_
+
+ STOP
+ STOP WITH PROBABILITY 10
+
+<<<
+
+== 4. Scripting tutorial
+
+This section provides step by step tutorial in 'learn by example' style.
+For all available features see <<3. Script reference, script reference>>.
+ +
+Or if you feel like it is really easy you may look at <<6. Reference script, reference script>>.
+
+Before start, it is needed to say what Wallpaper Changer script (hereinafter script) is.
+ +
+It is just a file which contains some instructions how wallpapers should be changed on your computer.
+That's it.
+It is recommended to use build-in <<2.5. Script Editor, script editor>>, because it has a lot of <<2.5.1. Script Editor features, features>> which are really useful while writing Wallpaper Changer scripts.
+However, it is possible to use any plain text editor (for example Notepad).
+
+If you do not understand everything form the first time don't worry,
+it will be explained later or you always can use <<3. Script reference, reference>>.
+
+=== 4.1. Basics
+
+Every Wallpaper Changer script consists of commands which are called <<3.2.5. Statements, statements>>.
+Each statement may have some parameters which specify some details of the current command.
+
+==== 4.1.1. Writing first script
+
+Let's start from simple script which only sets given picture as desktop wallpaper.
+To do that we should write command `SET WALLPAPER` which are followed by path to the image which we want to use.
+ +
+For example:
+
+ SET WALLPAPER D:\Wallpapers\landscape.jpg
+
+and that's it!
+Our image will be set as a desktop wallpaper.
+
+But to complete script we need to wrap our commands into `Main` branch.
+For now let's just do it and later in this tutorial will be explained what a branch is.
+So, the full script will look like follow:
+
+.Simplest script to set desktop wallpaper
+----
+BRANCH Main
+  SET WALLPAPER D:\Wallpapers\landscape.jpg
+END BRANCH
+----
+
+But instead of `D:\Wallpapers\landscape.jpg` you should have path your image which will used as desktop wallpaper.
+
+Note, you may specify relative path from script file location to needed image.
+
+==== 4.1.2. Editing scripts
+
+As it was mentioned earlier, Wallpaper Changer comes with its own <<2.5. Script Editor, editor>>.
+Here we are going to create simple script which just sets a wallpaper.
+I.e. the only line in Main branch will be `SET WALLPAPER` and path to the image with help of the Script Editor.
+
+To open script editor, find Wallpaper Changer picture in tray, and from context menu use `Script` -> `Script Editor...`.
+A window with the editor should appear.
+ +
+As you can see, by default a new script template is created and you already have `Main` branch in place.
+Now set cursor in empty line inside the branch and type `S` then hit `Ctrl` + `space`.
+A popup with possible cases should appear.
+Here you can select what you need or continue typing to filter results.
+Paste `SET` keyword.
+Next type a space and invoke autocompletion again using `Ctrl` + `space`.
+The whole word `WALLPAPER` should appear because it is the only option after `SET` keyword.
+ +
+And finally we need a path to our image.
+Click `Resource` -> `Insert image...` from Script Editor Main Menu and select picture.
+
+==== 4.1.3. Verifying scripts
+
+When script is finished we want make sure that there is no mistakes.
+To check the script for syntax correctness use `Script` -> `Check syntax` from Main Menu of the editor.
+Bottom panel should appear with appropriate message.
+ +
+Sometimes it is needed to check if all resources (pictures we want to use) are present on your computer.
+To check that just use `Script` -> `Check resources`.
+ +
+One more useful feature is script tracing.
+It allows to keep track of how opened script will be executed without actual run.
+
+When everything is done save the script using `Ctrl` + `s` or `File` -> `Save` from editor's Main Menu.
+
+There is other useful features, you may just play with them.
+For example, instead of typing `SET WALLPAPER` you may just use `Statement` -> `Insert` -> `Set wallpaper` which will insert a template for you.
+
+==== 4.1.4. Running and stopping scripts
+
+When script is saved, find Wallpaper Changer in tray then from context menu use `Script` -> `Run script...` and select the script.
+Now you should see the result on your desktop.
+
+If it's needed to stop script before it finishes itself, just use `Stop` item from the Main Menu.
+If there is no `Stop` menu item, but `Restart` it means that the script is already finished.
+
+=== 4.2. Basic scripting
+
+Here we'll proceed with writing more rich scripts.
+
+==== 4.2.1. Specifying wallpaper style
+
+Sometimes it is needed to set how given image should be applied as a wallpaper.
+Should it be cropped or stretched or maybe this is a texture and should be tiled?
+This can be reached by setting <<3.2.6.1. Wallpaper style property, wallpaper style property>>.
+ +
+For example if we need to set a texture and tile it:
+
+----
+BRANCH Main
+  SET WALLPAPER D:\Wallpapers\texture.jpg STYLE TILED
+END BRANCH
+----
+
+For all available styles see <<Appendix A: Wallpaper styles, reference>>.
+
+==== 4.2.2. Predefined sequence of images
+
+Script that sets specific image as wallpaper from previous chapter is not very useful, though.
+Let's screate a script which will set a list of images as wallpapers one by one.
+To reach that, just add a few more set wallpaper statements.
+It may look like:
+
+----
+BRANCH Main
+  SET WALLPAPER D:\Wallpapers\landscape.jpg
+  SET WALLPAPER D:\Photos\MyCar.png
+END BRANCH
+----
+
+But that, probably, isn't what we want, because wallpapers will be changed immediately.
+There is a need to add delays.
+
+==== 4.2.3. Delays
+
+A delay can be added to script with <<3.4.3. Wait statement, wait statement>> or, in some cases, with <<3.2.6.2. Delay property, delay property>>. Seldom <<3.2.6.3. Wait till property, till property>> might be used.
+
+===== 4.2.3.1. Delays using Delay statement
+
+Let's improve previous script by adding <<3.4.3. Wait statement, wait statement>> after each <<3.4.1. Set wallpaper statement, set wallpaper>> statement:
+
+----
+BRANCH Main
+  SET WALLPAPER D:\Wallpapers\landscape.jpg
+  WAIT 2m
+  SET WALLPAPER D:\Photos\MyCar.png
+  WAIT 10s
+  SET WALLPAPER D:\Photos\Garden.png
+  WAIT 1h
+END BRANCH
+----
+
+As you can see a delay can be easily added using keyword `WAIT` with following <<3.2.3.5. Time period, delay value>>.
+Delay value consists of a number and <<3.2.3.4. Time unit, time unit>>.
+In the example above delays are 2 minutes, 10 seconds and 1 hour correspondingly.
+
+===== 4.2.3.2. Delays using delay property
+
+Some statements support <<3.2.6.2. Delay property, delay property>>, which specifies for how long this statement should hold control.
+Lets rewrite previous script with delay property.
+
+----
+BRANCH Main
+  SET WALLPAPER D:\Wallpapers\landscape.jpg FOR 2m
+  SET WALLPAPER D:\Photos\MyCar.png FOR 10s
+  SET WALLPAPER D:\Photos\Garden.png FOR 1h
+END BRANCH
+----
+
+So, to add delay property just add keyword `FOR` and then specify <<3.2.3.5. Time period, delay value>>, which also could be <<3.3.1.4. Delays section, named delay constant>>.
+
+==== 4.2.4. Set images from a directory
+
+Example described above is good, but if we want to use many images from a directory it might be tiring to add all of them manually.
+To avoid that routine work, one may use <<3.4.2. Set directory statement, directory statement>>.
+Lets look at very basic example:
+
+----
+BRANCH Main
+  SET WALLPAPER FORM DIRECTORY D:\Wallpapers\
+END BRANCH
+----
+
+This script just picks up an image from specified directory.
+ +
+To make it set more then one image the <<3.2.6.4. Times property, times property>> should be added.
+Probably, default delay property should be overridden too.
+ +
+The following script sets 5 images from `D:\Wallpapers\` for 2 minutes each.
+
+----
+BRANCH Main
+  SET WALLPAPER FORM DIRECTORY D:\Wallpapers\ FOR 2m 5 TIMES
+END BRANCH
+----
+
+Also it is possible to use images from a directory tree.
+For example, all wallpapers are in `D:\Wallpapers`.
+But `D:\Wallpapers` contains folders with other folders and images.
+To make Wallpaper Changer look into directories recursively, just add `RECURSIVE` flag:
+
+----
+BRANCH Main
+  SET WALLPAPER FORM DIRECTORY D:\Wallpapers\ RECURSIVE FOR 2m 5 TIMES
+END BRANCH
+----
+
+By the way, simple mode uses directory statement under the hood,
+so with this single command one may replace <<1.1.3.1. Simple mode, simple mode>>.
+
+=== 4.3. Branching
+
+Examples above provide useful scripts, but they all are liner.
+To change the situation one may use branches and choosers.
+
+==== 4.3.1. Branches
+
+<<3.3.2. Branches section, Branch>> in Wallpaper Changer script is just a group of other statements.
+ +
+One may use branches just to logically group commands.
+For example:
+
+.Grouping commands with branches
+----
+BRANCH Main
+  USE BRANCH Animals
+  USE BRANCH Landscapes
+END BRANCH
+
+BRANCH Animals
+  SET WALLPAPER D:\Wallpapers\Animals\lynx.jpg FOR 1m
+  SET WALLPAPER D:\Wallpapers\Animals\fox.jpg FOR 1m
+END BRANCH
+
+BRANCH Landscapes
+  SET WALLPAPER D:\Wallpapers\Landscapes\sea-sunset.jpg FOR 1m
+  SET WALLPAPER D:\Wallpapers\Landscapes\ice-desert.jpg FOR 1m
+END BRANCH
+----
+
+In the script above branches `Animals` and `Landscapes` are used from `Main` branch.
+<<3.4.5. Use branch statement, Use branch statement>> just executes commands from specified branch and the continue with the next command in current branch.
+It is possible to rewrite the script above without using the branches.
+However, it helps to structure your scripts and it is much easier to find place to change when needed, especially if script is big enough.
+
+But the main advantage of branches is that they could be used from different places with different properties as many times as needed.
+ +
+For example, Main branch of previous script may look like:
+
+----
+BRANCH Main
+  USE BRANCH Animals
+  USE BRANCH Landscapes
+  USE BRANCH Animals
+END BRANCH
+
+# Branches omitted
+----
+
+Also it is possible (and useful) to add <<3.2.6.4. Times property, times>> and <<3.2.6.5. Probability property, probability>> properties.
+ +
+For example following script executes `Animals` branch with 50% probability
+
+----
+BRANCH Main
+  USE BRANCH Animals WITH PROBABILITY 50
+  USE BRANCH Landscapes
+END BRANCH
+
+# Branches omitted
+----
+
+And the next one executes `Animals` branch twice
+
+----
+BRANCH Main
+  USE BRANCH Animals 2 TIMES
+  USE BRANCH Landscapes
+END BRANCH
+
+# Branches omitted
+----
+
+It's worth to mention that one may use any branch from any.
+For example (maybe a little bit tricky):
+
+----
+BRANCH Main
+  USE BRANCH a WITH PROBABILITY 50
+  USE BRANCH b WITH PROBABILITY 75
+END BRANCH
+
+BRANCH a
+  SET WALLPAPER a1.jpg FOR 2m
+  USE BRANCH c
+  SET WALLPAPER a2.jpg FOR 10s
+END BRANCH
+
+BRANCH b
+  USE BRANCH c
+  SET WALLPAPER b.jpg FOR 30s
+  USE BRANCH a 2 TIMES
+  WAIT 5m
+  USE BRANCH c WITH PROBABILITY 20
+END BRANCH
+
+BRANCH c
+  SET WALLPAPER wallpaper.jpg FOR 1m
+END BRANCH
+----
+
+But be careful to not to create a forever reusing of branches.
+Otherwise script will be terminated with error.
+
+Other branches related command is <<3.4.4. Switch branch statement, switch branch statement>>.
+Unlike use, switch do not returns to the next command, but after its execution exits the current branch.
+In the following example `neverland.png` will never be set as wallpaper.
+
+----
+BRANCH Main
+  USE BRANCH a
+END BRANCH
+
+BRANCH a
+  SWITCH TO BRANCH b
+  SET WALLPAPER neverland.png
+END BRANCH
+
+BRANCH b
+  SET WALLPAPER fairytaleland.png
+END BRANCH
+----
+
+==== 4.3.2. Stopping script execution
+
+It is possible to stop script before it reaches its end.
+To do that one should use <<3.4.7. Stop statement, stop statement>>.
+It makes sense to use it with <<3.2.6.5. Probability property, probability property>> or in the end of a branch which is used with some probability.
+ +
+Simple example:
+
+----
+BRANCH Main
+  USE BRANCH finish WITH PROBABILITY 50
+  SET WALLPAPER D:\Wallpapers\sunrise.jpg
+END BRANCH
+
+BRANCH finish
+  SET WALLPAPER D:\Wallpapers\midnight.gif
+  STOP
+END BRANCH
+----
+
+Note, if remove probability property from use branch statement, `sunrise.jpg` will never be set.
+
+=== 4.3.3. Choosers
+
+<<3.4.6. Chooser statements group, Chooser statements group>> is designed to choose what to execute by some condition.
+ +
+The group consists of 3 choosers: for <<3.4.6.2. Wallpaper chooser statement, wallpapers>>, for <<3.4.6.4. Branch to use chooser statement, branch to use>> and for <<3.4.6.3. Branch to switch chooser statement, branch to switch>>.
+
+Let’s start from example:
+
+.Chooser by time example
+----
+BRANCH Main
+  CHOOSE WALLPAPER BY TIME FROM
+    D:\Wallpapers\sunrise.jpg TIME 6:00
+    D:\Wallpapers\sunset.jpg TIME 19:30
+    D:\Wallpapers\midnight.gif TIME 22:45
+  END CHOOSE
+END BRANCH
+----
+
+The chooser from example above sets
+`sunrise.jpg` if time in execution moment is between 6 am till 7:29 pm including,
+`sunset.jpg` if time is between 7:30 pm till 10:44 pm,
+`midnight.gif` for 10:45 pm till 5:59 am.
+As you may noticed last item works until first one.
+ +
+An item to choose may have properties exactly like corresponding idependent statement outside chooser.
+For example:
+
+----
+BRANCH Main
+  CHOOSE WALLPAPER BY TIME FROM
+    D:\Wallpapers\sunrise.jpg FOR 2m TIME 6:00
+    D:\Wallpapers\sunset.jpg WITH PROBABILITY 30 FOR 1m TIME 19:30
+  END CHOOSE
+END BRANCH
+----
+
+Here, if time is to set `sunset.jpg` it might be skipped due to probability property.
+But if it is set, it will hold execution fot 1 minute.
+
+Another example:
+
+----
+BRANCH Main
+  CHOOSE BRANCH TO USE BY WEEKDAY FROM
+    workday WEEKDAY Monday
+    holiday WEEKDAY Saturday
+  END CHOOSE
+END BRANCH
+
+BRANCH workday
+  # some commands here
+END BRANCH
+
+BRANCH holiday
+  # some commands here
+END BRANCH
+----
+
+For more information about choosers, please see <<3.4.6. Chooser statements group, reference>>.
+ +
+Here is the full list of <<3.4.6.1. Selectors and their values in Chooser statements, chooser conditions>>.
+
+=== 4.4. Named constants
+
+Lets look at simple script.
+
+----
+BRANCH Main
+  SET WALLPAPER D:\Archive\Photos\MyCar.png FOR 8m
+  SET WALLPAPER D:\Archive\Photos\Garden.png FOR 8m
+  SET WALLPAPER D:\Archive\Photos\Cat.jpg FOR 8m
+END BRANCH
+----
+
+Here we can see, that many images is from `D:\Photos\Archive\`.
+To avoid constantly writing this prefix, we may define a directory constant and use it as shown below.
+
+.Using directory constant
+----
+DIRECTORIES
+  photos D:\Archive\Photos
+END DIRECTORIES
+
+BRANCH Main
+  SET WALLPAPER $photos\MyCar.png FOR 8m
+  SET WALLPAPER $photos\Photos\Garden.png FOR 8m
+  SET WALLPAPER $photos\Cat.jpg FOR 8m
+END BRANCH
+----
+
+As you may noticed, to use a constant its name should be preceded by `$`.
+ +
+Note, you may also use directory constant in <<3.4.2. Set directory statement, set directory statement>>.
+ +
+Also, when writing scripts you may use autocompletion (`Ctrl + space`) after `$` to make the process easier.
+
+In the script above we have similar delays.
+And we may use delay constant as well.
+
+----
+DIRECTORIES
+  photos D:\Archive\Photos
+END DIRECTORIES
+
+DELAYS
+  pauseTime 8m
+END DELAYS
+
+BRANCH Main
+  SET WALLPAPER $photos\MyCar.png FOR $pauseTime
+  SET WALLPAPER $photos\Photos\Garden.png FOR $pauseTime
+  SET WALLPAPER $photos\Cat.jpg FOR $pauseTime
+END BRANCH
+----
+
+This will give us advantage if we decide to change the delay.
+Then we need to change it in only one place.
+
+Also images constants are allowed.
+They may be used in any place where an image is required.
+For example:
+
+----
+DIRECTORIES
+  photos D:\Archive\Photos
+END DIRECTORIES
+
+IMAGES
+  flowers C:\Downloads\flowers.jpg
+  garden $photos\garden.png
+END IMAGES
+
+BRANCH Main
+  SET WALLPAPER $flowers FOR 1m
+  CHOOSE WALLPAPER BY WEIGHT FROM
+    $garden WEIGHT 5
+    $flowers WEIGHT 2
+  END CHOOSE
+END BRANCH
+----
+
+As you can see, it's even possible to use directory constants while defining images constants.
+
+=== 4.5. Defaults
+
+=== 4.5.1. Default values
+
+Sometimes it is useful to define default value for some parameters.
+It may be reached via <<3.3.1.1. Defaults section, defaults section>>.
+Let's look at example.
+
+.Defaults in script
+----
+DEFAULTS
+  DELAY 5m
+  DELAY UNITS s
+  WALLPAPER STYLE TILE
+END DEFAULTS
+
+BRANCH Main
+  WAIT
+  SET WALLPAPER texture.jpg
+  WAIT 10
+END BRANCH
+----
+
+The script above will wait for 5 minutes first (because default delay is set to 5m),
+then set `texture.jpg` with style `TILE` (style property is omitted, so default is used)
+and finally will wait for 10 seconds (because time unit is omitted, so default is used).
+
+Note, if some defaults is omitted predefined values will be used for them.
+
+=== 4.5.2. Default directory
+
+In some samples above you may noticed a relative path to an image.
+By default this path is calculated from place where the script is located.
+For example, if script is in `D:\WallpaperChanger\Scripts` and it has following line:
+
+ SET WALLPAPER Images\wallpaper.jpg
+
+the path by which the images will be searched is `D:\WallpaperChanger\Scripts\Images\wallpaper.jpg`
+ +
+But such behavior may not be comfortable in some cases.
+To change that one need to define in <<3.3.1.1. Defaults section, defaults section>> <<3.3.1.2. Directories section, directory>> value.
+After default directory is defined, all paths will be calculated from it.
+Example:
+
+.Overriding default directory
+----
+DEFAULTS
+  DIRECTORY D:\Wallpapers
+END DEFAULTS
+
+BRANCH Main
+  SET WALLPAPER Landscapes\lake.jpg
+END BRANCH
+----
+
+So, the image should be located at `D:\Wallpapers\Landscapes\lake.jpg`
+and it doesn't matter where the script is located.
+
+=== 4.6. Future reading
+
+Now you may look through <<3. Script reference, reference>> for full list of features,
+or take a look at <<5. Scripts examples, sample scripts>>.
+
+=== 4.7. Cross-platform scripting notes
+
+Wallpaper Changer is cross platform program but there is some differences in scripts between platforms.
+ +
+One of the most notable difference is path separator. Linux uses slash `/` where as Windows uses backslash `\`.
+However slash `/` might be used on Windows too (but never mix them in the same script).
+So, it's better to use slashes `/` as path separators.
+ +
+Also there is difference in absolute paths between different platforms.
+To completely avoid the difference one may use relative paths.
+But such approach is often not comfortable.
+If so, it is better to use <<3.3.1.1.4. Default directory, default directory>> or <<3.3.1.2. Directories section, directory constant>> and change only one path.
+
+Moreover, there is might be differences even in the same OS family.
+Wallpaper styles set may differ for each desktop environment.
+For example, Windows 7 has more options than Windows XP.
+
+=== 4.8. Scripting Q & A
+
+How to make random delay in script?::
+  Combine <<3.2.6.5. Probability property, probability>> and <<3.2.6.4. Times property, times>> properties on <<3.4.3. Wait statement, wait statement>>.
+   +
+  For example:
+   +
+  `WAIT 1m 10 TIMES WITH PROBABILITY 50`
+   +
+  So, it will wait from 0 to 10 minutes.
+  You may adjust parameters to reach needed result.
+  If you need start your delay not from 0, you may add another `WAIT` above without such properties.
+
+Which statement should I use to change branches: switch branch or use branch?::
+  It depends on what you want.
+  If you need execute something and return to the next command in current branch, <<3.4.5. Use branch statement, use branch>> is needed,
+  if you need to replace current branch with another one, <<3.4.4. Switch branch statement, switch branch>> is suitable.
+
+It is hard to navigate in big scripts. What to do?::
+  A good practice is to use dedicated branch for each logical step.
+  For example see how they are organized in <<5.4.1. Driving in the city, this sample>>.
+
+Does it have support for loops?::
+  It is not a programming language, so the answer is no.
+  But one may emulate them with <<3.2.6.4. Times property, times property>>.
+  If you need a few commands in loop just move them into separate branch and use times property when <<3.4.5. Use branch statement, using>> (calling) it.
+
+Can I run the same script on Linux and Windows?::
+  Generally yes.
+  But you have to make all paths relative and use slash (`/`) as path separator.
+  To make it easier you may set <<3.3.1.1.4. Default directory, default directory>> with absolute path and change only it.
+  (Also using of <<3.3.1.2. Directories section, directory constant>> is possible).
+
+<<<
+
+== 5. Scripts examples
+
+This chapter contains a few samples of using Wallpaper Changer scripts.
+
+If you do not want to look through all of the examples we recommend
+<<5.4. Following map pattern, Following map pattern>> and <<5.3.2. Keep wallpaper up to current time whole day, Keep wallpaper up to current time whole day>>.
+Also <<6. Reference script, reference script>> might be useful.
+
+=== 5.1. Setting random images as wallpaper
+
+==== 5.1.1. Setting random images from a directory
+
+Probably everyone has photos on their computer.
+Even if not, I think some nice pictures could be found there.
+It would be nice to set them as wallpapers and we shouldn't know which of them will be used this or next time.
+To reach that we just need to use <<3.4.2. Set directory statement, directory statement>>.
+So simple script may look like:
+
+.Simple script to set 10 wallpapers from given directory
+----
+BRANCH Main
+  SET WALLPAPER FROM DIRECTORY D:\Photos\Vocation\ FOR 2m 10 TIMES
+END BRANCH
+----
+
+==== 5.1.2. Setting random images from a directory tree
+
+But what if we want to use whole photo-achive?
+No problem.
+Just add `Recursive` flag to the statement.
+
+.Using whole photo-archive
+----
+BRANCH Main
+  SET WALLPAPER FROM DIRECTORY D:\Photos\ RECURSIVE FOR 2m 1000 TIMES
+END BRANCH
+----
+
+Note, this also could be reaches using <<1.1.3.1. Simple mode, simple mode>>
+(the difference is only times limit, see <<5.2. Controlling script execution, Controlling script execution>>).
+
+=== 5.2. Controlling script execution
+
+==== 5.2.1. Make script run forever
+
+The idea is pretty simple:
+just repeat given script when end of main branch is reached.
+This could be easily done using <<3.4.4. Switch branch statement, Switch to branch>> statement.
+
+.Script which runs forever
+----
+BRANCH Main
+  SET WALLPAPER day.jpg FOR 5m
+  SET WALLPAPER night.jpg FOR 5m
+
+  SWITCH TO BRANCH Main
+END BRANCH
+----
+
+WARNING: Make sure that at least one delay is present in repeated part of script.
+ +
+Otherwise, it will end up in constant wallpaper changing and high CPU usage.
+
+Using this technic we may add randomized delay into <<5.1.2. Setting random images from a directory tree, the script>> which sets random images from a directory tree.
+
+.Setting random images from directory tree with random delay (from 1 to 5 minutes with 10 seconds step)
+----
+BRANCH Main
+  SET WALLPAPER FROM DIRECTORY D:\Photos\ RECURSIVE FOR 1m
+  WAIT 10s WITH PROBABILITY 50 24 TIMES
+  SWITCH TO BRANCH Main
+END BRANCH
+----
+
+==== 5.2.2. Make script run unspecified time
+
+To make script (or branch) run some not strictly defined number of times
+we just need to add <<3.2.6.5. Probability property, probability property>> to the <<3.4.4. Switch branch statement, switch branch>> statement.
+
+.Script which execute specified branch unknown number of times
+----
+BRANCH Main
+  USE BRANCH ToBeRepeated
+  SWITCH TO BRANCH Main WITH PROBABILITY 95
+END BRANCH
+
+BRANCH ToBeRepeated
+  # Some statements which should be repeated unknow number of times here
+END BRANCH
+----
+
+TIP: Adjust probability to control how long the branch execution will be continued.
+
+=== 5.3. Setting wallpapers depending on time
+
+==== 5.3.1. Setting wallpapers depending on the part of the day
+
+Let's suppose we have photos from fixed camera during some day.
+Our task is to set wallpaper depending on time when the script is running.
+To implement that we may just use wallpaper chooser by time.
+
+.Set wallpaper (once) depending on current time.
+----
+DIRECTORIES
+  timelapse D:\Wallpapers\Timelapse
+END DIRECTORIES
+
+BRANCH Main
+  CHOOSE WALLPAPER BY TIME FROM
+    $timelapse\sunrise.jpg TIME 6:00
+    $timelapse\morning.jpg TIME 7:30
+    $timelapse\noon.jpg TIME 12:00
+    $timelapse\evening.jpg TIME 17:00
+    $timelapse\sunset.jpg TIME 20:35
+    $timelapse\twilight.jpg TIME 21:00
+    $timelapse\night.jpg TIME 21:30
+  END CHOOSE
+END BRANCH
+
+----
+
+==== 5.3.2. Keep wallpaper up to current time whole day
+
+Let's set next task: keep desktop wallpaper up to current time.
+To reach our new goal we need to modify previous example by adding <<3.2.6.3. Wait till property, till>> property to each wallpaper.
+As a time we should set the time of the next wallpaper.
+And after this repeat the chooser statement
+(we may use endless loop as was described in <<5.2.1. Make script run forever, this sample>>).
+So, when an images is set, script executor will wait till specified time (which is the time of the next item)
+and after this the chooser statement will be repeated, so the next item from the chooser list will be used.
+And so on.
+
+.Keeping wallpaper image up to date with current time
+----
+DIRECTORIES
+  timelapse D:\Wallpapers\Timelapse
+END DIRECTORIES
+
+BRANCH Main
+  CHOOSE WALLPAPER BY TIME FROM
+    $timelapse\sunrise.jpg  TILL 7:30  TIME 6:00
+    $timelapse\morning.jpg  TILL 12:00 TIME 7:30
+    $timelapse\noon.jpg     TILL 17:00 TIME 12:00
+    $timelapse\evening.jpg  TILL 20:35 TIME 17:00
+    $timelapse\sunset.jpg   TILL 21:00 TIME 20:35
+    $timelapse\twilight.jpg TILL 21:30 TIME 21:00
+    $timelapse\night.jpg    TILL 6:00  TIME 21:30
+  END CHOOSE
+
+  SWITCH TO BRANCH Main
+END BRANCH
+----
+
+=== 5.4. Following map pattern
+
+==== 5.4.1. Driving in the city
+
+===== 5.4.1.1. The idea
+
+Let's create a scenario in which a person drives a car around the city.
+Wallpapers will be images taken at some moment from his car DVR.
+
+===== 5.4.1.2. Script scaffold
+
+First, let's create script scaffold.
+ +
+Supposed that all frames from car DVR is located in `D:\Wallpapers\DVR-frames\` directory.
+To avoid constantly adding this path as prefix for each wallpaper image
+(even if it is a <<3.3.1.2. Directories section, directory constant>>),
+it will be comfortable to use <<3.3.1.1.4. Default directory, default directory>> which points to the directory with all the frames.
+The same for wallpaper style.
+ +
+In this script is supposed that delay between changing frames is the same.
+So it is logically to use <<3.3.1.4. Delays section, delays header section>>.
+It brings us benefit when it is required to change commonly used delay.
+Then we don't have to change it in a few dozen places, just in the <<3.3.1. Headers section, headers>>.
+Even if a delay constant is used only once in script,
+sometimes it's worth to use delay constant to not to search for the place where this delay is used.
+ +
+But if you want different delays - no problem, you may adjust everything as you wish.
+ +
+And here we are:
+
+.Script scaffold
+----
+DEFAULTS
+  DIRECTORY D:\Wallpapers\DVR-frames\
+  WALLPAPER STYLE ZOOMED
+END DEFAULTS
+
+DELAYS
+  DelayTime 2m
+  # More delays will be added later
+END DELAYS
+
+BRANCH Main
+  # Statements here
+END BRANCH
+----
+
+===== 5.4.1.3. City map
+
+Now is the time to plan overall trip, so let's take a look at map (unused paths is truncated):
+
+----
+                               ╔════════╗
+                          B    ║        ║
+                    ╔═════╦════╩════════╣ D
+                    ║     ║    C        ║
+                    ║   Market        E ╠═╗
+           Home ════╣ A                 ║ ║ X
+                    ║                 F ╠═╝
+                    ║                   ║
+                  H ║                   ╚═ Office
+ to village ════════╬═════════╗
+                    ║         ║ Park
+                    ║         ╙──┬───┐
+               City Center       │   └──┐
+                                 └──────┘
+----
+
+===== 5.4.1.4. Straight routes
+
+There are some branching on the map as well as just straightforward moving between two points.
+To make things easier for us, let's create separate branch for each of such straight routes.
+And name them by the following pattern: `<starting point>_to_<finish point>`.
+For example: `A_to_B` or `D_to_C`.
+Each of these branches has just <<3.4.1. Set wallpaper statement, set wallpaper>> statements with some delays.
+That's it.
+ +
+Here is the sample of `A_to_B` branch.
+
+.A_to_B branch
+----
+BRANCH A_to_B
+  SET WALLPAPER A_to_B_1.jpg FOR $DelayTime
+  SET WALLPAPER A_to_B_2.jpg FOR $DelayTime
+  # and so on
+END BRANCH
+----
+
+Note, we don't have to specify folder with the DVR frames because we set the folder as <<3.3.1.1.4. Default directory, default directory>>.
+Also we set default wallpaper style in the same <<3.3.1.1. Defaults section, defaults>> section.
+So we need to specify it only if it differs from others.
+
+To avoid routine in this sample, let's omit implementation of all branches of this kind.
+You may look at full script in the `samples` folder.
+
+===== 5.4.1.5. Starting point
+
+Obviously, the trip starts from garage at home.
+Then the car goes to point `A`.
+Let's assume that the future route depends on the day of week.
+If it is a workday, car should go toward point `B`.
+In case of weekend some entertainment is awaiting for us, so it goes toward point `H`.
+But after the trip we should return to home in the garage.
+
+To move between Home and point `A` we have corresponding branches.
+ +
+Now we need to use branch depending on day of week.
+For this purposes <<3.4.6.4. Branch to use chooser statement, branch to use chooser>> statement could be used.
+We have only two possible cases, so it will turn into only two records.
+For selector value we should use starting condition of each choice.
+In this case it should be Monday and Saturday.
+So the first item will be used from Monday (included) till Saturday (not included).
+And the second one from Saturday (included) till Monday (not included).
+ +
+The snippet is given below.
+
+.Main branch
+----
+BRANCH Main
+ SET WALLPAPER from-garage.jpg FOR $DelayTime
+  USE BRANCH Home_to_A
+
+  CHOOSE BRANCH TO USE BY WEEKDAY FROM
+    WorkdayTrip WEEKDAY MONDAY
+    WeekendTrip WEEKDAY SATURDAY
+  END CHOOSE
+
+  USE BRANCH A_to_Home
+END BRANCH
+----
+
+===== 5.4.1.5. Workday trip
+
+On the way to work we sometimes need to go to the market from point `B`.
+Let's say in 30% of cases.
+ +
+To reach that we just need <<3.4.5. Use branch statement, use branch>> statement with <<3.2.6.5. Probability property, probability>> property.
+
+ USE BRANCH ToMarketAndBack WITH PROBABILITY 30
+
+When point `C` is reached it may turn out that a traffic jam is ahead.
+That happens roughly in 35% of cases.
+ +
+For this condition we can use <<3.4.6.4. Branch to use chooser statement, branch to use chooser>> statement with weight selector.
+We need to adjust weight value properly.
+The easiest way is to put percentage as the value.
+(However we may use 13 and 7 respectively, nothing will change).
+
+----
+CHOOSE BRANCH TO USE FROM
+  C_to_D        WEIGHT 65
+  C_to_D_bypass WEIGHT 35
+END CHOOSE
+----
+
+Usually we go directly form point `E` to point `F`.
+But each Wednesday our route goes through point `X`.
+ +
+Well, there is no `if` statement, so the only case for us here is to use <<3.4.6.4. Branch to use chooser statement, branch to use chooser>> again.
+But in this case we have 3 sections:
+
+ * Monday, Tuesday
+ * Wednesday
+ * Thursday, Friday
+
+Which seems might be converted to the following statement:
+
+----
+CHOOSE BRANCH TO USE BY WEEKDAY FROM
+  E_to_F           WEEKDAY MONDAY
+  E_to_F_through_X WEEKDAY WEDNESDAY
+  E_to_F           WEEKDAY THURSDAY
+END CHOOSE
+----
+
+But we may notice, that this statement will never be executed (by our scenario) on weekend.
+This mean that the first and the last case is 'connected'.
+And we may just treat it as a single case.
+ +
+So, the simplified statement is:
+
+----
+CHOOSE BRANCH TO USE BY WEEKDAY FROM
+  E_to_F_through_X WEEKDAY WEDNESDAY
+  E_to_F           WEEKDAY THURSDAY
+END CHOOSE
+----
+
+And finally the office is reached.
+Parking.
+
+ SET WALLPAPER atOfficeParking.jpg FOR $AtOfficeTime
+
+In the evening just go back home.
+
+Below is what we should get for the workday trip branch.
+
+.Workday trip branch
+----
+BRANCH WorkdayTrip
+  USE BRANCH A_to_B
+  # Sometimes (at 40% of cases) go to the Market
+  USE BRANCH ToMarketAndBack WITH PROBABILITY 30
+  USE BRANCH B_to_C
+  # In case of traffic jam (35% of cases) use bypass way
+  CHOOSE BRANCH TO USE FROM
+    C_to_D        WEIGHT 65
+    C_to_D_bypass WEIGHT 35
+  END CHOOSE
+  USE BRANCH D_to_E
+  CHOOSE BRANCH TO USE BY WEEKDAY FROM
+    E_to_F_through_X WEEKDAY WEDNESDAY
+    E_to_F           WEEKDAY THURSDAY
+  END CHOOSE
+  USE BRANCH F_to_Office
+  SET WALLPAPER atOfficeParking.jpg FOR $AtOfficeTime
+  USE BRANCH Office_to_A
+END BRANCH
+----
+
+===== 5.4.1.6. Weekend trip
+
+The idea is the same as for workday trip.
+To not to get bored (and show another approach), let's change our scripting strategy a bit.
+So, each step will be represented as a branch with way forward and back plus next step.
+ +
+Generally each branch will look like:
+
+----
+BRANCH ToParkAndBack
+  USE BRANCH H_to_Park
+  USE BRANCH WalkInPark
+  USE BRANCH Park_to_H
+END BRANCH
+----
+
+Sometimes, for example at point `H`, instead of just using branch a <<3.4.6.4. Branch to use chooser statement, chooser statement>> should be used.
+Also it is possible to adjust probability with weight selector value as it is done in the example below.
+So the most popular is the route to the park, the least frequent is the trip to the village.
+
+----
+BRANCH WeekendTrip
+  USE BRANCH A_to_H
+  CHOOSE BRANCH TO USE BY WEIGHT FROM
+    ToParkAndBack       WEIGHT 5
+    ToCityCenterAndBack WEIGHT 3
+    ToVillageAndBack    WEIGHT 1
+  END CHOOSE
+  USE BRANCH H_to_A
+END BRANCH
+----
+
+===== 5.4.1.7. Final notes
+
+As you may see, there is a lot of possibilities to create your own scenario.
+To make creating of big scripts easier separate logical parts in their own branches or group of branches.
+
+==== 5.4.2. Sample script template for endless moving on a map
+
+Now let's continue the idea with DVR frames from previous chapter
+and create a script in which our car just moves along city streets turning randomly.
+ +
+To reach that we just need to draw a map of our city and define possible turns from each crossroad.
+ +
+When that's done, let's take closer look at a point, say X.
+For example, we may go to `U`, `Y` and `Z` from `X` and reversal to `W`.
+ +
+So the branch `W_to_X` might look like:
+
+.W_to_X branch
+----
+BRANCH W_to_X
+  SET WALLPAPER W_to_X_1.jpg FOR $delayTime
+  SET WALLPAPER W_to_X_2.jpg FOR $delayTime
+  # more wallpapers here
+
+  CHOOSE BRANCH TO SWITCH FROM
+    X_to_U
+    X_to_Y
+    X_to_Z
+    X_to_W
+  END CHOOSE
+END BRANCH
+----
+
+If one wants to deny reversal moving, it could be done very easily just by deleting `X_to_W` case from the chooser.
+ +
+Also it is possible to adjust probability of any route from current point.
+For example, let's make reversal moving happen not often:
+
+.Make reversal moving happen not often
+----
+  CHOOSE BRANCH TO SWITCH FROM
+    X_to_U WEIGHT 3
+    X_to_Y WEIGHT 3
+    X_to_Z WEIGHT 3
+    X_to_W WEIGHT 1
+  END CHOOSE
+----
+
+You may see the full script in the samples.
+
+=== 5.5. Changing of wallpaper image on boot
+
+Some users want to change wallpaper each time when they turn their computers on.
+It is possible with Wallpaper Changer, but requires some settings.
+First of all, Wallpaper Changer should be in the autostart list.
+When that is done, go to the <<2.4. Settings window, setting window>>,
+switch to the `Engine` tab and set `On application start` to `Rerun last script`.
+Then run script you want to be run on computer start.
+And that's it.
+ +
+One of the simplest scripts might be:
+
+.Simple script to change desktop wallpaper
+----
+# This script sets random wallpaper from specified folder and its subfolders.
+
+DIRECTORIES
+  # Set path to directory with your wallpapers
+  wallpapers D:\Wallpapers
+END DIRECTORIES
+
+BRANCH Main
+  SET WALLPAPER FROM DIRECTORY $wallpapers RECURSIVE
+END BRANCH
+----
+
+Note, you may include any logic you want into the script.
+ +
+For example, one might want to use simple <<3.4.6.2. Wallpaper chooser statement, chooser>> or the script form <<5.3.2. Keep wallpaper up to current time whole day, this sample>>.
+
+<<<
+
+== 6. Reference script
+
+This script has no logical meaning, but could be used as reference or example of different structures usage.
+
+.A script for reference
+----
+# This is a commentary
+# This script has no much sense, but it shows how different structures might be used.
+
+DEFAULTS
+  DELAY 5m
+  DELAY UNITS s
+  WALLPAPER STYLE CENTERED
+  DIRECTORY D:\Wallpapers
+END DEFAULTS
+
+DIRECTORIES
+  landscapes D:\Wallpapers\Landscapes\
+  textures D:\Wallpapers\Textures
+  photos D:\Archive\Photos
+END DIRECTORIES
+
+IMAGES
+  myGarden $photos\Garden\appletrees.png
+  bricks $textures\bricks.png
+  plane C:\Downloads\pictures\plane.jpg
+END IMAGES
+
+DELAYS
+  windAnimation 2s
+  aFewMoments 100s
+  pauseTime 2m
+END DELAYS
+
+BRANCH Main
+  # ===== Set wallpaper statement =====
+
+  # Set wallpaper by absolute path
+  SET WALLPAPER C:\Downloads\rabbit.gif
+
+  # Set wallpaper using image constant
+  SET WALLPAPER $myGarden
+
+  # Set wallpaper using directory constant and relative path
+  SET WALLPAPER $textures\water.png
+
+  # Set wallpaper by relative path.
+  # It will use D:\Wallpapers\Animals\fox.jpeg because
+  # default directory is set to D:\Wallpapers in DEFAULTS header section.
+  # Otherwise it uses relative path from the script location.
+  SET WALLPAPER Animals\fox.jpeg
+
+  # Set wallpaper and specifying style
+  SET WALLPAPER Animals\fox.jpeg STYLE ZOOMED
+
+  # Set wallpaper at least for specified period of time
+  SET WALLPAPER Animals\fox.jpeg FOR 1m
+  SET WALLPAPER Animals\fox.jpeg FOR $aFewMoments
+
+  # Set wallpaper and wait until 16:45
+  SET WALLPAPER Animals\fox.jpeg TILL 16:45
+
+  # Set wallpaper in 75% of cases
+  SET WALLPAPER Animals\fox.jpeg WITH PROBABILITY 75
+
+  # Set wallpaper with all posible parameters
+  SET WALLPAPER Animals\fox.jpeg STYLE CENTERED WITH PROBABILITY 50 FOR 10m
+
+  # ===== Wait statement =====
+
+  # Wait for specified period of time
+  WAIT 15m
+  # The same as above
+  WAIT FOR 15m
+
+  # Wait until specified time
+  WAIT TILL 17:25
+  WAIT TILL 22:31:45
+
+  # Await time specified in constant (in this case 100 seconds)
+  WAIT $aFewMoments
+
+  # Await default time (specified in defaults header section. For this script is 5m)
+  WAIT
+
+  # Awaits 200 seconds (because default time unit is seconds (specified in the defaults header section))
+  WAIT 200
+
+  # Waits 2 hours in 25% of cases
+  WAIT 2h WITH PROBABILITY 25
+
+  # Waits 10 minutes (2 minutes * 5 times = 10 minutes)
+  WAIT 2m 5 TIMES
+
+  # Wait statement with all possible parameters
+  # Note, the delay is in range from 0 to 20 minutes with 2 minutes step
+  WAIT 2m WITH PROBABILITY 50 10 TIMES
+
+  # ===== Set wallpapers from directory statement =====
+
+  # Sets as wallpaper an image from D:\Archive\Photos
+  SET WALLPAPER FROM DIRECTORY D:\Archive\Photos
+  # The same, but using directory constant
+  SET WALLPAPER FROM DIRECTORY $photos
+
+  # Sets 10 images from D:\Wallpapers for 1 minute each
+  SET WALLPAPER FROM DIRECTORY D:\Wallpapers FOR 1m 10 TIMES
+
+  # The same as above but images from subfolders of D:\Wallpapers is in set of selection
+  SET WALLPAPER FROM DIRECTORY D:\Wallpapers RECURSIVE FOR 1m 10 TIMES
+
+  # Builds list from all images in D:\Wallpapers and set them one by one.
+  # If list is over, it will return to its begining.
+  SET WALLPAPER FROM DIRECTORY D:\Wallpapers ORDERED FOR 1m 10 TIMES
+
+  # Sets an image from D:\Wallpapers as wallpaper 5 times for 1 minute each, probability of using choosen image is 85%
+  SET WALLPAPER FROM DIRECTORY D:\Wallpapers STYLE TILED FOR 1m 5 TIMES WITH PROBABILITY 85
+
+  # Set wallpapers from directory statement with all posible parameters
+  SET WALLPAPER FROM DIRECTORY D:\Wallpapers ORDERED RECURSIVE STYLE SCALED FOR 20s 50 TIMES WITH PROBABILITY 65
+
+  # ===== Use branch statement =====
+
+  # Executes specified branch, i.e. all commnds in it
+  USE BRANCH SomeBranch
+
+  # Executes given branch twice
+  USE BRANCH SomeBranch 2 TIMES
+
+  # Executes given branch in 50% of cases
+  USE BRANCH SomeBranch WITH PROBABILITY 50
+
+  # Use barnch statement with all possible parameters
+  USE BRANCH SomeBranch 5 TIMES WITH PROBABILITY 20
+
+  # ===== Switch to branch statement =====
+
+  # Replaces current branch with new one
+  SWITCH TO BRANCH SomeBranch
+
+  # Switches to given branch in 60% of cases
+  SWITCH TO BRANCH SomeBranch WITH PROBABILITY 60
+
+  # ===== Chooser statements group =====
+
+  # Wallpaper chooser
+
+  # Choose wallpaper by weight
+  CHOOSE WALLPAPER BY WEIGHT FROM
+    D:\Wallpapers\garden.jpg WEIGHT 4
+    $textures\bricks.gif WEIGHT 10
+    $plane WEIGHT 6
+    car.png WEIGHT 1
+  END CHOOSE
+
+  # The same as above
+  CHOOSE WALLPAPER FROM
+    D:\Wallpapers\garden.jpg WEIGHT 4
+    $textures\bricks.gif WEIGHT 10
+    $plane WEIGHT 6
+    car.png
+  END CHOOSE
+
+  # Cases to choose with some parameters
+  CHOOSE WALLPAPER FROM
+    D:\Wallpapers\garden.jpg FOR 1m WEIGHT 4
+    $textures\bricks.gif STYLE TILED WEIGHT 10
+    $plane STYLE CENTERED FOR 20s WEIGHT 6
+    car.png STYLE STRETCHED
+  END CHOOSE
+
+  # Choose wallpaper by season
+  CHOOSE WALLPAPER BY SEASON FROM
+    D:\Wallpapers\garden.jpg FOR 1m SEASON WINTER
+    $plane STYLE CENTERED FOR 20s SEASON SUMMER
+    car.png SEASON AUTUMN
+  END CHOOSE
+
+  # Choose wallpaper by month
+  CHOOSE WALLPAPER BY MONTH FROM
+    D:\Wallpapers\garden.jpg FOR 1m MONTH JANUARY
+    $plane STYLE CENTERED FOR 20s MONTH MAY
+    car.png MONTH OCTOBER
+  END CHOOSE
+
+  # Choose wallpaper by day of week
+  CHOOSE WALLPAPER BY WEEKDAY  FROM
+    D:\Wallpapers\garden.jpg FOR 1m WEEKDAY TUESDAY
+    $plane STYLE CENTERED FOR 20s WEEKDAY WEDNESDAY
+    car.png WEEKDAY SATURDAY
+  END CHOOSE
+
+  # Choose wallpaper by date
+  CHOOSE WALLPAPER BY DATE FROM
+    D:\Wallpapers\garden.jpg FOR 1m DATE 05.02
+    $plane STYLE CENTERED FOR 20s DATE 28.05
+    car.png DATE 10.10
+  END CHOOSE
+
+  # Choose wallpaper by date
+  CHOOSE WALLPAPER BY TIME FROM
+    D:\Wallpapers\garden.jpg FOR 1m TIME 2:00
+    $plane STYLE CENTERED FOR 20s TIME 10:15
+    car.png TIME 22:35
+  END CHOOSE
+
+    # Choose wallpaper by date and time
+  CHOOSE WALLPAPER BY DATETIME FROM
+    D:\Wallpapers\garden.jpg FOR 1m DATETIME 05.02-12:30
+    $plane STYLE CENTERED FOR 20s DATETIME 28.05-00:15
+    car.png DATETIME 10.10-21:18
+  END CHOOSE
+
+  # Branch to use chooser
+
+  # Selectors are the same as for wallpaper chooser.
+  CHOOSE BRANCH TO USE BY TIME FROM
+    SomeBranch TIME 9:00
+    another_branch TIME 18:30
+  END CHOOSE
+
+  # Branch to switch chooser
+
+  # Selectors are the same as for wallpaper chooser.
+  CHOOSE BRANCH TO SWITCH BY WEEKDAY FROM
+    SomeBranch WEEKDAY MONDAY
+    Main WITH PROBABILITY 25 WEEKDAY THURSDAY
+    another_branch WEEKDAY SATURDAY
+  END CHOOSE
+
+  # ===== Stop statement =====
+
+  # Stops script execution
+  STOP
+
+  # Stops script execution in 5% of cases
+  STOP WITH PROBABILITY 5
+
+END BRANCH
+
+BRANCH SomeBranch
+  # Some statements to be here
+END BRANCH
+
+BRANCH another_branch
+  # Some other statements
+END BRANCH
+
+----
+
+<<<
+
+== Appendix
+
+=== Appendix A: Wallpaper styles
+
+Different environments have different wallpaper styles supported.
+Moreover, the same wallpaper style could be named differently in different environments.
+Wallpaper Changer has unified wallpaper styles, which  are listed in the table below.
+
+.Wallpaper styles definition
+[%autowidth,cols=2,options="header"]
+|==========
+| Style | Description
+
+m| Centered |
+Puts the center of the image in the center of desktop keeping original image size.
+
+m| Tiled |
+Image is duplicated with its original size in both directions until whole screen will be filled.
+
+m| Zoomed |
+Scales image keeping aspect ratio until it fills whole screen
+(crops image if it has different aspect ratio than screen).
+
+m| Scaled |
+Resizes image keeping aspect ratio until it can be placed in screen
+(leave spaces if the image has different aspect ratio than screen).
+
+m| Stretched |
+Resizes image to fit desktop size.
+Does not keep aspect ratio.
+
+m| Spanned |
+Allows to set wallpaper across a few monitors.
+
+|==========
+
+=== Appendix B: Wallpaper styles accordance for different environments
+
+.Accordance between unified wallpaper style names and style names of some environments
+[%autowidth,options="header"]
+|==========
+ | Unified style | Windows | KDE (Plasma)            | Cinnamon  | Unity
+
+m| Centered      | Center  | Centered                | Centered  | Center
+m| Tiled         | Tile    | Tiled                   | Mosaic    | Tile
+m| Zoomed        | Fill    | Scaled-and-Cropped      | Zoom      | Zoom
+m| Scaled        | Fit     | Scaled-keep-proportions | Scaled    | Scale
+m| Stretched     | Stretch | Scaled                  | Stretched | Fill
+m| Spanned       | Span    | -                       | Spanned   | Span
+
+|==========
+
+=== Appendix C: Supported wallpaper styles by environments
+
+.Supported wallpaper styles for Windows family OS
+[%autowidth,cols=2,options="header"]
+|==========
+| Environment | Supported styles
+
+| Windows 10    | `Centered`, `Tiled`, `Zoomed`, `Scaled`, `Stretched`, `Spanned`
+| Windows 8     | `Centered`, `Tiled`, `Zoomed`, `Scaled`, `Stretched`, `Spanned`
+| Windows 7     | `Centered`, `Tiled`, `Zoomed`, `Scaled`, `Stretched`
+| Windows Vista | `Centered`, `Tiled`, `Stretched`
+| Windows XP    | `Centered`, `Tiled`, `Stretched`
+| Windows 2000  | `Centered`, `Tiled`, `Stretched`
+| ReactOS       | `Centered`, `Tiled`, `Zoomed`, `Scaled`, `Stretched`
+|==========
+
+.Supported wallpaper styles for Linux desktop environments
+[%autowidth,cols=2,options="header"]
+|==========
+| Environment | Supported styles
+
+| Gnome 3       | `Centered`, `Tiled`, `Zoomed`, `Scaled`, `Stretched`, `Spanned`
+| Gnome Classic | `Centered`, `Tiled`, `Zoomed`, `Scaled`, `Stretched`, `Spanned`
+| MATE          | `Centered`, `Tiled`, `Zoomed`, `Scaled`, `Stretched`, `Spanned`
+| Cinnamon      | `Centered`, `Tiled`, `Zoomed`, `Scaled`, `Stretched`, `Spanned`
+| KDE Plasma    | `Centered`, `Tiled`, `Zoomed`, `Scaled`, `Stretched`
+| XFCE          | `Centered`, `Tiled`, `Zoomed`, `Scaled`, `Stretched`
+| LXDE          | `Centered`, `Tiled`, `Zoomed`, `Scaled`, `Stretched`, `Spanned`
+| Unity         | `Centered`, `Tiled`, `Zoomed`, `Scaled`, `Stretched`, `Spanned`
+| Pantheon      | `Centered`, `Tiled`, `Zoomed`, `Scaled`, `Stretched`, `Spanned`
+| Budgie        | `Centered`, `Tiled`, `Zoomed`, `Scaled`, `Stretched`, `Spanned`
+|==========
+
+=== Appendix D: List of script keywords
+
+*Keywords*
+
+`Branch`, `By`, `Choose`, `Defaults`, `Delay`, `Delays`, `Directories`, `Directory`,
+`End`, `For`, `Till`, `From`, `Images`, `Ordered`, `Probability`, `Recursive`, `Set`,
+`Stop`, `Style`, `Switch`, `Times`, `To`, `Units`, `Use`, `Wait`, `Wallpaper`, `With`
+
+*Selectors*
+
+`Weight`, `Season`, `Weekday`, `Month`, `Date`, `Time`, `DateTime`
+
+*Reserved constants*
+
+`Winter`, `Spring`, `Summer`, `Autumn`,
+ +
+`January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`,`September`, `October`, `November`, `December`,
+ +
+`Sunday`, `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`
+
