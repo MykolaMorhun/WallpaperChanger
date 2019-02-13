@@ -278,11 +278,14 @@ type
     destructor Destroy(); override;
   public
     procedure SetOnCloseCallback(Callback : TWpcScriptEditorClosedCallback);
+
+    function OpenScript(PathToScript : String; Line : Integer = 1) : Boolean;
   private
     procedure SetupTracer(); inline;
     procedure SetupUI(); inline;
     procedure ApplyFont(); inline;
-
+  private
+    procedure OpenScriptInEditor(PathToScript : String);
   private
     function AskSave(Sender : TObject = nil) : Boolean;
     function QuoteIfContainsSpaces(Arg : String) : String; inline;
@@ -356,6 +359,24 @@ begin
   FOnCloseCallback := Callback;
 end;
 
+function TScriptEditorForm.OpenScript(PathToScript : String; Line : Integer = 1) : Boolean;
+begin
+  if (PathToScript = '') then begin
+    // Fill editor with basic script template
+    FileNewBaseScriptActionExecute(Self);
+    Result := True;
+    exit;
+  end;
+
+  if (FileExists(PathToScript)) then begin
+    OpenScriptInEditor(PathToScript);
+    FCurrentScript.CaretY := Line;
+    Result := True;
+  end
+  else
+    Result := False;
+end;
+
 procedure TScriptEditorForm.SetupTracer();
 var
   ScriptTracer : TWpcInThreadScriptFakeExecutionTracer;
@@ -392,9 +413,6 @@ begin
 
   // Disable some actions
   ScriptStopAction.Enabled := False;
-
-  // Fill editor with basic script template
-  FileNewBaseScriptActionExecute(Self);
 end;
 
 procedure TScriptEditorForm.ApplyFont();
@@ -408,6 +426,18 @@ begin
     Name := ApplicationManager.ScriptEditorState.FontName;
     Size := ApplicationManager.ScriptEditorState.FontSize;
   end;
+end;
+
+{
+  Discards current editor content and replaces it with content from given file.
+  File by given path should exist.
+}
+procedure TScriptEditorForm.OpenScriptInEditor(PathToScript : String);
+begin
+  FScriptPath := PathToScript;
+  FCurrentScript.Lines.LoadFromFile(FScriptPath);
+  FCurrentScript.Modified := False;
+  BottomPanelMemo.Append('Opened file: ' + FScriptPath);
 end;
 
 (* Actions *)
@@ -499,12 +529,8 @@ procedure TScriptEditorForm.FileOpenScriptActionExecute(Sender : TObject);
 begin
   if (AskSave(Sender)) then exit;
 
-  if (ScriptOpenDialog.Execute()) then begin
-    FScriptPath := ScriptOpenDialog.FileName;
-    FCurrentScript.Lines.LoadFromFile(FScriptPath);
-    FCurrentScript.Modified := False;
-    BottomPanelMemo.Append('Opened file: ' + FScriptPath);
-  end;
+  if (ScriptOpenDialog.Execute()) then
+    OpenScriptInEditor(ScriptOpenDialog.FileName);
 end;
 
 procedure TScriptEditorForm.FileSaveScriptActionExecute(Sender : TObject);

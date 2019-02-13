@@ -106,7 +106,7 @@ type
 
     procedure ReRunLastTask();
   public
-    procedure OpenScriptEditorForm();
+    procedure OpenScriptEditorForm(PathToScript : String = ''; Line : Integer = 1);
     procedure OpenOptionsForm(ForceSetEnvironment : Boolean = False);
     procedure OpenAboutForm();
   private
@@ -381,7 +381,7 @@ end;
 
 (* Windows managment *)
 
-procedure TWpcApplicationManager.OpenScriptEditorForm();
+procedure TWpcApplicationManager.OpenScriptEditorForm(PathToScript : String = ''; Line : Integer = 1);
 var
   ScriptEditorWindow : TScriptEditorForm;
 begin
@@ -395,6 +395,7 @@ begin
   ScriptEditorWindow := TScriptEditorForm.Create(nil);
   ScriptEditorWindow.SetOnCloseCallback(@OnScriptEditorWindowClosedCallback);
   FOpenedScriptEditors.Add(ScriptEditorWindow);
+  ScriptEditorWindow.OpenScript(PathToScript, Line);
   ScriptEditorWindow.Show();
 end;
 

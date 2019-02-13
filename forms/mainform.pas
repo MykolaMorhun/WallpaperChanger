@@ -115,10 +115,14 @@ begin
     try
       ApplicationManager.RunScript(SelectScriptDialog.FileName);
     except
-      on ParseExcepton : TWpcScriptParseException do
-        Application.MessageBox(PChar(ParseExcepton.PrettyMessage),
-                               'Error running script',
-                               MB_ICONEXCLAMATION + MB_OK);
+      on ParseExcepton : TWpcScriptParseException do begin
+        if (QuestionDlg('Failed to run script',
+                        ParseExcepton.PrettyMessage,
+                        mtWarning,
+                        [50, 'Cancel', 'IsCancel', 51, 'Open in Script Editor'],
+                        0) = 51) then
+          ApplicationManager.OpenScriptEditorForm(SelectScriptDialog.FileName, ParseExcepton.Line + 1);
+      end;
       on WpcException : TWpcException do
         Application.MessageBox(PChar(Concat('Error: ', WpcException.Message)),
                                'Unknown error',
