@@ -349,7 +349,9 @@ begin
       WPCA_SCRIPT:
         if (FApplicationStateSettings.LastScript <> '') then begin
           RunScript(FApplicationStateSettings.LastScript);
-          FMainForm.UpdateUIOnScriptStart();
+          // This check is needed for case when the script above exits right after start
+          if (IsScriptRunning()) then
+            FMainForm.UpdateUIOnScriptStart();
         end;
       WPCA_DIRECTORY:
         if (FApplicationStateSettings.LastDirectory <> '') then begin

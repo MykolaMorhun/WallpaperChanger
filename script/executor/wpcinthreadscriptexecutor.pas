@@ -87,7 +87,7 @@ type
     procedure ExecuteDirectoryStatement(Statement : TWpcDirectoryStatement);
     procedure ExecuteStopStatement(Statement : TWpcStopStatement);
     procedure ExecuteSwitchBranchStatement(Statement : TWpcSwitchBranchStatement); virtual;
-    procedure ExecuteUseBtranchStatement(Statement : TWpcUseBranchStatement);
+    procedure ExecuteUseBranchStatement(Statement : TWpcUseBranchStatement);
     procedure ExecuteWallpaperChooserStatement(Statement : TWpcWallpaperChooserStatement);
     procedure ExecuteBranchToUseChooserStatement(Statement : TWpcUseBranchChooserStatement);
     procedure ExecuteBranchToSwitchChooserStatement(Statement : TWpcSwitchBranchChooserStatement);
@@ -242,7 +242,7 @@ begin
     WPC_SWITCH_BRANCH_STATEMENT_ID:
       ExecuteSwitchBranchStatement(TWpcSwitchBranchStatement(Statement));
     WPC_USE_BRANCH_STATEMENT_ID:
-      ExecuteUseBtranchStatement(TWpcUseBranchStatement(Statement));
+      ExecuteUseBranchStatement(TWpcUseBranchStatement(Statement));
     WPC_WALLPAPER_CHOOSER_STATEMENT_ID:
       ExecuteWallpaperChooserStatement(TWpcWallpaperChooserStatement(Statement));
     WPC_BRANCH_TO_USE_CHOOSER_STATEMENT_ID:
@@ -324,7 +324,7 @@ begin
      ContunueExecution();
 end;
 
-procedure TWpcInThreadScriptExecutor.ExecuteUseBtranchStatement(Statement : TWpcUseBranchStatement);
+procedure TWpcInThreadScriptExecutor.ExecuteUseBranchStatement(Statement : TWpcUseBranchStatement);
 begin
   if (IsTriggered(Statement.GetProbability())) then begin
      ExecuteBranch(Statement.GetBranchName());
@@ -340,7 +340,7 @@ end;
 
 procedure TWpcInThreadScriptExecutor.ExecuteBranchToUseChooserStatement(Statement : TWpcUseBranchChooserStatement);
 begin
-  ExecuteUseBtranchStatement(Statement.ChooseItem());
+  ExecuteUseBranchStatement(Statement.ChooseItem());
 end;
 
 procedure TWpcInThreadScriptExecutor.ExecuteBranchToSwitchChooserStatement(Statement : TWpcSwitchBranchChooserStatement);
