@@ -1539,7 +1539,9 @@ end;
   Syntax:
   <Path> | "<Path>"
   Where Path is absolute or relative path to a directory.
-  Note, that, Path could contain spaces, but in that case it should be contained into double quotes.
+  Note, that:
+   - Path could contain spaces, but in that case it should be contained into double quotes.
+   - Path could contain directory variables.
 }
 function TWpcScriptParser.ParseDirectory(LineWords : TStringList; var Index : Integer) : String;
 var
@@ -1559,6 +1561,8 @@ begin
   end;
 
   Inc(Index);
+
+  PathReference := ApplyParsedDirectoriesVariables(PathReference);
 
   if (FCheckScriptResources and (not DirectoryExists(PathReference))) then
     raise TWpcScriptParseException.Create('Directory "' + PathReference + '" does not exist.', FCurrentLine);
