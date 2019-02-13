@@ -22,6 +22,8 @@ uses
   WpcScriptExecutor, WpcInThreadScriptExecutor,
   WpcImage, WpcDirectory,
   WpcExceptions,
+  OSUtils,
+  WpcDocumentationOpener,
 
   MainForm,
   WpcOptionsForm,
@@ -32,6 +34,9 @@ const
   SETTINGS_FILE = 'WPCSettings.ini';
   STATE_FILE = 'WPCState.ini';
   SCRIPT_EDITOR_SETTINGS_FILE = 'WPCScriptEditorSettings.ini';
+
+  DOCS_DIR = 'docs';
+  DOCS_LANG = 'en';
 
 type
 
@@ -53,6 +58,8 @@ type
     FScriptsGenerator : TWpcScriptsGenerator;
     FScriptExecutor : IWpcScriptExecutor;
 
+    FDocsOpener : TWpcDocumentationOpener;
+
     // Current script data
     FScriptContent : TStringList;
     FScriptParser  : TWpcScriptParser;
@@ -72,6 +79,8 @@ type
   public
     constructor Create(MainForm : TBannerForm);
     destructor Destroy(); override;
+  private
+    function GetDocumetationOpener() : TWpcDocumentationOpener;
   public
     // Supposed to be changed only from options window or ApplicationManager.
     property CurrentSettings : TWpcPersistentSettings read FApplicationSettings;
@@ -81,6 +90,8 @@ type
     property EnvironmentDetector : IWpcEnvironmentDetector read FEnvironmentDetector;
     property WallpaperSetter : IWpcWallpaperSetter read FWallpaperSetter;
     property WallpaperSetterFactory : IWpcWallpaperSetterFactory read FWallpaperSetterFactory;
+
+    property DocumentationOpener : TWpcDocumentationOpener read GetDocumetationOpener;
   public
     procedure ApplySettings();
 
@@ -123,6 +134,8 @@ begin
   FWallpaperSetterFactory := GetWallpaperSetterFactory();
 
   FScriptsGenerator := TWpcScriptsGenerator.Create();
+
+  FDocsOpener := nil;
 
   FOpenedScriptEditors := TWpcScriptEditorsList.Create();
   FIsOptionsFormOpen := False;
@@ -173,11 +186,21 @@ begin
   FApplicationStateSettings.Free();
   if (FScriptEditorSettings <> nil) then FScriptEditorSettings.Free();
 
+  if (FDocsOpener <> nil) then FDocsOpener.Free();
+
   FScriptsGenerator.Free();
 
   if (FWallpaperSetter <> nil) then FreeAndNil(FWallpaperSetter);
   FWallpaperSetterFactory.Free();
   if (FEnvironmentDetector <> nil) then FreeAndNil(FEnvironmentDetector);
+end;
+
+function TWpcApplicationManager.GetDocumetationOpener() : TWpcDocumentationOpener;
+begin
+  if (FDocsOpener = nil) then
+    FDocsOpener := TWpcDocumentationOpener.Create(GetAbsolutePath(DOCS_DIR), DOCS_LANG);
+
+  Result := FDocsOpener;
 end;
 
 {

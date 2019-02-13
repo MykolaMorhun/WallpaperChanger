@@ -882,7 +882,7 @@ end;
 
 procedure TScriptEditorForm.HelpDocumentationActionExecute(Sender : TObject);
 begin
-  // TODO use app manager
+  ApplicationManager.DocumentationOpener.OpenDocumentation('_3_script_reference');
 end;
 
 (* UI handlers *)

@@ -35,7 +35,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="77">
+    <Units Count="78">
       <Unit0>
         <Filename Value="WallpaperChanger.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -432,6 +432,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="WpcMainManuActions"/>
       </Unit76>
+      <Unit77>
+        <Filename Value="common/wpcdocumentationopener.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="WpcDocumentationOpener"/>
+      </Unit77>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

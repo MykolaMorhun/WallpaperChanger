@@ -189,7 +189,8 @@ end;
 
 procedure TBannerForm.DocsMenuItemClick(Sender : TObject);
 begin
-
+  if (not ApplicationManager.DocumentationOpener.OpenDocumentation()) then
+    ShowMessage('Failed to open documentation.');
 end;
 
 procedure TBannerForm.AboutMenuItemClick(Sender : TObject);
