@@ -1,0 +1,11 @@
+# This script sets random wallpaper from specified folder and its subfolders.
+
+DIRECTORIES
+  # Set path to directory with your wallpapers
+  wallpapers D:\Wallpapers
+END DIRECTORIES
+
+BRANCH Main
+  SET WALLPAPER FROM DIRECTORY $wallpapers RECURSIVE
+END BRANCH
+

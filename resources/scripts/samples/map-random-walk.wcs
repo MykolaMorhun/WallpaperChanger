@@ -1,0 +1,154 @@
+# Sample script for endless moving on a map.
+# A possible map:
+#   A ────────┐
+#   │    ┌─── C
+#   │    │    │
+#   B ───┘  ┌─┘
+#   └────── D
+#
+# The idea is similar for all branches.
+# First list of frames from point X to point Y:
+#   SET WALLPAPER X_to_Y_1.jpg FOR $someTime
+#   SET WALLPAPER X_to_Y_2.jpg FOR $someTime
+# and so on (add as many DVR frames as you want).
+# When next point is reached, select next direction with branch to switch chooser:
+#   CHOOSE BRANCH TO SWITCH FROM
+#     X_to_W 
+#     X_to_Y 
+#     X_to_Z
+#   END CHOOSE
+# One may disable reversal moving by deleting corresponding item in chooser.
+# Or restrict it with probability:
+#  CHOOSE BRANCH TO SWITCH FROM
+#    X_to_W WEIGHT 1
+#    X_to_Y WEIGHT 4
+#    X_to_Z WEIGHT 4
+#  END CHOOSE
+# Also it is possible to adjust frequency of choosing some turns with weight property.
+# 
+# If it is a need to stop the script, stop statement might be used. 
+
+DEFAULTS
+  WALLPAPER STYLE ZOOMED
+  DIRECTORY D:\Wallpapers\walk\
+END DEFAULTS
+
+DELAYS
+  DelayTime 2m
+END DELAYS
+
+BRANCH Main
+  # Select entry point branch
+  CHOOSE BRANCH TO SWITCH FROM
+    A_to_B
+    A_to_C
+  END CHOOSE
+END BRANCH
+
+BRANCH A_to_B
+  SET WALLPAPER A_to_B_1.jpg FOR $DelayTime
+  SET WALLPAPER A_to_B_2.jpg FOR $DelayTime
+  SET WALLPAPER A_to_B_3.jpg FOR $DelayTime
+
+  CHOOSE BRANCH TO SWITCH FROM
+    B_to_A
+    B_to_C
+    B_to_D
+  END CHOOSE
+END BRANCH
+
+BRANCH A_to_C
+  SET WALLPAPER A_to_C_1.jpg FOR $DelayTime
+  SET WALLPAPER A_to_C_2.jpg FOR $DelayTime
+
+  CHOOSE BRANCH TO SWITCH FROM
+    C_to_A
+    C_to_B
+    C_to_D
+  END CHOOSE
+END BRANCH
+
+BRANCH B_to_A
+  SET WALLPAPER B_to_A_1.jpg FOR $DelayTime
+  SET WALLPAPER B_to_A_2.jpg FOR $DelayTime
+
+  CHOOSE BRANCH TO SWITCH FROM
+    A_to_B
+    A_to_C
+  END CHOOSE
+END BRANCH
+
+BRANCH B_to_C
+  SET WALLPAPER B_to_C_1.jpg FOR $DelayTime
+  SET WALLPAPER B_to_C_2.jpg FOR $DelayTime
+
+  CHOOSE BRANCH TO SWITCH FROM
+    C_to_A
+    C_to_B
+    C_to_D
+  END CHOOSE
+END BRANCH
+
+BRANCH B_to_D
+  SET WALLPAPER B_to_D_1.jpg FOR $DelayTime
+  SET WALLPAPER B_to_D_2.jpg FOR $DelayTime
+
+  CHOOSE BRANCH TO SWITCH FROM
+    D_to_B
+    D_to_C
+  END CHOOSE
+END BRANCH
+
+BRANCH C_to_A
+  SET WALLPAPER C_to_A_1.jpg FOR $DelayTime
+  SET WALLPAPER C_to_A_2.jpg FOR $DelayTime
+
+  CHOOSE BRANCH TO SWITCH FROM
+    A_to_B
+    A_to_C
+  END CHOOSE
+END BRANCH
+
+BRANCH C_to_B
+  SET WALLPAPER C_to_B_1.jpg FOR $DelayTime
+  SET WALLPAPER C_to_B_2.jpg FOR $DelayTime
+
+  CHOOSE BRANCH TO SWITCH FROM
+    B_to_A
+    B_to_C
+    B_to_D
+  END CHOOSE
+END BRANCH
+
+BRANCH C_to_D
+  SET WALLPAPER C_to_D_1.jpg FOR $DelayTime
+  SET WALLPAPER C_to_D_2.jpg FOR $DelayTime
+
+  CHOOSE BRANCH TO SWITCH FROM
+    D_to_B
+    D_to_C
+  END CHOOSE
+END BRANCH
+
+BRANCH D_to_B
+  SET WALLPAPER D_to_B_1.jpg FOR $DelayTime
+  SET WALLPAPER D_to_B_2.jpg FOR $DelayTime
+
+  CHOOSE BRANCH TO SWITCH FROM
+    B_to_A
+    B_to_C
+    B_to_D
+  END CHOOSE
+END BRANCH
+
+BRANCH D_to_C
+  SET WALLPAPER D_to_C_1.jpg FOR $DelayTime
+  SET WALLPAPER D_to_C_2.jpg FOR $DelayTime
+
+  CHOOSE BRANCH TO SWITCH FROM
+    C_to_A
+    C_to_B
+    C_to_D
+  END CHOOSE
+END BRANCH
+

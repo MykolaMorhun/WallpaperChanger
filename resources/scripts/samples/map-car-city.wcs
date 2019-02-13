@@ -1,0 +1,191 @@
+# Driving in the city sample sript.
+# Wallpapers are frames taken at some point from car DVR.
+#
+#                               ╔════════╗
+#                          B    ║        ║
+#                    ╔═════╦════╩════════╣ D
+#                    ║     ║    C        ║
+#                    ║   Market        E ╠═╗
+#           Home ════╣ A                 ║ ║ X
+#                    ║                 F ╠═╝
+#                    ║                   ║
+#                  H ║                   ╚═ Office
+# to village ════════╬═════════╗
+#                    ║         ║ Park
+#                    ║         ╙──┬───┐
+#               City Center       │   └──┐
+#                                 └──────┘
+
+DEFAULTS
+  WALLPAPER STYLE ZOOMED
+  DIRECTORY D:\Wallpapers\DVR-frames\
+END DEFAULTS
+
+DELAYS
+  DelayTime 2m
+  AtMarketMinimalTime 5m
+  AtXDelayTime 1m
+  AtOfficeTime 1h
+  WalkDelay 1m
+END DELAYS
+
+BRANCH Main
+  SET WALLPAPER from-garage.jpg FOR $DelayTime
+  SET WALLPAPER Home_to_A_1.jpg FOR $DelayTime
+  SET WALLPAPER Home_to_A_2.jpg FOR $DelayTime
+
+  # Use WorkdayTrip branch from Monday to Friday
+  # Use WeekendTrip branch on Saturday and Sunday
+  CHOOSE BRANCH TO USE BY WEEKDAY FROM
+    WorkdayTrip WEEKDAY MONDAY
+    WeekendTrip WEEKDAY SATURDAY
+  END CHOOSE
+
+  SET WALLPAPER A_to_Home.jpg FOR $DelayTime
+  SET WALLPAPER to-garage.jpg
+END BRANCH
+
+# ========== Workday ==========
+
+BRANCH WorkdayTrip
+  USE BRANCH A_to_B
+  # Sometimes (at 40% of cases) go to the Market
+  USE BRANCH ToMarketAndBack WITH PROBABILITY 40
+  USE BRANCH B_to_C
+  # In case of traffic jam (35% of cases) use bypass way
+  CHOOSE BRANCH TO USE FROM
+    C_to_D        WEIGHT 65
+    C_to_D_bypass WEIGHT 35
+  END CHOOSE
+  USE BRANCH D_to_E
+  CHOOSE BRANCH TO USE BY WEEKDAY FROM
+    E_to_F_through_X WEEKDAY WEDNESDAY
+    E_to_F           WEEKDAY THURSDAY
+  END CHOOSE
+  USE BRANCH F_to_Office
+  SET WALLPAPER atOfficeParking.jpg FOR $AtOfficeTime
+  USE BRANCH Office_to_A
+END BRANCH
+
+BRANCH A_to_B
+  SET WALLPAPER A_to_B_1.jpg FOR $DelayTime
+  SET WALLPAPER A_to_B_2.jpg FOR $DelayTime
+END BRANCH
+
+BRANCH ToMarketAndBack
+  SET WALLPAPER B_to_Market.jpg FOR $DelayTime
+  SET WALLPAPER AtTheMarket.jpg FOR $AtMarketMinimalTime
+  # Additional random delay. From 0 to 3 minutes (step is 30s)
+  WAIT 30s WITH PROBABILITY 50 6 TIMES
+  SET WALLPAPER Market_to_B.jpg FOR $DelayTime
+END BRANCH
+
+BRANCH B_to_C
+  SET WALLPAPER B_to_C_1.jpg FOR $DelayTime
+  SET WALLPAPER B_to_C_2.jpg FOR $DelayTime
+  SET WALLPAPER B_to_C_3.jpg FOR $DelayTime
+END BRANCH
+
+BRANCH C_to_D
+  SET WALLPAPER C_to_D.jpg FOR $DelayTime
+END BRANCH
+
+BRANCH C_to_D_bypass
+  SET WALLPAPER C_to_D_bypass_1.jpg FOR $DelayTime
+  SET WALLPAPER C_to_D_bypass_2.jpg FOR $DelayTime
+  SET WALLPAPER C_to_D_bypass_3.jpg FOR $DelayTime
+END BRANCH
+
+BRANCH D_to_E
+  SET WALLPAPER D_to_E.jpg FOR $DelayTime
+END BRANCH
+
+BRANCH E_to_F
+  SET WALLPAPER E_to_F.jpg FOR $DelayTime
+END BRANCH
+
+BRANCH E_to_F_through_X
+  SET WALLPAPER E_to_X.jpg FOR $DelayTime
+  USE BRANCH atX
+  SET WALLPAPER X_to_F.jpg FOR $DelayTime
+END BRANCH
+
+BRANCH atX
+  SET WALLPAPER atX_1.jpg FOR $AtXDelayTime
+  SET WALLPAPER atX_2.jpg FOR $AtXDelayTime
+  SET WALLPAPER atX_3.jpg FOR $AtXDelayTime
+END BRANCH
+
+BRANCH F_to_Office
+  SET WALLPAPER F_to_Office.jpg FOR $DelayTime
+  SET WALLPAPER F_to_Office.jpg FOR $DelayTime
+END BRANCH
+
+BRANCH Office_to_A
+  SET WALLPAPER Office_to_F.jpg FOR $DelayTime
+  SET WALLPAPER F_to_E.jpg FOR $DelayTime
+  SET WALLPAPER E_to_D.jpg FOR $DelayTime
+  SET WALLPAPER D_to_C_1.jpg FOR $DelayTime
+  SET WALLPAPER D_to_C_2.jpg FOR $DelayTime
+  SET WALLPAPER C_to_B.jpg FOR $DelayTime
+  SET WALLPAPER B_to_A.jpg FOR $DelayTime
+END BRANCH
+
+# ========== Weekend ==========
+
+BRANCH WeekendTrip
+  SET WALLPAPER A_to_H_1.jpg FOR $DelayTime
+  SET WALLPAPER A_to_H_2.jpg FOR $DelayTime
+  CHOOSE BRANCH TO USE BY WEIGHT FROM
+    ToParkAndBack       WEIGHT 5
+    ToCityCenterAndBack WEIGHT 3
+    ToVillageAndBack    WEIGHT 1
+  END CHOOSE
+  SET WALLPAPER H_to_A_1.jpg FOR $DelayTime
+  SET WALLPAPER H_to_A_2.jpg FOR $DelayTime
+END BRANCH
+
+BRANCH ToParkAndBack
+  SET WALLPAPER H_to_Park_1.jpg FOR $DelayTime
+  SET WALLPAPER H_to_Park_2.jpg FOR $DelayTime
+  SET WALLPAPER H_to_Park_3.jpg FOR $DelayTime
+  USE BRANCH WalkInPark
+  SET WALLPAPER Park_to_H_1.jpg FOR $DelayTime
+  SET WALLPAPER Park_to_H_2.jpg FOR $DelayTime
+END BRANCH
+
+BRANCH WalkInPark
+  # Choose direction with equal probability
+  CHOOSE BRANCH TO USE FROM
+    ParkWalk1
+    ParkWalk2
+  END CHOOSE
+END BRANCH
+
+BRANCH ParkWalk1
+  SET WALLPAPER park1.jpg FOR $WalkDelay
+  SET WALLPAPER park2.jpg FOR $WalkDelay
+  SET WALLPAPER park3.jpg FOR $WalkDelay
+  SET WALLPAPER park4.jpg FOR $WalkDelay
+END BRANCH
+
+BRANCH ParkWalk2
+  SET WALLPAPER park_reversed_1.jpg FOR $WalkDelay
+  SET WALLPAPER park_reversed_2.jpg FOR $WalkDelay
+  SET WALLPAPER park_reversed_3.jpg FOR $WalkDelay
+END BRANCH
+
+BRANCH ToCityCenterAndBack
+  # Idea is similar to work day trip
+END BRANCH
+
+BRANCH ToVillageAndBack
+  SET WALLPAPER toVillage_1.jpg FOR $WalkDelay
+  SET WALLPAPER toVillage_2.jpg FOR $WalkDelay
+  SET WALLPAPER toVillage_3.jpg FOR $WalkDelay
+  SET WALLPAPER toVillage_4.jpg FOR $WalkDelay
+  # Some photos from the village or futher trip there.
+  SET WALLPAPER fromVillage_1.jpg FOR $WalkDelay
+  SET WALLPAPER fromVillage_2.jpg FOR $WalkDelay
+END BRANCH
+

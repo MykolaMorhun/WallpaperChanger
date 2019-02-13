@@ -1,0 +1,242 @@
+# This is a commentary
+# This script has no much sense, but it shows how different structures might be used.
+
+DEFAULTS
+  DELAY 5m
+  DELAY UNITS s
+  WALLPAPER STYLE CENTERED
+  DIRECTORY D:\Wallpapers
+END DEFAULTS
+
+DIRECTORIES
+  landscapes D:\Wallpapers\Landscapes\
+  textures D:\Wallpapers\Textures
+  photos D:\Archive\Photos
+END DIRECTORIES
+
+IMAGES
+  myGarden $photos\Garden\appletrees.png
+  bricks $textures\bricks.png
+  plane C:\Downloads\pictures\plane.jpg
+END IMAGES
+  
+DELAYS
+  windAnimation 2s
+  aFewMoments 100s
+  pauseTime 2m
+END DELAYS
+
+BRANCH Main
+  # ===== Set wallpaper statement =====
+
+  # Set wallpaper by absolute path
+  SET WALLPAPER C:\Downloads\rabbit.gif
+
+  # Set wallpaper using image constant
+  SET WALLPAPER $myGarden
+
+  # Set wallpaper using directory constant and relative path
+  SET WALLPAPER $textures\water.png
+
+  # Set wallpaper by relative path.
+  # It will use D:\Wallpapers\Animals\fox.jpeg because
+  # default directory is set to D:\Wallpapers in DEFAULTS header section.
+  # Otherwise it uses relative path from the script location.
+  SET WALLPAPER Animals\fox.jpeg
+
+  # Set wallpaper and specifying style
+  SET WALLPAPER Animals\fox.jpeg STYLE ZOOMED
+
+  # Set wallpaper at least for specified period of time
+  SET WALLPAPER Animals\fox.jpeg FOR 1m
+  SET WALLPAPER Animals\fox.jpeg FOR $aFewMoments
+
+  # Set wallpaper and wait until 16:45
+  SET WALLPAPER Animals\fox.jpeg TILL 16:45
+
+  # Set wallpaper in 75% of cases
+  SET WALLPAPER Animals\fox.jpeg WITH PROBABILITY 75
+
+  # Set wallpaper with all posible parameters
+  SET WALLPAPER Animals\fox.jpeg STYLE CENTERED WITH PROBABILITY 50 FOR 10m
+
+  # ===== Wait statement =====
+
+  # Wait for specified period of time
+  WAIT 15m
+  # The same as above
+  WAIT FOR 15m
+
+  # Wait until specified time
+  WAIT TILL 17:25
+  WAIT TILL 22:31:45
+
+  # Await time specified in constant (in this case 100 seconds)
+  WAIT $aFewMoments
+
+  # Await default time (specified in defaults header section. For this script is 5m)
+  WAIT
+
+  # Awaits 200 seconds (because default time unit is seconds (specified in the defaults header section))
+  WAIT 200
+
+  # Waits 2 hours in 25% of cases
+  WAIT 2h WITH PROBABILITY 25
+
+  # Waits 10 minutes (2 minutes * 5 times = 10 minutes)
+  WAIT 2m 5 TIMES
+
+  # Wait statement with all possible parameters
+  # Note, the delay is in range from 0 to 20 minutes with 2 minutes step
+  WAIT 2m WITH PROBABILITY 50 10 TIMES
+
+  # ===== Set wallpapers from directory statement =====
+
+  # Sets as wallpaper an image from D:\Archive\Photos
+  SET WALLPAPER FROM DIRECTORY D:\Archive\Photos
+  # The same, but using directory constant
+  SET WALLPAPER FROM DIRECTORY $photos
+
+  # Sets 10 images from D:\Wallpapers for 1 minute each
+  SET WALLPAPER FROM DIRECTORY D:\Wallpapers FOR 1m 10 TIMES
+
+  # The same as above but images from subfolders of D:\Wallpapers is in set of selection
+  SET WALLPAPER FROM DIRECTORY D:\Wallpapers RECURSIVE FOR 1m 10 TIMES
+
+  # Builds list from all images in D:\Wallpapers and set them one by one.
+  # If list is over, it will return to its begining.
+  SET WALLPAPER FROM DIRECTORY D:\Wallpapers ORDERED FOR 1m 10 TIMES
+
+  # Sets an image from D:\Wallpapers as wallpaper 5 times for 1 minute each, probability of using choosen image is 85%
+  SET WALLPAPER FROM DIRECTORY D:\Wallpapers STYLE TILED FOR 1m 5 TIMES WITH PROBABILITY 85
+
+  # Set wallpapers from directory statement with all posible parameters
+  SET WALLPAPER FROM DIRECTORY D:\Wallpapers ORDERED RECURSIVE STYLE SCALED FOR 20s 50 TIMES WITH PROBABILITY 65
+
+  # ===== Use branch statement =====
+
+  # Executes specified branch, i.e. all commnds in it
+  USE BRANCH SomeBranch
+
+  # Executes given branch twice
+  USE BRANCH SomeBranch 2 TIMES
+
+  # Executes given branch in 50% of cases
+  USE BRANCH SomeBranch WITH PROBABILITY 50
+
+  # Use barnch statement with all possible parameters
+  USE BRANCH SomeBranch 5 TIMES WITH PROBABILITY 20
+
+  # ===== Switch to branch statement =====
+
+  # Replaces current branch with new one
+  SWITCH TO BRANCH SomeBranch
+
+  # Switches to given branch in 60% of cases
+  SWITCH TO BRANCH SomeBranch WITH PROBABILITY 60
+
+  # ===== Chooser statements group =====
+
+  # Wallpaper chooser
+
+  # Choose wallpaper by weight
+  CHOOSE WALLPAPER BY WEIGHT FROM
+    D:\Wallpapers\garden.jpg WEIGHT 4
+    $textures\bricks.gif WEIGHT 10
+    $plane WEIGHT 6
+    car.png WEIGHT 1
+  END CHOOSE
+
+  # The same as above
+  CHOOSE WALLPAPER FROM
+    D:\Wallpapers\garden.jpg WEIGHT 4
+    $textures\bricks.gif WEIGHT 10
+    $plane WEIGHT 6
+    car.png
+  END CHOOSE
+
+  # Cases to choose with some parameters
+  CHOOSE WALLPAPER FROM
+    D:\Wallpapers\garden.jpg FOR 1m WEIGHT 4
+    $textures\bricks.gif STYLE TILED WEIGHT 10
+    $plane STYLE CENTERED FOR 20s WEIGHT 6
+    car.png STYLE STRETCHED
+  END CHOOSE
+
+  # Choose wallpaper by season
+  CHOOSE WALLPAPER BY SEASON FROM
+    D:\Wallpapers\garden.jpg FOR 1m SEASON WINTER
+    $plane STYLE CENTERED FOR 20s SEASON SUMMER
+    car.png SEASON AUTUMN
+  END CHOOSE
+
+  # Choose wallpaper by month
+  CHOOSE WALLPAPER BY MONTH FROM
+    D:\Wallpapers\garden.jpg FOR 1m MONTH JANUARY
+    $plane STYLE CENTERED FOR 20s MONTH MAY
+    car.png MONTH OCTOBER
+  END CHOOSE
+
+  # Choose wallpaper by day of week
+  CHOOSE WALLPAPER BY WEEKDAY  FROM
+    D:\Wallpapers\garden.jpg FOR 1m WEEKDAY TUESDAY
+    $plane STYLE CENTERED FOR 20s WEEKDAY WEDNESDAY
+    car.png WEEKDAY SATURDAY
+  END CHOOSE
+
+  # Choose wallpaper by date
+  CHOOSE WALLPAPER BY DATE FROM
+    D:\Wallpapers\garden.jpg FOR 1m DATE 05.02
+    $plane STYLE CENTERED FOR 20s DATE 28.05
+    car.png DATE 10.10
+  END CHOOSE
+
+  # Choose wallpaper by date
+  CHOOSE WALLPAPER BY TIME FROM
+    D:\Wallpapers\garden.jpg FOR 1m TIME 2:00
+    $plane STYLE CENTERED FOR 20s TIME 10:15
+    car.png TIME 22:35
+  END CHOOSE
+
+    # Choose wallpaper by date and time
+  CHOOSE WALLPAPER BY DATETIME FROM
+    D:\Wallpapers\garden.jpg FOR 1m DATETIME 05.02-12:30
+    $plane STYLE CENTERED FOR 20s DATETIME 28.05-00:15
+    car.png DATETIME 10.10-21:18
+  END CHOOSE
+
+  # Branch to use chooser
+
+  # Selectors are the same as for wallpaper chooser.
+  CHOOSE BRANCH TO USE BY TIME FROM
+    SomeBranch TIME 9:00
+    another_branch TIME 18:30
+  END CHOOSE
+
+  # Branch to switch chooser
+
+  # Selectors are the same as for wallpaper chooser.
+  CHOOSE BRANCH TO SWITCH BY WEEKDAY FROM
+    SomeBranch WEEKDAY MONDAY
+    Main WITH PROBABILITY 25 WEEKDAY THURSDAY
+    another_branch WEEKDAY SATURDAY
+  END CHOOSE
+
+  # ===== Stop statement =====
+
+  # Stops script execution
+  STOP
+
+  # Stops script execution in 5% of cases
+  STOP WITH PROBABILITY 5
+
+END BRANCH
+
+BRANCH SomeBranch
+  # Some statements to be here
+END BRANCH
+
+BRANCH another_branch
+  # Some other statements
+END BRANCH
+

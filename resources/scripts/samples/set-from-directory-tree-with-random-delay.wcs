@@ -1,0 +1,9 @@
+# Sample script which sets random images from given directory tree with random delay
+# Delay is varies from 1 to 5 minutes with 10 seconds step (1m + 10s? * 24).
+
+BRANCH Main
+  SET WALLPAPER FROM DIRECTORY D:\Photos\ RECURSIVE FOR 1m
+  WAIT 10s WITH PROBABILITY 50 24 TIMES
+
+  SWITCH TO BRANCH Main
+END BRANCH

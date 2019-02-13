@@ -1,0 +1,6 @@
+BRANCH Main
+  SET WALLPAPER day.jpg FOR 5m
+  SET WALLPAPER night.jpg FOR 5m
+
+  SWITCH TO BRANCH Main
+END BRANCH

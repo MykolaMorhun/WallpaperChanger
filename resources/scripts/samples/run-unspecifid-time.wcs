@@ -1,0 +1,11 @@
+# Sample script which shows how to repeat a branch some unknown number of times.
+# You may adjust duration by changing probability property.
+
+BRANCH Main
+  USE BRANCH ToBeRepeated
+  SWITCH TO BRANCH Main WITH PROBABILITY 95
+END BRANCH
+
+BRANCH ToBeRepeated
+  # Some statements which should be repeated unknow number of times here
+END BRANCH
