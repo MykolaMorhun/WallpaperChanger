@@ -266,10 +266,10 @@ begin
 
   // Variable delay
   TimeUnit := GetCommonTimeUnit([Settings.MinimalDelay, Settings.MaximalDelay]);
-  VariableDelayValueFromSpinEdit.MinValue := 0;
+  VariableDelayValueFromSpinEdit.MinValue := 1;
   VariableDelayValueFromSpinEdit.MaxValue := MAXLONG;
   VariableDelayValueFromSpinEdit.Value := ConvertToUnit(Settings.MinimalDelay, TimeUnit);
-  VariableDelayValueToSpinEdit.MinValue := 0;
+  VariableDelayValueToSpinEdit.MinValue := 1;
   VariableDelayValueToSpinEdit.MaxValue := MAXLONG;
   VariableDelayValueToSpinEdit.Value := ConvertToUnit(Settings.MaximalDelay, TimeUnit);
   VariableDelayValueUnitsComboBox.ItemIndex := VariableDelayValueUnitsComboBox.Items.IndexOf(TimeMeasurementUnitToStr(TimeUnit));

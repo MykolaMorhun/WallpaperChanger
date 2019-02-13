@@ -376,7 +376,9 @@ object OptionsForm: TOptionsForm
               Align = alRight
               Alignment = taCenter
               MaxValue = 2000000000
+              MinValue = 1
               TabOrder = 1
+              Value = 1
             end
           end
           object VariableDelayValuePanel: TPanel
@@ -408,8 +410,10 @@ object OptionsForm: TOptionsForm
               Align = alRight
               Alignment = taCenter
               MaxValue = 2000000000
+              MinValue = 1
               OnChange = VariableDelayValueToSpinEditChange
               TabOrder = 1
+              Value = 1
             end
             object VariableDelayValueToLabel: TLabel
               Left = 144
@@ -429,8 +433,10 @@ object OptionsForm: TOptionsForm
               Align = alRight
               Alignment = taCenter
               MaxValue = 2000000000
+              MinValue = 1
               OnChange = VariableDelayValueFromSpinEditChange
               TabOrder = 2
+              Value = 1
             end
             object VariableDelayValueFromLabel: TLabel
               Left = 2

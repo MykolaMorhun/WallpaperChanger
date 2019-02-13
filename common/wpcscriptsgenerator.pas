@@ -48,10 +48,14 @@ begin
 
   DirectoryStatement.SetStyle(Settings.WallpaperStyle);
   if (Settings.UseConstantDelay) then begin
+    if (Settings.ConstantDelay = 0) then
+      Settings.ConstantDelay := 1;
     DirectoryStatement.SetDelay(Settings.ConstantDelay);
     DirectoryStatement.SetRamdomDelay(0);
   end
   else begin
+    if (Settings.MinimalDelay = 0) then
+      Settings.MinimalDelay := 1;
     DirectoryStatement.SetDelay(Settings.MinimalDelay);
     DirectoryStatement.SetRamdomDelay(Settings.MaximalDelay - Settings.MinimalDelay);
   end;
