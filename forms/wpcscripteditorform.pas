@@ -5,9 +5,9 @@ unit WpcScriptEditorForm;
 interface
 
 uses
-  Classes, SysUtils,
-  FileUtil, SynEdit, SynHighlighterAny, SynCompletion, Forms, Controls,
-  Graphics, Dialogs, Menus, ComCtrls, ActnList, ExtDlgs, ExtCtrls, StdCtrls,
+  Classes, SysUtils, FileUtil,
+  SynEdit, SynEditTypes, SynHighlighterAny, SynCompletion,
+  Forms, Controls, Graphics, Dialogs, Menus, ComCtrls, ActnList, ExtDlgs, ExtCtrls, StdCtrls,
   Types, LCLType,
   WpcScriptSyntaxHighlighterConfigurrer,
   WpcScriptAutocompletionManager,
@@ -32,7 +32,7 @@ type
   public
     constructor Create(LogsConsumer : TMemo);
 
-    procedure LogMessage(Message : String; AddLineBreak : Boolean = true); override;
+    procedure LogMessage(Message : String; AddLineBreak : Boolean = True); override;
   end;
 
   TScriptEditorForm = class;
@@ -57,6 +57,8 @@ type
     ScriptSaveDialog: TSaveDialog;
     ResourceSelectDirectoryDialog: TSelectDirectoryDialog;
     SelectScriptEditorFontFontDialog: TFontDialog;
+    FindInScriptFindDialog: TFindDialog;
+    FindReplaceInScriptReplaceDialog: TReplaceDialog;
 
     StatementInsertPropertyInteractiveAction: TAction;
     StatementInsertInteractiveAction: TAction;
@@ -101,6 +103,8 @@ type
     ScriptRunLogAction: TAction;
     ScriptCheckResourcesAction: TAction;
     ScriptCheckSyntaxAction: TAction;
+    SearchReplaceInScriptAction: TAction;
+    SearchInScriptAction: TAction;
 
     FileMenuItem: TMenuItem;
     FileNewMenuItem: TMenuItem;
@@ -124,10 +128,13 @@ type
     ViewFontSelectScriptEditorFontMenuItem: TMenuItem;
     ViewToggleBottomPanelMenuItem: TMenuItem;
     ScriptMenuItem: TMenuItem;
-    ScriptStopMenuItem: TMenuItem;
-    ScriptRunLogMenuItem: TMenuItem;
-    ScriptCheckResourcesMenuItem: TMenuItem;
     ScriptCheckSyntaxMenuItem: TMenuItem;
+    ScriptCheckResourcesMenuItem: TMenuItem;
+    ScriptRunLogMenuItem: TMenuItem;
+    ScriptStopMenuItem: TMenuItem;
+    ScriptSeparator1MenuItem: TMenuItem;
+    SearchInScriptMenuItem: TMenuItem;
+    SearchAndReplaceinScriptMenuItem: TMenuItem;
     BranchMenuItem: TMenuItem;
     BranchAddMenuItem: TMenuItem;
     StatementMenuItem: TMenuItem;
@@ -205,7 +212,7 @@ type
     procedure FileSaveScriptAsActionExecute(Sender: TObject);
     procedure FileToggleReadOnlyActionExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure HelpAboutActionExecute(Sender: TObject);
     procedure HelpDocumentationActionExecute(Sender: TObject);
     procedure HideBottomPanelToolButtonClick(Sender: TObject);
@@ -215,6 +222,8 @@ type
     procedure ScriptCheckSyntaxActionExecute(Sender: TObject);
     procedure ScriptRunLogActionExecute(Sender: TObject);
     procedure ScriptStopActionExecute(Sender: TObject);
+    procedure SearchInScriptActionExecute(Sender: TObject);
+    procedure SearchReplaceInScriptActionExecute(Sender: TObject);
     procedure ScriptSynCompletionCodeCompletion(var Value: string;
       SourceValue: string; var SourceStart, SourceEnd: TPoint;
       KeyChar: TUTF8Char; Shift: TShiftState);
@@ -243,6 +252,9 @@ type
     procedure ViewFontSizeDecreaseActionExecute(Sender: TObject);
     procedure ViewFontSizeIncreaseActionExecute(Sender: TObject);
     procedure ViewFontSelectActionExecute(Sender: TObject);
+    procedure FindInScriptFindDialogFind(Sender: TObject);
+    procedure FindReplaceInScriptReplaceDialogFind(Sender: TObject);
+    procedure FindReplaceInScriptReplaceDialogReplace(Sender: TObject);
   const
     SYNEDIT_LINE_BREAK = #10#13;
   const
@@ -286,6 +298,12 @@ type
     procedure ApplyFont(); inline;
   private
     procedure OpenScriptInEditor(PathToScript : String);
+  private
+    procedure FindInEditor(Editor : TSynEdit; TextToFind : String; Options : TSynSearchOptions);
+    procedure ReplaceInEditor(Editor : TSynEdit; TextToFind : String; Replacement : String; Options : TSynSearchOptions);
+    function IsAnyOccurrence(Editor : TSynEdit; TextToFind : String; Options : TSynSearchOptions) : Boolean;
+    function ReadFindReplaceDialogUIOptions(DialogOptions : TFindOptions) : TSynSearchOptions;
+    function IsTextSelected(Editor : TSynEdit) : Boolean; inline;
   private
     function AskSave(Sender : TObject = nil) : Boolean;
     function QuoteIfContainsSpaces(Arg : String) : String; inline;
@@ -642,6 +660,18 @@ begin
    FScriptTracer.Terminate();
 end;
 
+// Script: Search / Replace
+
+procedure TScriptEditorForm.SearchInScriptActionExecute(Sender : TObject);
+begin
+  FindInScriptFindDialog.Execute();
+end;
+
+procedure TScriptEditorForm.SearchReplaceInScriptActionExecute(Sender : TObject);
+begin
+  FindReplaceInScriptReplaceDialog.Execute();
+end;
+
 // Branch
 
 procedure TScriptEditorForm.BranchAddActionExecute(Sender : TObject);
@@ -913,7 +943,7 @@ end;
 
 (* UI handlers *)
 
-procedure TScriptEditorForm.FormCloseQuery(Sender : TObject; var CanClose : boolean);
+procedure TScriptEditorForm.FormCloseQuery(Sender : TObject; var CanClose : Boolean);
 begin
   CanClose := not AskSave(Sender);
 end;
@@ -1010,6 +1040,153 @@ end;
 procedure TScriptEditorForm.HideBottomPanelToolButtonClick(Sender : TObject);
 begin
   ViewToggleBottomPanelAction.Execute();
+end;
+
+(* Find / Replace *)
+
+procedure TScriptEditorForm.FindInScriptFindDialogFind(Sender : TObject);
+begin
+  FindInEditor(FCurrentScript,
+               FindInScriptFindDialog.FindText,
+               ReadFindReplaceDialogUIOptions(FindInScriptFindDialog.Options));
+end;
+
+procedure TScriptEditorForm.FindReplaceInScriptReplaceDialogFind(Sender : TObject);
+begin
+  FindInEditor(FCurrentScript,
+               FindReplaceInScriptReplaceDialog.FindText,
+               ReadFindReplaceDialogUIOptions(FindReplaceInScriptReplaceDialog.Options));
+end;
+
+procedure TScriptEditorForm.FindReplaceInScriptReplaceDialogReplace(Sender : TObject);
+begin
+  ReplaceInEditor(FCurrentScript,
+                  FindReplaceInScriptReplaceDialog.FindText,
+                  FindReplaceInScriptReplaceDialog.ReplaceText,
+                  [ssoReplace] + ReadFindReplaceDialogUIOptions(FindReplaceInScriptReplaceDialog.Options));
+end;
+
+procedure TScriptEditorForm.FindInEditor(Editor : TSynEdit; TextToFind : String; Options : TSynSearchOptions);
+var
+  SearchResults        : Integer;
+  Message              : String;
+  Title                : String;
+  CurrentCaretPosition : TPoint;
+begin
+  if (IsTextSelected(Editor)) then begin
+    // Set caret to the end of current search result
+    // to avoid this result again in case of changed search direction.
+    if (ssoBackwards in Options) then
+      CurrentCaretPosition := Editor.BlockBegin
+    else
+      CurrentCaretPosition := Editor.BlockEnd;
+
+    SearchResults := Editor.SearchReplaceEx(TextToFind, '', Options, CurrentCaretPosition);
+  end
+  else begin
+    // No selection in editor
+    SearchResults := Editor.SearchReplace(TextToFind, '', Options);
+  end;
+
+  if (SearchResults = 0) then begin
+    // Nothing was found from previous position
+
+    if (not IsAnyOccurrence(Editor, TextToFind, Options)) then begin
+      ShowMessage('"' + TextToFind + '" not found in script.');
+      exit;
+    end;
+
+    if (ssoBackwards in Options) then begin
+      Message := 'Do you want to start search from the end?';
+      Title := 'Beginning of script reached';
+      CurrentCaretPosition := Point(Editor.Lines[Editor.Lines.Count - 1].Length , Editor.Lines.Count);
+    end
+    else begin
+      Message := 'Do you want to start search from beginning?';
+      Title := 'End of script reached';
+      CurrentCaretPosition := Point(1,1);
+    end;
+
+    if (Application.MessageBox(PChar(Message), PChar(Title), MB_ICONQUESTION + MB_YESNO) = IDYES) then begin
+      // A result is always present because of the check at the block beginning
+      Editor.SearchReplaceEx(TextToFind, '', Options, CurrentCaretPosition);
+    end;
+  end;
+end;
+
+procedure TScriptEditorForm.ReplaceInEditor(Editor : TSynEdit; TextToFind : String; Replacement : String; Options : TSynSearchOptions);
+var
+  SearchResults        : Integer;
+  CurrentCaretPosition : TPoint;
+begin
+  // Handle replace all
+  if (ssoReplaceAll in Options) then begin
+    SearchResults := Editor.SearchReplace(TextToFind, Replacement, Options + [ssoEntireScope]);
+
+    if (SearchResults > 0) then
+      FindReplaceInScriptReplaceDialog.CloseDialog()
+    else
+      ShowMessage('No matches found for string "' + TextToFind + '".');
+
+    exit;
+  end;
+
+  if (IsTextSelected(Editor)) then begin
+    // Text selected, replace it
+    if (ssoBackwards in options) then
+      CurrentCaretPosition := Editor.BlockEnd
+    else
+      CurrentCaretPosition := Editor.BlockBegin;
+
+    Editor.SearchReplaceEx(TextToFind, Replacement, Options, CurrentCaretPosition);
+  end;
+
+  // Find next occurrence
+  FindInEditor(Editor, TextToFind, Options - [ssoReplace]);
+end;
+
+{
+  Chacks if given text is present in given editor.
+  Text search respects given search option.
+  Do not change current position of caret in editor.
+}
+function TScriptEditorForm.IsAnyOccurrence(Editor : TSynEdit; TextToFind : String; Options : TSynSearchOptions) : Boolean;
+var
+  CurrentCaretPosition : TPoint;
+begin
+  CurrentCaretPosition := Editor.CaretXY;
+  if (Editor.SearchReplaceEx(TextToFind, '', Options + [ssoEntireScope], Point(1,1)) = 0) then
+    Result := False
+  else
+    Result := True;
+
+  Editor.CaretXY := CurrentCaretPosition;
+end;
+
+{
+  Adds selected on UI options into given SynEdit search options.
+}
+function TScriptEditorForm.ReadFindReplaceDialogUIOptions(DialogOptions : TFindOptions) : TSynSearchOptions;
+var
+  SearchOptions : TSynSearchOptions;
+begin
+  SearchOptions := [];
+
+  if (not (frDown in DialogOptions)) then
+    Include(SearchOptions, ssoBackwards);
+  if (frMatchCase in DialogOptions) then
+    Include(SearchOptions, ssoMatchCase);
+  if (frWholeWord in DialogOptions) then
+    Include(SearchOptions, ssoWholeWord);
+  if (frReplaceAll in DialogOptions) then
+    Include(SearchOptions, ssoReplaceAll);
+
+  Result := SearchOptions;
+end;
+
+function TScriptEditorForm.IsTextSelected(Editor : TSynEdit) : Boolean;
+begin
+  Result := Editor.BlockBegin <> Editor.BlockEnd;
 end;
 
 (* Helpers *)

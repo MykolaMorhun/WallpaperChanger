@@ -293,7 +293,7 @@ Wallpaper Changer Script Editor is designed specially for creating and editing <
 ==== 2.5.1. Script Editor features
 
  * Syntax highlight: makes statements in script more easily recognizable
- * Autocomplete (`ctrl + space`): provides list of variants to complete part of current word/command.
+ * Autocompletion (`ctrl + space`): provides list of variants to complete part of current word or command.
    Makes writing script much easier.
    Note, it is not 100% accurate and sometimes may suggest wrong options.
  * Templates (`Branch`, `Statement`, `Resource` items form `Main Menu`) are useful for writing commands.
@@ -311,6 +311,7 @@ Main menu consists of:
  * `File`: create new (template could be selected), open existing, save scripts. Has readonly mode option.
  * `View`: Controls view components of the editor. Toggles some interface parts.
  * `Script`: script related operations, like checking syntax, script resource, tracing script (dry executing without delays but with logging of each step), etc.
+             Also contains search and search & replace in script text.
 
 Next group is helper group for script editing. It inserts templates into the editor:
 
@@ -341,7 +342,7 @@ After running Wallpaper Changer nothing happens. Where is window?::
   Look into your tray for the application picture and use its context menu.
    +
   _Gnome 3_ users may run into problem that their tray is hidden by default.
-  Then you need to adjust your settings to show it.
+  In such case it is needed to adjust Gnome 3 settings to show tray bar.
 
 After start _Wallpaper Changer Settings_ window appeared. If close it, the application will exit. What to do?::
   This mean Wallpaper Changer failed to detect your graphical environment automatically.
