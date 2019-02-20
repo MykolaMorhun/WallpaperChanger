@@ -1,15 +1,14 @@
 object ScriptEditorForm: TScriptEditorForm
   Left = 444
-  Height = 500
+  Height = 400
   Top = 180
-  Width = 800
+  Width = 640
   ActiveControl = ScriptSynEdit
   Caption = 'Wallpaper Changer Script Editor'
-  ClientHeight = 475
-  ClientWidth = 800
-  Constraints.MinHeight = 188
-  Constraints.MinWidth = 250
-  DesignTimePPI = 120
+  ClientHeight = 380
+  ClientWidth = 640
+  Constraints.MinHeight = 150
+  Constraints.MinWidth = 200
   Icon.Data = {
     F0DF000000000100060000000000010020002259000066000000404000000100
     200028420000885900003030000001002000A8250000B09B0000202000000100
@@ -1810,31 +1809,32 @@ object ScriptEditorForm: TScriptEditorForm
   Position = poDefaultPosOnly
   ShowInTaskBar = stAlways
   LCLVersion = '1.8.4.0'
+  Scaled = False
   object EditorPanel: TPanel
     Left = 0
-    Height = 312
-    Top = 32
-    Width = 800
+    Height = 249
+    Top = 26
+    Width = 640
     Align = alClient
-    ClientHeight = 312
-    ClientWidth = 800
+    ClientHeight = 249
+    ClientWidth = 640
     ParentFont = False
     TabOrder = 0
     inline ScriptSynEdit: TSynEdit
       Cursor = crDefault
       Left = 1
-      Height = 310
+      Height = 247
       Top = 1
-      Width = 798
+      Width = 638
       Align = alClient
-      Font.Height = -19
+      Font.Height = -15
       Font.Name = 'DejaVu Sans Mono'
       Font.Pitch = fpFixed
       Font.Quality = fqNonAntialiased
       ParentColor = False
       ParentFont = False
       TabOrder = 0
-      Gutter.Width = 65
+      Gutter.Width = 57
       Gutter.MouseActions = <>
       RightGutter.Visible = False
       RightGutter.Width = 0
@@ -2295,7 +2295,7 @@ object ScriptEditorForm: TScriptEditorForm
           MouseActions = <>
         end
         object SynGutterLineNumber1: TSynGutterLineNumber
-          Width = 23
+          Width = 17
           MouseActions = <>
           MarkupInfo.Background = clBtnFace
           MarkupInfo.Foreground = clNone
@@ -2318,7 +2318,6 @@ object ScriptEditorForm: TScriptEditorForm
         end
         object SynGutterCodeFolding1: TSynGutterCodeFolding
           AutoSize = False
-          Width = 12
           MouseActions = <>
           MarkupInfo.Background = clNone
           MarkupInfo.Foreground = clGray
@@ -2330,19 +2329,19 @@ object ScriptEditorForm: TScriptEditorForm
   end
   object BottomPanel: TPanel
     Left = 0
-    Height = 125
-    Top = 350
-    Width = 800
+    Height = 100
+    Top = 280
+    Width = 640
     Align = alBottom
-    ClientHeight = 125
-    ClientWidth = 800
+    ClientHeight = 100
+    ClientWidth = 640
     ParentFont = False
     TabOrder = 1
     object BottomPanelToolBar: TToolBar
-      Left = 769
-      Height = 123
+      Left = 615
+      Height = 98
       Top = 1
-      Width = 30
+      Width = 24
       Align = alRight
       AutoSize = True
       Caption = 'BottomPanelToolBar'
@@ -2361,7 +2360,7 @@ object ScriptEditorForm: TScriptEditorForm
       end
       object ClearBottomPanelToolButton: TToolButton
         Left = 1
-        Top = 30
+        Top = 24
         Action = CleanBottomPanelOutputAction
         Caption = 'Clear bottom panel output'
         ImageIndex = 37
@@ -2369,11 +2368,11 @@ object ScriptEditorForm: TScriptEditorForm
     end
     object BottomPanelMemo: TMemo
       Left = 1
-      Height = 123
+      Height = 98
       Top = 1
-      Width = 768
+      Width = 614
       Align = alClient
-      Font.Height = -20
+      Font.Height = -16
       Font.Name = 'DejaVu Sans Mono'
       Font.Pitch = fpFixed
       ParentFont = False
@@ -2385,16 +2384,17 @@ object ScriptEditorForm: TScriptEditorForm
   object EditorBottomPanelSplitter: TSplitter
     Cursor = crVSplit
     Left = 0
-    Height = 6
-    Top = 344
-    Width = 800
+    Height = 5
+    Top = 275
+    Width = 640
     Align = alBottom
     ResizeAnchor = akBottom
   end
   object ScriptEditorToolBar: TToolBar
     Left = 0
+    Height = 26
     Top = 0
-    Width = 800
+    Width = 640
     Caption = 'ScriptEditorToolBar'
     Images = ScriptEditorImageList
     ParentFont = False
@@ -2411,183 +2411,183 @@ object ScriptEditorForm: TScriptEditorForm
       Style = tbsDropDown
     end
     object OpenScriptToolButton: TToolButton
-      Left = 45
+      Left = 36
       Hint = 'Open Script'
       Top = 2
       Action = FileOpenScriptAction
     end
     object SaveToolButton: TToolButton
-      Left = 74
+      Left = 59
       Hint = 'Save'
       Top = 2
       Action = FileSaveScriptAction
       Caption = 'Save'
     end
     object ToolButtonSeparator1: TToolButton
-      Left = 103
-      Height = 28
+      Left = 82
+      Height = 22
       Top = 2
       Caption = 'ToolButtonSeparator1'
       Style = tbsSeparator
     end
     object CheckScriptSyntaxToolButton: TToolButton
-      Left = 113
+      Left = 90
       Hint = 'Check Script Syntax'
       Top = 2
       Action = ScriptCheckSyntaxAction
     end
     object CheckScriptResourcesToolButton: TToolButton
-      Left = 142
+      Left = 113
       Hint = 'Check Script Resources'
       Top = 2
       Action = ScriptCheckResourcesAction
     end
     object RunScriptInLogModeToolButton: TToolButton
-      Left = 171
+      Left = 136
       Hint = 'Run Script In Log Mode'
       Top = 2
       Action = ScriptRunLogAction
     end
     object ToolButtonSeparator2: TToolButton
-      Left = 200
-      Height = 28
+      Left = 159
+      Height = 22
       Top = 2
       Caption = 'ToolButtonSeparator2'
       Style = tbsSeparator
     end
     object AddNewBranchToolButton: TToolButton
-      Left = 210
+      Left = 167
       Hint = 'Add New Branch'
       Top = 2
       Action = BranchAddAction
     end
     object InsertWaitStatementToolButton: TToolButton
-      Left = 239
+      Left = 190
       Hint = 'Insert Wait Statement'
       Top = 2
       Action = StatementInsertWaitAction
     end
     object InsertWallpaperStatementToolButton: TToolButton
-      Left = 268
+      Left = 213
       Hint = 'Insert Wallpaper Statement'
       Top = 2
       Action = StatementInsertSetWallpaperAction
     end
     object InsertDirectoryStatementToolButton: TToolButton
-      Left = 297
+      Left = 236
       Hint = 'Insert Directory Statement'
       Top = 2
       Action = StatementInsertSetDirectoryAction
     end
     object InsertUseBranchStatementToolButton: TToolButton
-      Left = 326
+      Left = 259
       Hint = 'Insert Use Branch Statement'
       Top = 2
       Action = StatementInsertUseBranchAction
     end
     object InsertSwitchBranchStatementToolButton: TToolButton
-      Left = 355
+      Left = 282
       Hint = 'Insert Switch Branch Statement'
       Top = 2
       Action = StatementInsertSwitchBranchAction
     end
     object InsertChooseWallpaperStatementToolButton: TToolButton
-      Left = 384
+      Left = 305
       Hint = 'Insert Choose Wallpaper Statement'
       Top = 2
       Action = StatementInsertWallpaperChooserAction
     end
     object InsertChooseBranchToUseStatementToolButton: TToolButton
-      Left = 413
+      Left = 328
       Hint = 'Insert Choose Branch To Use Statement'
       Top = 2
       Action = StatementInsertUseBranchChooserAction
     end
     object InsertChooseBranchToSwitchStatementToolButton: TToolButton
-      Left = 442
+      Left = 351
       Hint = 'Insert Choose Branch To Switch Statement'
       Top = 2
       Action = StatementInsertSwitchBranchChooserAction
     end
     object InsertStopScriptStatementToolButton: TToolButton
-      Left = 471
+      Left = 374
       Hint = 'Insert Stop Script Statement'
       Top = 2
       Action = StatementInsertStopAction
     end
     object ToolButtonSeparator4: TToolButton
-      Left = 655
-      Height = 28
+      Left = 520
+      Height = 22
       Top = 2
       Caption = 'ToolButtonSeparator4'
       Style = tbsSeparator
     end
     object InsertImageResourceToolButton: TToolButton
-      Left = 665
+      Left = 528
       Hint = 'Insert Image Resource'
       Top = 2
       Action = ResourceInsertImageAction
     end
     object InsertDirectoryResourceToolButton: TToolButton
-      Left = 694
+      Left = 551
       Hint = 'Insert Directory Resource'
       Top = 2
       Action = ResourceInsertDirectoryAction
     end
     object ToolButtonSeparator5: TToolButton
-      Left = 723
-      Height = 28
+      Left = 574
+      Height = 22
       Top = 2
       Caption = 'ToolButtonSeparator5'
       Style = tbsSeparator
     end
     object OpenDocumentationToolButton: TToolButton
-      Left = 733
+      Left = 582
       Hint = 'Open Documentation'
       Top = 2
       Action = HelpDocumentationAction
     end
     object InsertDelayStatementPropertyToolButton: TToolButton
-      Left = 510
+      Left = 405
       Hint = 'Insert Delay Statement Property'
       Top = 2
       Action = StatementInsertDelayPropertyAction
     end
     object ToolButtonSeparator3: TToolButton
-      Left = 500
-      Height = 28
+      Left = 397
+      Height = 22
       Top = 2
       Caption = 'ToolButtonSeparator3'
       Style = tbsSeparator
     end
     object InsertProbabilityStatementPropertyToolButton: TToolButton
-      Left = 568
+      Left = 451
       Hint = 'Insert Probability Statement Property'
       Top = 2
       Action = StatementInsertProbabilityPropertyAction
     end
     object InsertTimesStatementPropertyToolButton: TToolButton
-      Left = 597
+      Left = 474
       Hint = 'Insert Times Statement Property'
       Top = 2
       Action = StatementInsertTimesPropertyAction
     end
     object InsertWallpaperStyleStatementPropertyToolButton: TToolButton
-      Left = 626
+      Left = 497
       Hint = 'Insert Wallpaper Style Statement Property'
       Top = 2
       Action = StatementInsertWallpaperStylePropertyAction
     end
     object ToolButton1: TToolButton
-      Left = 539
+      Left = 428
       Top = 2
       Action = StatementInsertTillPropertyAction
     end
   end
   object ScriptEditorMainMenu: TMainMenu
     Images = ScriptEditorImageList
-    left = 200
-    top = 90
+    left = 160
+    top = 72
     object FileMenuItem: TMenuItem
       Caption = 'File'
       object FileNewMenuItem: TMenuItem
@@ -3001,8 +3001,8 @@ object ScriptEditorForm: TScriptEditorForm
     end
   end
   object ScriptEditorImageList: TImageList
-    left = 200
-    top = 240
+    left = 160
+    top = 192
     Bitmap = {
       4C69280000001000000010000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4289,8 +4289,8 @@ object ScriptEditorForm: TScriptEditorForm
   end
   object ScriptEditorActionList: TActionList
     Images = ScriptEditorImageList
-    left = 200
-    top = 160
+    left = 160
+    top = 128
     object ScriptCheckSyntaxAction: TAction
       Category = 'script'
       Caption = 'Check script syntax'
@@ -4569,8 +4569,8 @@ object ScriptEditorForm: TScriptEditorForm
     Title = 'Save Wallpaper Changer script as'
     DefaultExt = '.wcs'
     Filter = 'Wallpaper Changer Scripts|*.wcs|All files|*.*'
-    left = 640
-    top = 40
+    left = 512
+    top = 32
   end
   object ScriptOpenDialog: TOpenDialog
     Width = 1260
@@ -4578,18 +4578,18 @@ object ScriptEditorForm: TScriptEditorForm
     Title = 'Open Wallpaper Changer script for editing'
     Filter = 'Wallpaper Changes Scripts|*.wcs|All files|*.*'
     Options = [ofFileMustExist, ofEnableSizing, ofViewDetail]
-    left = 540
-    top = 40
+    left = 432
+    top = 32
   end
   object ResourceSelectDirectoryDialog: TSelectDirectoryDialog
     Options = [ofFileMustExist, ofEnableSizing, ofViewDetail]
-    left = 640
-    top = 120
+    left = 512
+    top = 96
   end
   object ResourceOpenPictureDialog: TOpenPictureDialog
     Options = [ofFileMustExist, ofEnableSizing, ofViewDetail]
-    left = 540
-    top = 120
+    left = 432
+    top = 96
   end
   object ScriptSynCompletion: TSynCompletion
     OnExecute = ScriptSynCompletionExecute
@@ -4606,26 +4606,26 @@ object ScriptEditorForm: TScriptEditorForm
     ExecCommandID = ecSynCompletionExecute
     Editor = ScriptSynEdit
     ToggleReplaceWhole = False
-    left = 360
-    top = 40
+    left = 288
+    top = 32
   end
   object SelectScriptEditorFontFontDialog: TFontDialog
     MinFontSize = 0
     MaxFontSize = 0
-    left = 600
-    top = 200
+    left = 480
+    top = 160
   end
   object FindInScriptFindDialog: TFindDialog
     Options = [frDown, frFindNext, frHideEntireScope, frButtonsAtBottom]
     OnFind = FindInScriptFindDialogFind
-    left = 350
-    top = 270
+    left = 280
+    top = 216
   end
   object FindReplaceInScriptReplaceDialog: TReplaceDialog
     Options = [frDown, frReplace, frReplaceAll, frHideEntireScope, frHidePromptOnReplace, frButtonsAtBottom]
     OnFind = FindReplaceInScriptReplaceDialogFind
     OnReplace = FindReplaceInScriptReplaceDialogReplace
-    left = 600
-    top = 270
+    left = 480
+    top = 216
   end
 end
