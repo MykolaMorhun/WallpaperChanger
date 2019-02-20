@@ -1,60 +1,64 @@
 object WpcAboutForm: TWpcAboutForm
-  Left = 449
-  Height = 150
-  Top = 193
-  Width = 300
+  Left = 561
+  Height = 188
+  Top = 241
+  Width = 375
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'About Wallpaper Changer'
-  ClientHeight = 150
-  ClientWidth = 300
+  ClientHeight = 188
+  ClientWidth = 375
+  DesignTimePPI = 120
   OnClose = FormClose
-  Position = poDefaultPosOnly
-  LCLVersion = '1.6.4.0'
+  Position = poDesktopCenter
+  LCLVersion = '1.8.4.0'
   object WallpaperChangerLabel: TLabel
-    Left = 10
-    Height = 22
-    Top = 10
-    Width = 280
+    Left = 12
+    Height = 32
+    Top = 12
+    Width = 351
     Align = alTop
     Alignment = taCenter
-    BorderSpacing.Around = 10
+    BorderSpacing.Around = 12
     Caption = 'Wallpaper Changer'
-    Font.Height = -19
+    Font.Height = -24
     ParentColor = False
     ParentFont = False
   end
   object VersionLabel: TLabel
-    Left = 10
-    Height = 15
-    Top = 42
-    Width = 280
+    Left = 12
+    Height = 20
+    Top = 56
+    Width = 351
     Align = alTop
     Alignment = taCenter
-    BorderSpacing.Around = 10
+    BorderSpacing.Around = 12
     Caption = 'Version 1.0.0'
     ParentColor = False
+    ParentFont = False
   end
   object AuthorsLabel: TLabel
-    Left = 10
-    Height = 15
-    Top = 67
-    Width = 280
+    Left = 12
+    Height = 20
+    Top = 88
+    Width = 351
     Align = alTop
     Alignment = taCenter
-    BorderSpacing.Around = 10
-    Caption = '(c) 2017 - 2018 Mykola Morhun'
+    BorderSpacing.Around = 12
+    Caption = '(c) 2017 - 2019 Mykola Morhun'
     ParentColor = False
+    ParentFont = False
   end
   object CloseButton: TButton
-    Left = 10
-    Height = 25
-    Top = 115
-    Width = 280
+    Left = 12
+    Height = 31
+    Top = 145
+    Width = 351
     Align = alBottom
-    BorderSpacing.Around = 10
+    BorderSpacing.Around = 12
     Caption = 'Close'
     OnClick = CloseButtonClick
+    ParentFont = False
     TabOrder = 0
   end
 end
