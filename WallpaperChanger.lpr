@@ -31,8 +31,9 @@ begin
   // TODO check application uniqueness.
   RequireDerivedFormResource := True;
   Application.ShowMainForm := False;
-  Application.Initialize;
+  Application.Scaled := True;
+  Application.Initialize();
   Application.CreateForm(TBannerForm, WPCBannerForm);
-  Application.Run;
+  Application.Run();
 end.
 
