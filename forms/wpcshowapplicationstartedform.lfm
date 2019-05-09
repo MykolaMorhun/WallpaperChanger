@@ -1,0 +1,71 @@
+object WpcShowApplicationStartedForm: TWpcShowApplicationStartedForm
+  Left = 343
+  Height = 100
+  Top = 132
+  Width = 350
+  ActiveControl = OkButton
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Wallpaper Changer'
+  ClientHeight = 100
+  ClientWidth = 350
+  OnClose = FormClose
+  Position = poScreenCenter
+  LCLVersion = '1.8.4.0'
+  object MessagesPanel: TPanel
+    Left = 0
+    Height = 60
+    Top = 0
+    Width = 350
+    Align = alClient
+    BevelOuter = bvNone
+    ClientHeight = 60
+    ClientWidth = 350
+    TabOrder = 0
+    object MessageLabel: TLabel
+      Left = 0
+      Height = 60
+      Top = 0
+      Width = 350
+      Align = alClient
+      Alignment = taCenter
+      Caption = 'Wallpaper Changer is started and ready.'#13#10'Please use it from tray.'
+      Layout = tlCenter
+      ParentColor = False
+    end
+  end
+  object ControlsPanel: TPanel
+    Left = 0
+    Height = 40
+    Top = 60
+    Width = 350
+    Align = alBottom
+    BevelOuter = bvNone
+    ChildSizing.LeftRightSpacing = 10
+    ChildSizing.TopBottomSpacing = 5
+    ClientHeight = 40
+    ClientWidth = 350
+    TabOrder = 1
+    object DoNotShowAgainCheckBox: TCheckBox
+      Left = 10
+      Height = 30
+      Top = 5
+      Width = 183
+      Align = alLeft
+      Caption = 'Don''t show this message again'
+      Checked = True
+      State = cbChecked
+      TabOrder = 0
+    end
+    object OkButton: TButton
+      Left = 265
+      Height = 30
+      Top = 5
+      Width = 75
+      Align = alRight
+      Caption = 'OK'
+      OnClick = OkButtonClick
+      TabOrder = 1
+    end
+  end
+end

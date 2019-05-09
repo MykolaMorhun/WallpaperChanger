@@ -35,6 +35,7 @@ type
     ENVIRONMENT_SECTION = 'Environment';
     WALLAPAPER_SECTION = 'Wallpaper';
     SIMPLE_CHANGER_SECTION = 'SimpleChanger';
+    UI_SETTINGS_SECTION = 'UserInterface';
 
     CUSTOM_SETTER_KEY = 'ExternalSetter';
     RUN_TERMINATED_TASK_ON_START_KEY = 'RunTerminatedTaskOnStart';
@@ -52,6 +53,8 @@ type
     SIMPLE_CHANGER_MAXIMAL_DELAY_KEY = 'MaximalDelayValue';
     SIMPLE_CHANGER_KEEP_ORDER_KEY = 'KeepOrder';
     SIMPLE_CHANGER_SEARCH_IN_SUBDIRECTORIES_KEY = 'Subdirectories';
+
+    UI_SETTINGS_SHOW_APP_STARTED_WINDOW_KEY = 'ShowAppStartedWindow';
   private const
     DEFAULT_CUSTOM_SETTER = '';
     DEFAULT_RUN_TERMINATED_ON_START = true;
@@ -69,6 +72,8 @@ type
     DEFAULT_MAXIMAL_DELAY = 2 * 60 * 60 * 1000;
     DEFAULT_KEEP_ORDER = true;
     DEFAULT_SEARCH_IN_SUBDIRECTORIES = false;
+
+    DEFAULT_UI_SETTINGS_SHOW_APP_STARTED_WINDOW = true;
   private
     FCustomSetter : String;
     FRunTerminatedTaskOnStart : Boolean;
@@ -86,6 +91,8 @@ type
     FMaximalDelay           : Integer;
     FKeepOrder              : Boolean;
     FSearchInSubDirectories : Boolean;
+
+    FShowAppStartedWindow : Boolean;
   private
     procedure SetConstantDelay(Delay : Integer);
     procedure SetMinimalDelay(Delay : Integer);
@@ -122,6 +129,8 @@ type
     // If true all images from all subdirectories of specific folder will be added recursively into the list.
     // If false only images from specified folder will be added to the list.
     property SearchInSubdirectories : Boolean read FSearchInSubDirectories write FSearchInSubDirectories;
+    // If true a window will be shown on each start that Wallpaper Changer is started and is in tray.
+    property ShowAppStartedWindow : Boolean read FShowAppStartedWindow write FShowAppStartedWindow;
   public
     procedure SetMinMaxDelay(MinDelay : Integer; MaxDelay : Integer);
   public
@@ -270,6 +279,8 @@ begin
     FMaximalDelay := SettingsFile.ReadInteger(SIMPLE_CHANGER_SECTION, SIMPLE_CHANGER_MAXIMAL_DELAY_KEY, DEFAULT_MAXIMAL_DELAY);
     FKeepOrder := SettingsFile.ReadBool(SIMPLE_CHANGER_SECTION, SIMPLE_CHANGER_KEEP_ORDER_KEY, DEFAULT_KEEP_ORDER);
     FSearchInSubDirectories := SettingsFile.ReadBool(SIMPLE_CHANGER_SECTION, SIMPLE_CHANGER_SEARCH_IN_SUBDIRECTORIES_KEY, DEFAULT_SEARCH_IN_SUBDIRECTORIES);
+
+    FShowAppStartedWindow := SettingsFile.ReadBool(UI_SETTINGS_SECTION, UI_SETTINGS_SHOW_APP_STARTED_WINDOW_KEY, DEFAULT_UI_SETTINGS_SHOW_APP_STARTED_WINDOW);
   finally
     SettingsFile.Free();
   end;
@@ -299,6 +310,8 @@ begin
     SettingsFile.WriteBool(SIMPLE_CHANGER_SECTION, SIMPLE_CHANGER_KEEP_ORDER_KEY, FKeepOrder);
     SettingsFile.WriteBool(SIMPLE_CHANGER_SECTION, SIMPLE_CHANGER_SEARCH_IN_SUBDIRECTORIES_KEY, FSearchInSubDirectories);
 
+    SettingsFile.WriteBool(UI_SETTINGS_SECTION, UI_SETTINGS_SHOW_APP_STARTED_WINDOW_KEY, FShowAppStartedWindow);
+
     SettingsFile.UpdateFile();
   finally
     SettingsFile.Free();
@@ -321,6 +334,8 @@ begin
   FMaximalDelay := DEFAULT_MAXIMAL_DELAY;
   FKeepOrder := DEFAULT_KEEP_ORDER;
   FSearchInSubDirectories := DEFAULT_SEARCH_IN_SUBDIRECTORIES;
+
+  FShowAppStartedWindow := DEFAULT_UI_SETTINGS_SHOW_APP_STARTED_WINDOW;
 end;
 
 procedure TWpcPersistentSettings.SetConstantDelay(Delay : Integer);

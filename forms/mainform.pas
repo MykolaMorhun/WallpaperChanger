@@ -9,7 +9,8 @@ uses
   Forms, Controls, Graphics, Dialogs, ExtCtrls, Menus, ExtDlgs, LCLType,
   WpcImage, WpcDirectory,
   WpcMainManuActions,
-  WpcExceptions;
+  WpcExceptions,
+  WpcShowApplicationStartedForm;
 
 type
 
@@ -90,6 +91,12 @@ begin
   ApplicationManager := TWpcApplicationManager.Create(Self);
 
   WPCBannerForm.Hide();
+  // Apply above banner form hiding
+  Application.ProcessMessages();
+
+  if (ApplicationManager.CurrentSettings.ShowAppStartedWindow) then
+    // The from will release its resources on close
+    TWpcShowApplicationStartedForm.Create(nil).Show();
 end;
 
 (* Main menu handlers *)
