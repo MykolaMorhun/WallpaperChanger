@@ -6,10 +6,12 @@ interface
 
 uses
   Classes, SysUtils,
+  Unix,
+  Process,
+  StrUtils,
   WpcAbstractWallpaperSetter,
   WpcWallpaperStyles,
-  WpcDesktopEnvironments,
-  Unix;
+  WpcDesktopEnvironments;
 
 type
 
@@ -23,25 +25,24 @@ type
       xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitor0/workspace0/last-image --set /path/to/image.jpg
       xfconf-query --channel xfce4-desktop --property /backdrop/screen0/monitor0/workspace0/image-style --set 1
 
-    This setter doesn't handle multiple monitors or workspaces.
-    // TODO add support for several monitors.
+    Note, that monitor name could be different, for example monitorLVDS1 or monitorVGA1
   }
   TWpcXfceWallpaperSetter = class(TWpcAbstractWallpaperSetter)
   private const
-    DESKTOP_QUERY = 'xfconf-query --channel xfce4-desktop';
-    PROPRTY_TEMPLATE = '--property /backdrop/screen%d/monitor%d/workspace%d/';
-    IMAGE_PATH_KEY = 'last-image';
-    IMAGE_STYLE_KEY = 'image-style';
-    SET_KEY = '--set';
+    LIST_SCREEN_PROPERTIES_QUERY = 'xfconf-query --channel xfce4-desktop --property /backdrop/screen0 --list';
+    MONITOR_NAME_PATH_PREFIX = '/backdrop/screen0/';
+    SET_WALLPAPER_IMAGE_QUERY_TEMPLATE = 'xfconf-query --channel xfce4-desktop --property /backdrop/screen0/%s/workspace0/last-image --set %s';
+    SET_WALLPAPER_STYLE_QUERY_TEMPLATE = 'xfconf-query --channel xfce4-desktop --property /backdrop/screen0/%s/workspace0/image-style --set %s';
   private
-    FSetWallpaperImageQuery : String;
-    FSetWallpaperStyleQuery : String;
+    // Names of all monitors registered in xfconf
+    FMonitors : TStringList;
   public
     constructor Create();
+    destructor Destroy(); override;
   public
     procedure SetDesktopWallpaper(Path : String; Style : TWpcWallpaperStyle); override;
   private
-    procedure CreateQueriesTemplates(); inline;
+    procedure DetectAllMonitors();
 
     function WpcWallpaperStyleToXfceWallpaperStyle(Style : TWpcWallpaperStyle) : String;
   end;
@@ -57,25 +58,84 @@ begin
   SupportedStyles := [ CENTERED, TILED, STRETCHED, SCALED, ZOOMED ];
   DefaultWallpaperStyle := ZOOMED;
 
-  CreateQueriesTemplates();
+  FMonitors := nil;
+  DetectAllMonitors();
 end;
 
+destructor TWpcXfceWallpaperSetter.Destroy();
+begin
+  if (FMonitors <> nil) then FMonitors.Free();
+
+  inherited Destroy();
+end;
+
+{
+  Sets given wallpaper and style for all monitors.
+}
 procedure TWpcXfceWallpaperSetter.SetDesktopWallpaper(Path : String; Style : TWpcWallpaperStyle);
+var
+  Command            : String;
+  MonitorName        : String;
+  XfceWallpaperStyle : String;
 begin
   Validate(Path, Style);
 
-  fpSystem(FSetWallpaperImageQuery + '"' + Path + '" && ' +
-           FSetWallpaperStyleQuery + WpcWallpaperStyleToXfceWallpaperStyle(Style));
+  XfceWallpaperStyle := WpcWallpaperStyleToXfceWallpaperStyle(Style);
+
+  // no-op shell command
+  Command := ':';
+  for MonitorName in FMonitors do begin
+    Command := Command + ' && ' +
+      Format(SET_WALLPAPER_IMAGE_QUERY_TEMPLATE, [MonitorName, Path]) + ' && ' +
+      Format(SET_WALLPAPER_STYLE_QUERY_TEMPLATE, [MonitorName, XfceWallpaperStyle]);
+  end;
+  fpSystem(Command);
 end;
 
-procedure TWpcXfceWallpaperSetter.CreateQueriesTemplates();
+{
+  Gets names of all known to xfconf monitors.
+  Result is stored in FMonitors field.
+}
+procedure TWpcXfceWallpaperSetter.DetectAllMonitors();
 var
-  CommonPrefix : String;
+  ScreenPropertiesQueryOutput : String;
+  Offset                      : DWord;
+  MonitorNameBeginPos         : DWord;
+  MonitorNameEndPos           : DWord;
+  MonitorName                 : String;
 begin
-  // TODO handle many monitors and workspaces
-  CommonPrefix := DESKTOP_QUERY + ' ' + Format(PROPRTY_TEMPLATE, [0, 0, 0]);
-  FSetWallpaperImageQuery := CommonPrefix + IMAGE_PATH_KEY + ' ' + SET_KEY + ' ';
-  FSetWallpaperStyleQuery := CommonPrefix + IMAGE_STYLE_KEY + ' ' + SET_KEY + ' ';
+  if (FMonitors <> nil) then
+    FMonitors.Free();
+  FMonitors := TStringList.Create();
+
+  // Query xfconf for all screen related properties.
+  // Example of output:
+  //   /backdrop/screen0/monitorLVDS1/workspace0/color-style
+  //   /backdrop/screen0/monitorLVDS1/workspace0/image-style
+  //   /backdrop/screen0/monitorLVDS1/workspace0/last-image
+  //   /backdrop/screen0/monitorVGA1/workspace0/color-style
+  //   /backdrop/screen0/monitorVGA1/workspace0/image-style
+  //   /backdrop/screen0/monitorVGA1/workspace0/last-image
+  RunCommand('/bin/sh', ['-c', LIST_SCREEN_PROPERTIES_QUERY], ScreenPropertiesQueryOutput, [poWaitOnExit]);
+
+  Offset := 1;
+  while True do begin
+    Offset := PosEx(MONITOR_NAME_PATH_PREFIX, ScreenPropertiesQueryOutput, Offset);
+    if (Offset = 0) then
+      // Next occurrance not found, end of output reached.
+      break;
+
+    MonitorNameBeginPos := Offset + Length(MONITOR_NAME_PATH_PREFIX);
+    MonitorNameEndPos := PosEx('/', ScreenPropertiesQueryOutput, MonitorNameBeginPos);
+    MonitorName := Copy(ScreenPropertiesQueryOutput, MonitorNameBeginPos, MonitorNameEndPos - MonitorNameBeginPos);
+
+    // Add monitor name if it hasn't been found before
+    if (FMonitors.IndexOf(MonitorName) = -1) then
+      FMonitors.Add(MonitorName);
+
+    // Continue search after current occurrence
+    Offset := MonitorNameEndPos;
+  end;
 end;
 
 function TWpcXfceWallpaperSetter.WpcWallpaperStyleToXfceWallpaperStyle(Style : TWpcWallpaperStyle) : String;
